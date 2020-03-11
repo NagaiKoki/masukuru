@@ -16,7 +16,7 @@ import firebase from '../../config/firebase';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-const LoginScreen = () => {
+const SignupScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,10 +24,7 @@ const LoginScreen = () => {
   const handleSignUp = () => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(user => {
-      setUserName('');
-      setEmail('');
-      setPassword('');
-      alert('success');
+      navigation.navigate('SignupLoading');
     }).catch(error => alert(error));
   }
 
@@ -46,7 +43,7 @@ const LoginScreen = () => {
               placeholder="名前"
               autoCapitalize={'none'}
               autoCorrect={ false }
-              onChangeText={ useName => setUserName(userName) }
+              onChangeText={ userName => setUserName(userName) }
             />
           </Item>
           <Item>
@@ -54,7 +51,7 @@ const LoginScreen = () => {
               placeholder='メールアドレス'
               autoCapitalize={'none'}
               autoCorrect={ false }
-              onChangeText={ useEmail => setUserName(useEmail) }
+              onChangeText={ email => setEmail(email) }
             />
           </Item>
 
@@ -63,7 +60,7 @@ const LoginScreen = () => {
               placeholder='パスワード'
               autoCapitalize={'none'}
               secureTextEntry
-              onChangeText={ password => setUserName(password) }
+              onChangeText={ password => setPassword(password) }
             />
           </Item>
 
@@ -76,4 +73,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
