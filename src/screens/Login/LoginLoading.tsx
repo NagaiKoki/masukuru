@@ -6,8 +6,8 @@ import firebase from 'firebase';
 const LoginLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      navigation.navigate(user ? 'Home' : 'Login');
-    })    
+      navigation.navigate(user ? 'Home' : 'Home');
+    })
   }, [])
 
   return (

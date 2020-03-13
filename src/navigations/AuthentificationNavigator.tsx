@@ -13,8 +13,16 @@ const AuthentificationNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignupHome">
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator 
+        initialRouteName="SignupHome"
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen}  
+        />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="SignupHome" component={SignupHomeScreen} />
         <Stack.Screen name="SignupLoading" component={SignupLoadingScreen} />

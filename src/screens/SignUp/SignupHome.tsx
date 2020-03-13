@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, Button } from 'react-native';
+import { Image } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 
@@ -14,6 +14,10 @@ const SignupHomeScreen = ({ navigation }) => {
           style={{ width: '70%', height: 100, resizeMode: 'contain', alignSelf: 'center' }}
         />
       </ImageWrapper>
+
+      <SignUpTitle>
+        Musclew
+      </SignUpTitle>
 
       <SignUpCard>
         <SignUpButtonWrapper>
@@ -37,23 +41,30 @@ const SignupHomeScreen = ({ navigation }) => {
 }
 
 const Container = styled.View`
-  background-color: ${COLORS.BASE_BACKGROUND};
   flex: 1;
   padding-top: 60px;
 `
 
 const ImageWrapper = styled.View`
-  justify-content:center;
+  justify-content: center;
+  padding-bottom: 20px;
 `
 
+const SignUpTitle = styled.Text`
+  text-align: center;
+  color: ${COLORS.BASE_MUSCLEW};
+  font-size: 30px;
+  font-weight: bold;
+`
+ 
 const SignUpCard = styled.View`
-  border-radius: 10px;
-  width: 90%;
-  padding: 30px 0;
+  border-radius: 15px;
+  width: 85%;
+  padding: 70px 0;
   margin-top: 30px;
   align-self: center;
   background-color: ${COLORS.BASE_BACKGROUND};
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 6px ${COLORS.CARD_SHADOW1};
 `
 
 const SignUpButtonWrapper = styled.View`
@@ -64,7 +75,7 @@ const SignUpButtonWrapper = styled.View`
 const SignUpButton = styled.TouchableOpacity`
   background-color: ${COLORS.BASE_MUSCLEW};
   border-radius: 5px;
-  padding: 15px 0;
+  padding: 20px 0;
   width: 80%;
   align-self: center;
 `
@@ -73,11 +84,11 @@ const SignUpText = styled.Text`
   color: ${COLORS.BASE_WHITE};
   font-weight: bold;
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
 `
 
 const LoginSupportWrapper = styled.View`
-  padding: 30px 0 15px 0;  
+  padding: 20px 0 15px 0;  
 `
 
 const LoginSupprtText = styled.Text`
@@ -94,7 +105,7 @@ const LoginButtonWrapper = styled.View`
 const LoginButton = styled.TouchableOpacity`
   border: 2px solid ${COLORS.BASE_MUSCLEW};
   border-radius: 5px;
-  padding: 15px 0;
+  padding: 20px 0;
   width: 80%;
   align-self: center;
 `
@@ -103,7 +114,7 @@ const LoginText = styled.Text`
   color: ${COLORS.BASE_MUSCLEW};
   font-weight: bold;
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
 `
 
 export default SignupHomeScreen;

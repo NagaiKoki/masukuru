@@ -1,6 +1,6 @@
 export const CONFIG = {
-  API_KEY: 'AIzaSyCfgmoNmg1kYl7xhKvW3719TKdS_1jYcoo',
-  AUTH_DOMAIN: "musclew-27c15.firebaseapp.com",
-  DATABASE_URL: "https://musclew-27c15.firebaseio.com",
-  STORAGE_BUCKET: "musclew-27c15.appspot.com"
+  API_KEY: 'AIzaSyCdjL3-z11TE4QgP65uvAds6ufm5SbD0Rk',
+  AUTH_DOMAIN: "musclew-47ec1.firebaseapp.com",
+  DATABASE_URL: "https://musclew-47ec1.firebaseio.com",
+  STORAGE_BUCKET: "musclew-47ec1.appspot.com"
 };

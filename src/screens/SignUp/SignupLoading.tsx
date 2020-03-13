@@ -1,20 +1,28 @@
 import React, { useEffect } from 'react';
-import { View } from 'native-base';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import styled from 'styled-components';
 import firebase from 'firebase';
 
 const SignupLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      navigation.navigate(user ? 'Home' : 'SignUp');
+      navigation.navigate(user ? 'Home' : 'Signup');
     })    
   }, [])
 
   return (
-    <View>
-      <ActivityIndicator />
-    </View>
+    <LoadingContainer>
+      <ActivityIndicator/>
+    </LoadingContainer>
   )
 };
+
+const LoadingContainer = styled.View`
+  flex: 1;
+  align-self: center;
+  
+  /* justify-content: 'center';
+  align-items: 'center'; */
+`
 
 export default SignupLoadingScreen;
