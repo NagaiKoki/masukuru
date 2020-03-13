@@ -8,6 +8,8 @@ const config = {
   storageBucket: CONFIG.STORAGE_BUCKET,
 };
 
-firebase.initializeApp(config);
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
 
 export default firebase;
