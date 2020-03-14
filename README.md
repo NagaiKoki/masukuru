@@ -1,5 +1,5 @@
 # musclew_native
-## リリース日は4月末！！
+* リリース日は4月末！！
 
-# ドキュメント
+## ドキュメント
 [https://github.com/NagaiKoki/musclew](https://github.com/NagaiKoki/musclew)
