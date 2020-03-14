@@ -10,10 +10,15 @@ export const LoginUser = async ({ email, password }) => {
     await firebase.auth().signInWithEmailAndPassword(email, password);
     return {};
   } catch(error) {
+    console.log(error);
     switch (error.code) {
       case LOGIN_ERROR_CODE.INVALID_EMAIL:
         return {
           error: LOGIN_ERROR_MESSAGE.INVALID_EMAIL
+        };
+      case (LOGIN_ERROR_CODE.INVALID_PASSWORD):
+        return {
+          error: LOGIN_ERROR_MESSAGE.INVALID_PASSWORD
         };
       case LOGIN_ERROR_CODE.USER_NOT_FOUND:
         return {

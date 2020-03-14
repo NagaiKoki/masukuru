@@ -1,4 +1,6 @@
 import React from 'react';
+import { View } from 'react-native';
+import { COLORS } from '../constants/Styles';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/Home';
@@ -22,13 +24,13 @@ const AuthentificationNavigator = () => {
       return InitialiNavName = "SignupHome";
     }
   })
-  
+
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName={InitialiNavName}
+        initialRouteName="SignupHome"
         screenOptions={{
-          headerShown: false
+          headerBackTitleVisible: false
         }}
       >
         <Stack.Screen 
@@ -36,9 +38,23 @@ const AuthentificationNavigator = () => {
           component={HomeScreen}  
         />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="SignupHome" component={SignupHomeScreen} />
+        <Stack.Screen 
+          name="SignupHome" 
+          component={SignupHomeScreen} 
+          options={{
+            headerShown: false,
+            header: () => { return (<View></View>) }
+          }}
+        />
         <Stack.Screen name="SignupLoading" component={SignupLoadingScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen 
+          name="Login" 
+          component={LoginScreen}
+          options={{
+            title: "ログイン",
+            headerTintColor: COLORS.BASE_MUSCLEW,
+          }}
+        />
         <Stack.Screen name="LoginLoading" component={LoginLoadingScreen} />
       </Stack.Navigator>
     </NavigationContainer>

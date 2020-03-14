@@ -1,11 +1,13 @@
 export const LOGIN_ERROR_CODE =  {
   INVALID_EMAIL: "auth/invalid-email",
-  USER_NOT_FOUND: "auth/user-not-found" || "auth/wrong-password",
+  INVALID_PASSWORD: "auth/wrong-password",
+  USER_NOT_FOUND: "auth/user-not-found",
   TOO_MANY_REQUEST: "auth/too-many-requests",
 };
 
 export const LOGIN_ERROR_MESSAGE = {
-  INVALID_EMAIL: "メールアドレスのフォーマットが正しくありません。",
+  INVALID_EMAIL: "メールアドレスを正しく入力してください。",
+  INVALID_PASSWORD: "パスワードを正しく入力してください",
   USER_NOT_FOUND: "メールアドレスかパスワードが正しくありません。",
   TOO_MANY_REQUEST: "少しお待ちしてから、もう一度入力してください。",
   DEFAULT_MESSAGE: "エラーが発生しました。しばらく経ってからもう一度お試しください。"
