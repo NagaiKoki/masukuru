@@ -1,13 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthentificationNavigator from './navigations';
+import styled from 'styled-components';
+import { COLORS } from './constants/Styles';
 
 const App = () => {
   return (
-    <AuthentificationNavigator />
+    <Container>
+      <AuthentificationNavigator />
+    </Container>
   );
 }
 
+const Container = styled.View`
+  flex: 1;
+  background-color: ${COLORS.BASE_BACKGROUND};
+`
 export default App;

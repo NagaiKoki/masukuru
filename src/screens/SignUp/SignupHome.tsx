@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 
 const SignupHomeScreen = ({ navigation }) => {
-  
-  
+
   return (
     <Container>
       <ImageWrapper>
@@ -42,8 +41,8 @@ const SignupHomeScreen = ({ navigation }) => {
 
 const Container = styled.View`
   flex: 1;
-  padding-top: 60px;
   background-color: ${COLORS.BASE_BACKGROUND};
+  padding-top: 100px;
 `
 
 const ImageWrapper = styled.View`
@@ -64,7 +63,7 @@ const SignUpCard = styled.View`
   padding: 70px 0;
   margin-top: 30px;
   align-self: center;
-  background-color: ${COLORS.BASE_BACKGROUND};
+  background-color: ${COLORS.BASE_WHITE};
   box-shadow: 0 10px 6px ${COLORS.CARD_SHADOW1};
 `
 
@@ -77,7 +76,7 @@ const SignUpButton = styled.TouchableOpacity`
   background-color: ${COLORS.BASE_MUSCLEW};
   border-radius: 5px;
   padding: 20px 0;
-  width: 80%;
+  width: 90%;
   align-self: center;
 `
 
@@ -107,7 +106,7 @@ const LoginButton = styled.TouchableOpacity`
   border: 2px solid ${COLORS.BASE_MUSCLEW};
   border-radius: 5px;
   padding: 20px 0;
-  width: 80%;
+  width: 90%;
   align-self: center;
 `
 
