@@ -6,7 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 const HomeScreen = ({ navigation }) => {
   
   return (
-
+    <View>
+      
+    </View>
   );
 };
 

@@ -8,13 +8,25 @@ import SignupLoadingScreen from '../screens/SignUp/SignupLoading';
 import LoginScreen from '../screens/Login/Login';
 import LoginLoadingScreen from '../screens/Login/LoginLoading';
 
+import firebase from 'firebase';
+
+let InitialiNavName = ""
+
 const AuthentificationNavigator = () => {
   const Stack = createStackNavigator();
 
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      return InitialiNavName = "Home";
+    } else {
+      return InitialiNavName = "SignupHome";
+    }
+  })
+  
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="SignupHome"
+        initialRouteName={InitialiNavName}
         screenOptions={{
           headerShown: false
         }}
