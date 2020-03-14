@@ -43,6 +43,7 @@ const SignupHomeScreen = ({ navigation }) => {
 const Container = styled.View`
   flex: 1;
   padding-top: 60px;
+  background-color: ${COLORS.BASE_BACKGROUND};
 `
 
 const ImageWrapper = styled.View`

@@ -2,15 +2,48 @@ import React, { useState } from 'react'
 import firebase from '../../config/firebase';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import { LoginUser } from "../../api/auth-api";
+import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError]=  useState("");
 
-  const handleLogin = () => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => navigation.navigate('LoginLoading')).catch(error => alert(error));
+  const onLoginPressed = async () => {
+    if (loading) return;
+
+    const emailClinetError = emailValidator(email.value);
+    const passwordClientError = passwordValidator(password.value);
+
+    // firebaseにリクエストを送る前に、clientサイドでフォーマットをチェックする
+    if (emailClinetError || passwordClientError) {
+      setEmail({ ...email, error: emailClinetError });
+      setPassword({ ...password, error: passwordClientError });
+
+      return;
+    }
+    setLoading(true);
+
+    const response = await LoginUser({
+      email: email.value,
+      password: password.value
+    });
+
+    if (response.error) {
+      setError(response.error)
+      setLoading(false);
+    } else {
+      setLoading(false);
+      navigation.navigate('Home');
+    }
   }
+
+  // const handleLogin = () => {
+  //   firebase.auth().signInWithEmailAndPassword(email, password)
+  //   .then(() => navigation.navigate('LoginLoading')).catch(error => alert(error));
+  // }
 
   return (
     <LoginFormWrapper>
@@ -24,17 +57,21 @@ const LoginScreen = ({ navigation }) => {
           placeholder='メールアドレス'
           autoCapitalize={'none'}
           autoCorrect={ false }
+          value={ email.value }
           onChangeText={ email => setEmail(email) }
+          error={!!email.error}
+          errorText={email.error}
         />
           
         <LoginTextForm 
           placeholder='パスワード'
           autoCapitalize={'none'}
           secureTextEntry
+          value={ password.value }
           onChangeText={ password => setPassword(password) }
         />
          
-        <LoginSubmitButton block onPress={ () => handleLogin() }>
+        <LoginSubmitButton block onPress={ () => onLoginPressed() }>
           <LoginSubmitText>ログインする</LoginSubmitText>
         </LoginSubmitButton>
         
