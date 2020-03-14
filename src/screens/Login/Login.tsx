@@ -21,8 +21,7 @@ const LoginScreen = ({ navigation }) => {
 
     // firebaseにリクエストを送る前に、clientサイドでフォーマットをチェックする
     if (emailClinetError) {
-      setError(emailClinetError)
-      return console.log(error)
+      return setError(emailClinetError)
     } else if (passwordClientError) {
       return setError(passwordClientError)
     };
