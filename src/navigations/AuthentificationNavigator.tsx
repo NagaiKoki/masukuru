@@ -37,7 +37,14 @@ const AuthentificationNavigator = () => {
           name="Home" 
           component={HomeScreen}  
         />
-        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen 
+          name="Signup" 
+          component={SignupScreen} 
+          options={{
+            title: "アカウントを登録する",
+            headerTintColor: COLORS.BASE_MUSCLEW
+          }}
+        />
         <Stack.Screen 
           name="SignupHome" 
           component={SignupHomeScreen} 
