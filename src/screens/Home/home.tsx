@@ -9,11 +9,6 @@ const HomeScreen = ({ navigation }) => {
   const [name, setname] = useState(0); 
   
   return (
-<<<<<<< HEAD
-    <View>
-      
-    </View>
-=======
     <Container>
       <Title>
         メンバー
@@ -41,7 +36,6 @@ const HomeScreen = ({ navigation }) => {
         
       </EventList>
     </Container>
->>>>>>> Home画面作成
   );
 };
 
