@@ -19,9 +19,9 @@ const AuthentificationNavigator = () => {
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      return InitialiNavName = "Home";
+      InitialiNavName = "Home";
     } else {
-      return InitialiNavName = "SignupHome";
+      InitialiNavName = "SignupHome";
     }
   })
 
@@ -43,7 +43,6 @@ const AuthentificationNavigator = () => {
           component={SignupHomeScreen} 
           options={{
             headerShown: false,
-            header: () => { return (<View></View>) }
           }}
         />
         <Stack.Screen name="SignupLoading" component={SignupLoadingScreen} />
