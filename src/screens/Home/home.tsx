@@ -9,10 +9,7 @@ const HomeScreen = ({ navigation }) => {
   const [name, setname] = useState(0); 
   
   return (
-<<<<<<< HEAD
-=======
 
->>>>>>> mypage雛形作成
     <Container>
       <Title>
         メンバー
@@ -64,7 +61,6 @@ const EventTitle = styled.Text`
 
 const EventList = styled.View`
   padding: 0 15px;
-  /* background-color: #00F; */
 `
 
 const EventPlus = styled.View`
