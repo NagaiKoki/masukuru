@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
 
       <EventList>
         <EventPlus>
-          <EventPlusButton onPress={ () => navigation.navigate('Signup') }>
+          <EventPlusButton onPress={ () => navigation.navigate('Ranking') }>
             <EventPlusButtonText>
               +
             </EventPlusButtonText>

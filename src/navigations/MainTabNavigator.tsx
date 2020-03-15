@@ -1,23 +1,21 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import types
-import { RootTabParamList } from "./src/types";
-// import component
-import Home from './src/screens/Home';
-import MyPage from './src/screens/MyPage';
+import HomeScreen from '../screens/Home';
+import MainNavigator from './MainNavigator';
+import MyPageScreen from '../screens/MyPage/MyPage';
 
-const Tab = createBottomTabNavigator<RootTabParamList>();
+const Tab = createBottomTabNavigator();
 
-const App = () => {
+const MainTabNavigator = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName='Map'>
-        <Tab.Screen name='Home' component={Home} />
-        <Tab.Screen name='Mypage' component={MyPage} />
+      <Tab.Navigator initialRouteName='Home'>
+        <Tab.Screen name='Home' component={MainNavigator} />
+        <Tab.Screen name='Mypage' component={MyPageScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
-export default App
+export default MainTabNavigator
