@@ -9,6 +9,7 @@ import SignupHomeScreen from '../screens/SignUp/SignupHome';
 import SignupLoadingScreen from '../screens/SignUp/SignupLoading';
 import LoginScreen from '../screens/Login/Login';
 import LoginLoadingScreen from '../screens/Login/LoginLoading';
+import MyPageScreen from '../screens/MyPage/MyPage';
 
 import firebase from 'firebase';
 
@@ -17,25 +18,25 @@ let InitialiNavName = ""
 const AuthentificationNavigator = () => {
   const Stack = createStackNavigator();
 
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      InitialiNavName = "Home";
-    } else {
-      InitialiNavName = "SignupHome";
-    }
-  })
+  // firebase.auth().onAuthStateChanged(function(user) {
+  //   if (user) {
+  //     InitialiNavName = "Home";
+  //   } else {
+  //     InitialiNavName = "SignupHome";
+  //   }
+  // })
 
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="SignupHome"
+        initialRouteName="Mypage"
         screenOptions={{
           headerBackTitleVisible: false
         }}
       >
         <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}  
+          name="MyPage" 
+          component={MyPageScreen}  
         />
         <Stack.Screen 
           name="Signup" 

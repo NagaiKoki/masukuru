@@ -9,6 +9,10 @@ const HomeScreen = ({ navigation }) => {
   const [name, setname] = useState(0); 
   
   return (
+<<<<<<< HEAD
+=======
+
+>>>>>>> mypage雛形作成
     <Container>
       <Title>
         メンバー
