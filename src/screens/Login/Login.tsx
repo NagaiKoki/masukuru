@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import firebase from '../../config/firebase';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import { LoginUser } from "../../api/auth-api";

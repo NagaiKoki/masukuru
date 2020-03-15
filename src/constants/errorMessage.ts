@@ -15,7 +15,7 @@ export const LOGIN_ERROR_MESSAGE = {
 
 export const EMAIL_CLIENT_ERROR_MESSSAGE = {
   EMPTY_ERROR: "メールアドレスを入力してください。",
-  INVALID_EMAIL: "メールアドレスのフォーマットが正しくありません。",
+  INVALID_EMAIL: "メールアドレスを正しく入力してください。",
 };
 
 export const PASSWORD_CLIENT_ERROR_MESSAGE = {
@@ -23,9 +23,16 @@ export const PASSWORD_CLIENT_ERROR_MESSAGE = {
 }
 
 export const SIGNUP_ERROR_CODE = {
-
+  EMAIL_DUPLICATED: "auth/email-already-in-use",
+  INVALID_EMAIL: "auth/invalid-email",
+  TOO_WEAK_PASSWORD: "auth/weak-password",
+  TOO_MANY_REQUEST: "auth/too-many-requests",
 }
 
 export const SIGNUP_ERROR_MESSAGE = {
-
+  EMAIL_DUPLICATED: "このメールアドレスはすでに使われています。",
+  INVALID_EMAIL: "メールアドレスを正しく入力してください。",
+  TOO_WEAK_PASSWORD: "より強力なパスワードを入力してください。",
+  TOO_MANY_REQUEST: "少しお待ちしてから、もう一度入力してください。",
+  DEFAULT_MESSAGE: "エラーが発生しました。しばらく経ってからもう一度お試しください。"
 }
