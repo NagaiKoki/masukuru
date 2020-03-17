@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
+import {View,Button} from 'react-native';
 import { COLORS } from '../../constants/Styles';
+import EventAddModal from './EventAddModal'
 
 const HomeScreen = ({ navigation }) => {
-
-  const numbers = [1, 2, 3, 4, 5]
   
-  const [name, setname] = useState(0); 
+  const [showModal, setModal] = useState(false); 
   
   return (
 
@@ -25,11 +25,27 @@ const HomeScreen = ({ navigation }) => {
 
       <EventList>
         <EventPlus>
-          <EventPlusButton onPress={ () => navigation.navigate('Ranking') }>
+          <EventPlusButton onPress={ () => setModal(true) }>
             <EventPlusButtonText>
               +
             </EventPlusButtonText>
           </EventPlusButton>
+
+          <ModalView>
+            <EventModal 
+              animationType="slide"
+              transparent={false}
+              visible={showModal}
+              >
+              <ModalTitle>
+                トレーニングを追加する
+              </ModalTitle>
+
+              <ButtonModal onPress={ () => setModal(false) } title="Close"></ButtonModal>
+            </EventModal>
+          </ModalView>
+            
+
           <EventPlusText>
             トレーニングを追加する
           </EventPlusText>
@@ -74,6 +90,22 @@ const EventPlus = styled.View`
 `
 
 const EventPlusButton = styled.TouchableOpacity`
+`
+
+const ModalView = styled.View`
+  
+`
+
+const EventModal = styled.Modal`
+  
+`
+
+const ButtonModal = styled.Button`
+  margin-top: 300px;
+`
+
+const ModalTitle = styled.Text`
+  margin-top: 300px;
 `
 
 const EventPlusButtonText = styled.Text`
