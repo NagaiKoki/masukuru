@@ -4,6 +4,7 @@ import { emailValidator, passwordValidator } from '../../validators/AuthValidato
 import Toast from '../../components/Toaster';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import firebase from 'firebase';
 
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
@@ -24,7 +25,7 @@ const SignupScreen = ({ navigation }) => {
       return setError(passwordClientError)
     };
 
-    setIsLoading(true);
+    setIsLoading(true)
 
     // firebaseへのリクエスト
     const response = await RegisterUser({
@@ -34,10 +35,12 @@ const SignupScreen = ({ navigation }) => {
 
     if (response.error) {
       setError(response.error)
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
+    } else {   
       navigation.navigate('SignupLoading');
+    }
+
+    return () => {
+      setIsLoading(false);
     }
   }
 

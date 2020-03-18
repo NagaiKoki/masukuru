@@ -9,12 +9,10 @@ const Tab = createBottomTabNavigator();
 
 const MainTabNavigator = () => {
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName='Home'>
-        <Tab.Screen name='Home' component={MainNavigator} />
-        <Tab.Screen name='Mypage' component={MyPageScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator initialRouteName='Home'>
+      <Tab.Screen name='Home' component={MainNavigator} />
+      <Tab.Screen name='Mypage' component={MyPageScreen} />
+    </Tab.Navigator>
   );
 }
 

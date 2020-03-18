@@ -1,14 +1,12 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import AuthentificationNavigator from './navigations';
 import styled from 'styled-components';
 import { COLORS } from './constants/Styles';
+import Navigator from './navigations/index';
 
-const App = () => {
+const App = ({navigation}) => {
   return (
     <Container>
-      <AuthentificationNavigator />
+      <Navigator/>
     </Container>
   );
 }
