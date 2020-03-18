@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-function TutorialScreen() {
+const TutorialBasicInfo = () => {
   return (
     <View>
       <Text>基本情報を登録する</Text>
@@ -11,4 +11,4 @@ function TutorialScreen() {
   );
 };
 
-export default TutorialScreen;
+export default TutorialBasicInfo;

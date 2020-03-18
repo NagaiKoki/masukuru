@@ -1,25 +1,33 @@
 import React, { useState } from 'react'
+import { Button } from 'react-native';
 import styled from 'styled-components';
 import {View,Button} from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import EventAddModal from './EventAddModal'
+import firebase from 'firebase';
 
 const HomeScreen = ({ navigation }) => {
   
-  const [showModal, setModal] = useState(false); 
-  
+  const [name, setname] = useState(0);
+
+  const UserSignOut = () => {
+    firebase.auth().signOut();
+  }
+
+  const [showModal, setModal] = useState(false);
+
   return (
 
     <Container>
       <Title>
         メンバー
       </Title>
-
+      <Button  onPress={()=> UserSignOut()} title='ログアウト' />
       <Member>
 
       </Member>
 
-      <EventTitle>
+    <EventTitle>
         トレーニング一覧
       </EventTitle>
 
@@ -32,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
           </EventPlusButton>
 
           <ModalView>
-            <EventModal 
+            <EventModal
               animationType="slide"
               transparent={false}
               visible={showModal}
@@ -44,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
               <ButtonModal onPress={ () => setModal(false) } title="Close"></ButtonModal>
             </EventModal>
           </ModalView>
-            
+
 
           <EventPlusText>
             トレーニングを追加する

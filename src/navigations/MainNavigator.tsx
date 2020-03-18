@@ -6,21 +6,34 @@ import HomeScreen from '../screens/Home';
 import MyPageScreen from '../screens/MyPage/MyPage';
 import RankingScreen from '../screens/Ranking/Ranking';
 import MainTabNavigator from './MainTabNavigator';
+import TutorialNavigator from './TutorialNavigator';
+import firebase from 'firebase';
+
+const MainStack = createStackNavigator()
 
 const MainNavigator = () => {
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
+  let initialNav = "";
+  const user = firebase.auth().currentUser
+
+  if (user.displayName !== null) {
+    initialNav = "Home";
+  } else {
+    initialNav = "Tutorial";
+  };
 
   return (
-    <Stack.Navigator
-      initialRouteName="Home"
+    <MainStack.Navigator
+      initialRouteName={initialNav}
       screenOptions={{
         headerShown: false
       }}
     >
+      <Stack.Screen name="Tutorial" component={TutorialNavigator} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Ranking" component={RankingScreen} />
-    </Stack.Navigator>
+    </MainStack.Navigator>
   );
 }
 
