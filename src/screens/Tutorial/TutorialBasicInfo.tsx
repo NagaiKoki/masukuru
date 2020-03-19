@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text } from 'react-native';
 import styled from 'styled-components';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../constants/Styles';
-import TutorialNavigator from '../../navigations/TutorialNavigator';
 import firebase from 'firebase';
 
 const user = firebase.auth().currentUser;
