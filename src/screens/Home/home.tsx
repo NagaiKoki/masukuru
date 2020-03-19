@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Button } from 'react-native';
 import styled from 'styled-components';
-import {View,Button} from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import EventAddModal from './EventAddModal'
 import firebase from 'firebase';
+import Modal from "react-native-modal";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({ navigation }) => {
   
@@ -27,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
 
       </Member>
 
-    <EventTitle>
+      <EventTitle>
         トレーニング一覧
       </EventTitle>
 
@@ -39,20 +40,21 @@ const HomeScreen = ({ navigation }) => {
             </EventPlusButtonText>
           </EventPlusButton>
 
-          <ModalView>
-            <EventModal
-              animationType="slide"
-              transparent={false}
-              visible={showModal}
-              >
-              <ModalTitle>
-                トレーニングを追加する
-              </ModalTitle>
-
-              <ButtonModal onPress={ () => setModal(false) } title="Close"></ButtonModal>
-            </EventModal>
-          </ModalView>
-
+          <Modal
+            isVisible={showModal}
+            >
+            <ModalView>
+              <ModalCloseButton onPress={ () => setModal(false) }>
+                <Icon name="close" size={40}/>
+              </ModalCloseButton>
+              <EventAddForm />
+              <EventAddButton>
+                <EventAddText>
+                  追加する
+                </EventAddText>
+              </EventAddButton>
+            </ModalView>
+          </Modal>
 
           <EventPlusText>
             トレーニングを追加する
@@ -101,19 +103,44 @@ const EventPlusButton = styled.TouchableOpacity`
 `
 
 const ModalView = styled.View`
-  
+  height: 300px;
+  border-radius: 10px;
+  background-color: #fff;
 `
 
 const EventModal = styled.Modal`
-  
-`
-
-const ButtonModal = styled.Button`
-  margin-top: 300px;
 `
 
 const ModalTitle = styled.Text`
-  margin-top: 300px;
+`
+
+const ModalCloseButton = styled.TouchableOpacity`
+  align-self: flex-end;
+`
+
+const EventAddForm = styled.TextInput`
+  background-color: ${COLORS.FORM_BACKGROUND};
+  width: 90%;
+  align-self: center;
+  border-radius: 5px;
+  padding: 20px 15px;
+  margin: 40px 0;
+`
+
+const EventAddButton = styled.TouchableOpacity`
+  width: 50%;
+  align-self: center;
+  background-color: ${COLORS.BASE_MUSCLEW};
+  padding: 20px 0;
+  border-radius: 5px;
+  margin-top: 10px;
+  opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
+`
+
+const EventAddText = styled.Text`
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
 `
 
 const EventPlusButtonText = styled.Text`

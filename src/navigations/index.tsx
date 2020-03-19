@@ -40,7 +40,10 @@ const Navigator = () => {
       {isUserSignIn ? (
         <RootStack.Screen 
           name="MainTabNavigator" 
-          component={MainTabNavigator} 
+          component={MainTabNavigator}
+          options={{
+            headerShown: false
+          }}
         />
       ) : (
         <RootStack.Screen 
