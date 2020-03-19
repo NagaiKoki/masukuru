@@ -51,7 +51,7 @@ const SignupScreen = ({ navigation }) => {
 
   // 文字が入力されるまでsubmit不可
   const disableSubmit: boolean = (
-    email.value.length && password.value.length ? false : true
+    email.value.length && (password.value.length && password.value.length > 6) ? false : true
   );
 
   return (
