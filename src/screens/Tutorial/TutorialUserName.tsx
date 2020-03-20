@@ -6,7 +6,7 @@ import firebase from 'firebase';
 
 const user = firebase.auth().currentUser;
 
-const TutorialBasicInfo = ({ navigation }) => {
+const TutorialUserNameScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
 
   // 名前の更新処理
@@ -14,7 +14,7 @@ const TutorialBasicInfo = ({ navigation }) => {
     user.updateProfile({
       displayName: userName
     }).then(function() {
-      navigation.navigate('')
+      navigation.navigate('TutorialUserImage')
     }).catch(function(error) {
       alert(error);
     });
@@ -56,6 +56,7 @@ const TutorialTitle = styled.Text`
   text-align: center;
   font-weight: bold;
   font-size: 20px;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const TutorialNameContainer = styled.View`
@@ -89,4 +90,4 @@ const TutorialSubmitText = styled.Text`
   font-size: 16px;
 `
 
-export default TutorialBasicInfo;
+export default TutorialUserNameScreen;
