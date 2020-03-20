@@ -16,11 +16,11 @@ const MainNavigator = () => {
   const Tab = createBottomTabNavigator();
   let initialNav = "";
   const user = firebase.auth().currentUser
-
+  
   if (user.displayName !== null) {
-    initialNav = "Home";
+    initialNav = "TutorialUserImage";
   } else {
-    initialNav = "Tutorial";
+    initialNav = "TutorialUserImage";
   };
 
   return (
