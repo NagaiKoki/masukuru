@@ -7,7 +7,6 @@ import firebase from 'firebase';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import TutorialNavigator from '../../navigations/TutorialNavigator';
 
 const TutorialUserImageScreen = ({ navigation }) => {
   const [progress, setProgress] = useState<string>('');
