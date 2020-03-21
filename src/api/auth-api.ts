@@ -1,4 +1,4 @@
-import firebase from '../config/firebase';
+import firebase, { db } from '../config/firebase';
 import { LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
 
 export const LogoutUser = () => {
@@ -39,7 +39,17 @@ export const LoginUser = async ({ email, password }) => {
 // 登録
 export const RegisterUser = async ({ email, password }) => {
   try {
-    await firebase.auth().createUserWithEmailAndPassword(email, password);
+    const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    if (response.user.uid) {
+      const user = {
+        uid: response.user.uid,
+        email: email
+      }
+
+      db.collection('users')
+      .doc(response.user.uid)
+      .set(user)
+    };
     return {};
   } catch(error) {
     switch(error.code) {
