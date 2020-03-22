@@ -8,9 +8,7 @@ import SignupHomeScreen from '../screens/SignUp/SignupHome';
 import SignupLoadingScreen from '../screens/SignUp/SignupLoading';
 import LoginScreen from '../screens/Login/Login';
 import LoginLoadingScreen from '../screens/Login/LoginLoading';
-import firebase from 'firebase';
-
-let InitialiNavName = ""
+import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
 
 const AuthentificationNavigator = () => {
   const AuthenticateStack = createStackNavigator();
@@ -26,6 +24,16 @@ const AuthentificationNavigator = () => {
       name="Home" 
       component={HomeScreen}  
     />
+  
+    <AuthenticateStack.Screen 
+      name="SignupHome" 
+      component={SignupHomeScreen} 
+      options={{
+        headerShown: false,
+      }}
+    />
+
+    {/* 登録 */}
     <AuthenticateStack.Screen 
       name="Signup" 
       component={SignupScreen} 
@@ -34,14 +42,9 @@ const AuthentificationNavigator = () => {
         headerTintColor: COLORS.BASE_MUSCLEW
       }}
     />
-    <AuthenticateStack.Screen 
-      name="SignupHome" 
-      component={SignupHomeScreen} 
-      options={{
-        headerShown: false,
-      }}
-    />
     <AuthenticateStack.Screen name="SignupLoading" component={SignupLoadingScreen} />
+
+    {/* ログイン */}
     <AuthenticateStack.Screen 
       name="Login" 
       component={LoginScreen}
@@ -50,8 +53,12 @@ const AuthentificationNavigator = () => {
         headerTintColor: COLORS.BASE_MUSCLEW,
       }}
     />
-
     <AuthenticateStack.Screen name="LoginLoading" component={LoginLoadingScreen} />
+    
+
+    {/* ログアウト */}
+    <AuthenticateStack.Screen name="SignOutLoading" component={SignOutLoadingScreen} />
+
   </AuthenticateStack.Navigator>
 
   );

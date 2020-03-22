@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Button } from 'react-native';
+import { Button, AsyncStorage } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import EventAddModal from './EventAddModal'
-import firebase from 'firebase';
+import firebase from '../../config/firebase';
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -11,11 +11,16 @@ const HomeScreen = ({ navigation }) => {
   
   const [name, setname] = useState(0);
 
-  const UserSignOut = () => {
-    firebase.auth().signOut();
-  }
-
   const [showModal, setModal] = useState(false);
+
+  const logout = () => {
+    firebase.auth().signOut().then(async function() {
+      await AsyncStorage.removeItem('loginUser');
+    }).then(function() {
+      navigation.navigate('SignupHome');
+      alert('ログアウトしました。')
+    })
+  };
 
   return (
 
@@ -23,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
       <Title>
         メンバー
       </Title>
-      <Button  onPress={()=> UserSignOut()} title='ログアウト' />
+      <Button  onPress={()=> logout()} title='ログアウト' />
       <Member>
 
       </Member>

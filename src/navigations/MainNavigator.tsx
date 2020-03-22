@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Home';
@@ -7,34 +7,61 @@ import MyPageScreen from '../screens/MyPage/MyPage';
 import RankingScreen from '../screens/Ranking/Ranking';
 import MainTabNavigator from './MainTabNavigator';
 import TutorialNavigator from './TutorialNavigator';
-import firebase from 'firebase';
+import InviteNavigator from './InviteNavigator';
+import firebase from '../config/firebase'
 
-const MainStack = createStackNavigator()
-
-const MainNavigator = () => {
-  const Stack = createStackNavigator();
-  const Tab = createBottomTabNavigator();
-  let initialNav = "";
-  const user = firebase.auth().currentUser
+const MainNavigator = () => { 
+  const MainStack = createStackNavigator()
+  const [isloggedIn, setIsLoggedIn] = useState<boolean>(true)
+  const [isLoading, setIsloading] = useState(true)
   
-  if (user.displayName !== null) {
-    initialNav = "TutorialGroupMake";
-  } else {
-    initialNav = "TutorialGroupMake";
-  };
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user && user.displayName) { 
+        setIsLoggedIn(true)
+        setIsloading(false)
+      } else {
+        setIsLoggedIn(false)
+        setIsloading(false)
+      }
+    })
+  })
 
+  if (isLoading) {
+    return (
+      <ActivityIndicator size='large' style={[ styles.loading ]} />
+    )
+  }
   return (
     <MainStack.Navigator
-      initialRouteName={initialNav}
+      initialRouteName={isloggedIn ? 'Home' : 'Tutorial'}
       screenOptions={{
         headerShown: false
       }}
     >
-      <Stack.Screen name="Tutorial" component={TutorialNavigator} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Ranking" component={RankingScreen} />
+    
+      <MainStack.Screen name="Invite" component={InviteNavigator} />
+      <MainStack.Screen name="Tutorial" component={TutorialNavigator} />
+      <MainStack.Screen name="Ranking" component={RankingScreen} />
+
+      <MainStack.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{
+          headerShown: false
+        }}
+      />
+
     </MainStack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    alignSelf: 'center',
+    alignItems: 'center'
+  }
+})
 
 export default MainNavigator;

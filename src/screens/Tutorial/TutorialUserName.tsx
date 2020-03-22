@@ -6,20 +6,26 @@ import firebase, { db } from '../../config/firebase';
 
 const TutorialUserNameScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
-  const user = firebase.auth().currentUser;
-
+  
   // 名前の更新処理
+  // ユーザーがログインしているかの判定は基本'onAuthStateChanged'を使う
   const updateUserName = () => {
-    user.updateProfile({
-      displayName: userName
-    }).then(function() {
-      const userdata = { name: userName };
-      db.collection('users').doc(user.uid).update(userdata)
-    }).then(function() {
-      navigation.navigate('TutorialUserImage')
-    }).catch(function(error) {
-      alert(error);
-    });
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        user.updateProfile({
+          displayName: userName
+        }).then(function() {
+          const userdata = { name: userName };
+          db.collection('users').doc(user.uid).update(userdata)
+        }).then(function() {
+          navigation.navigate('TutorialUserImage')
+        }).catch(function(error) {
+          alert(error);
+        });
+      } else {
+        alert('ログインしてください！')
+      }
+    })
   }
 
   const disableSubmit: boolean = (
