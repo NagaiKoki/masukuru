@@ -18,9 +18,9 @@ const MainNavigator = () => {
   const user = firebase.auth().currentUser
   
   if (user.displayName !== null) {
-    initialNav = "TutorialUserImage";
+    initialNav = "TutorialGroupMake";
   } else {
-    initialNav = "TutorialUserImage";
+    initialNav = "TutorialGroupMake";
   };
 
   return (

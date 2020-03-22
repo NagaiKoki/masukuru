@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import { Image } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../constants/Styles';
-import firebase from 'firebase';
+import firebase, { db } from '../../config/firebase';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -97,7 +96,10 @@ const TutorialUserImageScreen = ({ navigation }) => {
       user.updateProfile({
         photoURL: uri
       }).then(function() {
-        navigation.navigate('')
+        const userdata  = { imageUrl: uri };
+        db.collection('users').doc(user.uid).update(userdata);
+      }).then(function() {
+        navigation.navigate('TutorialGroupMake')
       }).catch(function(error) {
         alert(error);
       })
@@ -132,7 +134,7 @@ const TutorialProfileImageWrapper = styled.View`
 const ImageUploadWrapper = styled.TouchableOpacity`
   width: 125px;
   align-self: center;
-  border-radius: 60;
+  border-radius: 60px;
 `
 
 const ImageProgressText = styled.Text`

@@ -2,17 +2,19 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../constants/Styles';
-import firebase from 'firebase';
-
-const user = firebase.auth().currentUser;
+import firebase, { db } from '../../config/firebase';
 
 const TutorialUserNameScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
+  const user = firebase.auth().currentUser;
 
   // 名前の更新処理
   const updateUserName = () => {
     user.updateProfile({
       displayName: userName
+    }).then(function() {
+      const userdata = { name: userName };
+      db.collection('users').doc(user.uid).update(userdata)
     }).then(function() {
       navigation.navigate('TutorialUserImage')
     }).catch(function(error) {
@@ -21,7 +23,7 @@ const TutorialUserNameScreen = ({ navigation }) => {
   }
 
   const disableSubmit: boolean = (
-    userName && userName.length >= 4 ? false : true
+    userName && userName.length >= 3 ? false : true
   )
   
   return (
@@ -32,7 +34,7 @@ const TutorialUserNameScreen = ({ navigation }) => {
 
       <TutorialNameContainer>
         <TutorialNameForm 
-          placeholder='名前を入力する（4文字以上）'
+          placeholder='名前を入力する（3文字以上）'
           autoCapitalize={'none'}
           autoCorrect={ false }
           onChangeText={ text => setUserName(text) }
