@@ -17,6 +17,12 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
     })
   }
 
+  // 招待コードがある場合
+  const InvitingCodeNavigate = () => {
+    navigation.navigate('Invite');
+  }
+
+
   return (
     <TutorialGroupContainer>
       <TutorialGroupTitle>マスクルへようこそ！</TutorialGroupTitle>
@@ -25,14 +31,14 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
       <TutorialGroupBtnWrapper>
 
         <TutorialInviteBtnWrapper>
-          <TutorialInviteBtn>
-            <TutorialInviteText onPress={ () => notInvitedGroupCreate() }>ひとまず１人で使う</TutorialInviteText>
+          <TutorialInviteBtn onPress={ () => notInvitedGroupCreate() }>
+            <TutorialInviteText>ひとまず１人で使う</TutorialInviteText>
           </TutorialInviteBtn>
           <TutorialInviteSubText>１人で使ってみて、その後に友達を招待しよう！</TutorialInviteSubText>
         </TutorialInviteBtnWrapper>
 
         <TutorialInvitedBtnWrapper>
-          <TutorialInviteBtn>
+          <TutorialInviteBtn onPress={ () => InvitingCodeNavigate() }>
             <TutorialInviteText>招待されたグループに参加する</TutorialInviteText>
           </TutorialInviteBtn>
           <TutorialInviteSubText>招待コードのリンクをお持ちであれば、使いましょう！</TutorialInviteSubText>

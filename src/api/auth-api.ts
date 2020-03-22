@@ -1,14 +1,19 @@
 import firebase, { db } from '../config/firebase';
+import { AsyncStorage } from 'react-native';
 import { LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
 
-export const LogoutUser = () => {
-  firebase.auth().signOut();
+export const LogoutUser = async () => {
+  await firebase.auth().signOut().then(function() {
+    AsyncStorage.removeItem('loginUser');
+  })
 };
 
 // ログイン
 export const LoginUser = async ({ email, password }) => {
   try {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
+    await firebase.auth().signInWithEmailAndPassword(email, password).then( (user) => {
+      AsyncStorage.setItem('loginUser', JSON.stringify(user))
+    }); 
     return {};
   } catch(error) {
     switch (error.code) {
@@ -40,6 +45,7 @@ export const LoginUser = async ({ email, password }) => {
 export const RegisterUser = async ({ email, password }) => {
   try {
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    await AsyncStorage.setItem('loginUser', JSON.stringify(response))
     if (response.user.uid) {
       const user = {
         uid: response.user.uid,
@@ -75,5 +81,4 @@ export const RegisterUser = async ({ email, password }) => {
         };
     };
   }
-}
-
+} 

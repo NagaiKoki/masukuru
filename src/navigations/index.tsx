@@ -2,42 +2,42 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthenticationNavigator from './AuthentificationNavigator';
 import MainTabNavigator from './MainTabNavigator';
-import TutorialNavigator from './TutorialNavigator';
-import { ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
-import firebase from 'firebase';
-import { Root } from 'native-base';
 
 const Navigator = () => {
-  const [isUserSignIn, setIsUserSignIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true); 
+  const [isUser, setIsUser] = useState(false);
+
+  const getUser = async () => {
+    const loginUser = await AsyncStorage.getItem('loginUser');
+    if (loginUser !== null) {
+      setIsUser(true);
+      setIsLoading(false);
+    } else {
+      setIsUser(false);
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        setIsUserSignIn(true)
-        setIsLoading(false)
-      } else {
-        setIsUserSignIn(false)
-        setIsLoading(false)
-      }
-    })
+    getUser();
   }, [])
-  
+
   if (isLoading) {
     return (
-      <ActivityIndicator size='large' style={[styles.loading]}/>
+      <ActivityIndicator size='large' style={[styles.loading]} />
     )
   }
 
   const RootStack = createStackNavigator();
-  const RootStackNavigator = ({ isUserSignIn }) => (
+  const RootStackNavigator = () => (
     <RootStack.Navigator
       screenOptions={{
         headerBackTitleVisible: false
       }}
     >
-      {isUserSignIn ? (
+      { isUser ? (
         <RootStack.Screen 
           name="MainTabNavigator" 
           component={MainTabNavigator}
@@ -59,7 +59,7 @@ const Navigator = () => {
   
   return (
     <NavigationContainer>
-      <RootStackNavigator isUserSignIn={isUserSignIn} />
+      <RootStackNavigator />
     </NavigationContainer>
   )
 };
