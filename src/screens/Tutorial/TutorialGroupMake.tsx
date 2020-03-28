@@ -5,19 +5,17 @@ import firebase, { db } from '../../config/firebase';
 
 const TutorialGroupMakeScreen = ({ navigation }) => {
   const currentUser = firebase.auth().currentUser;
+  const groupRef = db.collection('groups')
 
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
-    db.collection('groups').doc(currentUser.uid).set({
+    groupRef.doc(currentUser.uid).set({
       ownerId: currentUser.uid,
       name: currentUser.displayName
     }).then(function() {
-      db.collection('groups').doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
-        uid: currentUser.uid,
-        name: currentUser.displayName,
-        imageUrl: currentUser.photoURL
-      })
-
+      groupUser()
+    }).then(function(){
+      saveInvideCode()
     }).then(function() {
       navigation.replace('Home');
     }).catch(function(error) {
@@ -29,7 +27,44 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
   // 招待コードがある場合
   const InvitingCodeNavigate = () => {
     navigation.navigate('Invite');
+  };
+
+  // 個人で使う場合のグループ招待コード生成
+  const factoryInviteCode = () : string => {
+    let str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let codeLength = 6
+    let result: string = "";
+
+    for (let i = 0; i < codeLength; i++) {
+      result += str.charAt(Math.floor(Math.random() * str.length))
+    }
+    return result;
+  };
+
+  // グループコレクション配下に、所属するユーザーのサブコレクションを作成する
+  const groupUser = () => {
+    groupRef.doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
+      uid: currentUser.uid,
+      name: currentUser.displayName,
+      imageUrl: currentUser.photoURL
+    })
   }
+
+  // 招待コードを保存する
+  const saveInvideCode = () => {
+    const invideCode = factoryInviteCode();
+    groupRef.where('inviteCode', '==', invideCode).get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        groupRef.doc(currentUser.uid).update({
+          invideCode: invideCode
+        })
+      } else {
+        // まずないが、ランダムな生成コードが他のグループと被った場合に、再帰処理をする
+        saveInvideCode();
+      };
+    })
+  };
 
   return (
     <TutorialGroupContainer>
