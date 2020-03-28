@@ -8,9 +8,16 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
 
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
-    db.collection('groups').add({
+    db.collection('groups').doc(currentUser.uid).set({
       ownerId: currentUser.uid,
       name: currentUser.displayName
+    }).then(function() {
+      db.collection('groups').doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
+        uid: currentUser.uid,
+        name: currentUser.displayName,
+        imageUrl: currentUser.photoURL
+      })
+
     }).then(function() {
       navigation.replace('Home');
     }).catch(function(error) {
