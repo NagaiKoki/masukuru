@@ -10,15 +10,13 @@ const SignOutLoadingScreen = ({ navigation }) => {
   useEffect(() => {    
     firebase.auth().onAuthStateChanged(user => {
       if (!user) {
-        navigation.navigate('Mypage');
+        navigation.navigate('Home');
         setIsLoading(true);
       } else {
         setIsLoading(true);
       }
     })    
   }, [])
-
-  console.log(isLoading)
 
   if (isLoading) {
     return (

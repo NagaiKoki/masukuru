@@ -23,7 +23,6 @@ const TutorialUserNameScreen = ({ navigation }) => {
           alert(error);
         });
       } else {
-        alert('ログインしてください！')
       }
     })
   }
