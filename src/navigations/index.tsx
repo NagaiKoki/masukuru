@@ -18,6 +18,7 @@ const Navigator = () => {
         setUser(user)
         setIsLoading(false);
       } else {
+        setUser(null)
         setIsLoading(false);
       }
     })
