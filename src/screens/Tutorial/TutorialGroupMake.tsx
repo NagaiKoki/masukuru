@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import Modal from 'react-native-modal';
 import firebase, { db } from '../../config/firebase';
+import InviteNavigator from '../../navigations/InviteNavigator';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TutorialGroupMakeScreen = ({ navigation }) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [codeText, setCodeText] = useState<string>('');
   const currentUser = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
 
@@ -66,6 +71,10 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
     })
   };
 
+  const disableSubmit: boolean = (
+    codeText && codeText.length === 6 ? false : true
+  )
+
   return (
     <TutorialGroupContainer>
       <TutorialGroupTitle>マスクルへようこそ！</TutorialGroupTitle>
@@ -81,17 +90,41 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
         </TutorialInviteBtnWrapper>
 
         <TutorialInvitedBtnWrapper>
-          <TutorialInviteBtn onPress={ () => InvitingCodeNavigate() }>
+          <TutorialInviteBtn onPress={ () => setShowModal(true) }>
             <TutorialInviteText>招待されたグループに参加する</TutorialInviteText>
           </TutorialInviteBtn>
           <TutorialInviteSubText>招待コードのリンクをお持ちであれば、使いましょう！</TutorialInviteSubText>
         </TutorialInvitedBtnWrapper>
+
+        <Modal isVisible={showModal}>
+          <InvideModalView>
+            <ModalCloseButton onPress={ () => setShowModal(false) }>
+                <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
+            </ModalCloseButton>
+            <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
+
+            <InvitedModalFormWrapper>
+              <InvitedModalForm 
+                placeholder='6桁の招待コード'
+                autoCapitalize={'none'}
+                autoCorrect={ false }
+                onChangeText={ text => setCodeText(text) }
+                maxLength={6}
+              />
+            </InvitedModalFormWrapper>
+
+            <InvitedModalSubmitBtn block onPress={ () => console.log('') } disabled={disableSubmit} disableSubmit={disableSubmit}>
+              <InvitedModalSubmitText>送信する</InvitedModalSubmitText>
+            </InvitedModalSubmitBtn>
+          </InvideModalView>
+        </Modal>
 
       </TutorialGroupBtnWrapper>
     </TutorialGroupContainer>
   )
 }
 
+// メイン画面
 const TutorialGroupContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
@@ -111,7 +144,6 @@ const TutorialGroupSubTitle = styled.Text`
   padding: 20px 30px 0 30px;
   color: ${COLORS.BASE_BLACK};
 `
-
 
 const TutorialGroupBtnWrapper = styled.View`
   padding-top: 20px;
@@ -145,7 +177,58 @@ const TutorialInviteText = styled.Text`
 `
 
 const TutorialInvitedBtnWrapper = styled.View`
+`
 
+// 招待モーダル
+const InvideModalView = styled.View`
+  width: 100%;
+  border-radius: 10px;
+  height: 300px;
+  background-color: ${COLORS.BASE_BACKGROUND};
+  align-self: center;
+`
+
+const InvitedModalTitle = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-weight: bold;
+  font-size: 18px;
+  padding-top: 30px;
+  text-align: center;
+`
+
+const InvitedModalFormWrapper = styled.View`
+  align-self: center;
+  margin-top: 30px;
+  width: 80%;
+`
+
+const InvitedModalForm = styled.TextInput`
+  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
+  padding: 15px;
+  border-radius: 5px;
+  background-color: ${COLORS.BASE_WHITE};
+`
+
+const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
+  width: 80%;
+  align-self: center;
+  background-color: ${COLORS.BASE_MUSCLEW};
+  padding: 20px 0;
+  border-radius: 5px;
+  margin-top: 30px;
+  opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
+`
+
+const InvitedModalSubmitText = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+`
+
+const ModalCloseButton = styled.TouchableOpacity`
+  align-self: flex-end;
+  padding: 5px 5px 0 0;
 `
 
 export default TutorialGroupMakeScreen;
