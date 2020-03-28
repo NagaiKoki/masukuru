@@ -7,16 +7,24 @@ import firebase from 'firebase';
 const SignOutLoadingScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => {    
     firebase.auth().onAuthStateChanged(user => {
-      setIsLoading(false);
-      navigation.replace('SignupHome');
+      if (!user) {
+        navigation.navigate('Mypage');
+        setIsLoading(true);
+      } else {
+        setIsLoading(true);
+      }
     })    
   }, [])
 
+  console.log(isLoading)
+
   if (isLoading) {
-    return (    
-      <ActivityIndicator size="large" style={[styles.loading]} />  
+    return (
+      <LoadingContainer>
+        <ActivityIndicator size="large" style={[ styles.loading ]} />  
+      </LoadingContainer>
     )
   }
 };
@@ -29,5 +37,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BASE_BACKGROUND
   }
 })
+
+const LoadingContainer = styled.View`
+  flex: 1;
+  background-color: ${COLORS.BASE_BACKGROUND}
+`
 
 export default SignOutLoadingScreen;

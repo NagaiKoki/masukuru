@@ -9,24 +9,24 @@ const SignupLoadingScreen = ({ navigation }) => {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      setIsLoading(false);
-      navigation.replace('Home');
-    })    
+      if (user) {
+        navigation.navigate('Tutorial');
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        alert('登録に失敗しました。')
+      }
+    })
   }, [])
 
-  console.log(isLoading);
-
-  return (    
-    <LoadingContainer>
+  if (isLoading) {
+    return (   
       <ActivityIndicator size="large" style={[styles.loading]} />
-    </LoadingContainer>
-  )
+    )
+  } else {
+    return (null);
+  }
 };
-
-const LoadingContainer = styled.View`
-  flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND};
-`
 
 const styles = StyleSheet.create({
   loading: {

@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TutorialUserNameScreen from '../screens/Tutorial/TutorialUserName';
 import TutorialUserImageScreen from '../screens/Tutorial/TutorialUserImage';
 import TutorialGroupMakeScreen from '../screens/Tutorial/TutorialGroupMake';
+import HomeScreen from '../screens/Home';
 
 const TutorialNavigator = () => {
   const TotorialStack = createStackNavigator();
@@ -31,6 +32,14 @@ const TutorialNavigator = () => {
       <TotorialStack.Screen
         name="TutorialGroupMake"
         component={TutorialGroupMakeScreen}
+      />
+
+<TotorialStack.Screen 
+        name="Home" 
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+        }}
       />
 
     </TotorialStack.Navigator>

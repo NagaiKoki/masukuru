@@ -12,6 +12,7 @@ export const LogoutUser = async () => {
 export const LoginUser = async ({ email, password }) => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password).then( (user) => {
+      
       AsyncStorage.setItem('loginUser', JSON.stringify(user))
     }); 
     return {};
@@ -45,18 +46,11 @@ export const LoginUser = async ({ email, password }) => {
 export const RegisterUser = async ({ email, password }) => {
   try {
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
-    await AsyncStorage.setItem('loginUser', JSON.stringify(response))
     if (response.user.uid) {
-      const user = {
-        uid: response.user.uid,
-        email: email
-      }
-
-      db.collection('users')
-      .doc(response.user.uid)
-      .set(user)
-    };
-    return {};
+      const uid = response.user.uid
+      await db.collection('users').doc(uid).set({ uid: response.user.uid, email: email })
+      return {};
+    } 
   } catch(error) {
     switch(error.code) {
       case SIGNUP_ERROR_CODE.EMAIL_DUPLICATED:

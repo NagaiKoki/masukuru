@@ -16,8 +16,4 @@ if (!firebase.apps.length) {
 
 export const db = firebase.firestore();
 
-db.settings({
-  
-})
-
 export default firebase;

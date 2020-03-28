@@ -4,7 +4,7 @@ import { emailValidator, passwordValidator } from '../../validators/AuthValidato
 import Toast from '../../components/Toaster';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import firebase from 'firebase';
+import firebase, { db } from '../../config/firebase';
 
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' });

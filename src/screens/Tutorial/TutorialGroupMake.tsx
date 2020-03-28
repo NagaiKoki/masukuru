@@ -7,12 +7,14 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
   const currentUser = firebase.auth().currentUser;
 
   // １人で使う場合の処理
-  const notInvitedGroupCreate = () => {
+  const notInvitedGroupCreate = () => {    
     db.collection('groups').add({
-      ownerId: currentUser.uid
+      ownerId: currentUser.uid,
+      name: currentUser.displayName
     }).then(function() {
-      navigation.navigate('Home');
+      navigation.replace('Home');
     }).catch(function(error) {
+      console.log(error);
       alert(error);
     })
   }
@@ -21,7 +23,6 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
   const InvitingCodeNavigate = () => {
     navigation.navigate('Invite');
   }
-
 
   return (
     <TutorialGroupContainer>
