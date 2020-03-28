@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from 'react-native-modal';
 import firebase, { db } from '../../config/firebase';
-import InviteNavigator from '../../navigations/InviteNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TutorialGroupMakeScreen = ({ navigation }) => {
@@ -14,25 +13,45 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
 
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
-    groupRef.doc(currentUser.uid).set({
-      ownerId: currentUser.uid,
-      name: currentUser.displayName
-    }).then(function() {
-      groupUser()
-    }).then(function(){
-      saveInvideCode()
-    }).then(function() {
-      navigation.replace('Home');
-    }).catch(function(error) {
-      console.log(error);
-      alert(error);
-    })
+    try {
+      groupRef.doc(currentUser.uid).set({
+        ownerId: currentUser.uid,
+        name: currentUser.displayName
+      }).then(function() {
+        groupUser()
+      }).then(function(){
+        saveInvideCode()
+      }).then(function() {
+        navigation.replace('Home');
+      }).catch(function(error) {
+        alert(error);
+      })
+    } catch(error) {
+      alert('原因不明のエラーが発生しました。')
+    }
   }
 
-  // 招待コードがある場合
-  const InvitingCodeNavigate = () => {
-    navigation.navigate('Invite');
-  };
+  // 招待された場合の処理
+  const InvitedGroupJoin = () => {
+    try {
+      groupRef.where('invideCode', '==', codeText).get()
+        .then(snapshot => {
+      if (snapshot.empty) {
+        alert('入力した招待コードは存在しません。今一度、招待コードをお確かめください。');
+      } else {
+        snapshot.docs[0].ref.collection('groupUsers').doc(currentUser.uid).set({
+          uid: currentUser.uid,
+          name: currentUser.displayName,
+          imageUrl: currentUser.photoURL
+        }).then(function() {
+          navigation.replace('Home');
+        })
+      }
+    })
+    } catch(error) {
+      alert('原因不明のエラーが発生しました。')
+    }
+  }
 
   // 個人で使う場合のグループ招待コード生成
   const factoryInviteCode = () : string => {
@@ -71,6 +90,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
     })
   };
 
+  // 招待コード送信制御
   const disableSubmit: boolean = (
     codeText && codeText.length === 6 ? false : true
   )
@@ -113,7 +133,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
               />
             </InvitedModalFormWrapper>
 
-            <InvitedModalSubmitBtn block onPress={ () => console.log('') } disabled={disableSubmit} disableSubmit={disableSubmit}>
+            <InvitedModalSubmitBtn block onPress={ () => InvitedGroupJoin() } disabled={disableSubmit} disableSubmit={disableSubmit}>
               <InvitedModalSubmitText>送信する</InvitedModalSubmitText>
             </InvitedModalSubmitBtn>
           </InvideModalView>
@@ -207,6 +227,7 @@ const InvitedModalForm = styled.TextInput`
   padding: 15px;
   border-radius: 5px;
   background-color: ${COLORS.BASE_WHITE};
+  color: ${COLORS.BASE_BLACK};
 `
 
 const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
