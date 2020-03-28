@@ -10,7 +10,7 @@ const TutorialNavigator = () => {
 
   return (
     <TotorialStack.Navigator
-      initialRouteName="TutorialUserName"
+      initialRouteName="TutorialGroupName"
       screenOptions={{
         headerBackTitleVisible: false
       }}

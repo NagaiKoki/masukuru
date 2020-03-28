@@ -13,7 +13,7 @@ import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
-  const [initialNav, setInitialNav] = useState<string>('SignoutLoading')
+  const [initialNav, setInitialNav] = useState<string>('Home')
   const [loading, setloading] = useState(true)
 
   useLayoutEffect(() => {
