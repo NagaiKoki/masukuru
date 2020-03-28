@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { createStackNavigator } from '@react-navigation/stack';
+import { AsyncStorage } from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import firebase, { db } from '../../config/firebase';
 
@@ -14,9 +14,9 @@ const TutorialUserNameScreen = ({ navigation }) => {
       if (user) {
         user.updateProfile({
           displayName: userName
-        }).then(function() {
+        }).then(async function() {
           const userdata = { name: userName };
-          db.collection('users').doc(user.uid).update(userdata)
+          await db.collection('users').doc(user.uid).update(userdata)
         }).then(function() {
           navigation.navigate('TutorialUserImage')
         }).catch(function(error) {

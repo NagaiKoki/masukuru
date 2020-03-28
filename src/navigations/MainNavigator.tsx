@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,32 +9,33 @@ import MainTabNavigator from './MainTabNavigator';
 import TutorialNavigator from './TutorialNavigator';
 import InviteNavigator from './InviteNavigator';
 import firebase from '../config/firebase'
+import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
-  const [isloggedIn, setIsLoggedIn] = useState<boolean>(true)
-  const [isLoading, setIsloading] = useState(true)
-  
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user && user.displayName) { 
-        setIsLoggedIn(true)
-        setIsloading(false)
+  const [initialNav, setInitialNav] = useState<string>('SignoutLoading')
+  const [loading, setloading] = useState(true)
+
+  useLayoutEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user && user.displayName === null) {
+        setInitialNav('Tutorial');
+        setloading(false);
       } else {
-        setIsLoggedIn(false)
-        setIsloading(false)
+        setloading(false);
       }
     })
   })
-
-  if (isLoading) {
+  
+  if (loading) {
     return (
-      <ActivityIndicator size='large' style={[ styles.loading ]} />
+      <ActivityIndicator size="large" style={[styles.loading]} />
     )
   }
+ 
   return (
     <MainStack.Navigator
-      initialRouteName={isloggedIn ? 'Home' : 'Tutorial'}
+      initialRouteName={initialNav}
       screenOptions={{
         headerShown: false
       }}
@@ -51,6 +52,9 @@ const MainNavigator = () => {
           headerShown: false
         }}
       />
+
+    {/* ログアウト */}
+    <MainStack.Screen name="SignoutLoading" component={SignOutLoadingScreen} />
 
     </MainStack.Navigator>
   );

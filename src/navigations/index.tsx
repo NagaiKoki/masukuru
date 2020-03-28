@@ -1,43 +1,41 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useLayoutEffect, useEffect, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthenticationNavigator from './AuthentificationNavigator';
 import MainTabNavigator from './MainTabNavigator';
+import styled from 'styled-components';
 import { ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
+import firebase from '../config/firebase';
+import { COLORS } from '../constants/Styles';
 
 const Navigator = () => {
-  const [isLoading, setIsLoading] = useState(true); 
-  const [isUser, setIsUser] = useState(false);
-
-  const getUser = async () => {
-    const loginUser = await AsyncStorage.getItem('loginUser');
-    if (loginUser !== null) {
-      setIsUser(true);
-      setIsLoading(false);
-    } else {
-      setIsUser(false);
-      setIsLoading(false);
-    }
-  }
+  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    getUser();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        setUser(user)
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    })
   }, [])
 
   if (isLoading) {
     return (
-      <ActivityIndicator size='large' style={[styles.loading]} />
+      <LoadingContainer>
+        <ActivityIndicator size='large' style={[ styles.loading ]} />
+      </LoadingContainer>
     )
   }
 
   const RootStack = createStackNavigator();
-  const RootStackNavigator = () => (
-    <RootStack.Navigator
-      screenOptions={{
-        headerBackTitleVisible: false
-      }}
-    >
-      { isUser ? (
+
+  const defaultScreen = () => {
+    if (user ) {
+      return (
         <RootStack.Screen 
           name="MainTabNavigator" 
           component={MainTabNavigator}
@@ -45,15 +43,23 @@ const Navigator = () => {
             headerShown: false
           }}
         />
-      ) : (
+      )
+    } else {
+      return (
         <RootStack.Screen 
           name="AuthenticationNavigator" 
           component={AuthenticationNavigator}
           options={{
-            headerShown: false
+          headerShown: false
           }}
-         /> 
-      ) }
+        />
+      )
+    }
+  }
+
+  const RootStackNavigator = () => (
+    <RootStack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+      {defaultScreen()}
     </RootStack.Navigator>
   )
   
@@ -68,8 +74,14 @@ const styles = StyleSheet.create({
   loading: {
     flex: 1,
     alignSelf: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: COLORS.BASE_BACKGROUND
   }
 })
+
+const LoadingContainer = styled.View`
+  flex: 1;
+  background-color: ${COLORS.BASE_BACKGROUND}
+`
 
 export default Navigator;

@@ -8,7 +8,6 @@ import SignupHomeScreen from '../screens/SignUp/SignupHome';
 import SignupLoadingScreen from '../screens/SignUp/SignupLoading';
 import LoginScreen from '../screens/Login/Login';
 import LoginLoadingScreen from '../screens/Login/LoginLoading';
-import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
 
 const AuthentificationNavigator = () => {
   const AuthenticateStack = createStackNavigator();
@@ -54,10 +53,6 @@ const AuthentificationNavigator = () => {
       }}
     />
     <AuthenticateStack.Screen name="LoginLoading" component={LoginLoadingScreen} />
-    
-
-    {/* ログアウト */}
-    <AuthenticateStack.Screen name="SignOutLoading" component={SignOutLoadingScreen} />
 
   </AuthenticateStack.Navigator>
 
