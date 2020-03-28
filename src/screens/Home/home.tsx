@@ -1,14 +1,42 @@
-import React, { useState } from 'react'
-import { Button, AsyncStorage } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { Button, Text, AsyncStorage } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import EventAddModal from './EventAddModal'
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firebase, { db } from '../../config/firebase';
 
 const HomeScreen = ({ navigation }) => {
+  const [EventName, setEventName] = useState('');
+  const [CurrentGroupId, setCurrentGroupId] = useState('');
+
+  const current_user = firebase.auth().currentUser;
+  const current_user_uid = current_user.uid
+
+  useEffect(() => {
+    db.collectionGroup("groupUsers").where('uid', '==', current_user_uid).limit(1)
+      .get()
+      .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+          setCurrentGroupId(doc.ref.parent.parent.id);
+        });
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+  });
   
-  const [name, setname] = useState(0);
+  const AddEvent = () => {
+    db.collection('groups').doc(CurrentGroupId).collection('events').add({
+      name: EventName,
+      uid: current_user_uid
+    }).then(function() {
+      setModal(false);
+    }).catch(function(error) {
+      alert(error);
+    })
+  }
 
   const [showModal, setModal] = useState(false);
 
@@ -18,6 +46,7 @@ const HomeScreen = ({ navigation }) => {
       <Title>
         メンバー
       </Title>
+
       <Member>
 
       </Member>
@@ -41,8 +70,13 @@ const HomeScreen = ({ navigation }) => {
               <ModalCloseButton onPress={ () => setModal(false) }>
                 <Icon name="close" size={40}/>
               </ModalCloseButton>
-              <EventAddForm />
-              <EventAddButton>
+              <EventAddForm 
+                placeholder='名前を入力する（4文字以上）'
+                autoCapitalize={'none'}
+                autoCorrect={ false }
+                onChangeText={ text => setEventName(text) }
+              />
+              <EventAddButton onPress={ () => AddEvent() }>
                 <EventAddText>
                   追加する
                 </EventAddText>
