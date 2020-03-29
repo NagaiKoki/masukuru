@@ -22,7 +22,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
       }).then(function(){
         saveInvideCode()
       }).then(function() {
-        navigation.replace('Home');
+        navigation.reset('Home');
       }).catch(function(error) {
         alert(error);
       })
