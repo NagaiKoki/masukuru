@@ -1,23 +1,16 @@
 import React from 'react'
-import { View, Text, Button, AsyncStorage } from 'react-native';
+import { View, Text } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import firebase from '../../config/firebase';
 
 
 const MyPageScreen = ({ navigation }) => {
-  const logout = async () => {
-    await firebase.auth().signOut().then(function() {
-      navigation.navigate('SignoutLoading');
-    })
-  };
-
+ 
   return (
     <Container>
       <User>
 
       </User>
-      <Button  onPress={()=> logout()} title='ログアウト' />
       <EventHistoryTitle>
         トレーニング履歴
       </EventHistoryTitle>

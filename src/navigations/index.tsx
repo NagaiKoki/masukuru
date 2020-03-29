@@ -42,14 +42,12 @@ const Navigator = () => {
       <Drawer.Screen 
         name="MainTabNavigator" 
         component={MainTabNavigator}
-        options={{
-        
-        }}
      />
     )
   }
 
   const defaultSignedOutScreen = () => {
+
     return (
       <Stack.Screen 
       name="AuthenticationNavigator" 

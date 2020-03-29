@@ -4,15 +4,10 @@ import { COLORS } from '../../constants/Styles';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import firebase from 'firebase';
-import {
-  NavigationParams,
-  NavigationScreenProp,
-  NavigationState,
-} from 'react-navigation';
 
-interface DrawerProps {
-  user: firebase.User,
-  navigation: NavigationScreenProp<NavigationState, NavigationParams>;
+type DrawerProps = {
+  user: firebase.User
+  navigation: any
 }
 
 const DrawerContent = (props: DrawerProps) => {
@@ -25,14 +20,23 @@ const DrawerContent = (props: DrawerProps) => {
     })
   };
 
+
+  const UserImage = (
+    user.photoURL ?
+        <Image source={{ uri: user.photoURL }}
+               style={{ width: 120, height: 120, borderRadius: 60, resizeMode: 'cover', alignSelf: 'center' }}
+        />
+                  :
+        <Image source={require('../../assets/profileDefaultImage.png')}
+               style={{ width: 120, height: 100, resizeMode: 'contain', alignSelf: 'center' }}
+        />
+  );
+
   return (
     <DrawerContainer>
       <DrawerUserContainer>
         <DrawerUserImage>
-          <Image 
-            source={{ uri: user.photoURL }}
-            style={{ width: 80, height: 80, borderRadius: 5, resizeMode: 'cover', alignSelf: 'center' }}
-          /> 
+          {UserImage}
         </DrawerUserImage>
         <DrawerUserName>{user.displayName}</DrawerUserName>
       </DrawerUserContainer>

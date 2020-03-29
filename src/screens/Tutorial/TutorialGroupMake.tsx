@@ -10,7 +10,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
   const [codeText, setCodeText] = useState<string>('');
   const currentUser = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
-
+  
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
     try {
@@ -22,7 +22,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
       }).then(function(){
         saveInvideCode()
       }).then(function() {
-        navigation.reset('Home');
+        navigation.replace('Home');
       }).catch(function(error) {
         alert(error);
       })
