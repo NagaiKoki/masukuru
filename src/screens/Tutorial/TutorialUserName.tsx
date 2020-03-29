@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { AsyncStorage } from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import firebase, { db } from '../../config/firebase';
 

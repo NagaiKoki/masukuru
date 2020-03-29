@@ -1,10 +1,12 @@
 import React, { useState, useLayoutEffect, useEffect, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import AuthenticationNavigator from './AuthentificationNavigator';
 import MainTabNavigator from './MainTabNavigator';
 import styled from 'styled-components';
-import { ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack';
+import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
+import DrawerContent from '../screens/Drawers/DrawerContents';
 import firebase from '../config/firebase';
 import { COLORS } from '../constants/Styles';
 
@@ -32,41 +34,50 @@ const Navigator = () => {
     )
   }
 
-  const RootStack = createStackNavigator();
+  const Stack = createStackNavigator()
+  const Drawer = createDrawerNavigator();
 
-  const defaultScreen = () => {
-    if (user ) {
+  const defaultSignedInScreen = () => {
+    return (
+      <Drawer.Screen 
+        name="MainTabNavigator" 
+        component={MainTabNavigator}
+     />
+    )
+  }
+
+  const defaultSignedOutScreen = () => {
+
+    return (
+      <Stack.Screen 
+      name="AuthenticationNavigator" 
+      component={AuthenticationNavigator}
+      options={{
+        headerShown: false
+      }}
+    />
+    )
+  }
+
+  const RootStackNavigator = () => {
+    if (user) {
       return (
-        <RootStack.Screen 
-          name="MainTabNavigator" 
-          component={MainTabNavigator}
-          options={{
-            headerShown: false
-          }}
-        />
+        <Drawer.Navigator drawerStyle={{ width: 330 }} drawerContent={ (props) => <DrawerContent user={user} {...props}/>}>
+          {defaultSignedInScreen()}
+        </Drawer.Navigator>
       )
     } else {
       return (
-        <RootStack.Screen 
-          name="AuthenticationNavigator" 
-          component={AuthenticationNavigator}
-          options={{
-          headerShown: false
-          }}
-        />
+        <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+          {defaultSignedOutScreen()}
+        </Stack.Navigator>
       )
     }
   }
 
-  const RootStackNavigator = () => (
-    <RootStack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
-      {defaultScreen()}
-    </RootStack.Navigator>
-  )
-  
   return (
     <NavigationContainer>
-      <RootStackNavigator />
+      {RootStackNavigator()}
     </NavigationContainer>
   )
 };

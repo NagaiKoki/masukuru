@@ -10,7 +10,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
   const [codeText, setCodeText] = useState<string>('');
   const currentUser = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
-
+  
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
     try {

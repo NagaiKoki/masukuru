@@ -4,7 +4,6 @@ import { LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_
 
 export const LogoutUser = async () => {
   await firebase.auth().signOut().then(function() {
-    AsyncStorage.removeItem('loginUser');
   })
 };
 
@@ -12,8 +11,6 @@ export const LogoutUser = async () => {
 export const LoginUser = async ({ email, password }) => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password).then( (user) => {
-      
-      AsyncStorage.setItem('loginUser', JSON.stringify(user))
     }); 
     return {};
   } catch(error) {
