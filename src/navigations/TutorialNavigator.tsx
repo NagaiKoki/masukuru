@@ -39,6 +39,7 @@ const TutorialNavigator = () => {
         component={HomeScreen}
         options={{
           headerShown: false,
+          gestureEnabled: false
         }}
       />
 
