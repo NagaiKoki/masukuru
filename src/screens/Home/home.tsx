@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Text, AsyncStorage } from 'react-native';
+import { View, FlatList, StyleSheet, Button, Text, AsyncStorage } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import EventAddModal from './EventAddModal'
@@ -9,10 +9,17 @@ import firebase, { db } from '../../config/firebase';
 
 const HomeScreen = ({ navigation }) => {
   const [EventName, setEventName] = useState('');
+  const [showModal, setModal] = useState(false);
   const [CurrentGroupId, setCurrentGroupId] = useState('');
+  const [EventList, setEventList] = useState([])
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth()+1;
+  const date = today.getDate();
 
   useEffect(() => {
     db.collectionGroup("groupUsers").where('uid', '==', current_user_uid).limit(1)
@@ -20,12 +27,13 @@ const HomeScreen = ({ navigation }) => {
       .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
           setCurrentGroupId(doc.ref.parent.parent.id);
+          console.log(CurrentGroupId)
         });
       })
       .catch(function(error) {
         console.log("Error getting documents: ", error);
     });
-  });
+  }, [CurrentGroupId]);
   
   const AddEvent = () => {
     db.collection('groups').doc(CurrentGroupId).collection('events').add({
@@ -38,28 +46,86 @@ const HomeScreen = ({ navigation }) => {
     })
   }
 
-  const [showModal, setModal] = useState(false);
+  // const List = () => {
+  //   db.collection('groups').doc('0vTTTGUtH0bmAbyk3MgQN44nTdS2').collection('events')
+  //   .get()
+  //   .then(function(querySnapshot) {
+  //     // const List = querySnapshot.docs.map(doc => [doc.id, doc.data()])
+  //     // const List2 = List.map(list => {id: list[0], name: list[1].name, })
+  //     // const List2 = List.map(l => {})
+  //     // console.log(List)
+  //     // console.log(List[0])
+  //     // console.log(List[1])
+
+  //     return querySnapshot.docs.map(doc => doc.data())
+  //     // setEventList(ListArray)
+  //     // querySnapshot.forEach(function(doc) {
+  //     //   // doc.data() is never undefined for query doc snapshots
+  //     //   console.log(doc.id, " => ", doc.data());
+  //     // });
+  //   })
+  //   .catch(function(error) {
+  //     console.log("Error getting documents: ", error);
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   const list = [];
+  //   db.collection('groups').doc('0vTTTGUtH0bmAbyk3MgQN44nTdS2').collection('events')
+  //   .get()
+  //   .then(function(querySnapshot) {
+  //     list.push(querySnapshot.docs.map(doc => doc.data()));
+  //     setEventList(list)
+  //     // console.log(ListArray)
+  //     // setEventList(ListArray)
+  //   })
+  //   .catch(function(error) {
+  //     console.log("Error getting documents: ", error);
+  //   });
+  // }, [EventList]);
 
   return (
 
     <Container>
-      <Title>
-        メンバー
-      </Title>
+      <MemberView>
+        <MemberAddButton>
+          <MemberAddPlus>
+            +
+          </MemberAddPlus>
+        </MemberAddButton>
+        <MemberAddText>
+          招待する
+        </MemberAddText>
+      </MemberView>
 
-      <Member>
+      <RecentActivities>
+        <RecentActivitiesText>
+          直近の活動
+        </RecentActivitiesText>
+        <RecentActivitiesListView>
+          <RecentActivitiesListDate>
+            {year}/{month}/{date}
+          </RecentActivitiesListDate>
+          <RecentActivitiesList>
 
-      </Member>
+          </RecentActivitiesList>
+          <RecentActivitiesListDetailButton>
+            <RecentActivitiesListDetailText>
+              もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
+            </RecentActivitiesListDetailText>
+          </RecentActivitiesListDetailButton>
+        </RecentActivitiesListView>
+      </RecentActivities>
 
-      <EventTitle>
-        トレーニング一覧
-      </EventTitle>
-
-      <EventList>
+      <EventView>
         <EventPlus>
+          <EventTitle>
+            トレーニングリスト
+          </EventTitle>
+
           <EventPlusButton onPress={ () => setModal(true) }>
             <EventPlusButtonText>
-              +
+              + 追加する
             </EventPlusButtonText>
           </EventPlusButton>
 
@@ -83,13 +149,27 @@ const HomeScreen = ({ navigation }) => {
               </EventAddButton>
             </ModalView>
           </Modal>
-
-          <EventPlusText>
-            トレーニングを追加する
-          </EventPlusText>
         </EventPlus>
-        
-      </EventList>
+
+        {/* <EvetnListView>
+          <EventFlatList 
+            data={EventList}
+            keyExtractor={(item) => (item.id)}
+            renderItem={({item}) => 
+              <View>
+                <EventFlatListText>
+                  {console.log(item.id, item.name, item.uid)}
+                  {item.name}
+                  {item.uid}
+                </EventFlatListText>
+              </View>
+            }
+          />
+
+          
+        </EvetnListView> */}
+
+      </EventView>
     </Container>
   );
 };
@@ -100,46 +180,100 @@ const Container = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
-const Title = styled.Text`
-  padding-left: 50px;
-`
-
-const Member = styled.View`
+const MemberView = styled.View`
   background-color: #FFF;
-  height: 60px;
+  height: 70px;
 `
 
-const EventTitle = styled.Text`
-  margin: 60px 0 30px 50px;
+const MemberAddButton = styled.TouchableOpacity`
+  position: relative;
+  background-color: ${COLORS.BASE_MUSCLEW};;
+  width: 40px;
+  height: 40px;
+  margin: 5px 15px 0 0;
+  align-self: flex-end;
+  border-radius: 50px;
 `
 
-const EventList = styled.View`
+const MemberAddPlus = styled.Text`
+  position: absolute;
+  top: 4px;
+  left: 13px;
+  color: #FFF;
+  font-size: 25px;
+`
+
+const MemberAddText = styled.Text`
+  align-self: flex-end;
+  font-size: 10px;
+  margin: 5px 15px 0 0;
+`
+
+const RecentActivities = styled.View`
+  padding: 15px;
+`
+
+const RecentActivitiesText = styled.Text`
+  margin-top: 10px;
+  padding-left: 5px;
+  font-size: 16px;
+  font-weight: bold;
+`
+
+const RecentActivitiesListView = styled.View`
+  margin-top: 20px;
+  background-color: #FFF;
+  height: 200px;
+  border-radius: 5px;
+  box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
+`
+
+const RecentActivitiesListDate = styled.Text`
+  margin: 10px;
+  font-size: 15px;
+  font-weight: bold;
+`
+
+const RecentActivitiesList = styled.View`
+  height: 120px;
+`
+
+const RecentActivitiesListDetailButton = styled.TouchableOpacity`
+`
+
+const RecentActivitiesListDetailText = styled.Text`
+  margin: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  color: ${COLORS.BASE_MUSCLEW};;
+`
+
+const EventView = styled.View`
   padding: 0 15px;
 `
 
 const EventPlus = styled.View`
+  margin: 60px 0 30px 0;
   flex-direction: row;
-  justify-content: space-around;
-  height: 70px;
-  background-color: #FFF;
-  border-radius: 5px;
-  align-items: center;
-  box-shadow: 0 10px 6px ${COLORS.CARD_SHADOW1};
+  justify-content: space-between;
+`
+
+const EventTitle = styled.Text`
+  font-size: 15px;
+  font-weight: bold;
 `
 
 const EventPlusButton = styled.TouchableOpacity`
+`
+
+const EventPlusButtonText = styled.Text`
 `
 
 const ModalView = styled.View`
   height: 300px;
   border-radius: 10px;
   background-color: #fff;
-`
-
-const EventModal = styled.Modal`
-`
-
-const ModalTitle = styled.Text`
 `
 
 const ModalCloseButton = styled.TouchableOpacity`
@@ -171,15 +305,16 @@ const EventAddText = styled.Text`
   font-weight: bold;
 `
 
-const EventPlusButtonText = styled.Text`
+const EvetnListView = styled.View`
 `
 
-const EventPlusText = styled.Text`
+const EventFlatList = styled.FlatList`
+`
+
+const EventFlatListText = styled.Text`
   font-size: 16px;
-  font-weight: bold;
+  padding-top: 15px;
 `
 
-const Event = styled.View`
-`
 
 export default HomeScreen;
