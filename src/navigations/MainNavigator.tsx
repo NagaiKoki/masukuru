@@ -43,7 +43,7 @@ const MainNavigator = () => {
         component={HomeScreen} 
         options={{
           headerShown: false,
-          gestureEnabled: false
+          gestureEnabled: false,
         }}
       />
 

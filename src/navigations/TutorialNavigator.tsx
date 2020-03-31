@@ -34,7 +34,7 @@ const TutorialNavigator = () => {
         component={TutorialGroupMakeScreen}
       />
 
-<TotorialStack.Screen 
+      <TotorialStack.Screen 
         name="Home" 
         component={HomeScreen}
         options={{
