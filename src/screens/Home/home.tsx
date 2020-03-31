@@ -9,7 +9,8 @@ import firebase, { db } from '../../config/firebase';
 
 const HomeScreen = ({ navigation }) => {
   const [EventName, setEventName] = useState('');
-  const [showModal, setModal] = useState(false);
+  const [MemberModal, setMemberModal] = useState(false);
+  const [EventModal, setEventModal] = useState(false);
   const [CurrentGroupId, setCurrentGroupId] = useState('');
   const [EventList, setEventList] = useState([])
 
@@ -40,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
       name: EventName,
       uid: current_user_uid
     }).then(function() {
-      setModal(false);
+      setEventModal(false);
     }).catch(function(error) {
       alert(error);
     })
@@ -88,11 +89,32 @@ const HomeScreen = ({ navigation }) => {
 
     <Container>
       <MemberView>
-        <MemberAddButton>
+        <MemberAddButton onPress={ () => setMemberModal(true) }>
           <MemberAddPlus>
             +
           </MemberAddPlus>
         </MemberAddButton>
+
+        <Modal
+          isVisible={MemberModal}
+          >
+          <MemberModalView>
+            <MemberModalCloseButton onPress={ () => setMemberModal(false) }>
+              <Icon name="close" size={40}/>
+            </MemberModalCloseButton>
+            <MemberModalTitle>
+              招待コード
+            </MemberModalTitle>
+            <MemberAddCodeView>
+              <MemberAddCodeText>
+              </MemberAddCodeText>
+            </MemberAddCodeView>
+            <MemberModalAddText>
+              友達にアプリをインストールしてもらい、{"\n"}
+              この招待コードを入力してもらおう！
+            </MemberModalAddText>
+          </MemberModalView>
+        </Modal>
         <MemberAddText>
           招待する
         </MemberAddText>
@@ -123,19 +145,19 @@ const HomeScreen = ({ navigation }) => {
             トレーニングリスト
           </EventTitle>
 
-          <EventPlusButton onPress={ () => setModal(true) }>
+          <EventPlusButton onPress={ () => setEventModal(true) }>
             <EventPlusButtonText>
               + 追加する
             </EventPlusButtonText>
           </EventPlusButton>
 
           <Modal
-            isVisible={showModal}
+            isVisible={EventModal}
             >
-            <ModalView>
-              <ModalCloseButton onPress={ () => setModal(false) }>
+            <EventModalView>
+              <EventModalCloseButton onPress={ () => setEventModal(false) }>
                 <Icon name="close" size={40}/>
-              </ModalCloseButton>
+              </EventModalCloseButton>
               <EventAddForm 
                 placeholder='名前を入力する（4文字以上）'
                 autoCapitalize={'none'}
@@ -147,7 +169,7 @@ const HomeScreen = ({ navigation }) => {
                   追加する
                 </EventAddText>
               </EventAddButton>
-            </ModalView>
+            </EventModalView>
           </Modal>
         </EventPlus>
 
@@ -201,6 +223,37 @@ const MemberAddPlus = styled.Text`
   left: 13px;
   color: #FFF;
   font-size: 25px;
+`
+
+const MemberModalView = styled.View`
+  height: 300px;
+  border-radius: 10px;
+  background-color: #fff;
+`
+
+const MemberModalTitle = styled.Text`
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+`
+
+const MemberModalCloseButton = styled.TouchableOpacity`
+  align-self: flex-end;
+`
+
+const MemberAddCodeView = styled.View`
+  margin: 20px 15px 0 15px;
+  border: solid #C0C0C0;
+  height: 50px;
+`
+
+const MemberAddCodeText = styled.Text`
+`
+
+const MemberModalAddText = styled.Text`
+  margin-top: 30px;
+  text-align: center;
+  line-height: 20px;
 `
 
 const MemberAddText = styled.Text`
@@ -270,13 +323,13 @@ const EventPlusButton = styled.TouchableOpacity`
 const EventPlusButtonText = styled.Text`
 `
 
-const ModalView = styled.View`
+const EventModalView = styled.View`
   height: 300px;
   border-radius: 10px;
   background-color: #fff;
 `
 
-const ModalCloseButton = styled.TouchableOpacity`
+const EventModalCloseButton = styled.TouchableOpacity`
   align-self: flex-end;
 `
 
