@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,7 +34,7 @@ const Navigator = () => {
     )
   }
 
-  const Stack = createStackNavigator()
+  const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
 
   const defaultSignedInScreen = () => {
@@ -62,7 +62,10 @@ const Navigator = () => {
   const RootStackNavigator = () => {
     if (user) {
       return (
-        <Drawer.Navigator drawerStyle={{ width: 330 }} drawerContent={ (props) => <DrawerContent user={user} {...props}/>}>
+        <Drawer.Navigator 
+          drawerStyle={{ width: 330 }} 
+          drawerContent={ (props) => <DrawerContent user={user} {...props}/>}
+        >
           {defaultSignedInScreen()}
         </Drawer.Navigator>
       )

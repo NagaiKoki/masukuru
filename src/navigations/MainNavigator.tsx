@@ -20,7 +20,7 @@ const MainNavigator = () => {
         setloading(false);
       }
     })
-  })
+  }, [])
   
   if (loading) {
     return (
@@ -43,7 +43,7 @@ const MainNavigator = () => {
         component={HomeScreen} 
         options={{
           headerShown: false,
-          gestureEnabled: false
+          gestureEnabled: false,
         }}
       />
 
