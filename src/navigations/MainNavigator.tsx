@@ -20,7 +20,7 @@ const MainNavigator = () => {
         setloading(false);
       }
     })
-  })
+  }, [])
   
   if (loading) {
     return (
