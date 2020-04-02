@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Modal from 'react-native-modal';
 import firebase from 'firebase';
 
 type DrawerProps = {
@@ -11,6 +12,8 @@ type DrawerProps = {
 }
 
 const DrawerContent = (props: DrawerProps) => {
+  const [showModal, setShowModal] = useState(false);
+  const [codeText, setCodeText] = useState('')
   const { user, navigation } = props;
 
   // TODO ロジックは違うファイルに押し込みたい
@@ -21,6 +24,7 @@ const DrawerContent = (props: DrawerProps) => {
   };
 
 
+  // ユーザー画像
   const UserImage = (
     user.photoURL ?
         <Image source={{ uri: user.photoURL }}
@@ -31,6 +35,44 @@ const DrawerContent = (props: DrawerProps) => {
                style={{ width: 120, height: 100, resizeMode: 'contain', alignSelf: 'center' }}
         />
   );
+
+  // 招待コード送信制御
+  const disableSubmit: boolean = (
+    codeText && codeText.length === 6 ? false : true
+  )
+
+  // モーダル出現
+  const handleOnClick = () => {
+    setShowModal(true);
+  }
+
+  // 招待コードモーダル
+  const InvitedCodeModal = () => {
+    return (
+      <Modal isVisible={showModal}>
+        <InvideModalView>
+          <ModalCloseButton onPress={ () => setShowModal(false) }>
+              <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
+          </ModalCloseButton>
+          <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
+
+          <InvitedModalFormWrapper>
+            <InvitedModalForm 
+              placeholder='6桁の招待コード'
+              autoCapitalize={'none'}
+              autoCorrect={ false }
+              onChangeText={ text => setCodeText(text) }
+              maxLength={6}
+            />
+          </InvitedModalFormWrapper>
+
+          <InvitedModalSubmitBtn block onPress={ () => console.log('f') } disabled={disableSubmit} disableSubmit={disableSubmit}>
+            <InvitedModalSubmitText>送信する</InvitedModalSubmitText>
+          </InvitedModalSubmitBtn>
+        </InvideModalView>
+    </Modal>
+    )
+  }
 
   return (
     <DrawerContainer>
@@ -61,7 +103,7 @@ const DrawerContent = (props: DrawerProps) => {
         <DrawerListItem>
           <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
 
-          <DrawerListItemBtn block onPress={ () => { navigation.navigate('Mypage') } }>
+          <DrawerListItemBtn block onPress={handleOnClick}>
             <DrawerListItemText>招待されたグループに参加する</DrawerListItemText>
           </DrawerListItemBtn>
         </DrawerListItem>
@@ -74,6 +116,8 @@ const DrawerContent = (props: DrawerProps) => {
           </DrawerListItemBtn>
         </DrawerListItem>
 
+        {/* モーダル */}
+        {InvitedCodeModal()}
       </DrawerListContainer>
     </DrawerContainer>
   )
@@ -121,6 +165,61 @@ const DrawerListItemText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   padding-left: 15px;
   font-size: 16px;
+`
+
+// 招待コード入力モーダル
+const InvideModalView = styled.View`
+  position: absolute;
+  bottom: -20;
+  width: 110%;
+  border-radius: 10px;
+  height: 600px;
+  background-color: ${COLORS.BASE_BACKGROUND};
+  align-self: center;
+`
+
+const InvitedModalTitle = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-weight: bold;
+  font-size: 18px;
+  padding-top: 30px;
+  text-align: center;
+`
+
+const InvitedModalFormWrapper = styled.View`
+  align-self: center;
+  margin-top: 30px;
+  width: 80%;
+`
+
+const InvitedModalForm = styled.TextInput`
+  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
+  padding: 15px;
+  border-radius: 5px;
+  background-color: ${COLORS.BASE_WHITE};
+  color: ${COLORS.BASE_BLACK};
+`
+
+const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
+  width: 80%;
+  align-self: center;
+  background-color: ${COLORS.BASE_MUSCLEW};
+  padding: 20px 0;
+  border-radius: 5px;
+  margin-top: 30px;
+  opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
+`
+
+const InvitedModalSubmitText = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+`
+
+const ModalCloseButton = styled.TouchableOpacity`
+  align-self: flex-end;
+  padding: 5px 5px 0 0;
 `
 
 export default DrawerContent;
