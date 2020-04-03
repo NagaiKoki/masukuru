@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import { LoginUser } from "../../api/auth-api";
+import { LoginUser } from "../../apis/auth-api";
 import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
 import Toast from '../../components/Toaster';
 
