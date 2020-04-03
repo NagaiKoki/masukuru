@@ -4,7 +4,7 @@ import { COLORS } from '../../constants/Styles';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Modal from 'react-native-modal';
-import firebase from 'firebase';
+import firebase, { db } from '../../config/firebase';
 
 type DrawerProps = {
   user: firebase.User
@@ -12,9 +12,13 @@ type DrawerProps = {
 }
 
 const DrawerContent = (props: DrawerProps) => {
-  const [showModal, setShowModal] = useState(false);
-  const [codeText, setCodeText] = useState('')
+  const [showInvitedCodeModal, setShowInvitedCodeModal] = useState<boolean>(false);
+  const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
+  const [codeText, setCodeText] = useState<string>('')
+  const [ownCode, setOwnCode] = useState<string>('')
   const { user, navigation } = props;
+  const current_user = firebase.auth().currentUser;
+  const groupRef = db.collection('groups')
 
   // TODO ロジックは違うファイルに押し込みたい
   const logout = async () => {
@@ -22,7 +26,6 @@ const DrawerContent = (props: DrawerProps) => {
       navigation.navigate('SignoutLoading');
     })
   };
-
 
   // ユーザー画像
   const UserImage = (
@@ -42,16 +45,20 @@ const DrawerContent = (props: DrawerProps) => {
   )
 
   // モーダル出現
-  const handleOnClick = () => {
-    setShowModal(true);
+  const handleInvitedCodeOnClick = () => {
+    setShowInvitedCodeModal(true);
   }
 
-  // 招待コードモーダル
+  const handleInviteCodeOnClick = () => {
+    setShowInviteCodeModal(true)
+  }
+
+  // 招待入力用コードモーダル
   const InvitedCodeModal = () => {
     return (
-      <Modal isVisible={showModal}>
-        <InvideModalView>
-          <ModalCloseButton onPress={ () => setShowModal(false) }>
+      <Modal isVisible={showInvitedCodeModal}>
+        <InvitedModalView>
+          <ModalCloseButton onPress={ () => setShowInvitedCodeModal(false) }>
               <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
           </ModalCloseButton>
           <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
@@ -69,7 +76,33 @@ const DrawerContent = (props: DrawerProps) => {
           <InvitedModalSubmitBtn block onPress={ () => console.log('f') } disabled={disableSubmit} disableSubmit={disableSubmit}>
             <InvitedModalSubmitText>送信する</InvitedModalSubmitText>
           </InvitedModalSubmitBtn>
-        </InvideModalView>
+        </InvitedModalView>
+    </Modal>
+    )
+  }
+
+  // 所属するグループの招待コード表示用モーダル
+  const InviteCodeModal = () => {
+    try {
+      groupRef.doc(current_user.uid).get().then(doc => {
+        if (doc) {
+          const { invideCode } = doc.data()
+          setOwnCode(invideCode)
+        }
+      })
+    } catch (error) {
+      alert('取得に失敗しました。時間を置いてからやり直してください。')
+    }
+    
+    return (
+      <Modal isVisible={showInviteCodeModal}>
+        <InviteModalView>
+          <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
+              <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
+          </ModalCloseButton>
+            <InviteCode>{ownCode}</InviteCode>
+            <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
+        </InviteModalView>
     </Modal>
     )
   }
@@ -85,39 +118,37 @@ const DrawerContent = (props: DrawerProps) => {
 
       <DrawerListContainer>
         <DrawerListItem>
-          <Icon name="user" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-
           <DrawerListItemBtn block onPress={ () => { navigation.navigate('Mypage') } }>
+            <Icon name="user" size={25} color={COLORS.BASE_BORDER_COLOR}/>
             <DrawerListItemText>マイページ</DrawerListItemText>
           </DrawerListItemBtn>
         </DrawerListItem>
 
         <DrawerListItem>
-          <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-
-          <DrawerListItemBtn block onPress={ () => { navigation.navigate('Mypage') } }>
+          <DrawerListItemBtn block onPress={handleInviteCodeOnClick}>
+            <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
             <DrawerListItemText>友達をグループに招待する</DrawerListItemText>
           </DrawerListItemBtn>
         </DrawerListItem>
 
         <DrawerListItem>
-          <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-
-          <DrawerListItemBtn block onPress={handleOnClick}>
+          <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
+            <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
             <DrawerListItemText>招待されたグループに参加する</DrawerListItemText>
           </DrawerListItemBtn>
         </DrawerListItem>
 
         <DrawerListItem>
-          <Icon name="logout" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-        
           <DrawerListItemBtn block onPress={ () => logout() }>
+            <Icon name="logout" size={25} color={COLORS.BASE_BORDER_COLOR}/>
             <DrawerListItemText>ログアウト</DrawerListItemText>
           </DrawerListItemBtn>
         </DrawerListItem>
 
-        {/* モーダル */}
+        {/* 招待コード入力用モーダル */}
         {InvitedCodeModal()}
+        {/* 所属しているグループの招待コード表示用モーダル */}
+        {InviteCodeModal()}
       </DrawerListContainer>
     </DrawerContainer>
   )
@@ -152,12 +183,11 @@ const DrawerListContainer = styled.View`
 `
 
 const DrawerListItemBtn = styled.TouchableOpacity`
-
+  flex-direction: row;
+  align-items: center;
 `
 
 const DrawerListItem = styled.View`
-  flex-direction: row;
-  align-items: center;
   padding: 15px 0;
 `
 
@@ -168,12 +198,22 @@ const DrawerListItemText = styled.Text`
 `
 
 // 招待コード入力モーダル
-const InvideModalView = styled.View`
+const InvitedModalView = styled.View`
   position: absolute;
   bottom: -20;
   width: 110%;
   border-radius: 10px;
   height: 600px;
+  background-color: ${COLORS.BASE_BACKGROUND};
+  align-self: center;
+`
+
+const InviteModalView = styled.View`
+  position: absolute;
+  bottom: -20;
+  width: 110%;
+  border-radius: 10px;
+  height: 300px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
@@ -184,6 +224,22 @@ const InvitedModalTitle = styled.Text`
   font-size: 18px;
   padding-top: 30px;
   text-align: center;
+`
+
+const InviteModalTitle = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 16px;
+  padding-top: 50px;
+  text-align: center;
+`
+
+const InviteCode = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 30px;
+  letter-spacing: 4;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 20px;
 `
 
 const InvitedModalFormWrapper = styled.View`
