@@ -4,6 +4,7 @@ import { COLORS } from '../../constants/Styles';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Modal from 'react-native-modal';
+import { joinInvitedGroup } from '../../apis/invite';
 import firebase, { db } from '../../config/firebase';
 
 type DrawerProps = {
@@ -53,6 +54,13 @@ const DrawerContent = (props: DrawerProps) => {
     setShowInviteCodeModal(true)
   }
 
+  // 招待されたグループに移動する
+  const replaceGroup = () => {
+   joinInvitedGroup(codeText)
+   navigation.navigate("Home")
+   return setShowInvitedCodeModal(false)
+  }
+
   // 招待入力用コードモーダル
   const InvitedCodeModal = () => {
     return (
@@ -73,7 +81,7 @@ const DrawerContent = (props: DrawerProps) => {
             />
           </InvitedModalFormWrapper>
 
-          <InvitedModalSubmitBtn block onPress={ () => console.log('f') } disabled={disableSubmit} disableSubmit={disableSubmit}>
+          <InvitedModalSubmitBtn block onPress={replaceGroup} disabled={disableSubmit} disableSubmit={disableSubmit}>
             <InvitedModalSubmitText>送信する</InvitedModalSubmitText>
           </InvitedModalSubmitBtn>
         </InvitedModalView>

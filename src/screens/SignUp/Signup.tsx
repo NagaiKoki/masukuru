@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RegisterUser } from '../../api/auth-api';
+import { RegisterUser } from '../../apis/auth-api';
 import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
 import Toast from '../../components/Toaster';
 import styled from 'styled-components';
