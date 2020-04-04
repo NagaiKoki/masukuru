@@ -7,7 +7,7 @@ import { COLORS } from '../../constants/Styles';
 const LoginLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      navigation.replace('Home');
+      navigation.replace('ホーム');
     })
   }, [])
 
