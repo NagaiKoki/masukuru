@@ -35,7 +35,7 @@ const TutorialNavigator = () => {
       />
 
       <TotorialStack.Screen 
-        name="Home" 
+        name="ホーム" 
         component={HomeScreen}
         options={{
           headerShown: false,

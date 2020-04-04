@@ -57,7 +57,7 @@ const DrawerContent = (props: DrawerProps) => {
   // 招待されたグループに移動する
   const replaceGroup = () => {
    joinInvitedGroup(codeText)
-   navigation.navigate("Home")
+   navigation.navigate("ホーム")
    return setShowInvitedCodeModal(false)
   }
 
@@ -126,7 +126,7 @@ const DrawerContent = (props: DrawerProps) => {
 
       <DrawerListContainer>
         <DrawerListItem>
-          <DrawerListItemBtn block onPress={ () => { navigation.navigate('Mypage') } }>
+          <DrawerListItemBtn block onPress={ () => { navigation.navigate('マイページ') } }>
             <Icon name="user" size={25} color={COLORS.BASE_BORDER_COLOR}/>
             <DrawerListItemText>マイページ</DrawerListItemText>
           </DrawerListItemBtn>
