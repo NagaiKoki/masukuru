@@ -1,50 +1,67 @@
 import React from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import styled from 'styled-components';
+import firebase, { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
-
+import TrainingList from '../../components/MyPage/trainingList';
 
 const MyPageScreen = ({ navigation }) => {
- 
+  const user = firebase.auth().currentUser
+
+  const UserImage = (
+    user.photoURL ?
+        <Image source={{ uri: user.photoURL }}
+               style={{ width: 120, height: 120, borderRadius: 5, resizeMode: 'cover', alignSelf: 'center' }}
+        />
+                  :
+        <Image source={require('../../assets/profileDefaultImage.png')}
+               style={{ width: 120, height: 100, borderRadius: 5, resizeMode: 'contain', alignSelf: 'center' }}
+        />
+  );
+
   return (
-    <Container>
-      <User>
-
-      </User>
-      <EventHistoryTitle>
-        トレーニング履歴
-      </EventHistoryTitle>
-      <EventHistoryList>
-        <EventHistory>
-
-        </EventHistory>
-      </EventHistoryList>
-    </Container>
+    <MypageContainer>
+      <MypageUserWrapper>
+        <MypageUserImage>{UserImage}</MypageUserImage>
+        <MyPpageUserName>{user.displayName}</MyPpageUserName>
+      </MypageUserWrapper>
+        <TrainingListTitle>記録一覧</TrainingListTitle>
+        <TrainingList user={user} />
+    </MypageContainer>
   );
 };
 
-const Container = styled.View`
+const MypageContainer = styled.View`
   flex: 1;
-  padding-top: 20px;
   background-color: ${COLORS.BASE_BACKGROUND};
+  padding-top: 100px;
+`
+// user info
+const MypageUserWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10%;
+
 `
 
-const User = styled.View`
-  height: 100px;
-  background: #FFF; 
+const MypageUserImage = styled.View`
+
 `
 
-const EventHistoryTitle = styled.Text`
-padding-left: 50px;
-padding-top: 30px;
-height: 50px;
+const MyPpageUserName = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-weight: bold;
+  font-size: 25px;
+  padding-left: 30px;
 `
 
-const EventHistoryList = styled.View`
-  padding: 0 15px;
-`
-
-const EventHistory = styled.View`
+const TrainingListTitle = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-weight: bold;
+  font-size: 25px;
+  width: 80%;
+  align-self: center;
+  padding-top: 40px;
 `
 
 export default MyPageScreen;

@@ -6,6 +6,7 @@ export const COLORS = {
 
   BASE_WHITE: '#fff',
   BASE_BLACK: '#484848',
+  SUB_BLACK: '#898D8C',
 
   ERROR_MESSAGE: '#ea5532',
   SUCCESS_MESSAGE: '#66ff33',
