@@ -1,26 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { convertTimestampToString } from '../../lib/timestamp'
 import { COLORS } from '../../constants/Styles';
+// import type
+import { MenuType } from '../../types/menu';
 
 interface Props {
-  list: any
-}
-
-const convertTimestamp = (date: any) => {
-  const time = new Date(date.seconds * 1000);
-  const year = time.getFullYear();
-  const month = (`0${time.getMonth() + 1}`).slice(-2);
-  const day = (`0${time.getDate()}`).slice(-2);
-  const hour = (`0${time.getHours()}`).slice(-2);
-  const min = (`0${time.getMinutes()}`).slice(-2);
-  return `${year}/${month}/${day} ${hour}:${min}`;
+  list: MenuType
+  key: number
 }
 
 const TrainingItem = (props: Props) => { 
   const { list } = props
   let listSet : number = list.set
   let listName : string = list.name
-  let createdAt : string = convertTimestamp(list.createdAt)
+  let createdAt : string = convertTimestampToString(list.createdAt)
   let amountArray = []
   let weightArray = []
   
@@ -37,25 +31,25 @@ const TrainingItem = (props: Props) => {
 
       <ItemColumn>
         <ItemLabel>種目</ItemLabel> 
-        <ItemText>: {listName}</ItemText>
+        <ItemText>:   {listName}</ItemText>
       </ItemColumn>
 
       <ItemColumn>
         <ItemLabel>セット数</ItemLabel> 
-        <ItemText>: {listName}</ItemText>
+        <ItemText>:   {listSet}回</ItemText>
       </ItemColumn>
   
       {amountArray.map((amount) => (
         <ItemColumn>
           <ItemLabel>回数({amount.key}回目)</ItemLabel>
-          <ItemText>: {amount.value}回</ItemText>
+          <ItemText>:   {amount.value}回</ItemText>
          </ItemColumn>
       ))}
 
       {weightArray.map((weight) => (
         <ItemColumn>
           <ItemLabel>重さ({weight.key}回目)</ItemLabel>
-          <ItemText>: {weight.value}kg</ItemText>
+          <ItemText>:   {weight.value}kg</ItemText>
          </ItemColumn>
       ))}
     </ItemWrapper>
@@ -71,8 +65,8 @@ const ItemWrapper = styled.View`
 const ItemTimestampText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 18px;
-  padding-bottom: 10px;
+  font-size: 20px;
+  padding-bottom: 20px;
 `
 
 const ItemColumn = styled.View`
