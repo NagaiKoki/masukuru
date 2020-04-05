@@ -3,7 +3,7 @@ import { View, Text, Image } from 'react-native';
 import styled from 'styled-components';
 import firebase, { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
-import TrainingList from '../../components/MyPage/trainingList';
+import MenuList from '../../components/MyPage/menuList';
 
 const MyPageScreen = ({ navigation }) => {
   const user = firebase.auth().currentUser
@@ -26,7 +26,7 @@ const MyPageScreen = ({ navigation }) => {
         <MyPpageUserName>{user.displayName}</MyPpageUserName>
       </MypageUserWrapper>
         <TrainingListTitle>記録一覧</TrainingListTitle>
-        <TrainingList user={user} />
+        <MenuList user={user} />
     </MypageContainer>
   );
 };

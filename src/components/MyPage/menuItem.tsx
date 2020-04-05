@@ -7,10 +7,9 @@ import { MenuType } from '../../types/menu';
 
 interface Props {
   list: MenuType
-  key: number
 }
 
-const TrainingItem = (props: Props) => { 
+const MenuItem = (props: Props) => { 
   const { list } = props
   let listSet : number = list.set
   let listName : string = list.name
@@ -39,15 +38,15 @@ const TrainingItem = (props: Props) => {
         <ItemText>:   {listSet}回</ItemText>
       </ItemColumn>
   
-      {amountArray.map((amount) => (
-        <ItemColumn>
+      {amountArray.map((amount, index) => (
+        <ItemColumn key={index}>
           <ItemLabel>回数({amount.key}回目)</ItemLabel>
           <ItemText>:   {amount.value}回</ItemText>
          </ItemColumn>
       ))}
 
-      {weightArray.map((weight) => (
-        <ItemColumn>
+      {weightArray.map((weight, index) => (
+        <ItemColumn key={index}>
           <ItemLabel>重さ({weight.key}回目)</ItemLabel>
           <ItemText>:   {weight.value}kg</ItemText>
          </ItemColumn>
@@ -56,7 +55,7 @@ const TrainingItem = (props: Props) => {
   )
 }
 
-export default TrainingItem;
+export default MenuItem;
 
 const ItemWrapper = styled.View`
   padding: 20px 15px;
