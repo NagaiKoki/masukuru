@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { Image } from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import UserImage from '../../components/Image/userImage'
 import { ImageUpload } from '../../lib/cameraRoll';
@@ -41,7 +40,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
     <TutorialContainer>
       <TutorialProfileImageWrapper>
         <ImageUploadWrapper onPress={ () => ImageUpload(user, setProgress, setUri)}>
-          <UserImage user={user} width={120} height={120} borderRadius={60} forProfile={true} />
+          <UserImage uri={uri} user={user} width={120} height={120} borderRadius={60} forProfile={true} />
         </ImageUploadWrapper>        
         <ImageProgressText>{progress}</ImageProgressText>
         {ChangeImageText()}

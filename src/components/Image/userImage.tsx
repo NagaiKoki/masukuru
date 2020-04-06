@@ -3,6 +3,7 @@ import { Image } from 'react-native';
 import firebase from 'firebase'
 
 interface UserImageProps {
+  uri?: string,
   user: firebase.User
   width: number
   height: number
@@ -11,8 +12,14 @@ interface UserImageProps {
 }
 
 const UserImage = (props: UserImageProps) => {
-  const { user, width, height, borderRadius, forProfile } = props;
-  if (user.photoURL) {
+  const { uri, user, width, height, borderRadius, forProfile } = props;
+  if (uri) {
+    return (
+      <Image source={{ uri: uri }}
+           style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'cover', alignSelf: 'center' }}
+      />
+    )
+  } else if (user.photoURL) {
     return (
       <Image source={{ uri: user.photoURL }}
              style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'cover', alignSelf: 'center' }}
