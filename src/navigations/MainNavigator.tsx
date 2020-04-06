@@ -5,10 +5,12 @@ import HomeScreen from '../screens/Home';
 import TutorialNavigator from './TutorialNavigator';
 import firebase from '../config/firebase'
 import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
+import ProfileChangeScreen from '../screens/MyPage/ProfileChange';
+import MainTabNavigator from './MainTabNavigator';
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
-  const [initialNav, setInitialNav] = useState<string>('Home')
+  const [initialNav, setInitialNav] = useState<string>('ホーム')
   const [loading, setloading] = useState(true)
 
   useLayoutEffect(() => {
@@ -31,20 +33,27 @@ const MainNavigator = () => {
   return (
     <MainStack.Navigator
       initialRouteName={initialNav}
-      screenOptions={{
-        headerShown: false,
-        gestureEnabled: false
-      }}
     >
-      <MainStack.Screen name="Tutorial" component={TutorialNavigator} />
+      <MainStack.Screen 
+        name="Tutorial" 
+        component={TutorialNavigator} 
+        options={{
+          headerShown: false
+        }}
+      />
   
       <MainStack.Screen 
-        name="Home" 
+        name="ホーム" 
         component={HomeScreen} 
         options={{
-          headerShown: false,
           gestureEnabled: false,
         }}
+      />
+
+      {/* TODO drawer禁止 */}
+      <MainStack.Screen
+        name="プロフィール編集"
+        component={ProfileChangeScreen}
       />
 
     {/* ログアウト */}

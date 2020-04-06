@@ -1,83 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { Image } from 'react-native';
 import { COLORS } from '../../constants/Styles';
+import UserImage from '../../components/Image/userImage'
+import { ImageUpload } from '../../lib/cameraRoll';
 import firebase, { db } from '../../config/firebase';
-import Constants from 'expo-constants';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 
 const TutorialUserImageScreen = ({ navigation }) => {
   const [progress, setProgress] = useState<string>('');
   const [uri, setUri] = useState<string>('');
   const user = firebase.auth().currentUser;
-  
-  const ImageUpload = async () => {
-    const ImageName = `profile_image_${user.uid}`;
-  
-      if (IsCameraEnable) {
-        const result = await ImagePicker.launchImageLibraryAsync({
-          allowsEditing: true,
-          aspect: [1, 1],
-          base64: false,
-        });
-        
-        try  {
-          if (!result.cancelled) {
-            // visual studio codeの影響でエラーをはく。
-            // TSの問題はないので一旦無視
-            const localUri = await fetch(result.uri); 
-            const localBlob = await localUri.blob();
-            const filename = ImageName;
-            const storageRef = firebase.storage().ref().child("image/" + filename);
-      
-            const uploadTask = storageRef.put(localBlob);
-            uploadTask.on('state_changed', (snapshot) => {
-              let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              setProgress(progress + '%');
-            }, (error) => {
-              console.log(error);
-              alert(error);
-            }, () => {
-              uploadTask.snapshot.ref.getDownloadURL().then(downLoadURL => {
-                setProgress('');
-                setUri(downLoadURL);
-              })
-            })
-          }
-        } catch(error) {
-          console.log(error);
-          alert(error);
-        }
-      }
-    }
-
-    // カメラロールの許可判定
-    const IsCameraEnable = async () => {
-      if (Constants.platform.ios) {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        console.log(status)
-        if (status !== 'granted') {
-          alert("カメラロールを許可してください。");
-          return false;
-        } else {
-          return true;
-        };
-      };
-    }
-
-  // 写真がアップされれば、その写真を表示する
-  const isProfileUploaded = (
-    uri ? <Image 
-           source={{ uri: uri }}
-           style={{ width: 120, height: 120, borderRadius: 60, resizeMode: 'cover', alignSelf: 'center' }}
-          /> :
-
-          <Image 
-            source={require('../../assets/profileImageRegister.png')}
-            style={{ width: 120, height: 100, resizeMode: 'contain', alignSelf: 'center' }}
-          />
-        );
 
     // 写真追加の文字    
     const ChangeImageText = () => {
@@ -85,7 +16,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
       uri ? btnText = '写真を変更する' : btnText = '写真を追加する'
       
       return (
-        <ChangeImageBtn block onPress={ () => ImageUpload() }>
+        <ChangeImageBtn block onPress={ () => ImageUpload(user, setProgress, setUri) } >
             <ChangeImageWord>{btnText}</ChangeImageWord>
         </ChangeImageBtn>   
         )
@@ -99,7 +30,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
         const userdata  = { imageUrl: uri };
         db.collection('users').doc(user.uid).update(userdata);
       }).then(function() {
-        navigation.navigate('TutorialGroupMake')
+        navigation.navigate('グループを作成する')
       }).catch(function(error) {
         alert(error);
       })
@@ -108,8 +39,8 @@ const TutorialUserImageScreen = ({ navigation }) => {
   return (
     <TutorialContainer>
       <TutorialProfileImageWrapper>
-        <ImageUploadWrapper onPress={() => ImageUpload()}>
-          {isProfileUploaded}
+        <ImageUploadWrapper onPress={ () => ImageUpload(user, setProgress, setUri)}>
+          <UserImage uri={uri} user={user} width={120} height={120} borderRadius={60} forProfile={true} />
         </ImageUploadWrapper>        
         <ImageProgressText>{progress}</ImageProgressText>
         {ChangeImageText()}

@@ -10,27 +10,24 @@ const TutorialNavigator = () => {
 
   return (
     <TotorialStack.Navigator
-      initialRouteName="TutorialGroupName"
+      initialRouteName="名前を登録する"
       screenOptions={{
-        headerBackTitleVisible: false
+        headerBackTitleVisible: false,
       }}
     >
 
       <TotorialStack.Screen
-        name="TutorialUserName"
+        name="名前を登録する"
         component={TutorialUserNameScreen}
-        options={{
-          headerShown: false
-        }}
       />
 
       <TotorialStack.Screen
-        name="TutorialUserImage"
+        name="プロフィール写真を登録する"
         component={TutorialUserImageScreen} 
       />
 
       <TotorialStack.Screen
-        name="TutorialGroupMake"
+        name="グループを作成する"
         component={TutorialGroupMakeScreen}
       />
 

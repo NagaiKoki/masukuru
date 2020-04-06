@@ -22,7 +22,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
       }).then(function(){
         saveInvideCode()
       }).then(function() {
-        navigation.replace('Home');
+        navigation.replace('ホーム');
       }).catch(function(error) {
         alert(error);
       })
@@ -44,7 +44,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
           name: currentUser.displayName,
           imageUrl: currentUser.photoURL
         }).then(function() {
-          navigation.replace('Home');
+          navigation.replace('ホーム');
         })
       }
     })

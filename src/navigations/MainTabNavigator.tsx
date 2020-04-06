@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Home';
 import MainNavigator from './MainNavigator';
-import MyPageScreen from '../screens/MyPage/MyPage';
+import MyPageNavigator from '../navigations/MyPageNavigator';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { COLORS } from '../constants/Styles';
 
@@ -40,7 +40,10 @@ const MainTabNavigator = () => {
         name='ホーム' 
         component={MainNavigator}
       />
-      <Tab.Screen name='マイページ' component={MyPageScreen} />
+      <Tab.Screen 
+        name='マイページ' 
+        component={MyPageNavigator} 
+      />
     </Tab.Navigator>
   );
 }

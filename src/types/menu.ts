@@ -6,4 +6,5 @@ export interface MenuType {
   set: number
   amount1: number
   createdAt: Timestamp
+  menuId: string
 }
