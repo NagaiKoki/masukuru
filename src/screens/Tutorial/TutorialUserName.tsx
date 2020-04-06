@@ -17,7 +17,7 @@ const TutorialUserNameScreen = ({ navigation }) => {
           const userdata = { name: userName };
           await db.collection('users').doc(user.uid).update(userdata)
         }).then(function() {
-          navigation.navigate('TutorialUserImage')
+          navigation.navigate('プロフィール写真を登録する')
         }).catch(function(error) {
           alert(error);
         });

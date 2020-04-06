@@ -16,10 +16,12 @@ const MenuList = (props: TrainingListProps) => {
   const [previousItem, setPreviousItem] = useState<MenuType[]>([])
   const [isLastMenu, setIsLastMenu] = useState(false)
   const [isFirstMenu, setIsFirstMenu] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const { user }  = props;
   
   useEffect(() => {
     requestMenuList(user, setList, setIsLastMenu)
+    setIsLoading(false)
   }, [])
 
   // const handleBack = () => {
@@ -28,7 +30,7 @@ const MenuList = (props: TrainingListProps) => {
   //   setIsLastMenu(false)
   // }
 
-  if (!list.length) {
+  if (isLoading) {
     return (
       <LoadingContainer>
         <ActivityIndicator size='small' style={[ styles.loading ]} />
@@ -66,13 +68,16 @@ const MenuList = (props: TrainingListProps) => {
   // }
 
   return (
-    <ScrollView>
+    (
+      list.length ? <ScrollView>
       {/* {backBtn()}
       {nextBtn()} */}
       <TrainingListContainer>
         {TrainingMenuItem}
       </TrainingListContainer>
     </ScrollView>
+    : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+    )
   )
 }
 
@@ -109,5 +114,14 @@ const MenuBtnText = styled.Text`
 
 const MenuBackBtn = styled.TouchableOpacity`
 `
+
+const MenuNoDataText = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 16px;
+  padding: 40px 0;
+  align-self: center;
+  text-align: center;
+`
+
 
 export default MenuList;

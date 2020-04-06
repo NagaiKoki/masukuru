@@ -47,13 +47,11 @@ const Navigator = () => {
   }
 
   const defaultSignedOutScreen = () => {
-
     return (
       <Stack.Screen 
       name="AuthenticationNavigator" 
       component={AuthenticationNavigator}
       options={{
-        headerShown: false
       }}
     />
     )

@@ -3,28 +3,23 @@ import { View, Text, Image } from 'react-native';
 import styled from 'styled-components';
 import firebase, { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
+import UserImage from '../../components/Image/userImage'
 import MenuList from '../../components/MyPage/menuList';
 
 const MyPageScreen = ({ navigation }) => {
   const user = firebase.auth().currentUser
-
-  const UserImage = (
-    user.photoURL ?
-        <Image source={{ uri: user.photoURL }}
-               style={{ width: 120, height: 120, borderRadius: 5, resizeMode: 'cover', alignSelf: 'center' }}
-        />
-                  :
-        <Image source={require('../../assets/profileDefaultImage.png')}
-               style={{ width: 120, height: 100, borderRadius: 5, resizeMode: 'contain', alignSelf: 'center' }}
-        />
-  );
-
+  
   return (
     <MypageContainer>
       <MypageUserWrapper>
-        <MypageUserImage>{UserImage}</MypageUserImage>
+        <MypageUserImage>
+          <UserImage user={user} width={120} height={100} borderRadius={5} />
+        </MypageUserImage>
         <MyPpageUserName>{user.displayName}</MyPpageUserName>
       </MypageUserWrapper>
+        <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user }) } }>
+          <ProfileChangeText>プロフィールを編集する</ProfileChangeText>
+        </ProfileChangeBtn>
         <TrainingListTitle>記録一覧</TrainingListTitle>
         <MenuList user={user} />
     </MypageContainer>
@@ -34,7 +29,7 @@ const MyPageScreen = ({ navigation }) => {
 const MypageContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-  padding-top: 100px;
+  padding-top: 30px;
 `
 // user info
 const MypageUserWrapper = styled.View`
@@ -53,6 +48,22 @@ const MyPpageUserName = styled.Text`
   font-weight: bold;
   font-size: 25px;
   padding-left: 30px;
+`
+
+const ProfileChangeBtn = styled.TouchableOpacity`
+  padding-top: 30px;
+`
+
+const ProfileChangeText = styled.Text`
+  color: ${COLORS.BASE_MUSCLEW};
+  border-radius: 5px;
+  text-align: center;
+  padding: 7px 0;
+  font-size: 16px;
+  border: 1px solid ${COLORS.BASE_MUSCLEW};
+  align-items: center;
+  align-self: center;
+  width: 80%;
 `
 
 const TrainingListTitle = styled.Text`
