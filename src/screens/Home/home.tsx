@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, StyleSheet, Button, Text, AsyncStorage } from 'react-native';
+import { View, FlatList, StyleSheet, Button, Text, AsyncStorage, ActivityIndicator, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import EventAddModal from './EventAddModal'
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase, { db } from '../../config/firebase';
+import { List } from 'react-native-paper';
 
 const HomeScreen = ({ navigation }) => {
   const [EventName, setEventName] = useState('');
   const [MemberModal, setMemberModal] = useState(false);
   const [EventModal, setEventModal] = useState(false);
   const [CurrentGroupId, setCurrentGroupId] = useState('');
-  const [EventList, setEventList] = useState([])
+  const [EventList, setEventList] = useState([]);
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
@@ -23,180 +24,192 @@ const HomeScreen = ({ navigation }) => {
   const date = today.getDate();
 
   useEffect(() => {
-    db.collectionGroup("groupUsers").where('uid', '==', current_user_uid).limit(1)
+      db.collectionGroup("groupUsers").where('uid', '==', current_user_uid).limit(1)
       .get()
       .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
           setCurrentGroupId(doc.ref.parent.parent.id);
           console.log(CurrentGroupId)
+          SetsetEventList(doc.ref.parent.parent.id)
         });
       })
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
-  }, [CurrentGroupId]);
+  }, []);
   
   const AddEvent = () => {
     db.collection('groups').doc(CurrentGroupId).collection('events').add({
       name: EventName,
-      uid: current_user_uid
+      uid: current_user_uid,
+      date: today.getTime()
     }).then(function() {
+      // console.log(Event)
+      // EventList[0].name = EventName;
+      // EventList[0].uid = current_user_uid;
+      // EventList[0].date = today.getTime();
       setEventModal(false);
     }).catch(function(error) {
       alert(error);
     })
   }
 
-  // const List = () => {
-  //   db.collection('groups').doc('0vTTTGUtH0bmAbyk3MgQN44nTdS2').collection('events')
-  //   .get()
-  //   .then(function(querySnapshot) {
-  //     // const List = querySnapshot.docs.map(doc => [doc.id, doc.data()])
-  //     // const List2 = List.map(list => {id: list[0], name: list[1].name, })
-  //     // const List2 = List.map(l => {})
-  //     // console.log(List)
-  //     // console.log(List[0])
-  //     // console.log(List[1])
+  const SetsetEventList = (GroupId) => {
+    let list = []
+    db.collection('groups').doc(GroupId).collection('events')
+    .get()
+    .then(function(querySnapshot) {
+      list.push(
+        querySnapshot.docs.map(doc => ({...doc.data()})));
+      setEventList(list)
+      console.log(EventList)
+      console.log(EventList.length)
+    })
+    .catch(function(error) {
+      console.log("Error getting documents: ", error);
+    })
+  }
 
-  //     return querySnapshot.docs.map(doc => doc.data())
-  //     // setEventList(ListArray)
-  //     // querySnapshot.forEach(function(doc) {
-  //     //   // doc.data() is never undefined for query doc snapshots
-  //     //   console.log(doc.id, " => ", doc.data());
-  //     // });
-  //   })
-  //   .catch(function(error) {
-  //     console.log("Error getting documents: ", error);
-  //   })
-  // }
+  console.log(EventList)
 
-  // useEffect(() => {
-  //   const list = [];
-  //   db.collection('groups').doc('0vTTTGUtH0bmAbyk3MgQN44nTdS2').collection('events')
-  //   .get()
-  //   .then(function(querySnapshot) {
-  //     list.push(querySnapshot.docs.map(doc => doc.data()));
-  //     setEventList(list)
-  //     // console.log(ListArray)
-  //     // setEventList(ListArray)
-  //   })
-  //   .catch(function(error) {
-  //     console.log("Error getting documents: ", error);
-  //   });
-  // }, [EventList]);
-
-  return (
-
-    <Container>
-      <MemberView>
-        <MemberAddButton onPress={ () => setMemberModal(true) }>
-          <MemberAddPlus>
-            +
-          </MemberAddPlus>
-        </MemberAddButton>
-
-        <Modal
-          isVisible={MemberModal}
-          >
-          <MemberModalView>
-            <MemberModalCloseButton onPress={ () => setMemberModal(false) }>
-              <Icon name="close" size={40}/>
-            </MemberModalCloseButton>
-            <MemberModalTitle>
-              招待コード
-            </MemberModalTitle>
-            <MemberAddCodeView>
-              <MemberAddCodeText>
-              </MemberAddCodeText>
-            </MemberAddCodeView>
-            <MemberModalAddText>
-              友達にアプリをインストールしてもらい、{"\n"}
-              この招待コードを入力してもらおう！
-            </MemberModalAddText>
-          </MemberModalView>
-        </Modal>
-        <MemberAddText>
-          招待する
-        </MemberAddText>
-      </MemberView>
-
-      <RecentActivities>
-        <RecentActivitiesText>
-          直近の活動
-        </RecentActivitiesText>
-        <RecentActivitiesListView>
-          <RecentActivitiesListDate>
-            {year}/{month}/{date}
-          </RecentActivitiesListDate>
-          <RecentActivitiesList>
-
-          </RecentActivitiesList>
-          <RecentActivitiesListDetailButton>
-            <RecentActivitiesListDetailText>
-              もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
-            </RecentActivitiesListDetailText>
-          </RecentActivitiesListDetailButton>
-        </RecentActivitiesListView>
-      </RecentActivities>
-
-      <EventView>
-        <EventPlus>
-          <EventTitle>
-            トレーニングリスト
-          </EventTitle>
-
-          <EventPlusButton onPress={ () => setEventModal(true) }>
-            <EventPlusButtonText>
-              + 追加する
-            </EventPlusButtonText>
-          </EventPlusButton>
-
-          <Modal
-            isVisible={EventModal}
-            >
-            <EventModalView>
-              <EventModalCloseButton onPress={ () => setEventModal(false) }>
-                <Icon name="close" size={40}/>
-              </EventModalCloseButton>
-              <EventAddForm 
-                placeholder='名前を入力する（4文字以上）'
-                autoCapitalize={'none'}
-                autoCorrect={ false }
-                onChangeText={ text => setEventName(text) }
-              />
-              <EventAddButton onPress={ () => AddEvent() }>
-                <EventAddText>
-                  追加する
-                </EventAddText>
-              </EventAddButton>
-            </EventModalView>
-          </Modal>
-        </EventPlus>
-
-        {/* <EvetnListView>
-          <EventFlatList 
-            data={EventList}
-            keyExtractor={(item) => (item.id)}
-            renderItem={({item}) => 
-              <View>
-                <EventFlatListText>
-                  {console.log(item.id, item.name, item.uid)}
-                  {item.name}
-                  {item.uid}
-                </EventFlatListText>
-              </View>
-            }
-          />
-
-          
-        </EvetnListView> */}
-
-      </EventView>
-    </Container>
+  const EventFlatListDisplay = (
+    EventList.length === 0 ? 
+    null  
+                          :
+    <EventFlatList 
+      data={EventList[0]}
+      extraData={EventList[0]}
+      keyExtractor={item => item.date.toString()}
+      renderItem={({item}) => 
+        <EventFlatListButton>
+          <EventFlatListText>
+            {item.name}  
+          </EventFlatListText>
+            <Icon name="angle-right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
+        </EventFlatListButton>
+      }
+    />
   );
-};
 
-const Container = styled.View`
+  if (EventList.length === 0){
+    return (
+      <ActivityIndicator size="large" style={[styles.loading]}/>
+    )
+  } else {
+    return (
+      <Container>
+        <MemberView>
+          <MemberAddButton onPress={ () => setMemberModal(true) }>
+            <MemberAddPlus>
+              +
+            </MemberAddPlus>
+          </MemberAddButton>
+  
+          <Modal
+            isVisible={MemberModal}
+            >
+            <MemberModalView>
+              <MemberModalCloseButton onPress={ () => setMemberModal(false) }>
+                <Icon name="close" size={40}/>
+              </MemberModalCloseButton>
+              <MemberModalTitle>
+                招待コード
+              </MemberModalTitle>
+              <MemberAddCodeView>
+                <MemberAddCodeText>
+                </MemberAddCodeText>
+              </MemberAddCodeView>
+              <MemberModalAddText>
+                友達にアプリをインストールしてもらい、{"\n"}
+                この招待コードを入力してもらおう！
+              </MemberModalAddText>
+            </MemberModalView>
+          </Modal>
+          <MemberAddText>
+            招待する
+          </MemberAddText>
+        </MemberView>
+  
+        <RecentActivities>
+          <RecentActivitiesText>
+            直近の活動
+          </RecentActivitiesText>
+          <RecentActivitiesListView>
+            <RecentActivitiesListDate>
+              {year}/{month}/{date}
+            </RecentActivitiesListDate>
+            <RecentActivitiesList>
+  
+            </RecentActivitiesList>
+            <RecentActivitiesListDetailButton>
+              <RecentActivitiesListDetailText>
+                もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
+              </RecentActivitiesListDetailText>
+            </RecentActivitiesListDetailButton>
+          </RecentActivitiesListView>
+        </RecentActivities>
+  
+        <EventView>
+          <EventPlus>
+            <EventTitle>
+              トレーニングリスト
+            </EventTitle>
+  
+            <EventPlusButton onPress={ () => setEventModal(true) }>
+              <EventPlusButtonText>
+                + 追加する
+              </EventPlusButtonText>
+            </EventPlusButton>
+  
+            <Modal
+              isVisible={EventModal}
+              >
+              <EventModalView>
+                <EventModalCloseButton onPress={ () => setEventModal(false) }>
+                  <Icon name="close" size={40}/>
+                </EventModalCloseButton>
+                <EventAddForm 
+                  placeholder='名前を入力する（4文字以上）'
+                  autoCapitalize={'none'}
+                  autoCorrect={ false }
+                  onChangeText={ text => setEventName(text) }
+                />
+                <EventAddButton onPress={ () => AddEvent() }>
+                  <EventAddText>
+                    追加する
+                  </EventAddText>
+                </EventAddButton>
+              </EventModalView>
+            </Modal>
+          </EventPlus>
+          
+          <EvetnListView>
+            {/* <EventFlatList 
+              data={EventList[0]}
+              extraData={EventList[0]}
+              keyExtractor={item => item.date.toString()}
+              renderItem={({item}) => 
+                <EventFlatListButton>
+                  <EventFlatListText>
+                    {item.name}  
+                  </EventFlatListText>
+                    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
+                </EventFlatListButton>
+              }
+            /> */}
+            {EventFlatListDisplay}
+          </EvetnListView>
+        </EventView>
+      </Container>
+    );
+  };
+}
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    backgroundColor: COLORS.BASE_BACKGROUND
+  }
+})
+
+const Container = styled.ScrollView`
   flex: 1;
   padding-top: 120px;
   background-color: ${COLORS.BASE_BACKGROUND};
@@ -313,7 +326,7 @@ const EventPlus = styled.View`
 `
 
 const EventTitle = styled.Text`
-  font-size: 15px;
+  font-size: 20px;
   font-weight: bold;
 `
 
@@ -364,10 +377,24 @@ const EvetnListView = styled.View`
 const EventFlatList = styled.FlatList`
 `
 
-const EventFlatListText = styled.Text`
-  font-size: 16px;
-  padding-top: 15px;
+const EventFlatListButton = styled.TouchableOpacity`
+  margin-top: 20px;
+  background-color: #FFF;
+  height: 75px;
+  border-radius: 5px;
+  box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
+  flex-direction: row;
 `
 
+const EventFlatListText = styled.Text`
+  font-size: 16px;
+  margin-top: auto;
+  margin-bottom: auto;
+  align-self: flex-start;
+  margin-left: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #808080;
+`
 
 export default HomeScreen;
