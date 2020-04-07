@@ -29,7 +29,7 @@ const MyPageScreen = ({ navigation }) => {
 const MypageContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-  padding-top: 30px;
+  padding-top: 100px;
 `
 // user info
 const MypageUserWrapper = styled.View`

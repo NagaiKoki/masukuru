@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
 import MyPageScreen from '../screens/MyPage/MyPage'
 import ProfileChangeScreen from '../screens/MyPage/ProfileChange';
 
@@ -17,11 +17,18 @@ const MyPageNavigator = () => {
        <MyPageStack.Screen
         name="マイページ"
         component={MyPageScreen}
+        options={{
+          headerShown: false,
+          headerBackTitle: "header"
+        }}
       />
 
       <MyPageStack.Screen
         name="プロフィール編集"
         component={ProfileChangeScreen}
+        options={{
+          headerBackTitleVisible: false
+        }}
       />
     </MyPageStack.Navigator>
   );

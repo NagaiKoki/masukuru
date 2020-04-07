@@ -24,11 +24,17 @@ const TutorialNavigator = () => {
       <TotorialStack.Screen
         name="プロフィール写真を登録する"
         component={TutorialUserImageScreen} 
+        options={{
+          headerBackTitleVisible: false
+        }}
       />
 
       <TotorialStack.Screen
         name="グループを作成する"
         component={TutorialGroupMakeScreen}
+        options={{
+          headerBackTitleVisible: false
+        }}
       />
 
       <TotorialStack.Screen 
