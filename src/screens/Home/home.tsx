@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
       extraData={EventList[0]}
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
-        <EventFlatListButton>
+        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item }) }}>
           <EventFlatListText>
             {item.name}  
           </EventFlatListText>
