@@ -1,12 +1,13 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
+import firebase from '../config/firebase'
+// import screen
 import HomeScreen from '../screens/Home';
 import TutorialNavigator from './TutorialNavigator';
-import firebase from '../config/firebase'
 import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
 import ProfileChangeScreen from '../screens/MyPage/ProfileChange';
-import MainTabNavigator from './MainTabNavigator';
+import MenuScreen from '../screens/Menus/index'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
@@ -28,6 +29,11 @@ const MainNavigator = () => {
     return (
       <ActivityIndicator size="large" style={[styles.loading]} />
     )
+  }
+
+  // ヘッダータイトル関数
+  const getHeaderMenuTitle = (route) => {
+    return route.params.item.name + 'の記録'
   }
  
   return (
@@ -55,6 +61,16 @@ const MainNavigator = () => {
         name="プロフィール編集"
         component={ProfileChangeScreen}
       />
+
+      <MainStack.Screen
+        name="menu"
+        component={MenuScreen}
+        options={({route}) => ({
+          headerBackTitleVisible: false,
+          headerTitle: getHeaderMenuTitle(route),
+        })}
+      />
+
 
     {/* ログアウト */}
     <MainStack.Screen name="SignoutLoading" component={SignOutLoadingScreen} />
