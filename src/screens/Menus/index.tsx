@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { KeyboardAvoidingView, View } from 'react-native'
 import { COLORS } from '../../constants/Styles';
 import MenuAddModal from './menuAddModal';
 
@@ -11,6 +12,7 @@ const MunuScreen = ({ route, navigation }) => {
 
   return (
     <MenuContainer>
+      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
       <MenuTitle>{item.name}</MenuTitle>
       <MenuAddButton block onPress={setIsVisible}>
         <MenuAddText>記録を追加する</MenuAddText>
@@ -18,10 +20,11 @@ const MunuScreen = ({ route, navigation }) => {
 
       {/* モーダル */}
       <MenuAddModal isVisible={isVisible} setIsVisible={setIsVisible} />
-
+      <View style={{ flex : 1 }} />
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
       </MenuListContainer>
+      </KeyboardAvoidingView>
     </MenuContainer>
   )
 }

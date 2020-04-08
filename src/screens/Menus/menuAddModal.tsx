@@ -1,8 +1,10 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import Modal from 'react-native-modal';
+import { ScrollView, View } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import Icon from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/AntDesign';
+import { KeyboardAvoidingView } from 'react-native';
 
 interface MenuAddModalProps {
   isVisible: boolean
@@ -10,8 +12,9 @@ interface MenuAddModalProps {
 }
 
 const MenuAddModal = (props: MenuAddModalProps) => {
-  const [count, SetCount] = useState<number>(1)
+  const [count, SetCount] = useState<number>(2)
   const [amounts, setAmounts] = useState<number[]>([0])
+  const [weight, setWeight] = useState<number[]>([0])
 
   useEffect(() => {
 
@@ -40,6 +43,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     for (let amountSize = 1; amountSize <= count; amountSize++) { 
       amountForm.push(
         <MenuFormWrapper>
+          <MenuFormSubLabel>{amountSize}セット目</MenuFormSubLabel>
           <MenuAmountForm
           placeholder='0'
           keyboardType={'numeric'}
@@ -55,29 +59,59 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     return amountForm;
   }
 
+  const renderWeightForm = () => {
+    let weightForm = [];
+    for (let weightCount = 1; weightCount <= count; weightCount++) { 
+      weightForm.push(
+        <MenuFormWrapper>
+          <MenuFormSubLabel>{weightCount}セット目</MenuFormSubLabel>
+          <MenuAmountForm
+          placeholder='0'
+          keyboardType={'numeric'}
+          value={0}
+          autoCapitalize={'none'}
+          autoCorrect={ false }
+          onChangeText={ number => setWeight([number]) }
+          />
+          <MenuFormSubText>kg</MenuFormSubText>
+        </MenuFormWrapper>
+      )
+    }
+    return weightForm;
+  }
+
   return (
     <Modal isVisible={isVisible}>
-      <MenuModalWrapper>
-        <ModalCloseBtn>
-          <Icon name='close' onPress={handleCloseModal}/>
-        </ModalCloseBtn>
-        <MenuModalTitle>記録を残す</MenuModalTitle>
-        <MenuModalSubText>トレーニングお疲れ様です♪</MenuModalSubText>
+        <MenuModalWrapper>
+          <ModalCloseBtn>
+            <Icon name='close' onPress={handleCloseModal}/>
+          </ModalCloseBtn>
+          <MenuModalTitle>記録を残す</MenuModalTitle>
+            <MenuModalSubText>トレーニングお疲れ様です♪</MenuModalSubText>
+            <ScrollView>
+              <MenuFormContainer>
+                <MenuFormTitle>何セットしましたか？</MenuFormTitle>
+                <MenuFormWrapper>
+                  {renderSetForm}
+                <MenuFormSubText>セット</MenuFormSubText>
+              </MenuFormWrapper>
+              
+              <MenuFormTitle>各セット、何回ずつしましたか？</MenuFormTitle>
+                <MenuAmountFormWrapper>
+                  {renderAmountForm()}
+                </MenuAmountFormWrapper>
 
-        <MenuFormContainer>
-          <MenuFormTitle>何セットしましたか？</MenuFormTitle>
-          <MenuFormWrapper>
-            {renderSetForm}
-            <MenuFormSubText>セット</MenuFormSubText>
-          </MenuFormWrapper>
-          
-          <MenuFormTitle>各セット、何回ずつしましたか？</MenuFormTitle>
-          <MenuAmountFormWrapper>
-            {renderAmountForm()}
-          </MenuAmountFormWrapper>
-        </MenuFormContainer>
-      
-      </MenuModalWrapper>
+              <MenuFormTitle>各セット、重さは何kgでしたか？</MenuFormTitle>
+                <MenuAmountFormWrapper>
+                  {renderWeightForm()}
+                </MenuAmountFormWrapper>
+              </MenuFormContainer>
+            </ScrollView>
+
+          <MenuFormSubmitBtn>
+            <MenuFormSubmitText>送信する</MenuFormSubmitText>
+          </MenuFormSubmitBtn>
+        </MenuModalWrapper>
     </Modal>
   )
 }
@@ -87,6 +121,7 @@ const MenuModalWrapper = styled.View`
   border-radius: 10px;
   padding: 15px;
   position: absolute;
+  flex: 1;
   top: 100;
   left: 0;
   right: 0;
@@ -113,7 +148,6 @@ const ModalCloseBtn = styled.TouchableOpacity`
 
 // フォーム部分
 const MenuFormContainer = styled.View`
-  padding-top: 10px;
 `
 
 const MenuFormTitle = styled.Text`
@@ -122,7 +156,7 @@ const MenuFormTitle = styled.Text`
   font-size: 18px;
   width: 90%;
   align-self: center;
-  padding: 30px 0 10px 0;
+  padding: 40px 0 10px 0;
 `
 
 const MenuFormWrapper = styled.View`
@@ -130,6 +164,7 @@ const MenuFormWrapper = styled.View`
   align-items: center;
   width: 90%;
   align-self: center;
+  padding: 5px 0;
 `
 
 const MenuAmountFormWrapper = styled.View`
@@ -148,7 +183,12 @@ const MenuSetForm = styled.TextInput`
 
 const MenuFormSubText = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  margin-left: 10px;
+  padding-left: 10px;
+`
+
+const MenuFormSubLabel = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  padding-right: 10px;
 `
 
 const MenuAmountForm = styled.TextInput`
@@ -156,6 +196,22 @@ const MenuAmountForm = styled.TextInput`
   font-size: 16px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 2;
+`
+
+const MenuFormSubmitBtn = styled.TouchableOpacity`
+  width: 80%;
+  align-self: center;
+  border-radius: 30px;
+  padding: 15px 0;
+  margin: 40px 0 20px 0;
+  background-color: ${COLORS.BASE_MUSCLEW};
+`
+
+const MenuFormSubmitText = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
 `
 
 export default MenuAddModal;
