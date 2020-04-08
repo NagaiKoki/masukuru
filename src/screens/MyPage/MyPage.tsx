@@ -36,11 +36,9 @@ const MypageUserWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   padding-left: 10%;
-
 `
 
 const MypageUserImage = styled.View`
-
 `
 
 const MyPpageUserName = styled.Text`
