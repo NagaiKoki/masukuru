@@ -29,7 +29,6 @@ const HomeScreen = ({ navigation }) => {
       .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
           setCurrentGroupId(doc.ref.parent.parent.id);
-          console.log(CurrentGroupId)
           SetsetEventList(doc.ref.parent.parent.id)
         });
       })
@@ -41,10 +40,7 @@ const HomeScreen = ({ navigation }) => {
       uid: current_user_uid,
       date: today.getTime()
     }).then(function() {
-      // console.log(Event)
-      // EventList[0].name = EventName;
-      // EventList[0].uid = current_user_uid;
-      // EventList[0].date = today.getTime();
+      setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime() }]);
       setEventModal(false);
     }).catch(function(error) {
       alert(error);
@@ -56,11 +52,10 @@ const HomeScreen = ({ navigation }) => {
     db.collection('groups').doc(GroupId).collection('events')
     .get()
     .then(function(querySnapshot) {
-      list.push(
-        querySnapshot.docs.map(doc => ({...doc.data()})));
+      querySnapshot.forEach(function(doc) {
+        const data = doc.data()
+        list.push(data)})
       setEventList(list)
-      console.log(EventList)
-      console.log(EventList.length)
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
@@ -70,12 +65,12 @@ const HomeScreen = ({ navigation }) => {
   console.log(EventList)
 
   const EventFlatListDisplay = (
-    EventList.length === 0 ? 
+    EventList.length == 0 ? 
     null  
                           :
     <EventFlatList 
-      data={EventList[0]}
-      extraData={EventList[0]}
+      data={EventList}
+      extraData={EventList}
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
         <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item }) }}>
@@ -88,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
     />
   );
 
-  if (EventList.length === 0){
+  if (EventList.length == 0){
     return (
       <ActivityIndicator size="large" style={[styles.loading]}/>
     )
@@ -181,19 +176,6 @@ const HomeScreen = ({ navigation }) => {
           </EventPlus>
           
           <EvetnListView>
-            {/* <EventFlatList 
-              data={EventList[0]}
-              extraData={EventList[0]}
-              keyExtractor={item => item.date.toString()}
-              renderItem={({item}) => 
-                <EventFlatListButton>
-                  <EventFlatListText>
-                    {item.name}  
-                  </EventFlatListText>
-                    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
-                </EventFlatListButton>
-              }
-            /> */}
             {EventFlatListDisplay}
           </EvetnListView>
         </EventView>
