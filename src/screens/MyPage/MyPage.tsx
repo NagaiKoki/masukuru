@@ -8,7 +8,7 @@ import MenuList from '../../components/MyPage/menuList';
 
 const MyPageScreen = ({ navigation }) => {
   const user = firebase.auth().currentUser
-  
+    
   return (
     <MypageContainer>
       <MypageUserWrapper>
@@ -36,11 +36,9 @@ const MypageUserWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   padding-left: 10%;
-
 `
 
 const MypageUserImage = styled.View`
-
 `
 
 const MyPpageUserName = styled.Text`

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from 'react-native-modal';
+import { factoryRandomCode } from '../../lib/randomTextFactory';
 import firebase, { db } from '../../config/firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -53,18 +54,6 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
     }
   }
 
-  // 個人で使う場合のグループ招待コード生成
-  const factoryInviteCode = () : string => {
-    let str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let codeLength = 6
-    let result: string = "";
-
-    for (let i = 0; i < codeLength; i++) {
-      result += str.charAt(Math.floor(Math.random() * str.length))
-    }
-    return result;
-  };
-
   // グループコレクション配下に、所属するユーザーのサブコレクションを作成する
   const groupUser = () => {
     groupRef.doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
@@ -76,7 +65,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
 
   // 招待コードを保存する
   const saveInvideCode = () => {
-    const invideCode = factoryInviteCode();
+    const invideCode = factoryRandomCode(6);
     groupRef.where('inviteCode', '==', invideCode).get()
     .then(snapshot => {
       if (snapshot.empty) {
