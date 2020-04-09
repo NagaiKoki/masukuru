@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { KeyboardAvoidingView, View } from 'react-native'
 import { COLORS } from '../../constants/Styles';
+import MenuList from './menuList'
 import MenuAddModal from './menuAddModal';
+import firebase, { db } from '../../config/firebase';
 
 const MunuScreen = ({ route, navigation }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-
   const { params } = route;
   const { item } = params;
 
   return (
     <MenuContainer>
-      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
+      <KeyboardAvoidingView>
       <MenuTitle>{item.name}</MenuTitle>
       <MenuAddButton block onPress={setIsVisible}>
         <MenuAddText>記録を追加する</MenuAddText>
@@ -39,7 +40,7 @@ const MenuTitle = styled.Text`
   font-size: 30px;
   font-weight: bold;
   text-align: center;
-  padding-top: 30px;
+  padding-top: 50px;
 `
 
 const MenuAddButton = styled.TouchableOpacity`
@@ -48,7 +49,7 @@ const MenuAddButton = styled.TouchableOpacity`
   align-self: center;
   padding: 15px 0;
   border-radius: 30px;
-  margin-top: 30px;
+  margin-top: 40px;
 `
 
 const MenuAddText = styled.Text`
@@ -69,7 +70,7 @@ const MenuListTitle = styled.Text`
   font-weight: bold;
   width: 80%;
   align-self: center;
-  padding: 50px 0 20px 0;
+  padding: 60px 0 20px 0;
 `
 
 export default MunuScreen;

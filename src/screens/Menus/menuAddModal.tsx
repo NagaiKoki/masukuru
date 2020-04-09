@@ -78,7 +78,6 @@ const MenuAddModal = (props: MenuAddModalProps) => {
         setIsVisible(false)
       })
     } catch(error) {
-      console.log(error)
       alert('問題が発生しました。しばらくしてから、再度お試しください。')
     }
 
