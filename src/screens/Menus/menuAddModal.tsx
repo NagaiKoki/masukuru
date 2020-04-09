@@ -158,7 +158,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     <Modal isVisible={isVisible}>
       <MenuModalWrapper>
         <ModalCloseBtn>
-          <Icon name='close' size='10' onPress={handleCloseModal}/>
+          <Icon name='close' size='20' onPress={handleCloseModal}/>
         </ModalCloseBtn>
         <MenuModalTitle>記録を残す</MenuModalTitle>
           <MenuModalSubText>トレーニングお疲れ様です♪</MenuModalSubText>
