@@ -19,7 +19,7 @@ const MunuScreen = ({ route, navigation }) => {
       </MenuAddButton>
 
       {/* モーダル */}
-      <MenuAddModal isVisible={isVisible} setIsVisible={setIsVisible} />
+      <MenuAddModal item={item} isVisible={isVisible} setIsVisible={setIsVisible} />
       <View style={{ flex : 1 }} />
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
