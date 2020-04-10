@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
-import firebase from '../config/firebase'
+import firebase, { db } from '../config/firebase'
 // import screen
 import HomeScreen from '../screens/Home';
 import TutorialNavigator from './TutorialNavigator';
@@ -12,20 +12,29 @@ import MenuScreen from '../screens/Menus/index'
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
   const [initialNav, setInitialNav] = useState<string>('ホーム')
+  const [currentGroupId, setCurrentGroupId] = useState('');
   const [loading, setloading] = useState(true)
+
 
   useLayoutEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user && user.displayName === null) {
         setInitialNav('Tutorial');
+        setCurrentGroupId('temporaryId')
         setloading(false);
       } else {
+        db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(doc => {
+            setCurrentGroupId(doc.ref.parent.parent.id);
+          });
+        })
         setloading(false);
       }
     })
   }, [])
-  
-  if (loading) {
+
+  if (loading || currentGroupId === "") {
     return (
       <ActivityIndicator size="large" style={[styles.loading]} />
     )
@@ -35,7 +44,8 @@ const MainNavigator = () => {
   const getHeaderMenuTitle = (route) => {
     return route.params.item.name + 'の記録'
   }
- 
+
+  
   return (
     <MainStack.Navigator
       initialRouteName={initialNav}
@@ -50,7 +60,8 @@ const MainNavigator = () => {
   
       <MainStack.Screen 
         name="ホーム" 
-        component={HomeScreen} 
+        component={HomeScreen}
+        initialParams={{ currentGroupId: currentGroupId }}
         options={{
           gestureEnabled: false,
         }}

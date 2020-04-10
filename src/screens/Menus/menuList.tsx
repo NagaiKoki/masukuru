@@ -9,26 +9,19 @@ import { MenuType } from '../../types/menu';
 
 interface TrainingListProps {
   user: firebase.User
+  item: any
 }
 
 const MenuList = (props: TrainingListProps) => {
   const [list, setList] = useState<MenuType[]>([]);
-  const [previousItem, setPreviousItem] = useState<MenuType[]>([])
-  const [isLastMenu, setIsLastMenu] = useState(false)
-  const [isFirstMenu, setIsFirstMenu] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
-  const { user }  = props;
+  const { user, item }  = props;
+  const isShowPage = true;
   
   useEffect(() => {
-    requestMenuList(user, setList)
+    requestMenuList(user, setList, isShowPage, item)
     setIsLoading(false)
   }, [])
-
-  // const handleBack = () => {
-  //   setPreviousItem(list)
-  //   setList(previousItem);
-  //   setIsLastMenu(false)
-  // }
 
   if (isLoading) {
     return (
@@ -44,34 +37,10 @@ const MenuList = (props: TrainingListProps) => {
       <MenuItem key={index} list={item}/>  
   ))
 
-  // // 戻るボダン
-  // const backBtn = () => {
-  //   if (previousItem.length) {
-  //     return (
-  //       <MenuBackBtn block onPress={() => handleBack()} >
-  //         <MenuBtnText>戻る</MenuBtnText>
-  //       </MenuBackBtn>
-  //     )
-  //   } else {
-  //     return <MenuBtnText></MenuBtnText>;
-  //   }
-  // }
-
-  // // 次へボタン
-  // const nextBtn = () => {
-  //   if (isLastMenu) return;
-  //   return (
-  //     <MenuNextBtn block onPress={ () => requestMenuList(user, setList, setIsLastMenu, setIsFirstMenu, setPreviousItem, list, 'next')}>
-  //       <MenuBtnText >次へ</MenuBtnText>
-  //     </MenuNextBtn>
-  //   )
-  // }
 
   return (
     (
       list.length ? <ScrollView>
-      {/* {backBtn()}
-      {nextBtn()} */}
       <TrainingListContainer>
         {TrainingMenuItem}
       </TrainingListContainer>

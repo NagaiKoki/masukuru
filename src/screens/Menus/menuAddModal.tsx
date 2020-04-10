@@ -78,7 +78,6 @@ const MenuAddModal = (props: MenuAddModalProps) => {
         setIsVisible(false)
       })
     } catch(error) {
-      console.log(error)
       alert('問題が発生しました。しばらくしてから、再度お試しください。')
     }
 
@@ -89,13 +88,38 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     setIsVisible(false)
   }
 
+  const handleSetCount = (set) => {
+    const setString = String(set)
+    if (setString.match(/[^0-9]+/)) {
+      alert('数字だけを入力してください。')
+      return;
+    } else {
+      SetCount(set)
+    }
+  }
+
+  console.log(amount1)
+
   // 回数の動的対象state変更処理
   const handleSetAmount = (count,number) => {
-    eval("setAmount" + count + `(${number})`)
+    const str = String(number)
+    if (str.match(/[^0-9]+/)) {
+      eval("setAmount" + count + `()`)
+      alert('数字だけを入力してください。')
+      return;
+    } else {
+      eval("setAmount" + count + `(${number})`)
+    }
   }
 
   const handleSetWeight = (count, number) => {
-    eval("setWeight" + count + `(${number})`)
+    const str = String(number)
+    if (str.match(/[^0-9]+/)) {
+      alert('数字だけを入力してください。')
+      return;
+    } else {
+      eval("setWeight" + count + `(${number})`)
+    }
   }
 
   const renderSetForm = (
@@ -106,7 +130,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
         autoCapitalize={'none'}
         autoCorrect={ false }
         maxLength={1}
-        onChangeText={text => SetCount(text)}
+        onChangeText={set => handleSetCount(set)}
       />
   )
    

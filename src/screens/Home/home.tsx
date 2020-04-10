@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, StyleSheet, Button, Text, AsyncStorage, ActivityIndicator, ScrollView } from 'react-native';
+import {StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import EventAddModal from './EventAddModal'
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase, { db } from '../../config/firebase';
-import { List } from 'react-native-paper';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
   const [MemberModal, setMemberModal] = useState(false);
   const [EventModal, setEventModal] = useState(false);
-  const [CurrentGroupId, setCurrentGroupId] = useState('');
   const [EventList, setEventList] = useState([]);
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
+  const currentGroupId = route.params.currentGroupId
 
   const today = new Date();
   const year = today.getFullYear();
@@ -24,18 +22,11 @@ const HomeScreen = ({ navigation }) => {
   const date = today.getDate();
 
   useEffect(() => {
-      db.collectionGroup("groupUsers").where('uid', '==', current_user_uid).limit(1)
-      .get()
-      .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-          setCurrentGroupId(doc.ref.parent.parent.id);
-          SetsetEventList(doc.ref.parent.parent.id)
-        });
-      })
+    SetsetEventList(currentGroupId)  
   }, []);
   
   const AddEvent = () => {
-    db.collection('groups').doc(CurrentGroupId).collection('events').add({
+    db.collection('groups').doc(currentGroupId).collection('events').add({
       name: EventName,
       uid: current_user_uid,
       date: today.getTime()
@@ -63,7 +54,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   console.log(EventList)
-
+  
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
     null  
