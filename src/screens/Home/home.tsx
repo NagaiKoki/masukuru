@@ -54,7 +54,7 @@ const HomeScreen = ({ navigation, route }) => {
   }
 
   console.log(EventList)
-
+  
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
     null  

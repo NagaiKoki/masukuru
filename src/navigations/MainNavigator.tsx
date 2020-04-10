@@ -20,6 +20,7 @@ const MainNavigator = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user && user.displayName === null) {
         setInitialNav('Tutorial');
+        setCurrentGroupId('temporaryId')
         setloading(false);
       } else {
         db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
@@ -45,7 +46,6 @@ const MainNavigator = () => {
   }
 
   
- 
   return (
     <MainStack.Navigator
       initialRouteName={initialNav}
