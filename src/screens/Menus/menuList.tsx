@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, Button } from 'react-native';
-import { requestMenuList } from '../../apis/myPageTraining';
+import { requestMenuList } from '../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
@@ -8,18 +8,19 @@ import firebase from 'firebase'
 import { MenuType } from '../../types/menu';
 
 interface TrainingListProps {
-  user: firebase.User
+  user?: firebase.User
+  currentGroupId?: string
   item: any
 }
 
 const MenuList = (props: TrainingListProps) => {
   const [list, setList] = useState<MenuType[]>([]);
   const [isLoading, setIsLoading] = useState(true)
-  const { user, item }  = props;
+  const { user, currentGroupId, item }  = props;
   const isShowPage = true;
   
   useEffect(() => {
-    requestMenuList(user, setList, isShowPage, item)
+    requestMenuList(setList, user, isShowPage, currentGroupId, item)
     setIsLoading(false)
   }, [])
 
@@ -36,7 +37,6 @@ const MenuList = (props: TrainingListProps) => {
     list.map((item, index) => (
       <MenuItem key={index} list={item}/>  
   ))
-
 
   return (
     (

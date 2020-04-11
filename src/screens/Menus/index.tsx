@@ -6,10 +6,11 @@ import MenuList from './menuList'
 import MenuAddModal from './menuAddModal';
 import firebase, { db } from '../../config/firebase';
 
-const MunuScreen = ({ route, navigation }) => {
+const MunuScreen = ({ navigation, route }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const { params } = route;
-  const { item } = params;
+  const { currentGroupId, item } = params;
+  const user = firebase.auth().currentUser
 
   return (
     <MenuContainer>
@@ -20,10 +21,11 @@ const MunuScreen = ({ route, navigation }) => {
       </MenuAddButton>
 
       {/* モーダル */}
-      <MenuAddModal item={item} isVisible={isVisible} setIsVisible={setIsVisible} />
+      <MenuAddModal item={item} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
       <View style={{ flex : 1 }} />
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
+        <MenuList item={item} user={user} currentGroupId={currentGroupId} />
       </MenuListContainer>
       </KeyboardAvoidingView>
     </MenuContainer>
