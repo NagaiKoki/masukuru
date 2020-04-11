@@ -4,7 +4,7 @@ import firebase from 'firebase'
 
 interface UserImageProps {
   uri?: string,
-  user: firebase.User
+  user?: firebase.User
   width: number
   height: number
   borderRadius: number
@@ -19,7 +19,7 @@ const UserImage = (props: UserImageProps) => {
            style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'cover', alignSelf: 'center' }}
       />
     )
-  } else if (user.photoURL) {
+  } else if (user && user.photoURL) {
     return (
       <Image source={{ uri: user.photoURL }}
              style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'cover', alignSelf: 'center' }}

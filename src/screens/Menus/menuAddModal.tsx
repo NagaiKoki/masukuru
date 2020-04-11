@@ -10,6 +10,7 @@ import { KeyboardAvoidingView } from 'react-native';
 
 interface MenuAddModalProps {
   item: any,
+  currentGroupId: string,
   isVisible: boolean
   setIsVisible: Dispatch<SetStateAction<boolean>>
 }
@@ -36,7 +37,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   const [weight8, setWeight8] = useState<number>(0)
   const [weight9, setWeight9] = useState<number>(0)
 
-  const { item, isVisible, setIsVisible } = props;
+  const { item, currentGroupId, isVisible, setIsVisible } = props;
   const currentUser = firebase.auth().currentUser
 
   useEffect(() => {
@@ -61,7 +62,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           amount7: amount7,
           amount8: amount8,
           amount9: amount9,
-
+          groupId: currentGroupId,
           weight1: weight1,
           weight2: weight2,
           weight3: weight3,
@@ -78,6 +79,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
         setIsVisible(false)
       })
     } catch(error) {
+      console.log(error)
       alert('問題が発生しました。しばらくしてから、再度お試しください。')
     }
 

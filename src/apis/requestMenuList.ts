@@ -2,14 +2,13 @@ import { Dispatch, SetStateAction } from 'react'
 import firebase, { db } from '../config/firebase';
 import { MenuType } from '../types/menu';
 
-export const requestMenuList = (user: firebase.User, setList: (list: MenuType[]) => void, isShowPage?: boolean, item?: any) => {
+export const requestMenuList = (setList: (list: MenuType[]) => void, user?: firebase.User, isShowPage?: boolean, currentGroupId?: string, item?: any) => {
   try {
     let listArray = []
     let query;
     let documents;
     if (isShowPage) {
-      // TODO: グループIDが取るのに必要
-      documents = db.collectionGroup('menus').where('uid', '==', user.uid).where('name', '==', item.name) 
+      documents = db.collectionGroup('menus').where('groupId', '==', currentGroupId).where('name', '==', item.name) 
     } else {
       documents = db.collectionGroup('menus').where('uid', '==', user.uid)
     }

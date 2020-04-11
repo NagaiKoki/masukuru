@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, Button } from 'react-native';
-import { requestMenuList } from '../../apis/myPageTraining';
+import { requestMenuList } from '../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
@@ -20,7 +20,7 @@ const MenuList = (props: TrainingListProps) => {
   const { user }  = props;
   
   useEffect(() => {
-    requestMenuList(user, setList)
+    requestMenuList(setList, user)
     setIsLoading(false)
   }, [])
 

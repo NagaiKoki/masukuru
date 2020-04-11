@@ -76,6 +76,7 @@ const MainNavigator = () => {
       <MainStack.Screen
         name="menu"
         component={MenuScreen}
+        initialParams={{ currentGroupId: currentGroupId }}
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderMenuTitle(route),

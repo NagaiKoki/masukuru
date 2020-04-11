@@ -64,7 +64,7 @@ const HomeScreen = ({ navigation, route }) => {
       extraData={EventList}
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
-        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item }) }}>
+        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
           <EventFlatListText>
             {item.name}  
           </EventFlatListText>
