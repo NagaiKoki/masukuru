@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 import firebase, { db } from '../config/firebase';
 import { MenuType } from '../types/menu';
 
-export const requestMenuList = (setList: (list: MenuType[]) => void, user?: firebase.User, isShowPage?: boolean, currentGroupId?: string, item?: any) => {
+export const requestMenuList = (setList: Dispatch<SetStateAction<MenuType[]>>, setIsLoading?: any, user?: firebase.User, isShowPage?: boolean, currentGroupId?: string, item?: any) => {
   try {
     let listArray = []
     let query;
@@ -17,11 +17,13 @@ export const requestMenuList = (setList: (list: MenuType[]) => void, user?: fire
     query.get().then(snapshot  => {
       if (snapshot.empty) {
         console.log('no data')
+        setIsLoading(false)
       } else {
         snapshot.forEach(doc => {
           const data = doc.data()
           listArray.push(data)
         })
+        setIsLoading(false)
         return setList(listArray)
       }
       })

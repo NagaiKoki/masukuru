@@ -6,10 +6,12 @@ import { COLORS } from '../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
 import firebase, { db } from '../../config/firebase';
+import { MenuType } from '../../types/menu';
 import { KeyboardAvoidingView } from 'react-native';
 
 interface MenuAddModalProps {
   item: any,
+  setList: Dispatch<SetStateAction<MenuType[]>>
   currentGroupId: string,
   isVisible: boolean
   setIsVisible: Dispatch<SetStateAction<boolean>>
@@ -37,17 +39,17 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   const [weight8, setWeight8] = useState<number>(0)
   const [weight9, setWeight9] = useState<number>(0)
 
-  const { item, currentGroupId, isVisible, setIsVisible } = props;
+  const { item, setList, currentGroupId, isVisible, setIsVisible } = props;
   const currentUser = firebase.auth().currentUser
 
   useEffect(() => {
   }, [count])
 
   const onSubmitMenu = async () => {
-    const currentTime = new Date
+    const currentTime = firebase.firestore.FieldValue.serverTimestamp()
     const menuId = factoryRandomCode(10)
     try {
-      await db.collectionGroup('events').where('uid', '==', currentUser.uid).where('name', '==', item.name).get().then(snapshot => {
+      await db.collectionGroup('events').where('groupId', '==', currentGroupId).where('name', '==', item.name).get().then(snapshot => {
         snapshot.docs[0].ref.collection('menus').doc(menuId).set({
           uid: currentUser.uid,
           menuId: menuId,
@@ -76,6 +78,34 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           createdAt: currentTime
         })
       }).then(() => {
+        setList(state => [{
+          uid: currentUser.uid,
+          menuId: menuId,
+          name: item.name,
+          set: count,
+          amount1: amount1,
+          amount2: amount2,
+          amount3: amount3,
+          amount4: amount4,
+          amount5: amount5,
+          amount6: amount6,
+          amount7: amount7,
+          amount8: amount8,
+          amount9: amount9,
+          groupId: currentGroupId,
+          weight1: weight1,
+          weight2: weight2,
+          weight3: weight3,
+          weight4: weight4,
+          weight5: weight5,
+          weight6: weight6,
+          weight7: weight7,
+          weight8: weight8,
+          weight9: weight9,
+
+          createdAt: ""
+        }, ...state,])
+      }).then(() => {
         setIsVisible(false)
       })
     } catch(error) {
@@ -99,8 +129,6 @@ const MenuAddModal = (props: MenuAddModalProps) => {
       SetCount(set)
     }
   }
-
-  console.log(amount1)
 
   // 回数の動的対象state変更処理
   const handleSetAmount = (count,number) => {
