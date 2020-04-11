@@ -11,6 +11,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [MemberModal, setMemberModal] = useState(false);
   const [EventModal, setEventModal] = useState(false);
   const [EventList, setEventList] = useState([]);
+  const [UserList, setUserList] = useState([]);
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
@@ -22,7 +23,8 @@ const HomeScreen = ({ navigation, route }) => {
   const date = today.getDate();
 
   useEffect(() => {
-    SetsetEventList(currentGroupId)  
+    GetEventList(currentGroupId)  
+    GetUserList(currentGroupId)
   }, []);
   
   const AddEvent = () => {
@@ -38,7 +40,7 @@ const HomeScreen = ({ navigation, route }) => {
     })
   }
 
-  const SetsetEventList = (GroupId) => {
+  const GetEventList = (GroupId) => {
     let list = []
     db.collection('groups').doc(GroupId).collection('events')
     .get()
@@ -53,13 +55,26 @@ const HomeScreen = ({ navigation, route }) => {
     })
   }
 
-  console.log(EventList)
+  const GetUserList = (GroupId) => {
+    let list = []
+    db.collection('groups').doc(GroupId).collection('groupUsers')
+    .get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        const data = doc.data()
+        list.push(data)})
+      setUserList(list)
+    })
+    .catch(function(error) {
+      console.log("Error getting documents: ", error);
+    })
+  }
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
     null  
                           :
-    <EventFlatList 
+    <EventFlatList
       data={EventList}
       extraData={EventList}
       keyExtractor={item => item.date.toString()}
@@ -74,6 +89,8 @@ const HomeScreen = ({ navigation, route }) => {
     />
   );
 
+  console.log(UserList)
+
   if (EventList.length == 0){
     return (
       <ActivityIndicator size="large" style={[styles.loading]}/>
@@ -82,6 +99,26 @@ const HomeScreen = ({ navigation, route }) => {
     return (
       <Container>
         <MemberView>
+          <MemberListView>
+          <MemberFlatList
+            horizontal
+            data={UserList}
+            extraData={UserList}
+            keyExtractor={item => item.uid.toString()}
+            renderItem={({item}) => 
+            <MemberFlatListView>
+              <MemberFlatListImage
+                source={{
+                  uri: item.imageUrl
+                }}
+              />
+              <MemberFlatListName>
+                {item.name}
+              </MemberFlatListName>
+            </MemberFlatListView>
+            }
+          />
+          </MemberListView>
           <MemberAddButton onPress={ () => setMemberModal(true) }>
             <MemberAddPlus>
               +
@@ -191,14 +228,39 @@ const Container = styled.ScrollView`
 const MemberView = styled.View`
   background-color: #FFF;
   height: 70px;
+  padding: 10px 15px 0 15px;
+`
+
+const MemberListView = styled.View`
+  position: relative;
+  width: 90%;
+`
+
+const MemberFlatList = styled.FlatList`
+`
+
+const MemberFlatListView = styled.View`
+  margin-right: 10px;
+`
+
+const MemberFlatListImage = styled.Image`
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+`
+
+const MemberFlatListName = styled.Text`
+  font-size: 10px;
+  text-align: center;
 `
 
 const MemberAddButton = styled.TouchableOpacity`
-  position: relative;
-  background-color: ${COLORS.BASE_MUSCLEW};;
+  position: absolute;
+  background-color: ${COLORS.BASE_MUSCLEW};
+  right: 10px;
   width: 40px;
   height: 40px;
-  margin: 5px 15px 0 0;
+  margin: 5px 0 0 0;
   align-self: flex-end;
   border-radius: 50px;
 `
@@ -243,9 +305,12 @@ const MemberModalAddText = styled.Text`
 `
 
 const MemberAddText = styled.Text`
+  position: absolute;
+  top: 50px;
+  right: 10px;
   align-self: flex-end;
   font-size: 10px;
-  margin: 5px 15px 0 0;
+  margin: 5px 0 0 0;
 `
 
 const RecentActivities = styled.View`
