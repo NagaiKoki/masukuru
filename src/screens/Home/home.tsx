@@ -31,6 +31,7 @@ const HomeScreen = ({ navigation, route }) => {
     db.collection('groups').doc(currentGroupId).collection('events').add({
       name: EventName,
       uid: current_user_uid,
+      groupId: currentGroupId,
       date: today.getTime()
     }).then(function() {
       setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime() }]);

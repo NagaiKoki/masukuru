@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, ScrollView, Button } from 'react-native';
+import { ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { requestMenuList } from '../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
@@ -13,22 +13,13 @@ interface TrainingListProps {
 
 const MenuList = (props: TrainingListProps) => {
   const [list, setList] = useState<MenuType[]>([]);
-  const [previousItem, setPreviousItem] = useState<MenuType[]>([])
-  const [isLastMenu, setIsLastMenu] = useState(false)
-  const [isFirstMenu, setIsFirstMenu] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
+  const [isRefresh, setIsRefresh] = useState(false)
   const { user }  = props;
-  
-  useEffect(() => {
-    requestMenuList(setList, user)
-    setIsLoading(false)
-  }, [])
 
-  // const handleBack = () => {
-  //   setPreviousItem(list)
-  //   setList(previousItem);
-  //   setIsLastMenu(false)
-  // }
+  useEffect(() => {
+    requestMenuList(setList, setIsLoading, user)
+  }, [])
 
   if (isLoading) {
     return (
@@ -44,39 +35,28 @@ const MenuList = (props: TrainingListProps) => {
       <MenuItem key={index} list={item}/>  
   ))
 
-  // // 戻るボダン
-  // const backBtn = () => {
-  //   if (previousItem.length) {
-  //     return (
-  //       <MenuBackBtn block onPress={() => handleBack()} >
-  //         <MenuBtnText>戻る</MenuBtnText>
-  //       </MenuBackBtn>
-  //     )
-  //   } else {
-  //     return <MenuBtnText></MenuBtnText>;
-  //   }
-  // }
-
-  // // 次へボタン
-  // const nextBtn = () => {
-  //   if (isLastMenu) return;
-  //   return (
-  //     <MenuNextBtn block onPress={ () => requestMenuList(user, setList, setIsLastMenu, setIsFirstMenu, setPreviousItem, list, 'next')}>
-  //       <MenuBtnText >次へ</MenuBtnText>
-  //     </MenuNextBtn>
-  //   )
-  // }
+  const onRefresh = async () => {
+    setIsRefresh(true)
+    await requestMenuList(setList, setIsLoading, user)
+    setIsRefresh(false)
+  }
 
   return (
     (
-      list.length ? <ScrollView>
-      {/* {backBtn()}
-      {nextBtn()} */}
-      <TrainingListContainer>
-        {TrainingMenuItem}
-      </TrainingListContainer>
-    </ScrollView>
-    : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      list.length ? 
+      <ScrollView
+        refreshControl={
+          <RefreshControl 
+            refreshing={isRefresh}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        <TrainingListContainer>
+          {TrainingMenuItem}
+        </TrainingListContainer>
+      </ScrollView>
+      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
     )
   )
 }

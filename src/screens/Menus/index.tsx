@@ -5,8 +5,10 @@ import { COLORS } from '../../constants/Styles';
 import MenuList from './menuList'
 import MenuAddModal from './menuAddModal';
 import firebase, { db } from '../../config/firebase';
+import { MenuType } from '../../types/menu';
 
 const MunuScreen = ({ navigation, route }) => {
+  const [list, setList] = useState<MenuType[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const { params } = route;
   const { currentGroupId, item } = params;
@@ -21,11 +23,10 @@ const MunuScreen = ({ navigation, route }) => {
       </MenuAddButton>
 
       {/* モーダル */}
-      <MenuAddModal item={item} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
-      <View style={{ flex : 1 }} />
+      <MenuAddModal item={item} setList={setList} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
-        <MenuList item={item} user={user} currentGroupId={currentGroupId} />
+        <MenuList item={item} list={list} setList={setList} user={user} currentGroupId={currentGroupId} />
       </MenuListContainer>
       </KeyboardAvoidingView>
     </MenuContainer>
@@ -63,7 +64,6 @@ const MenuAddText = styled.Text`
 
 // menu list
 const MenuListContainer = styled.View`
-
 `
 
 const MenuListTitle = styled.Text`

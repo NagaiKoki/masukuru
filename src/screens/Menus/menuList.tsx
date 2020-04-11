@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, ScrollView, Button } from 'react-native';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { requestMenuList } from '../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
@@ -10,18 +10,19 @@ import { MenuType } from '../../types/menu';
 interface TrainingListProps {
   user?: firebase.User
   currentGroupId?: string
+  list: MenuType[]
+  setList: Dispatch<SetStateAction<MenuType[]>>
   item: any
 }
 
 const MenuList = (props: TrainingListProps) => {
-  const [list, setList] = useState<MenuType[]>([]);
   const [isLoading, setIsLoading] = useState(true)
-  const { user, currentGroupId, item }  = props;
+  const [isRefresh, setIsRefresh] = useState(false)
+  const { user, list, setList, currentGroupId, item }  = props;
   const isShowPage = true;
-  
+
   useEffect(() => {
-    requestMenuList(setList, user, isShowPage, currentGroupId, item)
-    setIsLoading(false)
+    requestMenuList(setList, setIsLoading, user, isShowPage, currentGroupId, item)
   }, [])
 
   if (isLoading) {
@@ -38,14 +39,30 @@ const MenuList = (props: TrainingListProps) => {
       <MenuItem key={index} list={item}/>  
   ))
 
+  // スクロールリロード
+  const onRefresh = async () => {
+    setIsRefresh(true)
+    await requestMenuList(setList, setIsLoading, user)
+    setIsRefresh(false)
+  }
+
   return (
     (
-      list.length ? <ScrollView>
-      <TrainingListContainer>
-        {TrainingMenuItem}
-      </TrainingListContainer>
-    </ScrollView>
-    : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      list.length ? 
+      <ScrollView　
+        contentContainerStyle={{ paddingBottom: 550 }}
+        refreshControl={
+          <RefreshControl 
+            refreshing={isRefresh}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        <TrainingListContainer>
+          {TrainingMenuItem}
+        </TrainingListContainer>
+      </ScrollView>
+      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
     )
   )
 }
@@ -91,6 +108,5 @@ const MenuNoDataText = styled.Text`
   align-self: center;
   text-align: center;
 `
-
 
 export default MenuList;
