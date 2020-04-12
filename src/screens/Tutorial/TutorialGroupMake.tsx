@@ -30,6 +30,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       }).then(function() {
         route.params.setIsChange(true)
         navigation.navigate('home', { currentGroupId: currentUser.uid })
+        route.params.setIsChange(false)
       }).catch(function(error) {
         alert(error);
       })
@@ -51,7 +52,9 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
           name: currentUser.displayName,
           imageUrl: currentUser.photoURL
         }).then(function() {
-          navigation.replace('ホーム');
+          route.params.setIsChange(true)
+          navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
+          route.params.setIsChange(false)
         })
       }
     })

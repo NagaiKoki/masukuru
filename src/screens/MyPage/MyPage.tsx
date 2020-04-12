@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, Image } from 'react-native';
 import styled from 'styled-components';
 import firebase, { db } from '../../config/firebase';
@@ -7,17 +7,18 @@ import UserImage from '../../components/Image/userImage'
 import MenuList from '../../components/MyPage/menuList';
 
 const MyPageScreen = ({ navigation }) => {
+  const [isChanged, setIsChanged] = useState(false)
   const user = firebase.auth().currentUser
-    
+  
   return (
     <MypageContainer>
       <MypageUserWrapper>
         <MypageUserImage>
-          <UserImage user={user} width={120} height={100} borderRadius={5} />
+          <UserImage user={user} width={100} height={100} borderRadius={5} />
         </MypageUserImage>
         <MyPpageUserName>{user.displayName}</MyPpageUserName>
       </MypageUserWrapper>
-        <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user }) } }>
+        <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user, setIsChanged: setIsChanged }) } }>
           <ProfileChangeText>プロフィールを編集する</ProfileChangeText>
         </ProfileChangeBtn>
         <TrainingListTitle>記録一覧</TrainingListTitle>
@@ -29,7 +30,7 @@ const MyPageScreen = ({ navigation }) => {
 const MypageContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-  padding-top: 100px;
+  padding-top: 40px;
 `
 // user info
 const MypageUserWrapper = styled.View`

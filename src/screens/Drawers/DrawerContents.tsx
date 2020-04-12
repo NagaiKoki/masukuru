@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import { ActivityIndicator, Image, StyleSheet } from 'react-native';
+import { ActivityIndicator, Clipboard, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Modal from 'react-native-modal';
+import UserImage from '../../components/Image/userImage'
 import { joinInvitedGroup } from '../../apis/invite';
 import firebase, { db } from '../../config/firebase';
 
@@ -15,12 +16,25 @@ type DrawerProps = {
 const DrawerContent = (props: DrawerProps) => {
   const [showInvitedCodeModal, setShowInvitedCodeModal] = useState<boolean>(false);
   const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
+  const [currentGroupId, setCurrentGroupId] = useState('')
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isHost, setIsHost] = useState(false)
   const { user, navigation } = props;
   const current_user = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
+
+  useEffect(() => {
+    db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(doc => {
+        setCurrentGroupId(doc.ref.parent.parent.id);
+        // 自分がホストではない場合の状態管理
+        doc.ref.parent.parent.id === user.uid ? setIsHost(true) : setIsHost(false)
+      });
+    })
+  }, [])
 
   // TODO ロジックは違うファイルに押し込みたい
   const logout = async () => {
@@ -39,29 +53,28 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
   
-  // ユーザー画像
-  const UserImage = (
-    user.photoURL ?
-        <Image source={{ uri: user.photoURL }}
-               style={{ width: 120, height: 120, borderRadius: 60, resizeMode: 'cover', alignSelf: 'center' }}
-        />
-                  :
-        <Image source={require('../../assets/profileDefaultImage.png')}
-               style={{ width: 120, height: 100, resizeMode: 'contain', alignSelf: 'center' }}
-        />
-  );
-
   // 招待コード送信制御
   const disableSubmit: boolean = (
     codeText && codeText.length === 6 ? false : true
   )
 
-  // モーダル出現
+  // 招待された場合のモーダル出現
   const handleInvitedCodeOnClick = () => {
     setShowInvitedCodeModal(true);
   }
 
+  // 招待をする場合のモーダル出現
   const handleInviteCodeOnClick = () => {
+    try {
+      groupRef.doc(currentGroupId).get().then(doc => {
+        if (doc) {
+          const { invideCode } = doc.data()
+          setOwnCode(invideCode)
+        }
+      })
+    } catch (error) {
+      Alert.alert('取得に失敗しました。時間を置いてからやり直してください。')
+    }
     setShowInviteCodeModal(true)
   }
 
@@ -70,6 +83,11 @@ const DrawerContent = (props: DrawerProps) => {
    joinInvitedGroup(codeText)
    navigation.navigate("ホーム")
    return setShowInvitedCodeModal(false)
+  }
+
+  const copyInviteCode = (code) => {
+    Clipboard.setString(code)
+    Alert.alert('コピーされました！')
   }
 
   // 招待入力用コードモーダル
@@ -102,28 +120,68 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 所属するグループの招待コード表示用モーダル
   const InviteCodeModal = () => {
-    if (!showInviteCodeModal) return;
-    try {
-      groupRef.doc(current_user.uid).get().then(doc => {
-        if (doc) {
-          const { invideCode } = doc.data()
-          setOwnCode(invideCode)
-        }
-      })
-    } catch (error) {
-      alert('取得に失敗しました。時間を置いてからやり直してください。')
-    }
-    
     return (
       <Modal isVisible={showInviteCodeModal}>
         <InviteModalView>
           <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
               <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
           </ModalCloseButton>
-            <InviteCode>{ownCode}</InviteCode>
+            <InviteCodeWrapper onPress={() => copyInviteCode(ownCode)}>
+              <InviteCodeText>{ownCode}</InviteCodeText>
+            </InviteCodeWrapper>
+            <InviteSubText>タップするとコピーされます</InviteSubText>
             <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
         </InviteModalView>
     </Modal>
+    )
+  }
+
+  // マイページ
+  const renderMyPageItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={ () => { navigation.navigate('マイページ') } }>
+          <Icon name="user" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>マイページ</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
+  // 招待用ナビ
+  const renderInvideItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={handleInviteCodeOnClick}>
+          <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>友達をグループに招待する</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
+  // 招待された場合用ナビ
+  const renderInvidedItem = () => {
+    if (!isHost) return;
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
+          <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>招待されたグループに参加する</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
+  // ログアウト
+  const renderLogoutItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={ () => logout() }>
+          <Icon name="logout" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>ログアウト</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
     )
   }
 
@@ -131,40 +189,16 @@ const DrawerContent = (props: DrawerProps) => {
     <DrawerContainer>
       <DrawerUserContainer>
         <DrawerUserImage>
-          {UserImage}
+          <UserImage user={user} width={100} height={100} borderRadius={60} />
         </DrawerUserImage>
         <DrawerUserName>{user.displayName}</DrawerUserName>
       </DrawerUserContainer>
 
       <DrawerListContainer>
-        <DrawerListItem>
-          <DrawerListItemBtn block onPress={ () => { navigation.navigate('マイページ') } }>
-            <Icon name="user" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-            <DrawerListItemText>マイページ</DrawerListItemText>
-          </DrawerListItemBtn>
-        </DrawerListItem>
-
-        <DrawerListItem>
-          <DrawerListItemBtn block onPress={handleInviteCodeOnClick}>
-            <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-            <DrawerListItemText>友達をグループに招待する</DrawerListItemText>
-          </DrawerListItemBtn>
-        </DrawerListItem>
-
-        <DrawerListItem>
-          <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
-            <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-            <DrawerListItemText>招待されたグループに参加する</DrawerListItemText>
-          </DrawerListItemBtn>
-        </DrawerListItem>
-
-        <DrawerListItem>
-          <DrawerListItemBtn block onPress={ () => logout() }>
-            <Icon name="logout" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-            <DrawerListItemText>ログアウト</DrawerListItemText>
-          </DrawerListItemBtn>
-        </DrawerListItem>
-
+        {renderMyPageItem()}
+        {renderInvideItem()}
+        {renderInvidedItem()}
+        {renderLogoutItem()}
         {/* 招待コード入力用モーダル */}
         {InvitedCodeModal()}
         {/* 所属しているグループの招待コード表示用モーダル */}
@@ -199,7 +233,7 @@ const DrawerUserName = styled.Text`
   font-size: 20px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  padding-left: 15px;
+  padding-left: 10px;
 `
 
 const DrawerUserImage = styled.View`
@@ -241,7 +275,7 @@ const InviteModalView = styled.View`
   bottom: -20;
   width: 110%;
   border-radius: 10px;
-  height: 300px;
+  height: 320px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
@@ -257,17 +291,35 @@ const InvitedModalTitle = styled.Text`
 const InviteModalTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
+  font-weight: bold;
   padding-top: 50px;
   text-align: center;
 `
 
-const InviteCode = styled.Text`
+const InviteCodeWrapper = styled.TouchableOpacity`
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
+  border-radius: 5px;
+  margin-top: 30px;
+`
+
+const InviteCodeText = styled.Text`
+  padding: 10px 50px;
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
   letter-spacing: 4;
   font-weight: bold;
   text-align: center;
-  padding-top: 20px;
+`
+
+const InviteSubText = styled.Text`
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 8px;
+  text-align: center;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const InvitedModalFormWrapper = styled.View`
