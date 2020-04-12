@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthenticationNavigator from './AuthentificationNavigator';
+import TutorialNavigator from './TutorialNavigator'
 import MainTabNavigator from './MainTabNavigator';
 import styled from 'styled-components';
 import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
@@ -12,7 +13,7 @@ import { COLORS } from '../constants/Styles';
 
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [user, setUser] = useState(null);
+  const [currentUser, setUser] = useState(null);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
@@ -46,26 +47,46 @@ const Navigator = () => {
     )
   }
 
+  const defaultTutorialScreen = () => {
+    return (
+      <Stack.Screen
+        name="Tutorial"
+        component={TutorialNavigator}
+        initialParams={{ setIsLoading: setIsLoading }}
+        options={{
+          headerShown: false
+        }}
+      />
+    )
+  }
+
   const defaultSignedOutScreen = () => {
     return (
       <Stack.Screen 
       name="AuthenticationNavigator" 
       component={AuthenticationNavigator}
       options={{
+        headerShown: false
       }}
     />
     )
   }
 
   const RootStackNavigator = () => {
-    if (user) {
+    if (currentUser && currentUser.displayName) {
       return (
         <Drawer.Navigator 
           drawerStyle={{ width: 330 }} 
-          drawerContent={ (props) => <DrawerContent user={user} {...props}/>}
+          drawerContent={ (props) => <DrawerContent user={currentUser} {...props}/>}
         >
           {defaultSignedInScreen()}
         </Drawer.Navigator>
+      )
+    } else if (currentUser && !currentUser.displayName) {
+      return (
+        <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+          {defaultTutorialScreen()}
+        </Stack.Navigator>
       )
     } else {
       return (

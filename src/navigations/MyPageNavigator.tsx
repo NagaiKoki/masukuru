@@ -8,17 +8,11 @@ const MyPageNavigator = () => {
   const MyPageStack = createStackNavigator()
 
   return (
-    <MyPageStack.Navigator
-      initialRouteName='マイページ'
-      screenOptions={{
-        gestureEnabled: false
-      }}
-    >
+    <MyPageStack.Navigator initialRouteName='マイページ'>
        <MyPageStack.Screen
         name="マイページ"
         component={MyPageScreen}
         options={{
-          headerShown: false,
           headerBackTitle: "header"
         }}
       />

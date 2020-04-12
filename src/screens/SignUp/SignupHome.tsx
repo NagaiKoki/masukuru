@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image } from 'react-native';
+import { Image, Platform } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 
@@ -8,20 +8,25 @@ const SignupHomeScreen = ({ navigation }) => {
   return (
     <Container>
       <ImageWrapper>
-        <Image 
-          source={require('../../assets/main_icon.png')}
-          style={{ width: '70%', height: 100, resizeMode: 'contain', alignSelf: 'center' }}
-        />
-      </ImageWrapper>
+        <ImageLogoWrapper>
+          <Image 
+            source={require('../../assets/main_icon.png')}
+            style={{ width: 80, height: 80, borderRadius: 60, resizeMode: 'contain', alignSelf: 'center' }}
+          />
+        </ImageLogoWrapper>
+        <ImageTitleWrapper>
+          <Image 
+            source={require('../../assets/masukuru_title.png')}
+            style={{ width: 120, height: 120, borderRadius: 60, resizeMode: 'contain', alignSelf: 'center' }}
+          />
+        </ImageTitleWrapper>
 
-      <SignUpTitle>
-        Musclew
-      </SignUpTitle>
+      </ImageWrapper>
 
       <SignUpCard>
         <SignUpButtonWrapper>
           <SignUpButton onPress={ () => navigation.navigate('Signup') }>
-            <SignUpText>新規登録する</SignUpText>
+            <SignUpText>無料登録する</SignUpText>
           </SignUpButton>
         </SignUpButtonWrapper>
 
@@ -46,25 +51,24 @@ const Container = styled.View`
 `
 
 const ImageWrapper = styled.View`
-  justify-content: center;
-  padding-bottom: 20px;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
 `
 
-const SignUpTitle = styled.Text`
-  text-align: center;
-  color: ${COLORS.BASE_MUSCLEW};
-  font-size: 30px;
-  font-weight: bold;
+const ImageLogoWrapper = styled.View`
+`
+
+const ImageTitleWrapper = styled.View`
+  margin: 10px 20px 0 10px;
 `
  
 const SignUpCard = styled.View`
   border-radius: 15px;
   width: 85%;
-  padding: 70px 0;
+  padding: 50px 0;
   margin-top: 30px;
   align-self: center;
-  background-color: ${COLORS.BASE_WHITE};
-  box-shadow: 0 10px 6px ${COLORS.CARD_SHADOW1};
 `
 
 const SignUpButtonWrapper = styled.View`
@@ -74,9 +78,9 @@ const SignUpButtonWrapper = styled.View`
 
 const SignUpButton = styled.TouchableOpacity`
   background-color: ${COLORS.BASE_MUSCLEW};
-  border-radius: 5px;
+  border-radius: 60px;
   padding: 20px 0;
-  width: 90%;
+  width: 95%;
   align-self: center;
 `
 
@@ -98,15 +102,13 @@ const LoginSupprtText = styled.Text`
 `
 
 const LoginButtonWrapper = styled.View`
-  display: flex;
-  justify-content: center;
 `
 
 const LoginButton = styled.TouchableOpacity`
   border: 2px solid ${COLORS.BASE_MUSCLEW};
-  border-radius: 5px;
+  border-radius: 60px;
   padding: 20px 0;
-  width: 90%;
+  width: 95%;
   align-self: center;
 `
 
