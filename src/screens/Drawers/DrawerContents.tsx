@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import { Image } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Modal from 'react-native-modal';
 import { joinInvitedGroup } from '../../apis/invite';
@@ -17,17 +17,29 @@ const DrawerContent = (props: DrawerProps) => {
   const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(false)
   const { user, navigation } = props;
   const current_user = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
 
   // TODO ロジックは違うファイルに押し込みたい
   const logout = async () => {
-    await firebase.auth().signOut().then(function() {
-      navigation.navigate('SignoutLoading');
+    setIsLoading(true)
+    await firebase.auth().signOut().then(() => {
+      console.log('success')
+      // setIsLoading(false) 
+    }).catch(error => {
+      console.log(error)
+      alert(error)
     })
   };
 
+  if (isLoading) {
+    return (
+      <ActivityIndicator size="large" style={[styles.loading]} />
+    )
+  }
+  
   // ユーザー画像
   const UserImage = (
     user.photoURL ?
@@ -89,31 +101,31 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
-  // 所属するグループの招待コード表示用モーダル
-  const InviteCodeModal = () => {
-    try {
-      groupRef.doc(current_user.uid).get().then(doc => {
-        if (doc) {
-          const { invideCode } = doc.data()
-          setOwnCode(invideCode)
-        }
-      })
-    } catch (error) {
-      alert('取得に失敗しました。時間を置いてからやり直してください。')
-    }
+  // // 所属するグループの招待コード表示用モーダル
+  // const InviteCodeModal = () => {
+  //   try {
+  //     groupRef.doc(current_user.uid).get().then(doc => {
+  //       if (doc) {
+  //         const { invideCode } = doc.data()
+  //         setOwnCode(invideCode)
+  //       }
+  //     })
+  //   } catch (error) {
+  //     alert('取得に失敗しました。時間を置いてからやり直してください。')
+  //   }
     
-    return (
-      <Modal isVisible={showInviteCodeModal}>
-        <InviteModalView>
-          <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
-              <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
-          </ModalCloseButton>
-            <InviteCode>{ownCode}</InviteCode>
-            <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
-        </InviteModalView>
-    </Modal>
-    )
-  }
+  //   return (
+  //     <Modal isVisible={showInviteCodeModal}>
+  //       <InviteModalView>
+  //         <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
+  //             <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
+  //         </ModalCloseButton>
+  //           <InviteCode>{ownCode}</InviteCode>
+  //           <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
+  //       </InviteModalView>
+  //   </Modal>
+  //   )
+  // }
 
   return (
     <DrawerContainer>
@@ -154,13 +166,21 @@ const DrawerContent = (props: DrawerProps) => {
         </DrawerListItem>
 
         {/* 招待コード入力用モーダル */}
-        {InvitedCodeModal()}
+        {/* {InvitedCodeModal()} */}
         {/* 所属しているグループの招待コード表示用モーダル */}
-        {InviteCodeModal()}
+        {/* {InviteCodeModal()} */}
       </DrawerListContainer>
     </DrawerContainer>
   )
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    alignSelf: 'center',
+    alignItems: 'center'
+  }
+})
 
 const DrawerContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};

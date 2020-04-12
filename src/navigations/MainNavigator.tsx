@@ -16,13 +16,14 @@ const MainNavigator = () => {
   const [loading, setloading] = useState(true)
 
 
-  useLayoutEffect(() => {
+  React.useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user && user.displayName === null) {
         setInitialNav('Tutorial');
         setCurrentGroupId('temporaryId')
         setloading(false);
-      } else {
+      } else if (user) {
+        console.log(user.uid)
         db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
         .then(function(querySnapshot) {
           querySnapshot.forEach(doc => {
@@ -47,9 +48,7 @@ const MainNavigator = () => {
 
   
   return (
-    <MainStack.Navigator
-      initialRouteName={initialNav}
-    >
+    <MainStack.Navigator initialRouteName={initialNav}>
       <MainStack.Screen 
         name="Tutorial" 
         component={TutorialNavigator} 
@@ -65,12 +64,6 @@ const MainNavigator = () => {
         options={{
           gestureEnabled: false,
         }}
-      />
-
-      {/* TODO drawer禁止 */}
-      <MainStack.Screen
-        name="プロフィール編集"
-        component={ProfileChangeScreen}
       />
 
       <MainStack.Screen

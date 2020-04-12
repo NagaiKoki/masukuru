@@ -38,7 +38,6 @@ const LoginScreen = ({ navigation }) => {
       setLoading(false);
     } else {
       setLoading(false);
-      navigation.replace('ホーム');
     }
   };
 

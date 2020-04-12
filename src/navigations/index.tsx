@@ -12,7 +12,7 @@ import { COLORS } from '../constants/Styles';
 
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [user, setUser] = useState(null);
+  const [currentUser, setUser] = useState(null);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
@@ -58,11 +58,11 @@ const Navigator = () => {
   }
 
   const RootStackNavigator = () => {
-    if (user) {
+    if (currentUser) {
       return (
         <Drawer.Navigator 
           drawerStyle={{ width: 330 }} 
-          drawerContent={ (props) => <DrawerContent user={user} {...props}/>}
+          drawerContent={ (props) => <DrawerContent user={currentUser} {...props}/>}
         >
           {defaultSignedInScreen()}
         </Drawer.Navigator>

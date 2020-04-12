@@ -35,11 +35,8 @@ const SignupScreen = ({ navigation }) => {
 
     if (response.error) {
       setError(response.error)
+      setIsLoading(false);
     } else {   
-      navigation.navigate('SignupLoading');
-    }
-
-    return () => {
       setIsLoading(false);
     }
   }
