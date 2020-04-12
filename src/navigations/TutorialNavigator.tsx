@@ -12,8 +12,7 @@ const TutorialNavigator = ({ route }) => {
 
   useEffect(() => {
     setIsLoading(false)
-  }, [])
-  
+  }, []) 
 
   if (isLoading) {
     return (
@@ -49,9 +48,19 @@ const TutorialNavigator = ({ route }) => {
       <TotorialStack.Screen
         name="グループを作成する"
         component={TutorialGroupMakeScreen}
+        initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false
         }}
+      />
+
+      <TotorialStack.Screen 	
+        name="home" 	
+        component={HomeScreen}	
+        options={{	
+          headerShown: false,	
+          gestureEnabled: false	
+        }}	
       />
 
     </TotorialStack.Navigator>

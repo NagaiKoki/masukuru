@@ -5,7 +5,7 @@ import firebase, { db } from '../../config/firebase';
 
 const TutorialUserNameScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
-  
+
   // 名前の更新処理
   // ユーザーがログインしているかの判定は基本'onAuthStateChanged'を使う
   const updateUserName = () => {

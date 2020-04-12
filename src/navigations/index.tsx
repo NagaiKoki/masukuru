@@ -14,9 +14,11 @@ import { COLORS } from '../constants/Styles';
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [currentUser, setUser] = useState(null);
+  const [isChange, setIsChange] = useState(false)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
+      setIsChange(false)
       if (user) {
         setUser(user)
         setIsLoading(false);
@@ -52,7 +54,7 @@ const Navigator = () => {
       <Stack.Screen
         name="Tutorial"
         component={TutorialNavigator}
-        initialParams={{ setIsLoading: setIsLoading }}
+        initialParams={{ setIsChange: setIsChange }}
         options={{
           headerShown: false
         }}
