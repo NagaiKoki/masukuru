@@ -19,6 +19,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [userImgUrl, setUserImgUrl] = useState('')
   const [MenuUserList, setMenuUserList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isImageLoading, setIsImageLoading] = useState(true)
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
@@ -33,7 +34,7 @@ const HomeScreen = ({ navigation, route }) => {
     GetEventList(currentGroupId) 
     GetUserList(currentGroupId)
     GetMenuList(currentGroupId)
-    // setIsLoading(false)
+    setIsLoading(false)
   }, []);
 
   // if (isLoading) {
@@ -51,7 +52,7 @@ const HomeScreen = ({ navigation, route }) => {
       groupId: currentGroupId,
       date: today.getTime()
     }).then(function() {
-      setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime() }]);
+      setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime(), groupId: currentGroupId }]);
       setEventModal(false);
     }).catch(function(error) {
       alert(error);
@@ -94,7 +95,9 @@ const HomeScreen = ({ navigation, route }) => {
     .get()
     .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-        list.push({name: doc.data().name, uid: doc.data().uid, imageUrl: "", id: doc.id})})
+        GetUserimageUrl(doc.data().uid)
+        list.push({name: doc.data().name, uid: doc.data().uid, imageUrl: userImgUrl, id: doc.id})})
+        setUserImgUrl("")
       setMenuList(list)
     })
     .catch(function(error) {
@@ -106,13 +109,11 @@ const HomeScreen = ({ navigation, route }) => {
     db.collection('users').doc(user_id).get().then(doc => {
       if (!doc.exists) return;
       setUserImgUrl(doc.data().imageUrl)
+      setIsImageLoading(false)
     })
   }
 
-  const newmenulist = 
-    menuList.map((item) => (
-      
-    ))
+  console.log(menuList)
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
@@ -132,6 +133,28 @@ const HomeScreen = ({ navigation, route }) => {
       }
     />
   );
+
+  const MenuFlatListDisplay = (
+    isImageLoading ?
+    null
+    :
+    <RecentActivitiesMenuListView>
+            <RecentActivitiesMenuFlatList
+              data={menuList}
+              extraData={menuList}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => 
+                <RecentActivitiesMenuFlatListView>
+                  <UserImage uri={item.imageUrl} width={30} height={30} borderRadius={50} />
+                  <RecentActivitiesMenuFlatListName>
+                    {item.name} を行いました！
+                  </RecentActivitiesMenuFlatListName>
+                </RecentActivitiesMenuFlatListView>
+              }
+            />
+            {/* <MenuList list={menuList}/> */}
+          </RecentActivitiesMenuListView>
+  )
 
   return (
     <Container>
@@ -191,22 +214,7 @@ const HomeScreen = ({ navigation, route }) => {
           <RecentActivitiesListDate>
             {year}/{month}/{date}
           </RecentActivitiesListDate>
-          <RecentActivitiesMenuListView>
-            <RecentActivitiesMenuFlatList
-              data={MenuList}
-              extraData={MenuList}
-              keyExtractor={item => item.id.toString()}
-              renderItem={({item}) => 
-                <RecentActivitiesMenuFlatListView>
-                  <UserImage uri={item.imageUrl} width={30} height={30} borderRadius={50} />
-                  <RecentActivitiesMenuFlatListName>
-                    {item.name} を行いました！
-                  </RecentActivitiesMenuFlatListName>
-                </RecentActivitiesMenuFlatListView>
-              }
-            />
-            {/* <MenuList list={menuList}/> */}
-          </RecentActivitiesMenuListView>
+          {MenuFlatListDisplay}
           <RecentActivitiesListDetailButton>
             <RecentActivitiesListDetailText>
               もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
