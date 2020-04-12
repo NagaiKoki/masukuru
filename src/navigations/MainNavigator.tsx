@@ -18,12 +18,7 @@ const MainNavigator = () => {
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user && user.displayName === null) {
-        setInitialNav('Tutorial');
-        setCurrentGroupId('temporaryId')
-        setloading(false);
-      } else if (user) {
-        console.log(user.uid)
+      if (user) {
         db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
         .then(function(querySnapshot) {
           querySnapshot.forEach(doc => {
@@ -49,14 +44,7 @@ const MainNavigator = () => {
   
   return (
     <MainStack.Navigator initialRouteName={initialNav}>
-      <MainStack.Screen 
-        name="Tutorial" 
-        component={TutorialNavigator} 
-        options={{
-          headerShown: false
-        }}
-      />
-  
+    
       <MainStack.Screen 
         name="ホーム" 
         component={HomeScreen}

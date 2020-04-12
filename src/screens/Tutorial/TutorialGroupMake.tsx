@@ -9,8 +9,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const TutorialGroupMakeScreen = ({ navigation }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [codeText, setCodeText] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true)
   const currentUser = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
+
+  React.useEffect(() => {
+    setIsLoading(false)
+  }, [])
   
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
@@ -23,7 +28,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
       }).then(function(){
         saveInvideCode()
       }).then(function() {
-        navigation.replace('ホーム');
+        console.log(currentUser.displayName)
       }).catch(function(error) {
         alert(error);
       })

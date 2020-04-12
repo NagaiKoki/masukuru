@@ -26,8 +26,7 @@ const DrawerContent = (props: DrawerProps) => {
   const logout = async () => {
     setIsLoading(true)
     await firebase.auth().signOut().then(() => {
-      console.log('success')
-      // setIsLoading(false) 
+      setIsLoading(false) 
     }).catch(error => {
       console.log(error)
       alert(error)
@@ -101,31 +100,32 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
-  // // 所属するグループの招待コード表示用モーダル
-  // const InviteCodeModal = () => {
-  //   try {
-  //     groupRef.doc(current_user.uid).get().then(doc => {
-  //       if (doc) {
-  //         const { invideCode } = doc.data()
-  //         setOwnCode(invideCode)
-  //       }
-  //     })
-  //   } catch (error) {
-  //     alert('取得に失敗しました。時間を置いてからやり直してください。')
-  //   }
+  // 所属するグループの招待コード表示用モーダル
+  const InviteCodeModal = () => {
+    if (!showInviteCodeModal) return;
+    try {
+      groupRef.doc(current_user.uid).get().then(doc => {
+        if (doc) {
+          const { invideCode } = doc.data()
+          setOwnCode(invideCode)
+        }
+      })
+    } catch (error) {
+      alert('取得に失敗しました。時間を置いてからやり直してください。')
+    }
     
-  //   return (
-  //     <Modal isVisible={showInviteCodeModal}>
-  //       <InviteModalView>
-  //         <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
-  //             <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
-  //         </ModalCloseButton>
-  //           <InviteCode>{ownCode}</InviteCode>
-  //           <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
-  //       </InviteModalView>
-  //   </Modal>
-  //   )
-  // }
+    return (
+      <Modal isVisible={showInviteCodeModal}>
+        <InviteModalView>
+          <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
+              <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
+          </ModalCloseButton>
+            <InviteCode>{ownCode}</InviteCode>
+            <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
+        </InviteModalView>
+    </Modal>
+    )
+  }
 
   return (
     <DrawerContainer>
@@ -166,9 +166,9 @@ const DrawerContent = (props: DrawerProps) => {
         </DrawerListItem>
 
         {/* 招待コード入力用モーダル */}
-        {/* {InvitedCodeModal()} */}
+        {InvitedCodeModal()}
         {/* 所属しているグループの招待コード表示用モーダル */}
-        {/* {InviteCodeModal()} */}
+        {InviteCodeModal()}
       </DrawerListContainer>
     </DrawerContainer>
   )

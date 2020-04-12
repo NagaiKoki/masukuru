@@ -64,16 +64,18 @@ const LoginScreen = ({ navigation }) => {
           <LoginTitleText>ログインする</LoginTitleText>
         </LoginTitleWrapper>
         
+        <FormLable>メールアドレス</FormLable>
         <LoginTextForm 
-          placeholder='メールアドレス'
+          placeholder='メールアドレスを入力する'
           autoCapitalize={'none'}
           autoCorrect={ false }
           value={ email.value }
           onChangeText={ (text: string) => setEmail({ value: text, error: '' }) }
         />
         
+        <FormLable>パスワード</FormLable>
         <LoginTextForm 
-          placeholder='パスワード'
+          placeholder='パスワードを入力する'
           autoCapitalize={'none'}
           secureTextEntry
           value={ password.value }
@@ -104,6 +106,7 @@ const LoginTitleText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 20px;
 `
 
 const LoginFormCard = styled.View`
@@ -114,7 +117,13 @@ const LoginFormCard = styled.View`
   margin-top: 30px;
   align-self: center;
   background-color: ${COLORS.BASE_WHITE};
-  box-shadow: 0 10px 6px ${COLORS.CARD_SHADOW1};
+`
+const FormLable = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  width: 90%;
+  margin: 5px auto;
+  margin-top: 10px;
+  font-weight: bold;
 `
 
 const LoginTextForm = styled.TextInput`
@@ -131,8 +140,8 @@ const LoginSubmitButton = styled.TouchableOpacity<{disabled: boolean}>`
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
-  margin-top: 10px;
+  border-radius: 60px;
+  margin-top: 40px;
   opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
 `
 

@@ -64,19 +64,22 @@ const SignupScreen = ({ navigation }) => {
           onDismiss={handleErrorClear} 
         />
         
+        <FormLable>メールアドレス</FormLable>
         <SignUpTextForm 
-          placeholder='メールアドレス'
+          placeholder='メールアドレスを入力する'
           autoCapitalize={'none'}
           autoCorrect={ false }
           onChangeText={ text => setEmail({ value: text, error: '' }) }
         />
-          
+        
+        <FormLable>パスワード</FormLable>
         <SignUpTextForm 
-          placeholder='パスワード'
+          placeholder='パスワードを入力する'
           autoCapitalize={'none'}
           secureTextEntry
           onChangeText={ text => setPassword({ value: text, error: '' }) }
         />
+        <FormSubText>※ 6文字以上</FormSubText>
          
         <SignUpSubmitButton block onPress={ () => onSignUpPrss() } disabled={disableSubmit} disableSubmit={disableSubmit}>
           <SignUpSubmitText>登録する</SignUpSubmitText>
@@ -89,7 +92,7 @@ const SignupScreen = ({ navigation }) => {
 
 const SignUpFormWrapper = styled.View`
   flex: 1;
-  padding-top: 50px;
+  padding-top: 20px;
 `
 
 const SignUpTitleWrapper = styled.View`
@@ -101,6 +104,7 @@ const SignUpTitleText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 20px;
 `
 
 const SignUpFormCard = styled.View`
@@ -111,7 +115,20 @@ const SignUpFormCard = styled.View`
   margin-top: 30px;
   align-self: center;
   background-color: ${COLORS.BASE_BACKGROUND};
-  box-shadow: 0 10px 6px ${COLORS.CARD_SHADOW1};
+`
+
+const FormLable = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  width: 90%;
+  margin: 5px auto;
+  margin-top: 10px;
+  font-weight: bold;
+`
+
+const FormSubText = styled.Text`
+  color: ${COLORS.SUB_BLACK};
+  width: 90%;
+  margin: 5px auto;
 `
 
 const SignUpTextForm = styled.TextInput`
@@ -128,8 +145,8 @@ const SignUpSubmitButton = styled.TouchableOpacity<{disableSubmit: boolean}>`
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
-  margin-top: 10px;
+  border-radius: 60px;
+  margin-top: 30px;
   opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
 `
 
