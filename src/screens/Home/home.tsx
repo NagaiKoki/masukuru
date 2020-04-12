@@ -5,6 +5,9 @@ import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase, { db } from '../../config/firebase';
+import UserImage from '../../components/Image/userImage'
+import MenuList from './MenuList'
+import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
 
 const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
@@ -12,6 +15,11 @@ const HomeScreen = ({ navigation, route }) => {
   const [EventModal, setEventModal] = useState(false);
   const [EventList, setEventList] = useState([]);
   const [UserList, setUserList] = useState([]);
+  const [menuList, setMenuList] = useState([]);
+  const [userImgUrl, setUserImgUrl] = useState('')
+  const [MenuUserList, setMenuUserList] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isImageLoading, setIsImageLoading] = useState(true)
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
@@ -23,9 +31,19 @@ const HomeScreen = ({ navigation, route }) => {
   const date = today.getDate();
 
   useEffect(() => {
-    GetEventList(currentGroupId)  
+    GetEventList(currentGroupId) 
     GetUserList(currentGroupId)
+    GetMenuList(currentGroupId)
+    setIsLoading(false)
   }, []);
+
+  // if (isLoading) {
+  //   return (
+  //     <LoadingContainer>
+  //       <ActivityIndicator size='small' style={[ styles.loading ]} />
+  //     </LoadingContainer>
+  //   )
+  // }
   
   const AddEvent = () => {
     db.collection('groups').doc(currentGroupId).collection('events').add({
@@ -34,7 +52,7 @@ const HomeScreen = ({ navigation, route }) => {
       groupId: currentGroupId,
       date: today.getTime()
     }).then(function() {
-      setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime() }]);
+      setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime(), groupId: currentGroupId }]);
       setEventModal(false);
     }).catch(function(error) {
       alert(error);
@@ -70,6 +88,32 @@ const HomeScreen = ({ navigation, route }) => {
       console.log("Error getting documents: ", error);
     })
   }
+
+  const GetMenuList = (GroupId) => {
+    let list = []
+    db.collectionGroup('menus').where('groupId', '==', GroupId).orderBy('createdAt', 'desc').limit(3)
+    .get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        GetUserimageUrl(doc.data().uid)
+        list.push({name: doc.data().name, uid: doc.data().uid, imageUrl: userImgUrl, id: doc.id})})
+        setUserImgUrl("")
+      setMenuList(list)
+    })
+    .catch(function(error) {
+      console.log("Error getting documents: ", error);
+    })
+  }
+
+  const GetUserimageUrl = (user_id) => {
+    db.collection('users').doc(user_id).get().then(doc => {
+      if (!doc.exists) return;
+      setUserImgUrl(doc.data().imageUrl)
+      setIsImageLoading(false)
+    })
+  }
+
+  console.log(menuList)
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
@@ -90,17 +134,32 @@ const HomeScreen = ({ navigation, route }) => {
     />
   );
 
-  console.log(UserList)
+  const MenuFlatListDisplay = (
+    isImageLoading ?
+    null
+    :
+    <RecentActivitiesMenuListView>
+            <RecentActivitiesMenuFlatList
+              data={menuList}
+              extraData={menuList}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => 
+                <RecentActivitiesMenuFlatListView>
+                  <UserImage uri={item.imageUrl} width={30} height={30} borderRadius={50} />
+                  <RecentActivitiesMenuFlatListName>
+                    {item.name} を行いました！
+                  </RecentActivitiesMenuFlatListName>
+                </RecentActivitiesMenuFlatListView>
+              }
+            />
+            {/* <MenuList list={menuList}/> */}
+          </RecentActivitiesMenuListView>
+  )
 
-  if (EventList.length == 0){
-    return (
-      <ActivityIndicator size="large" style={[styles.loading]}/>
-    )
-  } else {
-    return (
-      <Container>
-        <MemberView>
-          <MemberListView>
+  return (
+    <Container>
+      <MemberView>
+        <MemberListView>
           <MemberFlatList
             horizontal
             data={UserList}
@@ -108,121 +167,118 @@ const HomeScreen = ({ navigation, route }) => {
             keyExtractor={item => item.uid.toString()}
             renderItem={({item}) => 
             <MemberFlatListView>
-              <MemberFlatListImage
-                source={{
-                  uri: item.imageUrl
-                }}
-              />
+              <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={50} />
               <MemberFlatListName>
                 {item.name}
               </MemberFlatListName>
             </MemberFlatListView>
             }
           />
-          </MemberListView>
-          <MemberAddButton onPress={ () => setMemberModal(true) }>
-            <MemberAddPlus>
-              +
-            </MemberAddPlus>
-          </MemberAddButton>
-  
+        </MemberListView>
+        <MemberAddButton onPress={ () => setMemberModal(true) }>
+          <MemberAddPlus>
+            +
+          </MemberAddPlus>
+        </MemberAddButton>
+
+        <Modal
+          isVisible={MemberModal}
+          >
+          <MemberModalView>
+            <MemberModalCloseButton onPress={ () => setMemberModal(false) }>
+              <Icon name="close" size={40}/>
+            </MemberModalCloseButton>
+            <MemberModalTitle>
+              招待コード
+            </MemberModalTitle>
+            <MemberAddCodeView>
+              <MemberAddCodeText>
+              </MemberAddCodeText>
+            </MemberAddCodeView>
+            <MemberModalAddText>
+              友達にアプリをインストールしてもらい、{"\n"}
+              この招待コードを入力してもらおう！
+            </MemberModalAddText>
+          </MemberModalView>
+        </Modal>
+        <MemberAddText>
+          招待する
+        </MemberAddText>
+      </MemberView>
+        
+      <RecentActivities>
+        <RecentActivitiesText>
+          直近の活動
+        </RecentActivitiesText>
+        <RecentActivitiesListView>
+          <RecentActivitiesListDate>
+            {year}/{month}/{date}
+          </RecentActivitiesListDate>
+          {MenuFlatListDisplay}
+          <RecentActivitiesListDetailButton>
+            <RecentActivitiesListDetailText>
+              もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
+            </RecentActivitiesListDetailText>
+          </RecentActivitiesListDetailButton>
+        </RecentActivitiesListView>
+      </RecentActivities>
+
+      <EventView>
+        <EventPlus>
+          <EventTitle>
+            トレーニングリスト
+          </EventTitle>
+          <EventPlusButton onPress={ () => setEventModal(true) }>
+            <EventPlusButtonText>
+              + 追加する
+            </EventPlusButtonText>
+          </EventPlusButton>
           <Modal
-            isVisible={MemberModal}
+            isVisible={EventModal}
             >
-            <MemberModalView>
-              <MemberModalCloseButton onPress={ () => setMemberModal(false) }>
+            <EventModalView>
+              <EventModalCloseButton onPress={ () => setEventModal(false) }>
                 <Icon name="close" size={40}/>
-              </MemberModalCloseButton>
-              <MemberModalTitle>
-                招待コード
-              </MemberModalTitle>
-              <MemberAddCodeView>
-                <MemberAddCodeText>
-                </MemberAddCodeText>
-              </MemberAddCodeView>
-              <MemberModalAddText>
-                友達にアプリをインストールしてもらい、{"\n"}
-                この招待コードを入力してもらおう！
-              </MemberModalAddText>
-            </MemberModalView>
+              </EventModalCloseButton>
+              <EventAddForm 
+                placeholder='名前を入力する（4文字以上）'
+                autoCapitalize={'none'}
+                autoCorrect={ false }
+                onChangeText={ text => setEventName(text) }
+              />
+              <EventAddButton onPress={ () => AddEvent() }>
+                <EventAddText>
+                  追加する
+                </EventAddText>
+              </EventAddButton>
+            </EventModalView>
           </Modal>
-          <MemberAddText>
-            招待する
-          </MemberAddText>
-        </MemberView>
-  
-        <RecentActivities>
-          <RecentActivitiesText>
-            直近の活動
-          </RecentActivitiesText>
-          <RecentActivitiesListView>
-            <RecentActivitiesListDate>
-              {year}/{month}/{date}
-            </RecentActivitiesListDate>
-            <RecentActivitiesList>
-  
-            </RecentActivitiesList>
-            <RecentActivitiesListDetailButton>
-              <RecentActivitiesListDetailText>
-                もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
-              </RecentActivitiesListDetailText>
-            </RecentActivitiesListDetailButton>
-          </RecentActivitiesListView>
-        </RecentActivities>
-  
-        <EventView>
-          <EventPlus>
-            <EventTitle>
-              トレーニングリスト
-            </EventTitle>
-  
-            <EventPlusButton onPress={ () => setEventModal(true) }>
-              <EventPlusButtonText>
-                + 追加する
-              </EventPlusButtonText>
-            </EventPlusButton>
-  
-            <Modal
-              isVisible={EventModal}
-              >
-              <EventModalView>
-                <EventModalCloseButton onPress={ () => setEventModal(false) }>
-                  <Icon name="close" size={40}/>
-                </EventModalCloseButton>
-                <EventAddForm 
-                  placeholder='名前を入力する（4文字以上）'
-                  autoCapitalize={'none'}
-                  autoCorrect={ false }
-                  onChangeText={ text => setEventName(text) }
-                />
-                <EventAddButton onPress={ () => AddEvent() }>
-                  <EventAddText>
-                    追加する
-                  </EventAddText>
-                </EventAddButton>
-              </EventModalView>
-            </Modal>
-          </EventPlus>
-          
-          <EvetnListView>
-            {EventFlatListDisplay}
-          </EvetnListView>
-        </EventView>
-      </Container>
-    );
-  };
-}
+        </EventPlus>
+        
+        <EvetnListView>
+          {EventFlatListDisplay}
+        </EvetnListView>
+      </EventView>
+    </Container>
+  );
+};
 
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
-    backgroundColor: COLORS.BASE_BACKGROUND
+    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.BASE_BACKGROUND,
+    paddingTop: 10
   }
 })
 
+const LoadingContainer = styled.View`
+  background-color: ${COLORS.BASE_BACKGROUND};
+`
+
 const Container = styled.ScrollView`
   flex: 1;
-  padding-top: 120px;
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
@@ -242,12 +298,6 @@ const MemberFlatList = styled.FlatList`
 
 const MemberFlatListView = styled.View`
   margin-right: 10px;
-`
-
-const MemberFlatListImage = styled.Image`
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
 `
 
 const MemberFlatListName = styled.Text`
@@ -339,8 +389,22 @@ const RecentActivitiesListDate = styled.Text`
   font-weight: bold;
 `
 
-const RecentActivitiesList = styled.View`
+const RecentActivitiesMenuListView = styled.View`
   height: 120px;
+`
+
+const RecentActivitiesMenuFlatList = styled.FlatList`
+`
+
+const RecentActivitiesMenuFlatListView = styled.View`
+  flex-direction: row;
+  margin-top: 10px;
+  margin-left: 15px;
+  align-items: center;
+`
+
+const RecentActivitiesMenuFlatListName = styled.Text`
+  margin-left: 20px;
 `
 
 const RecentActivitiesListDetailButton = styled.TouchableOpacity`
