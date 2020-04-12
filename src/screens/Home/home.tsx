@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
+import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
 
 const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
@@ -107,6 +108,11 @@ const HomeScreen = ({ navigation, route }) => {
       setUserImgUrl(doc.data().imageUrl)
     })
   }
+
+  const newmenulist = 
+    menuList.map((item) => (
+      
+    ))
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
@@ -186,7 +192,7 @@ const HomeScreen = ({ navigation, route }) => {
             {year}/{month}/{date}
           </RecentActivitiesListDate>
           <RecentActivitiesMenuListView>
-            {/* <RecentActivitiesMenuFlatList
+            <RecentActivitiesMenuFlatList
               data={MenuList}
               extraData={MenuList}
               keyExtractor={item => item.id.toString()}
@@ -198,8 +204,8 @@ const HomeScreen = ({ navigation, route }) => {
                   </RecentActivitiesMenuFlatListName>
                 </RecentActivitiesMenuFlatListView>
               }
-            /> */}
-            <MenuList list={menuList}/>
+            />
+            {/* <MenuList list={menuList}/> */}
           </RecentActivitiesMenuListView>
           <RecentActivitiesListDetailButton>
             <RecentActivitiesListDetailText>
