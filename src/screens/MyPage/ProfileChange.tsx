@@ -7,7 +7,7 @@ import { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
 
 const ProfileChangeScreen = ({ route, navigation }) => {
-  const { user } = route.params;
+  const { user, setIsChanged } = route.params;
   const [progress, setProgress] = useState<string>('');
   const [uri, setUri] = useState<string>(user.photoURL);
   const [userName, setUserName] = useState<string>(user.displayName)
@@ -26,8 +26,9 @@ const ProfileChangeScreen = ({ route, navigation }) => {
 
     const renderUserNameForm = (  
         <UserNameForm 
-          placeholder='名前を入力する（3文字以上）'
+          placeholder='名前を入力する（3文字以上 15字以下）'
           value={userName}
+          maxLength={15}
           autoCapitalize={'none'}
           autoCorrect={ false }
           onChangeText={ text => setUserName(text) }
@@ -43,7 +44,9 @@ const ProfileChangeScreen = ({ route, navigation }) => {
         const userdata  = { imageUrl: uri, name: userName };
         db.collection('users').doc(user.uid).update(userdata);
       }).then(function() {
-        navigation.replace('マイページ')
+        setIsChanged(true)
+        navigation.goBack('マイページ', { user: user })
+        setIsChanged(false)
       }).catch(function(error) {
         alert(error);
       })
@@ -124,7 +127,7 @@ const ProfileChangeSubmitBtn = styled.TouchableOpacity`
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
+  border-radius: 60px;
   margin-top: 50px;
 `
 const ProfileChangeSubmitText = styled.Text`

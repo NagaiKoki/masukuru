@@ -2,11 +2,9 @@ import React, { useState, useLayoutEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import firebase, { db } from '../config/firebase'
+import { COLORS } from '../constants/Styles'
 // import screen
 import HomeScreen from '../screens/Home';
-import TutorialNavigator from './TutorialNavigator';
-import SignOutLoadingScreen from '../screens/SignOut/SignoutLoading';
-import ProfileChangeScreen from '../screens/MyPage/ProfileChange';
 import MenuScreen from '../screens/Menus/index'
 
 const MainNavigator = () => { 
@@ -51,6 +49,7 @@ const MainNavigator = () => {
         initialParams={{ currentGroupId: currentGroupId }}
         options={{
           gestureEnabled: false,
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
 
@@ -61,14 +60,11 @@ const MainNavigator = () => {
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderMenuTitle(route),
+          headerTintColor: COLORS.BASE_MUSCLEW
         })}
       />
 
-
-    {/* ログアウト */}
-    <MainStack.Screen name="SignoutLoading" component={SignOutLoadingScreen} />
-
-    </MainStack.Navigator>
+   </MainStack.Navigator>
   );
 }
 

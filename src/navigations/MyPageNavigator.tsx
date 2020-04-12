@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
 import MyPageScreen from '../screens/MyPage/MyPage'
 import ProfileChangeScreen from '../screens/MyPage/ProfileChange';
+import { COLORS } from '../constants/Styles'
 
 const MyPageNavigator = () => { 
   const MyPageStack = createStackNavigator()
@@ -13,7 +14,7 @@ const MyPageNavigator = () => {
         name="マイページ"
         component={MyPageScreen}
         options={{
-          headerBackTitle: "header"
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
 
@@ -21,7 +22,8 @@ const MyPageNavigator = () => {
         name="プロフィール編集"
         component={ProfileChangeScreen}
         options={{
-          headerBackTitleVisible: false
+          headerBackTitleVisible: false,
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
     </MyPageStack.Navigator>

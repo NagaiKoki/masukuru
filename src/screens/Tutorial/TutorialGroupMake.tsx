@@ -6,7 +6,7 @@ import { factoryRandomCode } from '../../lib/randomTextFactory';
 import firebase, { db } from '../../config/firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const TutorialGroupMakeScreen = ({ navigation }) => {
+const TutorialGroupMakeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [codeText, setCodeText] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true)
@@ -16,7 +16,7 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
   React.useEffect(() => {
     setIsLoading(false)
   }, [])
-  
+
   // １人で使う場合の処理
   const notInvitedGroupCreate = () => {    
     try {
@@ -28,7 +28,9 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
       }).then(function(){
         saveInvideCode()
       }).then(function() {
-        console.log(currentUser.displayName)
+        route.params.setIsChange(true)
+        navigation.navigate('home', { currentGroupId: currentUser.uid })
+        route.params.setIsChange(false)
       }).catch(function(error) {
         alert(error);
       })
@@ -50,7 +52,9 @@ const TutorialGroupMakeScreen = ({ navigation }) => {
           name: currentUser.displayName,
           imageUrl: currentUser.photoURL
         }).then(function() {
-          navigation.replace('ホーム');
+          route.params.setIsChange(true)
+          navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
+          route.params.setIsChange(false)
         })
       }
     })

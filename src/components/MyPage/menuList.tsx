@@ -55,8 +55,17 @@ const MenuList = (props: TrainingListProps) => {
         <TrainingListContainer>
           {TrainingMenuItem}
         </TrainingListContainer>
-      </ScrollView>
-      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      </ScrollView> 
+      : 
+      <ScrollView
+      refreshControl={
+        <RefreshControl 
+          refreshing={isRefresh}
+          onRefresh={onRefresh}
+        />
+      } >
+      <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      </ScrollView> 
     )
   )
 }
