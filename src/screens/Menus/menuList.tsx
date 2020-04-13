@@ -13,12 +13,13 @@ interface TrainingListProps {
   list: MenuType[]
   setList: Dispatch<SetStateAction<MenuType[]>>
   item: any
+  navigation: any
 }
 
 const MenuList = (props: TrainingListProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
-  const { user, list, setList, currentGroupId, item }  = props;
+  const { user, list, setList, currentGroupId, item, navigation }  = props;
   const isShowPage = true;
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const MenuList = (props: TrainingListProps) => {
   // 各トレーニングのデータ
   const TrainingMenuItem = 
     list.map((item, index) => (
-      <MenuItem key={index} list={item}/>  
+      <MenuItem key={index} list={item} navigation={navigation}/>  
   ))
 
   // スクロールリロード

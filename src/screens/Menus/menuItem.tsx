@@ -3,23 +3,26 @@ import styled from 'styled-components';
 import { convertTimestampToString } from '../../lib/timestamp';
 import { COLORS } from '../../constants/Styles';
 import UserImage from '../../components/Image/userImage'
-import { db } from '../../config/firebase';
+import firebase, { db } from '../../config/firebase';
 // import type
 import { MenuType } from '../../types/menu';
 
 interface Props {
   list: MenuType
+  navigation: any
 }
 
 const MenuItem = (props: Props) => { 
-  const [userImgUrl, setUserImgUrl] = useState('')
-  const { list } = props
+  const [user, setUser] = useState(null)
+  const { list, navigation } = props
   const { uid } = list
+
+  const currentUserId = firebase.auth().currentUser.uid
 
   // user取得
   db.collection('users').doc(uid).get().then(doc => {
     if (!doc.exists) return;
-    setUserImgUrl(doc.data().imageUrl)
+    setUser(doc.data())
   })
 
   // record表示
@@ -35,15 +38,22 @@ const MenuItem = (props: Props) => {
     weightArray.push({ key: number, value: weightValue })
   }
 
+  const UserWrapper = () => {
+    if (!user) return;
+    return (
+      <ItemUserWrapper onPress={ () => user.uid === currentUserId ? navigation.navigate('マイページ') : navigation.navigate('UserPage', { user: user })}>
+          <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
+          <ItemUserName>{user.name}</ItemUserName>
+        </ItemUserWrapper>
+    )
+  }
+
   return (
     <ItemWrapper>
       <ItemTimestampText>{createdAt}</ItemTimestampText>
 
       <ItemContentWrapper>
-        <ItemUserWrapper>
-          <UserImage uri={userImgUrl} width={30} height={30} borderRadius={60} />
-        </ItemUserWrapper>
-
+          {UserWrapper()}
         <ItemRecordWrapper>
 
           <ItemColumn>
@@ -111,11 +121,21 @@ const ItemContentWrapper = styled.View`
   margin: 10px auto;
 `
 
-const ItemUserWrapper = styled.View`
+const ItemUserWrapper = styled.TouchableOpacity`
   margin-right: 50px;
+  width: 20%;
 `
 
-const ItemRecordWrapper = styled.View``
+const ItemUserName = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 12px;
+  text-align: center;
+  margin-top: 5px;
+`
+
+const ItemRecordWrapper = styled.View`
+  width: 80%;
+`
 
 const TrainingListItemText = styled.Text`
   

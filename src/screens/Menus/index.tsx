@@ -26,7 +26,7 @@ const MunuScreen = ({ navigation, route }) => {
       <MenuAddModal item={item} setList={setList} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
-        <MenuList item={item} list={list} setList={setList} user={user} currentGroupId={currentGroupId} />
+        <MenuList item={item} list={list} setList={setList} user={user} currentGroupId={currentGroupId} navigation={navigation}/>
       </MenuListContainer>
       </KeyboardAvoidingView>
     </MenuContainer>

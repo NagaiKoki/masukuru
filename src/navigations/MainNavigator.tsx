@@ -6,6 +6,7 @@ import { COLORS } from '../constants/Styles'
 // import screen
 import HomeScreen from '../screens/Home';
 import MenuScreen from '../screens/Menus/index'
+import MyPageScreen from '../screens/UserPage'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
@@ -39,6 +40,10 @@ const MainNavigator = () => {
     return route.params.item.name + 'の記録'
   }
 
+  const getHeaderUserTitle = (route) => {
+    return route.params.user.name
+  }
+
   
   return (
     <MainStack.Navigator initialRouteName={initialNav}>
@@ -60,6 +65,16 @@ const MainNavigator = () => {
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderMenuTitle(route),
+          headerTintColor: COLORS.BASE_MUSCLEW
+        })}
+      />
+
+      <MainStack.Screen
+        name="UserPage"
+        component={MyPageScreen}
+        options={({route}) => ({
+          headerBackTitleVisible: false,
+          headerTitle: getHeaderUserTitle(route),
           headerTintColor: COLORS.BASE_MUSCLEW
         })}
       />
