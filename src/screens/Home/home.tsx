@@ -166,7 +166,7 @@ const HomeScreen = ({ navigation, route }) => {
             extraData={UserList}
             keyExtractor={item => item.uid.toString()}
             renderItem={({item}) => 
-            <MemberFlatListView>
+            <MemberFlatListView onPress={() => item.uid !== current_user_uid ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('マイページ')}>
               <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={50} />
               <MemberFlatListName>
                 {item.name}
@@ -296,7 +296,7 @@ const MemberListView = styled.View`
 const MemberFlatList = styled.FlatList`
 `
 
-const MemberFlatListView = styled.View`
+const MemberFlatListView = styled.TouchableOpacity`
   margin-right: 10px;
 `
 
