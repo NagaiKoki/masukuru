@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import {StyleSheet, ActivityIndicator } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
@@ -7,7 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
-import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
+import { MenuType } from '../../types/menu';
+const user = firebase.auth().currentUser
 
 const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
@@ -15,25 +16,20 @@ const HomeScreen = ({ navigation, route }) => {
   const [EventModal, setEventModal] = useState(false);
   const [EventList, setEventList] = useState([]);
   const [UserList, setUserList] = useState([]);
-  const [menuList, setMenuList] = useState([]);
-  const [userImgUrl, setUserImgUrl] = useState('')
-  const [MenuUserList, setMenuUserList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)
+  const [menuList, setMenuList] = useState<MenuType[]>([]);
+  const { params } = route;
+  const { currentGroupId } = params;
 
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
-  const currentGroupId = route.params.currentGroupId
 
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth()+1;
-  const date = today.getDate();
 
   useEffect(() => {
     GetEventList(currentGroupId) 
     GetUserList(currentGroupId)
-    GetMenuList(currentGroupId)
     setIsLoading(false)
   }, []);
 
@@ -88,32 +84,6 @@ const HomeScreen = ({ navigation, route }) => {
       console.log("Error getting documents: ", error);
     })
   }
-
-  const GetMenuList = (GroupId) => {
-    let list = []
-    db.collectionGroup('menus').where('groupId', '==', GroupId).orderBy('createdAt', 'desc').limit(3)
-    .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        GetUserimageUrl(doc.data().uid)
-        list.push({name: doc.data().name, uid: doc.data().uid, imageUrl: userImgUrl, id: doc.id})})
-        setUserImgUrl("")
-      setMenuList(list)
-    })
-    .catch(function(error) {
-      console.log("Error getting documents: ", error);
-    })
-  }
-
-  const GetUserimageUrl = (user_id) => {
-    db.collection('users').doc(user_id).get().then(doc => {
-      if (!doc.exists) return;
-      setUserImgUrl(doc.data().imageUrl)
-      setIsImageLoading(false)
-    })
-  }
-
-  console.log(menuList)
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
@@ -134,29 +104,19 @@ const HomeScreen = ({ navigation, route }) => {
     />
   );
 
-  const MenuFlatListDisplay = (
-    isImageLoading ?
-    null
-    :
-    <RecentActivitiesMenuListView>
-            <RecentActivitiesMenuFlatList
-              data={menuList}
-              extraData={menuList}
-              keyExtractor={item => item.id.toString()}
-              renderItem={({item}) => 
-                <RecentActivitiesMenuFlatListView>
-                  <UserImage uri={item.imageUrl} width={30} height={30} borderRadius={50} />
-                  <RecentActivitiesMenuFlatListName>
-                    {item.name} を行いました！
-                  </RecentActivitiesMenuFlatListName>
-                </RecentActivitiesMenuFlatListView>
-              }
-            />
-            {/* <MenuList list={menuList}/> */}
-          </RecentActivitiesMenuListView>
-  )
+  // const MenuFlatListDisplay = (
+  //   isImageLoading ?
+  //   null
+  //   :
+    
+  // )
 
   return (
+    isLoading ? 
+        <LoadingContainer>
+          <ActivityIndicator size='small' style={[ styles.loading ]} />
+        </LoadingContainer>
+    :
     <Container>
       <MemberView>
         <MemberListView>
@@ -207,14 +167,13 @@ const HomeScreen = ({ navigation, route }) => {
       </MemberView>
         
       <RecentActivities>
-        <RecentActivitiesText>
-          直近の活動
-        </RecentActivitiesText>
         <RecentActivitiesListView>
-          <RecentActivitiesListDate>
-            {year}/{month}/{date}
-          </RecentActivitiesListDate>
-          {MenuFlatListDisplay}
+          <RecentActivitiesListText>
+            直近の活動
+          </RecentActivitiesListText>
+          <RecentActivitiesMenuListView>
+            <MenuList menuList={menuList} setMenuList={setMenuList} currentGroupId={currentGroupId}/>
+          </RecentActivitiesMenuListView>
           <RecentActivitiesListDetailButton>
             <RecentActivitiesListDetailText>
               もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
@@ -368,13 +327,6 @@ const RecentActivities = styled.View`
   padding: 15px;
 `
 
-const RecentActivitiesText = styled.Text`
-  margin-top: 10px;
-  padding-left: 5px;
-  font-size: 16px;
-  font-weight: bold;
-`
-
 const RecentActivitiesListView = styled.View`
   margin-top: 20px;
   background-color: #FFF;
@@ -383,9 +335,9 @@ const RecentActivitiesListView = styled.View`
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
 `
 
-const RecentActivitiesListDate = styled.Text`
+const RecentActivitiesListText = styled.Text`
   margin: 10px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
 `
 
