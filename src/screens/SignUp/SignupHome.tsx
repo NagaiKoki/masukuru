@@ -1,9 +1,18 @@
 import React from 'react'
-import { Image, Platform } from 'react-native';
+import { Image, Text, NativeModules } from 'react-native';
+const { RNTwitterSignIn } = NativeModules;
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import firebase from '../../config/firebase';
+
+const TwitterTest = styled.TouchableOpacity`
+`
 
 const SignupHomeScreen = ({ navigation }) => {
+
+  const TwitterLogin = () => {
+    
+  }
 
   return (
     <Container>
@@ -22,6 +31,11 @@ const SignupHomeScreen = ({ navigation }) => {
         </ImageTitleWrapper>
 
       </ImageWrapper>
+
+
+      <TwitterTest>
+        <Text>twitter</Text>
+      </TwitterTest>
 
       <SignUpCard>
         <SignUpButtonWrapper>
