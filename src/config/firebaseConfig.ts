@@ -5,3 +5,7 @@ export const CONFIG = {
   STORAGE_BUCKET: "musclew-9dab1.appspot.com",
   PROJECT_ID: "musclew-9dab1"
 };
+
+export const GOOGLE_CONFIG = {
+  CLIENT_ID: '1023959623519-a81fj37ghcvukorobpk5mncdppe0gk4o.apps.googleusercontent.com'
+}

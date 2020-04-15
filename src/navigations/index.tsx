@@ -8,7 +8,7 @@ import MainTabNavigator from './MainTabNavigator';
 import styled from 'styled-components';
 import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
 import DrawerContent from '../screens/Drawers/DrawerContents';
-import firebase from '../config/firebase';
+import firebase, { db } from '../config/firebase';
 import { COLORS } from '../constants/Styles';
 
 const Navigator = () => {
@@ -18,9 +18,9 @@ const Navigator = () => {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      setIsChange(false)
       if (user) {
         setUser(user)
+        setIsChange(false)
         setIsLoading(false);
       } else {
         setUser(null)
@@ -66,6 +66,7 @@ const Navigator = () => {
     return (
       <Stack.Screen 
       name="AuthenticationNavigator" 
+      initialParams={{ setIsChange: setIsChange }}
       component={AuthenticationNavigator}
       options={{
         headerShown: false

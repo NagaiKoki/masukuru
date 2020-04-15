@@ -5,7 +5,7 @@ import firebase, { db } from '../../config/firebase';
 
 const TutorialUserNameScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
-
+  
   // 名前の更新処理
   // ユーザーがログインしているかの判定は基本'onAuthStateChanged'を使う
   const updateUserName = () => {
@@ -19,7 +19,6 @@ const TutorialUserNameScreen = ({ navigation }) => {
         }).then(function() {
           navigation.navigate('プロフィール写真を登録する')
         }).catch(function(error) {
-          alert(error);
         });
       } else {
       }
@@ -45,7 +44,7 @@ const TutorialUserNameScreen = ({ navigation }) => {
         />
       </TutorialNameContainer>
 
-      <TutorialSubmitBtn block onPress={ () => updateUserName() } disabled={disableSubmit} disableSubmit={disableSubmit}>
+      <TutorialSubmitBtn block onPress={ () => { updateUserName() } } disabled={disableSubmit} disableSubmit={disableSubmit}>
         <TutorialSubmitText>次へ</TutorialSubmitText>
       </TutorialSubmitBtn>
     </TutorialContainer>

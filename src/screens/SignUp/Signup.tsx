@@ -3,10 +3,11 @@ import { RegisterUser } from '../../apis/auth-api';
 import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
 import Toast from '../../components/Toaster';
 import styled from 'styled-components';
+import { GoogleLogin } from '../../apis/auth-api';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { COLORS } from '../../constants/Styles';
-import firebase, { db } from '../../config/firebase';
 
-const SignupScreen = ({ navigation }) => {
+const SignupScreen = ({ route }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -55,35 +56,41 @@ const SignupScreen = ({ navigation }) => {
     <SignUpFormWrapper>
       <SignUpFormCard>
 
-        <SignUpTitleWrapper>
-          <SignUpTitleText>新規登録</SignUpTitleText>
-        </SignUpTitleWrapper>
-
         <Toast 
           message={error} 
           onDismiss={handleErrorClear} 
         />
+
+        <GoogleSignInWrapper onPress={ () => GoogleLogin(route) }>
+          <GoogleSignInTextWrapper>
+            <GoogleSignInText>Google アカウントで登録する</GoogleSignInText>
+          </GoogleSignInTextWrapper>
+        </GoogleSignInWrapper>
+
+        <FormEmailSignInWrapper>
+          <FormLable>メールアドレス</FormLable>
+          <SignUpTextForm 
+            placeholder='メールアドレスを入力する'
+            autoCapitalize={'none'}
+            autoCorrect={ false }
+            onChangeText={ text => setEmail({ value: text, error: '' }) }
+          />
+          
+          <FormLable>パスワード</FormLable>
+          <SignUpTextForm 
+            placeholder='パスワードを入力する'
+            autoCapitalize={'none'}
+            secureTextEntry
+            onChangeText={ text => setPassword({ value: text, error: '' }) }
+          />
+          <FormSubText>※ 6文字以上</FormSubText>
+          
+          <SignUpSubmitButton block onPress={ () => onSignUpPrss() } disabled={disableSubmit} disableSubmit={disableSubmit}>
+            <SignUpSubmitText>登録する</SignUpSubmitText>
+          </SignUpSubmitButton>
+        </FormEmailSignInWrapper>
         
-        <FormLable>メールアドレス</FormLable>
-        <SignUpTextForm 
-          placeholder='メールアドレスを入力する'
-          autoCapitalize={'none'}
-          autoCorrect={ false }
-          onChangeText={ text => setEmail({ value: text, error: '' }) }
-        />
         
-        <FormLable>パスワード</FormLable>
-        <SignUpTextForm 
-          placeholder='パスワードを入力する'
-          autoCapitalize={'none'}
-          secureTextEntry
-          onChangeText={ text => setPassword({ value: text, error: '' }) }
-        />
-        <FormSubText>※ 6文字以上</FormSubText>
-         
-        <SignUpSubmitButton block onPress={ () => onSignUpPrss() } disabled={disableSubmit} disableSubmit={disableSubmit}>
-          <SignUpSubmitText>登録する</SignUpSubmitText>
-        </SignUpSubmitButton>
         
       </SignUpFormCard>
     </SignUpFormWrapper>
@@ -117,9 +124,40 @@ const SignUpFormCard = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
+const GoogleSignInWrapper = styled.TouchableOpacity`
+  background-color: #dd4b39;
+  width: 90%;
+  align-self: center;
+  padding: 15px 0;
+  margin: 20px 0;
+  margin-bottom: 40px;
+  border-radius: 5px;
+`
+
+const GoogleSignInTextWrapper = styled.Text`
+  padding: 0 20px;
+  flex-direction: row;
+  text-align: center;
+  justify-content: space-around;
+  color: ${COLORS.BASE_WHITE};
+`
+
+const GoogleSignInText = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  font-weight: bold;
+`
+
+const FormEmailSignInWrapper = styled.View`
+  padding-top: 40px;
+  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  border-top-width: 0.8;
+  width: 90%;
+  align-self: center;
+`
+
 const FormLable = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  width: 90%;
+  width: 100%;
   margin: 5px auto;
   margin-top: 10px;
   font-weight: bold;
@@ -127,13 +165,13 @@ const FormLable = styled.Text`
 
 const FormSubText = styled.Text`
   color: ${COLORS.SUB_BLACK};
-  width: 90%;
+  width: 100%;
   margin: 5px auto;
 `
 
 const SignUpTextForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
-  width: 90%;
+  width: 100%;
   align-self: center;
   border-radius: 5px;
   padding: 20px 15px;
@@ -141,7 +179,7 @@ const SignUpTextForm = styled.TextInput`
 `
 
 const SignUpSubmitButton = styled.TouchableOpacity<{disableSubmit: boolean}>`
-  width: 90%;
+  width: 100%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
