@@ -1,10 +1,11 @@
 import React from 'react'
-import { Image, Platform } from 'react-native';
+import { Image, Text } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 
-const SignupHomeScreen = ({ navigation }) => {
-
+const TwitterTest = styled.TouchableOpacity`
+`
+const SignupHomeScreen = ({ navigation, route }) => {
   return (
     <Container>
       <ImageWrapper>

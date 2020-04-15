@@ -9,7 +9,7 @@ import SignupLoadingScreen from '../screens/SignUp/SignupLoading';
 import LoginScreen from '../screens/Login/Login';
 import LoginLoadingScreen from '../screens/Login/LoginLoading';
 
-const AuthentificationNavigator = () => {
+const AuthentificationNavigator = ({ route }) => {
   const AuthenticateStack = createStackNavigator();
 
   return (    
@@ -36,6 +36,7 @@ const AuthentificationNavigator = () => {
     <AuthenticateStack.Screen 
       name="Signup" 
       component={SignupScreen} 
+      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         title: "アカウントを登録する",
         headerTintColor: COLORS.BASE_MUSCLEW

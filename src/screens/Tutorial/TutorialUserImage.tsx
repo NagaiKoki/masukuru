@@ -17,7 +17,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
       
       return (
         <ChangeImageBtn block onPress={ () => ImageUpload(user, setProgress, setUri) } >
-            <ChangeImageWord>{btnText}</ChangeImageWord>
+          <ChangeImageWord>{btnText}</ChangeImageWord>
         </ChangeImageBtn>   
         )
     }
@@ -27,7 +27,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
       user.updateProfile({
         photoURL: uri
       }).then(function() {
-        const userdata  = { imageUrl: uri };
+        const userdata  = { imageUrl: user.photoURL };
         db.collection('users').doc(user.uid).update(userdata);
       }).then(function() {
         navigation.navigate('グループを作成する')
@@ -40,7 +40,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
     <TutorialContainer>
       <TutorialProfileImageWrapper>
         <ImageUploadWrapper onPress={ () => ImageUpload(user, setProgress, setUri)}>
-          <UserImage uri={uri} user={user} width={120} height={120} borderRadius={60} forProfile={true} />
+          <UserImage uri={uri} width={120} height={120} borderRadius={60} forProfile={true} />
         </ImageUploadWrapper>        
         <ImageProgressText>{progress}</ImageProgressText>
         {ChangeImageText()}
