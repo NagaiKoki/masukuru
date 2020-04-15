@@ -48,6 +48,7 @@ const AuthentificationNavigator = ({ route }) => {
     <AuthenticateStack.Screen 
       name="Login" 
       component={LoginScreen}
+      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         title: "ログイン",
         headerTintColor: COLORS.BASE_MUSCLEW,
