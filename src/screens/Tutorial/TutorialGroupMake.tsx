@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Alert } from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import Modal from 'react-native-modal';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
@@ -47,14 +48,20 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       if (snapshot.empty) {
         alert('入力した招待コードは存在しません。今一度、招待コードをお確かめください。');
       } else {
-        snapshot.docs[0].ref.collection('groupUsers').doc(currentUser.uid).set({
-          uid: currentUser.uid,
-          name: currentUser.displayName,
-          imageUrl: currentUser.photoURL
-        }).then(function() {
-          route.params.setIsChange(true)
-          navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
-          route.params.setIsChange(false)
+        snapshot.docs[0].ref.collection('groupUsers').get().then(snap => {
+          if (snap.size >= 5) {
+            return Alert.alert('招待されたグループの人数が5人以上のため、参加することができません。別のグループに参加するか、まずは１人で使うを選択してください。')
+          } else {
+            snapshot.docs[0].ref.collection('groupUsers').doc(currentUser.uid).set({
+              uid: currentUser.uid,
+              name: currentUser.displayName,
+              imageUrl: currentUser.photoURL
+            }).then(function() {
+              route.params.setIsChange(true)
+              navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
+              route.params.setIsChange(false)
+            })
+          }
         })
       }
     })
