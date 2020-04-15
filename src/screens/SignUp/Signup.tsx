@@ -100,18 +100,7 @@ const SignupScreen = ({ route }) => {
 const SignUpFormWrapper = styled.View`
   flex: 1;
   padding-top: 20px;
-`
-
-const SignUpTitleWrapper = styled.View`
-  padding: 10px;
-`
-
-const SignUpTitleText = styled.Text`
-  text-align: center;
-  color: ${COLORS.BASE_BLACK};
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  background-color: ${COLORS.BASE_BACKGROUND};
 `
 
 const SignUpFormCard = styled.View`
@@ -121,7 +110,7 @@ const SignUpFormCard = styled.View`
   padding: 30px 0 50px 0;
   margin-top: 30px;
   align-self: center;
-  background-color: ${COLORS.BASE_BACKGROUND};
+  background-color: ${COLORS.BASE_WHITE};
 `
 
 const GoogleSignInWrapper = styled.TouchableOpacity`

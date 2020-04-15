@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import { LoginUser } from "../../apis/auth-api";
 import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
+import { GoogleLogin } from '../../apis/auth-api'
 import Toast from '../../components/Toaster';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ route }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [loading, setLoading] = useState(false);
@@ -60,31 +61,36 @@ const LoginScreen = ({ navigation }) => {
         onDismiss={handleErrorClear} 
       />
 
-        <LoginTitleWrapper>
-          <LoginTitleText>ログインする</LoginTitleText>
-        </LoginTitleWrapper>
-        
-        <FormLable>メールアドレス</FormLable>
-        <LoginTextForm 
-          placeholder='メールアドレスを入力する'
-          autoCapitalize={'none'}
-          autoCorrect={ false }
-          value={ email.value }
-          onChangeText={ (text: string) => setEmail({ value: text, error: '' }) }
-        />
-        
-        <FormLable>パスワード</FormLable>
-        <LoginTextForm 
-          placeholder='パスワードを入力する'
-          autoCapitalize={'none'}
-          secureTextEntry
-          value={ password.value }
-          onChangeText={ (text: string) => setPassword({ value: text, error: "" }) }
-        />
-         
-        <LoginSubmitButton block onPress={ () => onLoginPressed() } disabled={ disableSubmit } disableSubmit={ disableSubmit }>
-          <LoginSubmitText>ログインする</LoginSubmitText>
-        </LoginSubmitButton>
+        <GoogleSignInWrapper onPress={ () => GoogleLogin(route) }>
+          <GoogleSignInTextWrapper>
+            <GoogleSignInText>Google アカウントでログインする</GoogleSignInText>
+          </GoogleSignInTextWrapper>
+        </GoogleSignInWrapper>
+
+
+        <FormEmailLoginWrapper>
+          <FormLable>メールアドレス</FormLable>
+          <LoginTextForm 
+            placeholder='メールアドレスを入力する'
+            autoCapitalize={'none'}
+            autoCorrect={ false }
+            value={ email.value }
+            onChangeText={ (text: string) => setEmail({ value: text, error: '' }) }
+          />
+          
+          <FormLable>パスワード</FormLable>
+          <LoginTextForm 
+            placeholder='パスワードを入力する'
+            autoCapitalize={'none'}
+            secureTextEntry
+            value={ password.value }
+            onChangeText={ (text: string) => setPassword({ value: text, error: "" }) }
+          />
+          
+          <LoginSubmitButton block onPress={ () => onLoginPressed() } disabled={ disableSubmit } disableSubmit={ disableSubmit }>
+            <LoginSubmitText>ログインする</LoginSubmitText>
+          </LoginSubmitButton>
+        </FormEmailLoginWrapper>
         
       </LoginFormCard>
 
@@ -97,18 +103,6 @@ const LoginFormWrapper = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
-const LoginTitleWrapper = styled.View`
-  padding: 10px;
-`
-
-const LoginTitleText = styled.Text`
-  text-align: center;
-  color: ${COLORS.BASE_BLACK};
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`
-
 const LoginFormCard = styled.View`
   border-radius: 15px;
   width: 90%;
@@ -118,9 +112,41 @@ const LoginFormCard = styled.View`
   align-self: center;
   background-color: ${COLORS.BASE_WHITE};
 `
+
+const GoogleSignInWrapper = styled.TouchableOpacity`
+  background-color: #dd4b39;
+  width: 90%;
+  align-self: center;
+  padding: 15px 0;
+  margin: 20px 0;
+  margin-bottom: 40px;
+  border-radius: 5px;
+`
+
+const GoogleSignInTextWrapper = styled.Text`
+  padding: 0 20px;
+  flex-direction: row;
+  text-align: center;
+  justify-content: space-around;
+  color: ${COLORS.BASE_WHITE};
+`
+
+const GoogleSignInText = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  font-weight: bold;
+`
+
+const FormEmailLoginWrapper = styled.View`
+  align-self: center;
+  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  border-top-width: 1;
+  padding-top: 30px;
+  width: 90%;
+`
+
 const FormLable = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  width: 90%;
+  width: 100%;
   margin: 5px auto;
   margin-top: 10px;
   font-weight: bold;
@@ -128,7 +154,7 @@ const FormLable = styled.Text`
 
 const LoginTextForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
-  width: 90%;
+  width: 100%;
   align-self: center;
   border-radius: 5px;
   padding: 20px 15px;
@@ -136,7 +162,7 @@ const LoginTextForm = styled.TextInput`
 `
 
 const LoginSubmitButton = styled.TouchableOpacity<{disabled: boolean}>`
-  width: 90%;
+  width: 100%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
