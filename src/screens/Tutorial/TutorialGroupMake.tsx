@@ -43,7 +43,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
   // 招待された場合の処理
   const InvitedGroupJoin = () => {
     try {
-      groupRef.where('invideCode', '==', codeText).get()
+      groupRef.where('inviteCode', '==', codeText).get()
         .then(snapshot => {
       if (snapshot.empty) {
         alert('入力した招待コードは存在しません。今一度、招待コードをお確かめください。');
@@ -81,12 +81,12 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
 
   // 招待コードを保存する
   const saveInvideCode = () => {
-    const invideCode = factoryRandomCode(6);
-    groupRef.where('inviteCode', '==', invideCode).get()
+    const inviteCode = factoryRandomCode(6);
+    groupRef.where('inviteCode', '==', inviteCode).get()
     .then(snapshot => {
       if (snapshot.empty) {
         groupRef.doc(currentUser.uid).update({
-          invideCode: invideCode
+          inviteCode: inviteCode
         })
       } else {
         // まずないが、ランダムな生成コードが他のグループと被った場合に、再帰処理をする
