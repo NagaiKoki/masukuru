@@ -34,7 +34,7 @@ const ProfileChangeScreen = ({ route, navigation }) => {
           onChangeText={ text => setUserName(text) }
         />
       )
-
+      
     // ユーザーの更新処理
     const updateUserProfile = () => {
       user.updateProfile({
@@ -43,6 +43,12 @@ const ProfileChangeScreen = ({ route, navigation }) => {
       }).then(function() {
         const userdata  = { imageUrl: uri, name: userName };
         db.collection('users').doc(user.uid).update(userdata);
+      }).then(() => {
+        db.collectionGroup('groupUsers').where('uid', '==', user.uid).limit(1).get().then(snapshot => {
+          snapshot.forEach(doc => {
+            doc.ref.update({ name: userName, imageUrl: uri })
+          });
+        })
       }).then(function() {
         setIsChanged(true)
         navigation.goBack('マイページ', { user: user })

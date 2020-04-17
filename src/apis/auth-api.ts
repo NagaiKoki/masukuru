@@ -46,7 +46,7 @@ export const RegisterUser = async ({ email, password }) => {
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
     if (response.user.uid) {
       const uid = response.user.uid
-      await db.collection('users').doc(uid).set({ uid: response.user.uid, email: email })
+      await db.collection('users').doc(uid).set({ uid: response.user.uid })
       return {};
     } 
   } catch(error) {

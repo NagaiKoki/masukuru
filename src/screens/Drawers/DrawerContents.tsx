@@ -68,8 +68,8 @@ const DrawerContent = (props: DrawerProps) => {
     try {
       groupRef.doc(currentGroupId).get().then(doc => {
         if (doc) {
-          const { invideCode } = doc.data()
-          setOwnCode(invideCode)
+          const { inviteCode } = doc.data()
+          setOwnCode(inviteCode)
         }
       })
     } catch (error) {
