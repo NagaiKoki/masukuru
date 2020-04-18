@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import MenuItem from './MenuItem';
 import { MenuType } from '../../types/menu';
+import styled from 'styled-components';
 
 interface Props {
   currentGroupId?: string
@@ -22,6 +23,11 @@ const MenuList = (props: Props) => {
   ))
 
   return (
+    menuList.length == 0?
+    <NoneMenuListText>
+      直近の活動が表示されます。
+    </NoneMenuListText>
+    :
     <View>
       {MenuListItem}
     </View>
@@ -29,3 +35,11 @@ const MenuList = (props: Props) => {
 }
 
 export default MenuList;
+
+const NoneMenuListText = styled.Text`
+  text-align: center;
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #808080;
+`

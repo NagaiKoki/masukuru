@@ -17,7 +17,6 @@ const HomeScreen = ({ navigation, route }) => {
   const [EventList, setEventList] = useState([]);
   const [UserList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
-  const [isImageLoading, setIsImageLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const { params } = route;
@@ -33,14 +32,6 @@ const HomeScreen = ({ navigation, route }) => {
     GetUserList(currentGroupId)
     setIsLoading(false)
   }, []);
-
-  if (isLoading) {
-    return (
-      <LoadingContainer>
-        <ActivityIndicator size='small' style={[ styles.loading ]} />
-      </LoadingContainer>
-    )
-  }
   
   const AddEvent = () => {
     db.collection('groups').doc(currentGroupId).collection('events').add({
@@ -99,10 +90,14 @@ const HomeScreen = ({ navigation, route }) => {
       console.log("Error getting documents: ", error);
     })
   }
+
+  console.log(UserList)
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
-    null  
+    <NoneEventListText>
+       トレーニングを追加してみよう！
+    </NoneEventListText>
                           :
     <EventFlatList
       data={EventList}
@@ -128,6 +123,11 @@ const HomeScreen = ({ navigation, route }) => {
   }
 
   return (
+    isLoading? 
+      <LoadingContainer>
+        <ActivityIndicator size='small' style={[ styles.loading ]} />
+      </LoadingContainer>
+    :
     <Container
       refreshControl={
         <RefreshControl 
@@ -369,6 +369,14 @@ const EventAddText = styled.Text`
 const EvetnListView = styled.View`
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
   padding-bottom: 10px;
+`
+
+const NoneEventListText = styled.Text`
+  text-align: center;
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #808080;
 `
 
 const EventFlatList = styled.FlatList`
