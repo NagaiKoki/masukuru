@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { Header } from 'react-navigation-stack'
 import Modal from 'react-native-modal';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -17,7 +18,7 @@ interface MenuAddModalProps {
   setIsVisible: Dispatch<SetStateAction<boolean>>
 }
 
-const MenuAddModal = (props: MenuAddModalProps) => {
+const MenuAddModal = (props: MenuAddModalProps) => {  
   const [count, SetCount] = useState<number>(1)
   const [amount1, setAmount1] = useState<number>()
   const [amount2, setAmount2] = useState<number>(0)
@@ -44,6 +45,10 @@ const MenuAddModal = (props: MenuAddModalProps) => {
 
   useEffect(() => {
   }, [count])
+
+  const isVisibleToBoolean = (
+    isVisible ? true : false
+  )
 
   const onSubmitMenu = async () => {
     const currentTime = firebase.firestore.FieldValue.serverTimestamp()
@@ -156,7 +161,6 @@ const MenuAddModal = (props: MenuAddModalProps) => {
       <MenuSetForm 
         placeholder='0'
         keyboardType={'numeric'}
-        value={count}
         autoCapitalize={'none'}
         autoCorrect={ false }
         maxLength={1}
@@ -168,12 +172,11 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     let amountForm = [];
     for (let amountSize = 1; amountSize <= count; amountSize++) { 
       amountForm.push(
-        <MenuFormWrapper>
+        <MenuFormWrapper key={amountSize}>
           <MenuFormSubLabel>{amountSize}セット目</MenuFormSubLabel>
           <MenuAmountForm
             placeholder='0'
             keyboardType={'numeric'}
-            value={0}
             autoCapitalize={'none'}
             autoCorrect={ false }
             maxLength={3}
@@ -190,16 +193,15 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     let weightForm = [];
     for (let weightCount = 1; weightCount <= count; weightCount++) { 
       weightForm.push(
-        <MenuFormWrapper>
+        <MenuFormWrapper key={weightCount}>
           <MenuFormSubLabel>{weightCount}セット目</MenuFormSubLabel>
           <MenuAmountForm
-          placeholder='0'
-          keyboardType={'numeric'}
-          value={0}
-          autoCapitalize={'none'}
-          autoCorrect={ false }
-          maxLength={4}
-          onChangeText={ number => handleSetWeight(weightCount, number) }
+            placeholder='0'
+            keyboardType={'numeric'}
+            autoCapitalize={'none'}
+            autoCorrect={ false }
+            maxLength={4}
+            onChangeText={ number => handleSetWeight(weightCount, number) }
           />
           <MenuFormSubText>kg</MenuFormSubText>
         </MenuFormWrapper>
@@ -209,10 +211,11 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   }
 
   return (
-    <Modal isVisible={isVisible}>
+    <Modal isVisible={isVisibleToBoolean} swipeDirection='down' onSwipeComplete={handleCloseModal}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.7 }} keyboardVerticalOffset={700}>
       <MenuModalWrapper>
         <ModalCloseBtn>
-          <Icon name='close' size='20' onPress={handleCloseModal}/>
+          <Icon name='close' size={30} onPress={handleCloseModal}/>
         </ModalCloseBtn>
         <MenuModalTitle>記録を残す</MenuModalTitle>
           <MenuModalSubText>トレーニングお疲れ様です♪</MenuModalSubText>
@@ -240,6 +243,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           <MenuFormSubmitText>送信する</MenuFormSubmitText>
         </MenuFormSubmitBtn>
       </MenuModalWrapper>
+      </KeyboardAvoidingView>
     </Modal>
   )
 }
@@ -249,8 +253,7 @@ const MenuModalWrapper = styled.View`
   border-radius: 10px;
   padding: 15px;
   position: absolute;
-  flex: 1;
-  top: 40;
+  height: 600px;
   left: 0;
   right: 0;
 `
@@ -306,7 +309,7 @@ const MenuSetForm = styled.TextInput`
   padding: 5px 20px;
   font-size: 16px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
-  border-bottom-width: 2;
+  border-bottom-width: 2px;
 `
 
 const MenuFormSubText = styled.Text`
@@ -323,7 +326,7 @@ const MenuAmountForm = styled.TextInput`
   padding: 5px 20px;
   font-size: 16px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
-  border-bottom-width: 2;
+  border-bottom-width: 2px;
 `
 
 const MenuFormSubmitBtn = styled.TouchableOpacity`
