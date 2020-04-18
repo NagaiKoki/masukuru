@@ -237,7 +237,7 @@ const Container = styled.ScrollView`
 const MemberView = styled.View`
   background-color: #FFF;
   height: 80px;
-  padding-top: 10px;
+  padding: 10px 10px 0 15px;
 `
 
 const MemberListView = styled.View`
