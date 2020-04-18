@@ -93,11 +93,9 @@ const DrawerContent = (props: DrawerProps) => {
   // 招待入力用コードモーダル
   const InvitedCodeModal = () => {
     return (
-      <Modal isVisible={showInvitedCodeModal}>
+      <Modal isVisible={showInvitedCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInvitedCodeModal(false)}>
         <InvitedModalView>
-          <ModalCloseButton onPress={ () => setShowInvitedCodeModal(false) }>
-              <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
-          </ModalCloseButton>
+          <InviteCloseBar />
           <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
 
           <InvitedModalFormWrapper>
@@ -121,18 +119,16 @@ const DrawerContent = (props: DrawerProps) => {
   // 所属するグループの招待コード表示用モーダル
   const InviteCodeModal = () => {
     return (
-      <Modal isVisible={showInviteCodeModal}>
+      <Modal isVisible={showInviteCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInviteCodeModal(false)}>
         <InviteModalView>
-          <ModalCloseButton onPress={ () => setShowInviteCodeModal(false) }>
-              <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
-          </ModalCloseButton>
-            <InviteCodeWrapper onPress={() => copyInviteCode(ownCode)}>
-              <InviteCodeText>{ownCode}</InviteCodeText>
-            </InviteCodeWrapper>
-            <InviteSubText>タップするとコピーされます</InviteSubText>
-            <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
-            <InviteSubText>※ グループに参加できる人数は最大で5人までです</InviteSubText>
-        </InviteModalView>
+          <InviteCloseBar />
+          <InviteCodeWrapper onPress={() => copyInviteCode(ownCode)}>
+            <InviteCodeText>{ownCode}</InviteCodeText>
+          </InviteCodeWrapper>
+          <InviteSubText>タップするとコピーされます</InviteSubText>
+          <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
+          <InviteSubText>※ グループに参加できる人数は最大で5人までです</InviteSubText>
+       </InviteModalView>
     </Modal>
     )
   }
@@ -238,7 +234,6 @@ const DrawerUserName = styled.Text`
 `
 
 const DrawerUserImage = styled.View`
-
 `
 
 const DrawerListContainer = styled.View`
@@ -342,7 +337,7 @@ const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
+  border-radius: 60px;
   margin-top: 30px;
   opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
 `
@@ -354,9 +349,13 @@ const InvitedModalSubmitText = styled.Text`
   font-size: 16px;
 `
 
-const ModalCloseButton = styled.TouchableOpacity`
-  align-self: flex-end;
-  padding: 5px 5px 0 0;
+const InviteCloseBar = styled.View`
+  background-color: ${COLORS.BASE_BLACK};
+  height: 5px;
+  width: 100px;
+  margin-top: 7px;
+  border-radius: 60px;
+  align-self: center;
 `
 
 export default DrawerContent;

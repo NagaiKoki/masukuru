@@ -16,19 +16,16 @@ const MunuScreen = ({ navigation, route }) => {
 
   return (
     <MenuContainer>
-      <KeyboardAvoidingView>
       <MenuTitle>{item.name}</MenuTitle>
       <MenuAddButton block onPress={setIsVisible}>
         <MenuAddText>記録を追加する</MenuAddText>
       </MenuAddButton>
-
       {/* モーダル */}
       <MenuAddModal item={item} setList={setList} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
         <MenuList item={item} list={list} setList={setList} user={user} currentGroupId={currentGroupId} navigation={navigation}/>
       </MenuListContainer>
-      </KeyboardAvoidingView>
     </MenuContainer>
   )
 }
