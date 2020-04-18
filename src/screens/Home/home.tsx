@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {StyleSheet, ActivityIndicator } from 'react-native';
+import {StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
@@ -12,12 +12,13 @@ const user = firebase.auth().currentUser
 
 const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
-  const [MemberModal, setMemberModal] = useState(false);
+  // const [MemberModal, setMemberModal] = useState(false);
   const [EventModal, setEventModal] = useState(false);
   const [EventList, setEventList] = useState([]);
   const [UserList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)
+  const [isRefresh, setIsRefresh] = useState(false)
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const { params } = route;
   const { currentGroupId } = params;
@@ -28,18 +29,18 @@ const HomeScreen = ({ navigation, route }) => {
   const today = new Date();
 
   useEffect(() => {
-    GetEventList(currentGroupId) 
+    GetEventList(currentGroupId)
     GetUserList(currentGroupId)
     setIsLoading(false)
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <LoadingContainer>
-  //       <ActivityIndicator size='small' style={[ styles.loading ]} />
-  //     </LoadingContainer>
-  //   )
-  // }
+  if (isLoading) {
+    return (
+      <LoadingContainer>
+        <ActivityIndicator size='small' style={[ styles.loading ]} />
+      </LoadingContainer>
+    )
+  }
   
   const AddEvent = () => {
     db.collection('groups').doc(currentGroupId).collection('events').add({
@@ -84,6 +85,20 @@ const HomeScreen = ({ navigation, route }) => {
       console.log("Error getting documents: ", error);
     })
   }
+
+  const GetMenuList = (GroupId) => {
+    let list = []
+    db.collectionGroup('menus').where('groupId', '==', GroupId).orderBy('createdAt', 'desc').limit(3)
+    .get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        list.push({name: doc.data().name, uid: doc.data().uid, id: doc.id})})
+      setMenuList(list)
+    })
+    .catch(function(error) {
+      console.log("Error getting documents: ", error);
+    })
+  }
   
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
@@ -95,29 +110,32 @@ const HomeScreen = ({ navigation, route }) => {
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
         <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
-          <EventFlatListText>
-            {item.name}  
-          </EventFlatListText>
-            <Icon name="angle-right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
+        <EventFlatListText>
+          {item.name}  
+        </EventFlatListText>
+          <Icon name="angle-right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>
       }
     />
   );
 
-  // const MenuFlatListDisplay = (
-  //   isImageLoading ?
-  //   null
-  //   :
-    
-  // )
+  const onRefresh = async () => {
+    setIsRefresh(true)
+    await GetEventList(currentGroupId) 
+    await GetUserList(currentGroupId)
+    await GetMenuList(currentGroupId)
+    setIsRefresh(false)
+  }
 
   return (
-    isLoading ? 
-        <LoadingContainer>
-          <ActivityIndicator size='small' style={[ styles.loading ]} />
-        </LoadingContainer>
-    :
-    <Container>
+    <Container
+      refreshControl={
+        <RefreshControl 
+          refreshing={isRefresh}
+          onRefresh={onRefresh}
+        />
+      }
+    >
       <MemberView>
         <MemberListView>
           <MemberFlatList
@@ -135,35 +153,6 @@ const HomeScreen = ({ navigation, route }) => {
             }
           />
         </MemberListView>
-        <MemberAddButton onPress={ () => setMemberModal(true) }>
-          <MemberAddPlus>
-            +
-          </MemberAddPlus>
-        </MemberAddButton>
-
-        <Modal
-          isVisible={MemberModal}
-          >
-          <MemberModalView>
-            <MemberModalCloseButton onPress={ () => setMemberModal(false) }>
-              <Icon name="close" size={40}/>
-            </MemberModalCloseButton>
-            <MemberModalTitle>
-              招待コード
-            </MemberModalTitle>
-            <MemberAddCodeView>
-              <MemberAddCodeText>
-              </MemberAddCodeText>
-            </MemberAddCodeView>
-            <MemberModalAddText>
-              友達にアプリをインストールしてもらい、{"\n"}
-              この招待コードを入力してもらおう！
-            </MemberModalAddText>
-          </MemberModalView>
-        </Modal>
-        <MemberAddText>
-          招待する
-        </MemberAddText>
       </MemberView>
         
       <RecentActivities>
@@ -172,13 +161,14 @@ const HomeScreen = ({ navigation, route }) => {
             直近の活動
           </RecentActivitiesListText>
           <RecentActivitiesMenuListView>
-            <MenuList menuList={menuList} setMenuList={setMenuList} currentGroupId={currentGroupId}/>
+            <MenuList menuList={menuList} currentGroupId={currentGroupId} GetMenuList={GetMenuList}/>
           </RecentActivitiesMenuListView>
-          <RecentActivitiesListDetailButton>
+          {/* TODO 以下は今後追加予定 */}
+          {/* <RecentActivitiesListDetailButton>
             <RecentActivitiesListDetailText>
               もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
             </RecentActivitiesListDetailText>
-          </RecentActivitiesListDetailButton>
+          </RecentActivitiesListDetailButton> */}
         </RecentActivitiesListView>
       </RecentActivities>
 
@@ -197,8 +187,11 @@ const HomeScreen = ({ navigation, route }) => {
             >
             <EventModalView>
               <EventModalCloseButton onPress={ () => setEventModal(false) }>
-                <Icon name="close" size={40}/>
+                <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
               </EventModalCloseButton>
+              <EventModalTitle>
+                トレーニングを追加する
+              </EventModalTitle>
               <EventAddForm 
                 placeholder='名前を入力する（4文字以上）'
                 autoCapitalize={'none'}
@@ -243,13 +236,12 @@ const Container = styled.ScrollView`
 
 const MemberView = styled.View`
   background-color: #FFF;
-  height: 70px;
-  padding: 10px 15px 0 15px;
+  height: 80px;
+  padding-top: 10px;
 `
 
 const MemberListView = styled.View`
   position: relative;
-  width: 90%;
 `
 
 const MemberFlatList = styled.FlatList`
@@ -257,70 +249,12 @@ const MemberFlatList = styled.FlatList`
 
 const MemberFlatListView = styled.TouchableOpacity`
   margin-right: 10px;
+  padding-bottom: 5px;
 `
 
 const MemberFlatListName = styled.Text`
   font-size: 10px;
   text-align: center;
-`
-
-const MemberAddButton = styled.TouchableOpacity`
-  position: absolute;
-  background-color: ${COLORS.BASE_MUSCLEW};
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  margin: 5px 0 0 0;
-  align-self: flex-end;
-  border-radius: 50px;
-`
-
-const MemberAddPlus = styled.Text`
-  position: absolute;
-  top: 4px;
-  left: 13px;
-  color: #FFF;
-  font-size: 25px;
-`
-
-const MemberModalView = styled.View`
-  height: 300px;
-  border-radius: 10px;
-  background-color: #fff;
-`
-
-const MemberModalTitle = styled.Text`
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-`
-
-const MemberModalCloseButton = styled.TouchableOpacity`
-  align-self: flex-end;
-`
-
-const MemberAddCodeView = styled.View`
-  margin: 20px 15px 0 15px;
-  border: solid #C0C0C0;
-  height: 50px;
-`
-
-const MemberAddCodeText = styled.Text`
-`
-
-const MemberModalAddText = styled.Text`
-  margin-top: 30px;
-  text-align: center;
-  line-height: 20px;
-`
-
-const MemberAddText = styled.Text`
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  align-self: flex-end;
-  font-size: 10px;
-  margin: 5px 0 0 0;
 `
 
 const RecentActivities = styled.View`
@@ -330,7 +264,7 @@ const RecentActivities = styled.View`
 const RecentActivitiesListView = styled.View`
   margin-top: 20px;
   background-color: #FFF;
-  height: 200px;
+  height: 180px;
   border-radius: 5px;
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
 `
@@ -375,7 +309,7 @@ const EventView = styled.View`
 `
 
 const EventPlus = styled.View`
-  margin: 60px 0 30px 0;
+  margin: 30px 0 0 0;
   flex-direction: row;
   justify-content: space-between;
 `
@@ -401,6 +335,12 @@ const EventModalCloseButton = styled.TouchableOpacity`
   align-self: flex-end;
 `
 
+const EventModalTitle = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+`
+
 const EventAddForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   width: 90%;
@@ -411,7 +351,7 @@ const EventAddForm = styled.TextInput`
 `
 
 const EventAddButton = styled.TouchableOpacity`
-  width: 50%;
+  width: 90%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
@@ -427,6 +367,8 @@ const EventAddText = styled.Text`
 `
 
 const EvetnListView = styled.View`
+  box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
+  padding-bottom: 10px;
 `
 
 const EventFlatList = styled.FlatList`
@@ -437,7 +379,6 @@ const EventFlatListButton = styled.TouchableOpacity`
   background-color: #FFF;
   height: 75px;
   border-radius: 5px;
-  box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
   flex-direction: row;
 `
 

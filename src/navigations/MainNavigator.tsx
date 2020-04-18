@@ -7,13 +7,13 @@ import { COLORS } from '../constants/Styles'
 import HomeScreen from '../screens/Home';
 import MenuScreen from '../screens/Menus/index'
 import MyPageScreen from '../screens/UserPage'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const MainNavigator = () => { 
+const MainNavigator = ({ navigation }) => { 
   const MainStack = createStackNavigator()
   const [initialNav, setInitialNav] = useState<string>('ホーム')
   const [currentGroupId, setCurrentGroupId] = useState('');
   const [loading, setloading] = useState(true)
-
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
@@ -53,6 +53,10 @@ const MainNavigator = () => {
         component={HomeScreen}
         initialParams={{ currentGroupId: currentGroupId }}
         options={{
+          headerLeft: () => (
+            <Icon name="bars" size={24} onPress={() => { navigation.openDrawer() }} style={{ paddingLeft: 20 }}
+            />
+          ),
           gestureEnabled: false,
           headerTintColor: COLORS.BASE_MUSCLEW
         }}
