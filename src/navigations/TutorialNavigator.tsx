@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import TutorialUserNameScreen from '../screens/Tutorial/TutorialUserName';
 import TutorialUserImageScreen from '../screens/Tutorial/TutorialUserImage';
 import TutorialGroupMakeScreen from '../screens/Tutorial/TutorialGroupMake';
@@ -22,7 +22,7 @@ const TutorialNavigator = ({ route }) => {
 
   return (
     <TotorialStack.Navigator
-      initialRouteName="名前を登録する"
+      initialRouteName="TutorialUserName"
       screenOptions={{
         headerBackTitleVisible: false,
         gestureEnabled: false
@@ -30,27 +30,30 @@ const TutorialNavigator = ({ route }) => {
     >
 
       <TotorialStack.Screen
-        name="名前を登録する"
+        name="TutorialUserName"
         component={TutorialUserNameScreen}
         options={{
-          gestureEnabled: false
+          gestureEnabled: false,
+          headerTitle: '名前を登録する'
         }}
       />
 
       <TotorialStack.Screen
-        name="プロフィール写真を登録する"
+        name="TutorialUserImage"
         component={TutorialUserImageScreen} 
         options={{
-          headerBackTitleVisible: false
+          headerBackTitleVisible: false,
+          headerTitle: "プロフィール写真を登録する"
         }}
       />
 
       <TotorialStack.Screen
-        name="グループを作成する"
+        name="TutorialGroupMake"
         component={TutorialGroupMakeScreen}
         initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
-          headerBackTitleVisible: false
+          headerBackTitleVisible: false,
+          headerTitle: "グループを作る"
         }}
       />
 
