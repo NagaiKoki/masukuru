@@ -211,16 +211,16 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   }
 
   return (
-    <Modal isVisible={isVisibleToBoolean} swipeDirection='down' onSwipeComplete={handleCloseModal}>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.7 }} keyboardVerticalOffset={700}>
+    <Modal isVisible={isVisibleToBoolean}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.7 }} keyboardVerticalOffset={300}>
       <MenuModalWrapper>
         <ModalCloseBtn>
           <Icon name='close' size={30} onPress={handleCloseModal}/>
         </ModalCloseBtn>
         <MenuModalTitle>記録を残す</MenuModalTitle>
           <MenuModalSubText>トレーニングお疲れ様です♪</MenuModalSubText>
-          <ScrollView>
             <MenuFormContainer>
+            <ScrollView>
               <MenuFormTitle>何セットしましたか？</MenuFormTitle>
               <MenuFormWrapper>
                 {renderSetForm}
@@ -236,10 +236,9 @@ const MenuAddModal = (props: MenuAddModalProps) => {
               <MenuAmountFormWrapper>
                 {renderWeightForm()}
               </MenuAmountFormWrapper>
+              </ScrollView>
             </MenuFormContainer>
-          </ScrollView>
-
-        <MenuFormSubmitBtn block onPress={onSubmitMenu} >
+        <MenuFormSubmitBtn onPress={onSubmitMenu} >
           <MenuFormSubmitText>送信する</MenuFormSubmitText>
         </MenuFormSubmitBtn>
       </MenuModalWrapper>
@@ -253,7 +252,6 @@ const MenuModalWrapper = styled.View`
   border-radius: 10px;
   padding: 15px;
   position: absolute;
-  height: 600px;
   left: 0;
   right: 0;
 `
@@ -279,6 +277,7 @@ const ModalCloseBtn = styled.TouchableOpacity`
 
 // フォーム部分
 const MenuFormContainer = styled.View`
+  max-height: 300px;
 `
 
 const MenuFormTitle = styled.Text`
