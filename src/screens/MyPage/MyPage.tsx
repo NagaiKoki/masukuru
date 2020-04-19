@@ -9,7 +9,7 @@ import MenuList from '../../components/MyPage/menuList';
 const MyPageScreen = ({ navigation }) => {
   const [isChanged, setIsChanged] = useState(false)
   const user = firebase.auth().currentUser
-  
+ 
   return (
     <MypageContainer>
       <MypageUserWrapper>
