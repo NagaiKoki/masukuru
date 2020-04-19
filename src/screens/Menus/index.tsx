@@ -15,6 +15,7 @@ const MunuScreen = ({ navigation, route }) => {
   const { params } = route;
   const { currentGroupId, item } = params;
   const user = firebase.auth().currentUser
+  const itemName = item.name;
   const currentUserMenuLength = list.filter(l => l.uid === user.uid).length
 
   return (
@@ -25,7 +26,7 @@ const MunuScreen = ({ navigation, route }) => {
       </MenuAddButton>
       {/* モーダル */}
       <MenuAddModal item={item} currentUserMenuLength={currentUserMenuLength} setMessageVisible={setMessageVisible} setList={setList} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
-      <CheerModal messageVisible={messageVisible} setMessageVisible={setMessageVisible} itemLength={currentUserMenuLength} />
+      <CheerModal messageVisible={messageVisible} setMessageVisible={setMessageVisible} itemName={itemName} itemLength={currentUserMenuLength} />
 
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>

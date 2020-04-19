@@ -7,19 +7,20 @@ import { CHEER_MESSAGE } from '../../constants/chreeMessage'
 
 interface CheerProps {
   itemLength: number
+  itemName: string
   messageVisible: boolean
   setMessageVisible: Dispatch<SetStateAction<boolean>>
 }
 
 const CheerModal = (props: CheerProps) => {
-  const { messageVisible, itemLength, setMessageVisible } = props
+  const { messageVisible, itemName, itemLength, setMessageVisible } = props
 
   const handleOnClose = () => {
     return setMessageVisible(false)
   }
 
   const renderTitle = (
-    <MessageModalTitle>{itemLength}回目のトレーニング{"\n"}お疲れさまです♪</MessageModalTitle>
+  <MessageModalTitle>{itemLength}回目の{itemName}{"\n"}お疲れさまです♪</MessageModalTitle>
   )
 
   const renderMessage = () => {

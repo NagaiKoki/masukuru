@@ -359,8 +359,7 @@ const EventAddButton = styled.TouchableOpacity`
   width: 90%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
-  border-radius: 5px;
+  padding: 15px 0;
   border-radius: 60px;
   margin-top: 10px;
   opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
