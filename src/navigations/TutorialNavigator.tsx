@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native'
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import TutorialUserNameScreen from '../screens/Tutorial/TutorialUserName';
+import TutorialBodyInfoScreen from '../screens/Tutorial/TutorialBodyInfo';
 import TutorialUserImageScreen from '../screens/Tutorial/TutorialUserImage';
 import TutorialGroupMakeScreen from '../screens/Tutorial/TutorialGroupMake';
 import HomeScreen from '../screens/Home';
+import { COLORS } from '../constants/Styles';
 
 const TutorialNavigator = ({ route }) => {
   const TotorialStack = createStackNavigator();
@@ -34,7 +36,18 @@ const TutorialNavigator = ({ route }) => {
         component={TutorialUserNameScreen}
         options={{
           gestureEnabled: false,
-          headerTitle: '名前を登録する'
+          headerTitle: '名前を登録する',
+          headerTintColor: COLORS.BASE_MUSCLEW
+        }}
+      />
+
+      <TotorialStack.Screen
+        name="TutorialBodyInfo"
+        component={TutorialBodyInfoScreen}
+        options={{
+          gestureEnabled: false,
+          headerTitle: '基本情報を登録する',
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
 
@@ -43,7 +56,8 @@ const TutorialNavigator = ({ route }) => {
         component={TutorialUserImageScreen} 
         options={{
           headerBackTitleVisible: false,
-          headerTitle: "プロフィール写真を登録する"
+          headerTitle: "プロフィール写真を登録する",
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
 
@@ -53,7 +67,8 @@ const TutorialNavigator = ({ route }) => {
         initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false,
-          headerTitle: "グループを作る"
+          headerTitle: "グループを作る",
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
 

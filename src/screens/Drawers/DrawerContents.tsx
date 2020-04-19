@@ -112,7 +112,7 @@ const DrawerContent = (props: DrawerProps) => {
           </InvitedModalFormWrapper>
 
           <InvitedModalSubmitBtn block onPress={replaceGroup} disabled={disableSubmit} disableSubmit={disableSubmit}>
-            <InvitedModalSubmitText>送信する</InvitedModalSubmitText>
+            <InvitedModalSubmitText>招待されたグループに参加する</InvitedModalSubmitText>
           </InvitedModalSubmitBtn>
         </InvitedModalView>
     </Modal>

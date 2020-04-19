@@ -94,7 +94,7 @@ const HomeScreen = ({ navigation, route }) => {
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
     <NoneEventListText>
-       トレーニングを追加してみよう！
+       まずはトレーニングを追加しよう！
     </NoneEventListText>
                           :
     <EventFlatList
@@ -104,7 +104,7 @@ const HomeScreen = ({ navigation, route }) => {
       renderItem={({item}) => 
         <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
         <EventFlatListText>
-          {item.name}  
+          {item.name} の記録
         </EventFlatListText>
           <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>
@@ -189,14 +189,15 @@ const HomeScreen = ({ navigation, route }) => {
               </EventModalCloseButton>
 
               <EventModalTitle>
-                トレーニングを追加する
+                どんなトレーニングを追加しますか？
               </EventModalTitle>
               <EventAddForm 
-                placeholder='名前を入力する（4文字以上）'
+                placeholder='例）ベンチプレス'
                 autoCapitalize={'none'}
                 autoCorrect={ false }
                 onChangeText={ text => setEventName(text) }
               />
+              <EventSubText>※ 4文字以上</EventSubText>
               <EventAddButton onPress={ () => AddEvent() }>
                 <EventAddText>
                   追加する
@@ -252,8 +253,10 @@ const MemberFlatListView = styled.TouchableOpacity`
 `
 
 const MemberFlatListName = styled.Text`
+  padding-top: 2px;
   font-size: 10px;
   text-align: center;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const RecentActivities = styled.View`
@@ -352,7 +355,15 @@ const EventAddForm = styled.TextInput`
   align-self: center;
   border-radius: 5px;
   padding: 20px 15px;
-  margin: 40px 0;
+  margin: 40px 0 10px 0;
+`
+
+const EventSubText = styled.Text`
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  color: ${COLORS.SUB_BLACK};
+  font-size: 12px;
 `
 
 const EventAddButton = styled.TouchableOpacity`
@@ -402,7 +413,7 @@ const EventFlatListText = styled.Text`
   margin-bottom: auto;
   align-self: flex-start;
   margin-left: 20px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: ${COLORS.BASE_BLACK};
 `

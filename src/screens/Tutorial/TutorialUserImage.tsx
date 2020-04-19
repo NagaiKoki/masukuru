@@ -92,7 +92,7 @@ const TutorialNavigationContainer = styled.TouchableOpacity`
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
+  border-radius: 60px;
   margin-top: 50px;
 `
 
