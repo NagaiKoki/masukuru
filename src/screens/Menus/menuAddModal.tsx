@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { Header } from 'react-navigation-stack'
 import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components';
@@ -12,6 +11,8 @@ import { KeyboardAvoidingView } from 'react-native';
 
 interface MenuAddModalProps {
   item: any,
+  currentUserMenuLength: number
+  setMessageVisible: Dispatch<SetStateAction<boolean>>
   setList: Dispatch<SetStateAction<MenuType[]>>
   currentGroupId: string,
   isVisible: boolean
@@ -40,7 +41,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   const [weight8, setWeight8] = useState<number>(0)
   const [weight9, setWeight9] = useState<number>(0)
 
-  const { item, setList, currentGroupId, isVisible, setIsVisible } = props;
+  const { item, currentUserMenuLength, setMessageVisible, setList, currentGroupId, isVisible, setIsVisible } = props;
   const currentUser = firebase.auth().currentUser
 
   useEffect(() => {
@@ -112,12 +113,17 @@ const MenuAddModal = (props: MenuAddModalProps) => {
         }, ...state,])
       }).then(() => {
         setIsVisible(false)
+      }).then(() => {
+        const lengthToString = String(currentUserMenuLength)
+        setTimeout(() => {
+          lengthToString === '0' || lengthToString === '4' || lengthToString === '9' ?
+          setMessageVisible(true) : setMessageVisible(false)
+        }, 1000)
       })
     } catch(error) {
       console.log(error)
       alert('問題が発生しました。しばらくしてから、再度お試しください。')
     }
-
   }
 
   // モーダル閉める
@@ -211,6 +217,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   }
 
   return (
+    <React.Fragment>
     <Modal isVisible={isVisibleToBoolean}>
       <KeyboardAvoidingView behavior="padding" style={{ flex: 0.7 }} keyboardVerticalOffset={300}>
       <MenuModalWrapper>
@@ -244,6 +251,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
       </MenuModalWrapper>
       </KeyboardAvoidingView>
     </Modal>
+    </React.Fragment>
   )
 }
 

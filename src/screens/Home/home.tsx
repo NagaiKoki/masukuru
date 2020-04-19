@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
@@ -107,7 +106,7 @@ const HomeScreen = ({ navigation, route }) => {
         <EventFlatListText>
           {item.name}  
         </EventFlatListText>
-          <Icon name="angle-right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
+          <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>
       }
     />
@@ -188,6 +187,7 @@ const HomeScreen = ({ navigation, route }) => {
               <EventModalCloseButton onPress={ () => setEventModal(false) }>
                 <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
               </EventModalCloseButton>
+
               <EventModalTitle>
                 トレーニングを追加する
               </EventModalTitle>
@@ -314,6 +314,7 @@ const EventPlus = styled.View`
 `
 
 const EventTitle = styled.Text`
+  margin-left: 10px;
   font-size: 20px;
   font-weight: bold;
 `
@@ -322,16 +323,21 @@ const EventPlusButton = styled.TouchableOpacity`
 `
 
 const EventPlusButtonText = styled.Text`
+  margin-right: 10px;
+  color: ${COLORS.BASE_MUSCLEW};
+  font-weight: bold;
+  font-size: 18px;
 `
 
 const EventModalView = styled.View`
-  height: 300px;
+  height: 320px;
   border-radius: 10px;
   background-color: #fff;
 `
 
 const EventModalCloseButton = styled.TouchableOpacity`
   align-self: flex-end;
+  padding: 10px;
 `
 
 const EventModalTitle = styled.Text`
@@ -355,6 +361,7 @@ const EventAddButton = styled.TouchableOpacity`
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
   border-radius: 5px;
+  border-radius: 60px;
   margin-top: 10px;
   opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
 `
@@ -362,6 +369,7 @@ const EventAddButton = styled.TouchableOpacity`
 const EventAddText = styled.Text`
   text-align: center;
   color: #fff;
+  font-size: 18px;
   font-weight: bold;
 `
 
@@ -395,9 +403,9 @@ const EventFlatListText = styled.Text`
   margin-bottom: auto;
   align-self: flex-start;
   margin-left: 20px;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
-  color: #808080;
+  color: ${COLORS.BASE_BLACK};
 `
 
 export default HomeScreen;

@@ -6,14 +6,18 @@ import MenuList from './menuList'
 import MenuAddModal from './menuAddModal';
 import firebase, { db } from '../../config/firebase';
 import { MenuType } from '../../types/menu';
+import CheerModal from './cheerModal';
 
 const MunuScreen = ({ navigation, route }) => {
   const [list, setList] = useState<MenuType[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [messageVisible, setMessageVisible] = useState(false)
   const { params } = route;
   const { currentGroupId, item } = params;
   const user = firebase.auth().currentUser
+  const currentUserMenuLength = list.filter(l => l.uid === user.uid).length
 
+  console.log(messageVisible)
   return (
     <MenuContainer>
       <MenuTitle>{item.name}</MenuTitle>
@@ -21,7 +25,9 @@ const MunuScreen = ({ navigation, route }) => {
         <MenuAddText>記録を追加する</MenuAddText>
       </MenuAddButton>
       {/* モーダル */}
-      <MenuAddModal item={item} setList={setList} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
+      <MenuAddModal item={item} currentUserMenuLength={currentUserMenuLength} setMessageVisible={setMessageVisible} setList={setList} currentGroupId={currentGroupId} isVisible={isVisible} setIsVisible={setIsVisible} />
+      <CheerModal messageVisible={messageVisible} setMessageVisible={setMessageVisible} itemLength={currentUserMenuLength} />
+
       <MenuListContainer>
         <MenuListTitle>メンバーの記録</MenuListTitle>
         <MenuList item={item} list={list} setList={setList} user={user} currentGroupId={currentGroupId} navigation={navigation}/>
