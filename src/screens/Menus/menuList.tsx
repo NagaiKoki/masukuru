@@ -51,7 +51,7 @@ const MenuList = (props: TrainingListProps) => {
     (
       list.length ? 
       <ScrollView　
-        contentContainerStyle={{ paddingBottom: 550 }}
+        contentContainerStyle={{ paddingBottom: 400 }}
         refreshControl={
           <RefreshControl 
             refreshing={isRefresh}
