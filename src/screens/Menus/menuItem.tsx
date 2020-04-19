@@ -63,14 +63,14 @@ const MenuItem = (props: Props) => {
 
           {amountArray.map((amount, index) => (
             <ItemColumn key={index}>
-              <ItemLabel>回数({amount.key}回目)</ItemLabel>
+              <ItemLabel>回数（{amount.key}セット目）</ItemLabel>
               <ItemText>:   {amount.value}回</ItemText>
             </ItemColumn>
           ))}
 
           {weightArray.map((weight, index) => (
             <ItemColumn key={index}>
-              <ItemLabel>重さ({weight.key}回目)</ItemLabel>
+              <ItemLabel>重さ（{weight.key}セット目）</ItemLabel>
               <ItemText>:   {weight.value}kg</ItemText>
             </ItemColumn>
           ))}
@@ -103,11 +103,11 @@ const ItemColumn = styled.View`
 `
 
 const ItemLabel = styled.Text`
-  width: 100px;
   padding-right: 10px;
   font-size: 16px;
   font-weight: bold;
   text-align: right;
+  width: 150px;
 `
 
 const ItemText = styled.Text`
@@ -117,7 +117,8 @@ const ItemText = styled.Text`
 
 const ItemContentWrapper = styled.View`
   flex-direction: row;
-  width: 90%;
+  justify-content: space-between;
+  width: 100%;
   margin: 10px auto;
 `
 
@@ -134,6 +135,7 @@ const ItemUserName = styled.Text`
 `
 
 const ItemRecordWrapper = styled.View`
+  align-self: center;
   width: 80%;
 `
 

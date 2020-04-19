@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "splash": {
-      "image": "./src/assets/splash.png",
+      "image": "./src/assets/masukuru_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#FAF9F5"
     },
@@ -24,7 +24,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "jp.masukuru"
+    },
+    "description": "",
+    "githubUrl": "https://github.com/NagaiKoki/musclew_native"
   }
 }
