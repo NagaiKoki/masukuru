@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, Image } from 'react-native';
+import React from 'react'
 import styled from 'styled-components';
-import firebase, { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
 import UserImage from '../../components/Image/userImage'
 import MenuList from '../../components/MyPage/menuList';

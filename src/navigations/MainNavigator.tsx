@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainNavigator = ({ navigation }) => { 
   const MainStack = createStackNavigator()
-  const [initialNav, setInitialNav] = useState<string>('ホーム')
+  const [initialNav, setInitialNav] = useState<string>('main')
   const [currentGroupId, setCurrentGroupId] = useState('');
   const [loading, setloading] = useState(true)
 
@@ -44,12 +44,11 @@ const MainNavigator = ({ navigation }) => {
     return route.params.user.name
   }
 
-  
   return (
     <MainStack.Navigator initialRouteName={initialNav}>
     
       <MainStack.Screen 
-        name="ホーム" 
+        name="main" 
         component={HomeScreen}
         initialParams={{ currentGroupId: currentGroupId }}
         options={{
@@ -58,7 +57,8 @@ const MainNavigator = ({ navigation }) => {
             />
           ),
           gestureEnabled: false,
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerTintColor: COLORS.BASE_MUSCLEW,
+          headerTitle: 'ホーム'
         }}
       />
 

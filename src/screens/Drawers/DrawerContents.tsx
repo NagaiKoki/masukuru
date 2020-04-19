@@ -22,8 +22,7 @@ const DrawerContent = (props: DrawerProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isHost, setIsHost] = useState(false)
   const { user, navigation } = props;
-  const current_user = firebase.auth().currentUser;
-  const groupRef = db.collection('groups')
+  const current_user = firebase.auth().currentUser;  const groupRef = db.collection('groups')
 
   useEffect(() => {
     db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
@@ -80,8 +79,12 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 招待されたグループに移動する
   const replaceGroup = () => {
-   joinInvitedGroup(codeText)
-   navigation.navigate("ホーム")
+  //  joinInvitedGroup(codeText)
+   setIsLoading(true)
+   setTimeout(() => {
+    navigation.navigate("main", { currentGroupId: '0B2faGIsMQa1fbTNGMFO5qu6ScJ2' })
+    setIsLoading(false)
+   }, 2000)
    return setShowInvitedCodeModal(false)
   }
 
@@ -159,7 +162,7 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 招待された場合用ナビ
   const renderInvidedItem = () => {
-    if (!isHost) return;
+    // if (!isHost) return;
     return (
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>

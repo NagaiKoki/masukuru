@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
@@ -21,7 +22,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const { params } = route;
   const { currentGroupId } = params;
-
+  
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
 
@@ -32,7 +33,7 @@ const HomeScreen = ({ navigation, route }) => {
     GetUserList(currentGroupId)
     setIsLoading(false)
   }, []);
-  
+
   const AddEvent = () => {
     db.collection('groups').doc(currentGroupId).collection('events').add({
       name: EventName,
@@ -91,8 +92,6 @@ const HomeScreen = ({ navigation, route }) => {
     })
   }
 
-  console.log(UserList)
-  
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
     <NoneEventListText>
@@ -121,7 +120,7 @@ const HomeScreen = ({ navigation, route }) => {
     await GetMenuList(currentGroupId)
     setIsRefresh(false)
   }
-
+  
   return (
     isLoading? 
       <LoadingContainer>
@@ -145,7 +144,7 @@ const HomeScreen = ({ navigation, route }) => {
             keyExtractor={item => item.uid.toString()}
             renderItem={({item}) => 
             <MemberFlatListView onPress={() => item.uid !== current_user_uid ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('マイページ')}>
-              <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={50} />
+              <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={60} />
               <MemberFlatListName>
                 {item.name}
               </MemberFlatListName>
@@ -237,7 +236,7 @@ const Container = styled.ScrollView`
 const MemberView = styled.View`
   background-color: #FFF;
   height: 80px;
-  padding-top: 10px;
+  padding: 10px 10px 0 15px;
 `
 
 const MemberListView = styled.View`

@@ -27,10 +27,10 @@ const TutorialUserImageScreen = ({ navigation }) => {
       user.updateProfile({
         photoURL: uri
       }).then(function() {
-        const userdata  = { imageUrl: user.photoURL };
+        const userdata  = { imageUrl: uri };
         db.collection('users').doc(user.uid).update(userdata);
       }).then(function() {
-        navigation.navigate('グループを作成する')
+        navigation.navigate('TutorialGroupMake')
       }).catch(function(error) {
         alert(error);
       })
