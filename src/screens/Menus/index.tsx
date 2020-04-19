@@ -17,7 +17,6 @@ const MunuScreen = ({ navigation, route }) => {
   const user = firebase.auth().currentUser
   const currentUserMenuLength = list.filter(l => l.uid === user.uid).length
 
-  console.log(messageVisible)
   return (
     <MenuContainer>
       <MenuTitle>{item.name}</MenuTitle>
