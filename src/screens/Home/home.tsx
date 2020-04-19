@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import {StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
@@ -89,11 +90,11 @@ const HomeScreen = ({ navigation, route }) => {
 
   const GetMenuList = (GroupId) => {
     let list = []
-    db.collectionGroup('menus').where('groupId', '==', GroupId).orderBy('createdAt', 'desc').limit(3)
+    db.collectionGroup('menus').where('groupId', '==', GroupId).orderBy('createdAt', 'desc').limit(4)
     .get()
     .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-        list.push({name: doc.data().name, uid: doc.data().uid, id: doc.id})})
+        list.push({name: doc.data().name, uid: doc.data().uid, id: doc.id, set: doc.data().set})})
       setMenuList(list)
     })
     .catch(function(error) {
@@ -166,7 +167,7 @@ const HomeScreen = ({ navigation, route }) => {
       <RecentActivities>
         <RecentActivitiesListView>
           <RecentActivitiesListText>
-            直近の活動
+            みんなの活動
           </RecentActivitiesListText>
           <RecentActivitiesMenuListView>
             <MenuList menuList={menuList} currentGroupId={currentGroupId} GetMenuList={GetMenuList}/>
@@ -276,7 +277,7 @@ const RecentActivities = styled.View`
 const RecentActivitiesListView = styled.View`
   margin-top: 20px;
   background-color: #FFF;
-  height: 180px;
+  height: 220px;
   border-radius: 5px;
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
 `
@@ -288,7 +289,7 @@ const RecentActivitiesListText = styled.Text`
 `
 
 const RecentActivitiesMenuListView = styled.View`
-  height: 120px;
+  height: 150px;
 `
 
 const RecentActivitiesMenuFlatList = styled.FlatList`

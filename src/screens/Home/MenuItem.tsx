@@ -23,7 +23,7 @@ const MenuItem = (props: Props) => {
     <RecentActivitiesMenuFlatListView>
       <UserImage uri={userImgUrl} width={30} height={30} borderRadius={50} />
       <RecentActivitiesMenuFlatListName>
-        {item.name} を行いました！
+        {item.name}を{item.set}セット行いました！
       </RecentActivitiesMenuFlatListName>
     </RecentActivitiesMenuFlatListView>
   )
@@ -40,4 +40,5 @@ const RecentActivitiesMenuFlatListView = styled.View`
 
 const RecentActivitiesMenuFlatListName = styled.Text`
   margin-left: 20px;
+  letter-spacing: 1;
 `
