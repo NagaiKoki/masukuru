@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
@@ -27,11 +27,21 @@ const HomeScreen = ({ navigation, route }) => {
 
   const today = new Date();
 
-  useEffect(() => {
-    GetEventList(currentGroupId)
-    GetUserList(currentGroupId)
-    setIsLoading(false)
-  }, []);
+  // useEffect(() => {
+  //   GetEventList(currentGroupId)
+  //   GetUserList(currentGroupId)
+  //   setIsLoading(false)
+  //   console.log("success")
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      GetEventList(currentGroupId)
+      GetUserList(currentGroupId)
+      setIsLoading(false)
+      console.log("success")
+    },[currentGroupId])
+  );
 
   const AddEvent = () => {
     db.collection('groups').doc(currentGroupId).collection('events').add({
