@@ -53,7 +53,7 @@ const MainNavigator = ({ navigation }) => {
         initialParams={{ currentGroupId: currentGroupId }}
         options={{
           headerLeft: () => (
-            <Icon name="bars" size={24} onPress={() => { navigation.openDrawer() }} style={{ paddingLeft: 20 }}
+            <Icon name="bars" size={24} onPress={() => { navigation.openDrawer() }} style={{ paddingLeft: 20, color: COLORS.SUB_BLACK }}
             />
           ),
           gestureEnabled: false,

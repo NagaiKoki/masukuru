@@ -13,7 +13,7 @@ const EventAddModal = () => {
       >
         <ModalView>
           <ModalTitle>
-            トレーニングを追加する
+            どんなトレーニングを追加しますか？
           </ModalTitle>
         </ModalView>
       </EventModal>

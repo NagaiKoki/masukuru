@@ -17,7 +17,7 @@ const TutorialUserNameScreen = ({ navigation }) => {
           const userdata = { name: userName };
           await db.collection('users').doc(user.uid).update(userdata)
         }).then(function() {
-          navigation.navigate('TutorialUserImage')
+          navigation.navigate('TutorialBodyInfo')
         }).catch(function(error) {
           console.log(error)
         });
@@ -84,7 +84,7 @@ const TutorialSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
+  border-radius: 60px;
   margin-top: 50px;
   opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
 `
