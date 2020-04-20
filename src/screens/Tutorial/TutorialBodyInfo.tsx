@@ -107,6 +107,12 @@ const TutorialBodyInfoScreen = ({ navigation }) => {
  
   return (
     <TutorialContainer>
+      <TutorialStepTitle>
+        - step 2 -
+      </TutorialStepTitle>
+      <TutorialTitle>
+        基本情報を登録しよう！
+      </TutorialTitle>
       <TutorialWrapper>
         {sexSelectForm()}
         {ageTextForm()}
@@ -139,10 +145,23 @@ const TutorialContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
+const TutorialStepTitle = styled.Text`
+  padding: 50px 0 40px 0;
+  text-align: center;
+  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
+`
+
+const TutorialTitle = styled.Text`
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: ${COLORS.BASE_BLACK};
+`
+
 const TutorialWrapper = styled.View`
   width: 90%;
-  padding-top: 20px;
-  margin: 0 auto;
+  margin: 20px auto;
 `
 
 const SelectWrapper = styled.View`

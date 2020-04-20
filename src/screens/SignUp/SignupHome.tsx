@@ -12,17 +12,23 @@ const SignupHomeScreen = ({ navigation, route }) => {
         <ImageLogoWrapper>
           <Image 
             source={require('../../assets/main_icon.png')}
-            style={{ width: 80, height: 80, borderRadius: 60, resizeMode: 'contain', alignSelf: 'center' }}
+            style={{ width: 60, height: 60, borderRadius: 60, resizeMode: 'contain', alignSelf: 'center' }}
           />
         </ImageLogoWrapper>
         <ImageTitleWrapper>
           <Image 
             source={require('../../assets/masukuru_title.png')}
-            style={{ width: 120, height: 120, borderRadius: 60, resizeMode: 'contain', alignSelf: 'center' }}
+            style={{ width: 120, height: 17, marginLeft: 10, borderRadius: 60, resizeMode: 'contain', alignSelf: 'center' }}
           />
         </ImageTitleWrapper>
 
       </ImageWrapper>
+
+      <SignUpTitle>
+        友達と筋トレを共有しながら、
+        {"\n"}{"\n"}
+        一緒に理想のカラダへ
+      </SignUpTitle>
 
       <SignUpCard>
         <SignUpButtonWrapper>
@@ -52,16 +58,27 @@ const Container = styled.View`
 `
 
 const ImageWrapper = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   align-self: center;
   align-items: center;
 `
 
 const ImageLogoWrapper = styled.View`
+  align-self: center;
 `
 
 const ImageTitleWrapper = styled.View`
   margin: 10px 20px 0 10px;
+  align-self: center;
+`
+
+const SignUpTitle = styled.Text`
+  width: 80%;
+  margin: 0 auto;
+  padding: 100px 0 0px 0px;
+  color: ${COLORS.BASE_BLACK};
+  font-weight: bold;
+  font-size: 20px;
 `
  
 const SignUpCard = styled.View`
@@ -80,7 +97,7 @@ const SignUpButtonWrapper = styled.View`
 const SignUpButton = styled.TouchableOpacity`
   background-color: ${COLORS.BASE_MUSCLEW};
   border-radius: 60px;
-  padding: 20px 0;
+  padding: 17px 0;
   width: 95%;
   align-self: center;
 `
@@ -108,7 +125,7 @@ const LoginButtonWrapper = styled.View`
 const LoginButton = styled.TouchableOpacity`
   border: 2px solid ${COLORS.BASE_MUSCLEW};
   border-radius: 60px;
-  padding: 20px 0;
+  padding: 17px 0;
   width: 95%;
   align-self: center;
 `
