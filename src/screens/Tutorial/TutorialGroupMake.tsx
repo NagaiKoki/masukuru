@@ -46,7 +46,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       groupRef.where('inviteCode', '==', codeText).get()
         .then(snapshot => {
       if (snapshot.empty) {
-        alert('入力した招待コードは存在しません。今一度、招待コードをお確かめください。');
+        Alert.alert('入力した招待コードは存在しません。今一度、招待コードをお確かめください。');
       } else {
         snapshot.docs[0].ref.collection('groupUsers').get().then(snap => {
           if (snap.size >= 5) {
@@ -66,7 +66,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       }
     })
     } catch(error) {
-      alert('原因不明のエラーが発生しました。')
+      Alert.alert('原因不明のエラーが発生しました。')
     }
   }
 

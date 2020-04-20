@@ -9,21 +9,23 @@ import { MenuType } from '../../types/menu';
 
 interface Props {
   list: MenuType
+  index: number
   navigation: any
 }
 
 const MenuItem = (props: Props) => { 
   const [user, setUser] = useState(null)
-  const { list, navigation } = props
+  const { list, navigation, index } = props
   const { uid } = list
-
   const currentUserId = firebase.auth().currentUser.uid
 
-  // user取得
-  db.collection('users').doc(uid).get().then(doc => {
-    if (!doc.exists) return;
-    setUser(doc.data())
-  })
+  React.useEffect(() => {
+    // user取得
+    db.collection('users').doc(uid).get().then(doc => {
+      if (!doc.exists) return;
+      setUser(doc.data())
+    })   
+  }, [])
 
   // record表示
   let listSet : number = list.set
@@ -50,6 +52,7 @@ const MenuItem = (props: Props) => {
 
   return (
     <ItemWrapper>
+      <ItemBorder index={index} />
       <ItemTimestampText>{createdAt}</ItemTimestampText>
 
       <ItemContentWrapper>
@@ -85,14 +88,23 @@ const MenuItem = (props: Props) => {
 
 export default MenuItem;
 
-const ItemWrapper = styled.View`
-  padding: 20px 15px;
+const ItemWrapper = styled.View<{ index: number }>`
+  padding: 0px 15px 20px 15px;
+`
+
+const ItemBorder = styled.View`
+  padding-top: 20px;
+  width: 95%;
+  align-self: center;
+  border-top-color: ${props => props.index !== 0 ? COLORS.BASE_BORDER_COLOR : COLORS.BASE_WHITE};
+  border-top-width: 1px;
 `
 
 const ItemTimestampText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 20px;
+  margin-left: 10px;
   padding-bottom: 20px;
 `
 

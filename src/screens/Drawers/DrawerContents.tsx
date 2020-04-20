@@ -162,7 +162,7 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 招待された場合用ナビ
   const renderInvidedItem = () => {
-    // if (!isHost) return;
+    if (!isHost) return;
     return (
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
