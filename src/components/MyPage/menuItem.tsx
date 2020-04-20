@@ -7,10 +7,11 @@ import { MenuType } from '../../types/menu';
 
 interface Props {
   list: MenuType
+  index: number
 }
 
 const MenuItem = (props: Props) => { 
-  const { list } = props
+  const { list, index} = props
   let listSet : number = list.set
   let listName : string = list.name
   let createdAt : string = convertTimestampToString(list.createdAt)
@@ -26,6 +27,7 @@ const MenuItem = (props: Props) => {
 
   return (
     <ItemWrapper>
+      <ItemBorder index={index} />
       <ItemTimestampText>{createdAt}</ItemTimestampText>
 
       <ItemColumn>
@@ -58,13 +60,22 @@ const MenuItem = (props: Props) => {
 export default MenuItem;
 
 const ItemWrapper = styled.View`
-  padding: 20px 15px;
+  padding: 0px 15px 20px 15px;
+`
+
+const ItemBorder = styled.View`
+  padding-top: 20px;
+  width: 95%;
+  align-self: center;
+  border-top-color: ${props => props.index !== 0 ? COLORS.BASE_BORDER_COLOR : COLORS.BASE_WHITE};
+  border-top-width: 1px;
 `
 
 const ItemTimestampText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 20px;
+  margin-left: 10px;
   padding-bottom: 20px;
 `
 

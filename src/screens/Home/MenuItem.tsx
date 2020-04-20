@@ -4,6 +4,7 @@ import UserImage from '../../components/Image/userImage'
 import { db } from '../../config/firebase';
 // import type
 import { MenuType } from '../../types/menu';
+import { COLORS } from '../../constants/Styles';
 
 interface Props {
   item: MenuType
@@ -41,4 +42,5 @@ const RecentActivitiesMenuFlatListView = styled.View`
 const RecentActivitiesMenuFlatListName = styled.Text`
   margin-left: 20px;
   letter-spacing: 1;
+  color: ${COLORS.BASE_BLACK};
 `

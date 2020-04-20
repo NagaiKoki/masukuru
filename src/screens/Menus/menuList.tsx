@@ -33,11 +33,11 @@ const MenuList = (props: TrainingListProps) => {
       </LoadingContainer>
     )
   }
-  
+
   // 各トレーニングのデータ
   const TrainingMenuItem = 
     list.map((item, index) => (
-      <MenuItem key={index} list={item} navigation={navigation}/>  
+      <MenuItem key={index} index={index} list={item} navigation={navigation}/>  
   ))
 
   // スクロールリロード

@@ -27,20 +27,12 @@ const HomeScreen = ({ navigation, route }) => {
   const current_user_uid = current_user.uid
 
   const today = new Date();
-
-  // useEffect(() => {
-  //   GetEventList(currentGroupId)
-  //   GetUserList(currentGroupId)
-  //   setIsLoading(false)
-  //   console.log("success")
-  // }, []);
-
+  
   useFocusEffect(
     useCallback(() => {
       GetEventList(currentGroupId)
       GetUserList(currentGroupId)
       setIsLoading(false)
-      console.log("success")
     },[currentGroupId])
   );
 
@@ -114,9 +106,9 @@ const HomeScreen = ({ navigation, route }) => {
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
         <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
-        <EventFlatListText>
-          {item.name} の記録
-        </EventFlatListText>
+          <EventFlatListText>
+            {item.name} の記録
+          </EventFlatListText>
           <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>
       }
@@ -259,7 +251,7 @@ const MemberFlatList = styled.FlatList`
 `
 
 const MemberFlatListView = styled.TouchableOpacity`
-  margin-right: 10px;
+  margin-right: 12px;
   padding-bottom: 5px;
 `
 
@@ -277,13 +269,14 @@ const RecentActivities = styled.View`
 const RecentActivitiesListView = styled.View`
   margin-top: 20px;
   background-color: #FFF;
-  height: 220px;
+  height: 230px;
   border-radius: 5px;
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
+  border: 1px solid #e9e9e9;
 `
 
 const RecentActivitiesListText = styled.Text`
-  margin: 10px;
+  margin: 15px 0px 10px 20px;
   font-size: 16px;
   font-weight: bold;
 `
@@ -413,6 +406,7 @@ const EventFlatList = styled.FlatList`
 const EventFlatListButton = styled.TouchableOpacity`
   margin-top: 20px;
   background-color: #FFF;
+  border: 1px solid #e9e9e9;
   height: 75px;
   border-radius: 5px;
   flex-direction: row;
@@ -423,7 +417,7 @@ const EventFlatListText = styled.Text`
   margin-top: auto;
   margin-bottom: auto;
   align-self: flex-start;
-  margin-left: 20px;
+  margin-left: 30px;
   font-size: 16px;
   font-weight: bold;
   color: ${COLORS.BASE_BLACK};

@@ -32,7 +32,7 @@ const MenuList = (props: TrainingListProps) => {
   // 各トレーニングのデータ
   const TrainingMenuItem = 
     list.map((item, index) => (
-      <MenuItem key={index} list={item}/>  
+      <MenuItem key={index} index={index} list={item}/>  
   ))
 
   const onRefresh = async () => {
