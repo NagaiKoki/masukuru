@@ -32,6 +32,9 @@ const TutorialUserNameScreen = ({ navigation }) => {
   
   return (
     <TutorialContainer>
+      <TutorialStepTitle>
+        - step 1 -
+      </TutorialStepTitle>
       <TutorialTitle>
         あなたの名前を登録しよう！
       </TutorialTitle>
@@ -57,8 +60,14 @@ const TutorialContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
+const TutorialStepTitle = styled.Text`
+  padding: 50px 0 40px 0;
+  text-align: center;
+  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
+`
+
 const TutorialTitle = styled.Text`
-  padding-top: 130px;
   text-align: center;
   font-weight: bold;
   font-size: 20px;

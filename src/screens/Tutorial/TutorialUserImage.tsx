@@ -38,6 +38,12 @@ const TutorialUserImageScreen = ({ navigation }) => {
   
   return (
     <TutorialContainer>
+      <TutorialStepTitle>
+        - step 3 -
+      </TutorialStepTitle>
+      <TutorialTitle>
+        プロフィール写真を登録しよう！
+      </TutorialTitle>
       <TutorialProfileImageWrapper>
         <ImageUploadWrapper onPress={ () => ImageUpload(user, setProgress, setUri)}>
           <UserImage uri={uri} width={120} height={120} borderRadius={60} forProfile={true} />
@@ -59,7 +65,21 @@ const TutorialContainer = styled.View`
 `
 
 const TutorialProfileImageWrapper = styled.View`
-  padding-top: 130px;
+  padding-top: 30px;
+`
+
+const TutorialStepTitle = styled.Text`
+  padding: 50px 0 40px 0;
+  text-align: center;
+  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
+`
+
+const TutorialTitle = styled.Text`
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const ImageUploadWrapper = styled.TouchableOpacity`

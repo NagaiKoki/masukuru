@@ -90,8 +90,6 @@ const SignupScreen = ({ route }) => {
           </SignUpSubmitButton>
         </FormEmailSignInWrapper>
         
-        
-        
       </SignUpFormCard>
     </SignUpFormWrapper>
   );

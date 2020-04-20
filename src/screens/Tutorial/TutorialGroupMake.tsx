@@ -5,7 +5,7 @@ import { COLORS } from '../../constants/Styles';
 import Modal from 'react-native-modal';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
 import firebase, { db } from '../../config/firebase';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const TutorialGroupMakeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -102,6 +102,9 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
 
   return (
     <TutorialGroupContainer>
+      <TutorialStepTitle>
+        - 最後のステップです！ -
+      </TutorialStepTitle>
       <TutorialGroupTitle>マスクルへようこそ！</TutorialGroupTitle>
         <TutorialGroupSubTitle>マスクルを使って、みんなと一緒に理想な体型を手に入れよう！</TutorialGroupSubTitle>
 
@@ -112,6 +115,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
             <TutorialInviteText>ひとまず１人で使う</TutorialInviteText>
           </TutorialInviteBtn>
           <TutorialInviteSubText>１人で使ってみて、その後に友達を招待しよう！</TutorialInviteSubText>
+          <TutorialInviteSubText>※ 後から友達を招待することもできます</TutorialInviteSubText>
         </TutorialInviteBtnWrapper>
 
         <TutorialInvitedBtnWrapper>
@@ -153,7 +157,6 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
 const TutorialGroupContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-  padding-top: 100px;
 `
 
 const TutorialGroupTitle = styled.Text`
@@ -161,6 +164,13 @@ const TutorialGroupTitle = styled.Text`
   font-weight: bold;
   font-size: 25px;
   text-align: center;
+`
+
+const TutorialStepTitle = styled.Text`
+  padding: 50px 0 40px 0;
+  text-align: center;
+  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const TutorialGroupSubTitle = styled.Text`
@@ -183,7 +193,7 @@ const TutorialInviteBtn = styled.TouchableOpacity`
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
+  border-radius: 60px;
   margin-top: 50px;
 `
 
@@ -208,7 +218,7 @@ const TutorialInvitedBtnWrapper = styled.View`
 const InvideModalView = styled.View`
   width: 100%;
   border-radius: 10px;
-  height: 300px;
+  height: 320px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
@@ -240,7 +250,7 @@ const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 20px 0;
-  border-radius: 5px;
+  border-radius: 60px;
   margin-top: 30px;
   opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
 `
@@ -254,7 +264,7 @@ const InvitedModalSubmitText = styled.Text`
 
 const ModalCloseButton = styled.TouchableOpacity`
   align-self: flex-end;
-  padding: 5px 5px 0 0;
+  padding: 10px;
 `
 
 export default TutorialGroupMakeScreen;
