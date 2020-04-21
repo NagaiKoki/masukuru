@@ -140,7 +140,7 @@ const pickerSelectStyles = StyleSheet.create({
   },
 })
 
-const TutorialContainer = styled.View`
+const TutorialContainer = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
 `

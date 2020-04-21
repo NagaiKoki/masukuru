@@ -44,7 +44,7 @@ const MenuItem = (props: Props) => {
     if (!user) return;
     return (
       <ItemUserWrapper onPress={ () => user.uid === currentUserId ? navigation.navigate('マイページ') : navigation.navigate('UserPage', { user: user })}>
-          <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
+          <UserImage uri={user.imageUrl} width={35} height={35} borderRadius={60} />
           <ItemUserName>{user.name}</ItemUserName>
         </ItemUserWrapper>
     )
@@ -116,7 +116,7 @@ const ItemColumn = styled.View`
 
 const ItemLabel = styled.Text`
   padding-right: 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   text-align: right;
   width: 150px;
@@ -135,7 +135,7 @@ const ItemContentWrapper = styled.View`
 `
 
 const ItemUserWrapper = styled.TouchableOpacity`
-  margin-right: 50px;
+  margin-right: 20px;
   width: 20%;
 `
 

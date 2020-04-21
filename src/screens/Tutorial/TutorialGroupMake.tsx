@@ -154,7 +154,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
 }
 
 // メイン画面
-const TutorialGroupContainer = styled.View`
+const TutorialGroupContainer = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
 `

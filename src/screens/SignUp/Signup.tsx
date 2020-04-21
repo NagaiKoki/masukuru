@@ -4,7 +4,7 @@ import { emailValidator, passwordValidator } from '../../validators/AuthValidato
 import Toast from '../../components/Toaster';
 import styled from 'styled-components';
 import { GoogleLogin } from '../../apis/auth-api';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { Linking } from 'expo';
 import { COLORS } from '../../constants/Styles';
 
 const SignupScreen = ({ route }) => {
@@ -47,6 +47,10 @@ const SignupScreen = ({ route }) => {
     setError('');
   };
 
+  const handleLink = () => {
+    Linking.openURL('https://nagaikoki.github.io/masukuru_privacy/')
+  }
+
   // 文字が入力されるまでsubmit不可
   const disableSubmit: boolean = (
     email.value.length && (password.value.length && password.value.length > 6) ? false : true
@@ -84,6 +88,12 @@ const SignupScreen = ({ route }) => {
             onChangeText={ text => setPassword({ value: text, error: '' }) }
           />
           <FormSubText>※ 6文字以上</FormSubText>
+
+          <PrivacyWrapper>
+            <PrivacyPolicySub>利用を開始することで、</PrivacyPolicySub>
+            <PrivacyPolicyLink onPress={handleLink}>プライバシーポリシー</PrivacyPolicyLink>
+            <PrivacyPolicySub>に同意することとします。</PrivacyPolicySub>
+          </PrivacyWrapper>
           
           <SignUpSubmitButton block onPress={ () => onSignUpPrss() } disabled={disableSubmit} disableSubmit={disableSubmit}>
             <SignUpSubmitText>登録する</SignUpSubmitText>
@@ -95,9 +105,9 @@ const SignupScreen = ({ route }) => {
   );
 };
 
-const SignUpFormWrapper = styled.View`
+const SignUpFormWrapper = styled.ScrollView`
   flex: 1;
-  padding-top: 20px;
+  padding-top: 10px;
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
@@ -105,7 +115,7 @@ const SignUpFormCard = styled.View`
   border-radius: 15px;
   width: 90%;
   height: auto;
-  padding: 30px 0 50px 0;
+  padding: 20px 0 50px 0;
   margin-top: 30px;
   align-self: center;
   background-color: ${COLORS.BASE_WHITE};
@@ -135,7 +145,7 @@ const GoogleSignInText = styled.Text`
 `
 
 const FormEmailSignInWrapper = styled.View`
-  padding-top: 40px;
+  padding-top: 30px;
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 0.8;
   width: 90%;
@@ -163,6 +173,19 @@ const SignUpTextForm = styled.TextInput`
   border-radius: 5px;
   padding: 20px 15px;
   margin: 10px 0;
+`
+const PrivacyWrapper = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  padding-top: 20px;
+`
+
+const PrivacyPolicySub = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+`
+
+const PrivacyPolicyLink = styled.Text`
+  text-decoration: underline;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const SignUpSubmitButton = styled.TouchableOpacity<{disableSubmit: boolean}>`
