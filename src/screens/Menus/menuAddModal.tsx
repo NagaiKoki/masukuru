@@ -132,35 +132,16 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   }
 
   const handleSetCount = (set) => {
-    const setString = String(set)
-    if (setString.match(/[^0-9]+/)) {
-      alert('数字だけを入力してください。')
-      return;
-    } else {
-      SetCount(set)
-    }
+    SetCount(set)
   }
 
   // 回数の動的対象state変更処理
   const handleSetAmount = (count,number) => {
-    const str = String(number)
-    if (str.match(/[^0-9]+/)) {
-      eval("setAmount" + count + `()`)
-      alert('数字だけを入力してください。')
-      return;
-    } else {
-      eval("setAmount" + count + `(${number})`)
-    }
+    eval("setAmount" + count + `(${number})`)
   }
 
   const handleSetWeight = (count, number) => {
-    const str = String(number)
-    if (str.match(/[^0-9]+/)) {
-      alert('数字だけを入力してください。')
-      return;
-    } else {
-      eval("setWeight" + count + `(${number})`)
-    }
+    eval("setWeight" + count + `(${number})`)
   }
 
   const renderSetForm = (

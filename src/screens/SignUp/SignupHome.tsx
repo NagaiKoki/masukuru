@@ -25,9 +25,9 @@ const SignupHomeScreen = ({ navigation, route }) => {
       </ImageWrapper>
 
       <SignUpTitle>
-        友達と筋トレを共有しながら、
+        仲間と筋トレを共有しながら、
         {"\n"}{"\n"}
-        一緒に理想のカラダへ
+        仲間と理想のカラダへ
       </SignUpTitle>
 
       <SignUpCard>
