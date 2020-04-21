@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import {StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import {StyleSheet, ActivityIndicator, RefreshControl, Clipboard, Alert} from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
@@ -9,19 +9,20 @@ import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
 import { MenuType } from '../../types/menu';
-const user = firebase.auth().currentUser
 
 const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
-  // const [MemberModal, setMemberModal] = useState(false);
+  const [MemberModal, setMemberModal] = useState(false);
   const [EventModal, setEventModal] = useState(false);
   const [EventList, setEventList] = useState([]);
   const [UserList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
   const [menuList, setMenuList] = useState<MenuType[]>([]);
+  const [ownCode, setOwnCode] = useState<string>('')
   const { params } = route;
   const { currentGroupId } = params;
+  const groupRef = db.collection('groups')
   
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
@@ -115,6 +116,26 @@ const HomeScreen = ({ navigation, route }) => {
     />
   );
 
+  // 招待をする場合のモーダル出現
+  const handleInviteCodeOnClick = () => {
+    try {
+      groupRef.doc(currentGroupId).get().then(doc => {
+        if (doc) {
+          const { inviteCode } = doc.data()
+          setOwnCode(inviteCode)
+        }
+      })
+    } catch (error) {
+      Alert.alert('取得に失敗しました。時間を置いてからやり直してください。')
+    }
+    setMemberModal(true)
+  }
+
+  const copyInviteCode = (code) => {
+    Clipboard.setString(code)
+    Alert.alert('コピーされました！')
+  }
+
   const onRefresh = async () => {
     setIsRefresh(true)
     await GetEventList(currentGroupId) 
@@ -154,7 +175,24 @@ const HomeScreen = ({ navigation, route }) => {
             }
           />
         </MemberListView>
+        <MemberAddButton onPress={handleInviteCodeOnClick}>	
+          <MemberAddButtonPlus>	
+            +	
+          </MemberAddButtonPlus>	
+        </MemberAddButton>
       </MemberView>
+
+      <Modal isVisible={MemberModal} swipeDirection='down' onSwipeComplete={() => setMemberModal(false)}>
+        <InviteModalView>
+          <InviteCloseBar />
+          <InviteCodeWrapper onPress={() => copyInviteCode(ownCode)}>
+            <InviteCodeText>{ownCode}</InviteCodeText>
+          </InviteCodeWrapper>
+          <InviteSubText>タップするとコピーされます</InviteSubText>
+          <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
+          <InviteSubText>※ グループに参加できる人数は最大で5人までです</InviteSubText>
+       </InviteModalView>
+      </Modal>
         
       <RecentActivities>
         <RecentActivitiesListView>
@@ -238,13 +276,13 @@ const Container = styled.ScrollView`
 `
 
 const MemberView = styled.View`
+  position: relative;
   background-color: #FFF;
   height: 80px;
   padding: 10px 10px 0 15px;
 `
 
 const MemberListView = styled.View`
-  position: relative;
 `
 
 const MemberFlatList = styled.FlatList`
@@ -260,6 +298,79 @@ const MemberFlatListName = styled.Text`
   font-size: 10px;
   text-align: center;
   color: ${COLORS.BASE_BLACK};
+`
+
+const MemberAddButton = styled.TouchableOpacity`
+  position: absolute;	
+  background-color: ${COLORS.BASE_MUSCLEW};	
+  right: 10px;
+  top: 10px;
+  width: 50px;
+  height: 50px;
+  margin: 5px 0 0 0;	
+  align-self: flex-end;	
+  border-radius: 60px;
+`
+
+const MemberAddButtonPlus = styled.Text`
+  position: absolute;	
+  top: 6px;	
+  left: 16px;	
+  color: #FFF;	
+  font-size: 30px;
+`
+
+const InviteModalView = styled.View`
+  position: absolute;
+  bottom: -20;
+  width: 110%;
+  border-radius: 10px;
+  height: 320px;
+  background-color: ${COLORS.BASE_BACKGROUND};
+  align-self: center;
+`
+
+const InviteCloseBar = styled.View`
+  background-color: ${COLORS.BASE_BLACK};
+  height: 5px;
+  width: 100px;
+  margin-top: 7px;
+  border-radius: 60px;
+  align-self: center;
+`
+
+const InviteCodeWrapper = styled.TouchableOpacity`
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
+  border-radius: 5px;
+  margin-top: 30px;
+`
+
+const InviteCodeText = styled.Text`
+  padding: 10px 50px;
+  color: ${COLORS.BASE_BLACK};
+  font-size: 30px;
+  letter-spacing: 4;
+  font-weight: bold;
+  text-align: center;
+`
+
+const InviteSubText = styled.Text`
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 8px;
+  text-align: center;
+  color: ${COLORS.SUB_BLACK};
+`
+
+const InviteModalTitle = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 50px;
+  text-align: center;
 `
 
 const RecentActivities = styled.View`

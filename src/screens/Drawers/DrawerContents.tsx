@@ -132,7 +132,7 @@ const DrawerContent = (props: DrawerProps) => {
           <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
           <InviteSubText>※ グループに参加できる人数は最大で5人までです</InviteSubText>
        </InviteModalView>
-    </Modal>
+      </Modal>
     )
   }
 
