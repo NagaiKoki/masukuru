@@ -24,15 +24,16 @@ const MainTabNavigator = () => {
           focused
           ? color = `${COLORS.BASE_MUSCLEW}`
           : color = `${COLORS.SUB_BLACK}`
-          return <Icon name={iconName} size={24} color={color} />;
+          return <Icon name={iconName} size={20} color={color} />;
         }
       })}
       tabBarOptions={{
         activeTintColor: `${COLORS.BASE_MUSCLEW}`,
         inactiveTintColor: `${COLORS.SUB_BLACK}`,
         style: {
-          height: 90,
-          paddingTop: 10
+          height: '10%',
+          paddingTop: '2%',
+          paddingBottom: '2%'
         }
       }}
     >

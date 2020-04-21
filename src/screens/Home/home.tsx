@@ -304,10 +304,10 @@ const MemberAddButton = styled.TouchableOpacity`
   position: absolute;	
   background-color: ${COLORS.BASE_MUSCLEW};	
   right: 10px;
-  top: 10px;
+  top: 5px;
   width: 50px;
   height: 50px;
-  margin: 5px 0 0 0;	
+  margin: 5px 0 5px 0;	
   align-self: flex-end;	
   border-radius: 60px;
 `
@@ -325,6 +325,7 @@ const InviteModalView = styled.View`
   bottom: -20;
   width: 110%;
   border-radius: 10px;
+  padding: 0 10px;
   height: 320px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;

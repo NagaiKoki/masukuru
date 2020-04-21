@@ -274,6 +274,7 @@ const InviteModalView = styled.View`
   bottom: -20;
   width: 110%;
   border-radius: 10px;
+  padding: 0 10px;
   height: 320px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;

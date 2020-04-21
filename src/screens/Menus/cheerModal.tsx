@@ -53,12 +53,12 @@ const CheerModal = (props: CheerProps) => {
 const MessageModalWrapper = styled.View`
   height: 200px;
   background-color: ${COLORS.BASE_BACKGROUND};
+  padding: 10px;
   border-radius: 10px;
 `
 
 const ModalCloseBtn = styled.TouchableOpacity`
   flex-direction: row-reverse;
-  padding: 10px;
 `
 
 const MessageModalTitle= styled.Text`
