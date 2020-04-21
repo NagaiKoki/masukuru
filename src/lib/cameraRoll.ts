@@ -1,5 +1,6 @@
 
 import React, { Dispatch, SetStateAction } from 'react'
+import { Alert } from 'react-native'
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
@@ -51,7 +52,7 @@ export const ImageUpload = async (user: firebase.User, setProgress: Dispatch<Set
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         console.log(status)
         if (status !== 'granted') {
-          alert("カメラロールを許可してください。");
+          Alert.alert("カメラロールを許可してください。");
           return false;
         } else {
           return true;
