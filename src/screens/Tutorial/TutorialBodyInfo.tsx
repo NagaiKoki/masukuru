@@ -4,6 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { COLORS } from '../../constants/Styles';
 import { Alert, Text, StyleSheet } from 'react-native';
 import firebase, { db } from '../../config/firebase';
+import { KeyboardAvoidingView } from 'react-native';
 
 const TutorialBodyInfoScreen = ({ navigation }) => {
   const [age, setAge] = useState<number>(null)
@@ -106,6 +107,7 @@ const TutorialBodyInfoScreen = ({ navigation }) => {
   )
  
   return (
+    <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: COLORS.BASE_BACKGROUND }} keyboardVerticalOffset={200}>
     <TutorialContainer>
       <TutorialStepTitle>
         - step 2 -
@@ -121,6 +123,7 @@ const TutorialBodyInfoScreen = ({ navigation }) => {
         {renderSubmitBtn}
       </TutorialWrapper>
     </TutorialContainer>
+    </KeyboardAvoidingView>
   )
 }
 

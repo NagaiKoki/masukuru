@@ -92,7 +92,7 @@ const TutorialSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
   width: 80%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
+  padding: 15px 0;
   border-radius: 60px;
   margin-top: 50px;
   opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };

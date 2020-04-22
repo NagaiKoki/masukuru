@@ -116,7 +116,6 @@ const SignUpFormCard = styled.View`
   width: 90%;
   height: auto;
   padding: 20px 0 50px 0;
-  margin-top: 30px;
   align-self: center;
   background-color: ${COLORS.BASE_WHITE};
 `
@@ -171,7 +170,7 @@ const SignUpTextForm = styled.TextInput`
   width: 100%;
   align-self: center;
   border-radius: 5px;
-  padding: 20px 15px;
+  padding: 15px 15px;
   margin: 10px 0;
 `
 const PrivacyWrapper = styled.Text`
