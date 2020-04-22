@@ -306,7 +306,7 @@ const MemberFlatListView = styled.TouchableOpacity`
 `
 
 const MemberFlatListName = styled.Text`
-  padding-top: 2px;
+  padding-top: 4px;
   font-size: 10px;
   text-align: center;
   color: ${COLORS.BASE_BLACK};
