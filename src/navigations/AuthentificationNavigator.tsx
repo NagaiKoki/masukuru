@@ -8,6 +8,7 @@ import SignupHomeScreen from '../screens/SignUp/SignupHome';
 import SignupLoadingScreen from '../screens/SignUp/SignupLoading';
 import LoginScreen from '../screens/Login/Login';
 import LoginLoadingScreen from '../screens/Login/LoginLoading';
+import ResetPasswordScreen from '../screens/Login/ResetPassword';
 
 const AuthentificationNavigator = ({ route }) => {
   const AuthenticateStack = createStackNavigator();
@@ -54,6 +55,18 @@ const AuthentificationNavigator = ({ route }) => {
         headerTintColor: COLORS.BASE_MUSCLEW,
       }}
     />
+
+    <AuthenticateStack.Screen 
+      name="ResetPassword" 
+      component={ResetPasswordScreen}
+      initialParams={{ setIsChange: route.params.setIsChange }}
+      options={{
+        title: "パスワード再設定",
+        headerTintColor: COLORS.BASE_MUSCLEW,
+      }}
+    />
+
+
     <AuthenticateStack.Screen name="LoginLoading" component={LoginLoadingScreen} />
 
   </AuthenticateStack.Navigator>

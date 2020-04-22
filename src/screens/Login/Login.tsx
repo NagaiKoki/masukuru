@@ -6,7 +6,7 @@ import { emailValidator, passwordValidator } from '../../validators/AuthValidato
 import { GoogleLogin } from '../../apis/auth-api'
 import Toast from '../../components/Toaster';
 
-const LoginScreen = ({ route }) => {
+const LoginScreen = ({ route, navigation }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [loading, setLoading] = useState(false);
@@ -86,6 +86,10 @@ const LoginScreen = ({ route }) => {
             value={ password.value }
             onChangeText={ (text: string) => setPassword({ value: text, error: "" }) }
           />
+
+          <PasswordResetBtn block onPress={ () => navigation.navigate('ResetPassword') }>
+            <PasswordResetText>パスワードをお忘れですか？</PasswordResetText>
+          </PasswordResetBtn>
           
           <LoginSubmitButton block onPress={ () => onLoginPressed() } disabled={ disableSubmit } disableSubmit={ disableSubmit }>
             <LoginSubmitText>ログインする</LoginSubmitText>
@@ -175,6 +179,16 @@ const LoginSubmitText = styled.Text`
   font-weight: bold;
   text-align: center;
   font-size: 16px;
+`
+
+const PasswordResetBtn = styled.TouchableOpacity``
+
+const PasswordResetText = styled.Text`
+  text-decoration: underline;
+  text-align: center;
+  padding-top: 10px;
+  color: ${COLORS.BASE_BLACK};
+  font-size: 14px;
 `
 
 export default LoginScreen;
