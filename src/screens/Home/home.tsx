@@ -20,6 +20,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [isRefresh, setIsRefresh] = useState(false)
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const [ownCode, setOwnCode] = useState<string>('')
+  const [ownerId, setOwnerId] = useState('');
   const { params } = route;
   const { currentGroupId } = params;
   const groupRef = db.collection('groups')
@@ -33,6 +34,7 @@ const HomeScreen = ({ navigation, route }) => {
     useCallback(() => {
       GetEventList(currentGroupId)
       GetUserList(currentGroupId)
+      getOwnerId(currentGroupId)
       setIsLoading(false)
     },[currentGroupId])
   );
@@ -95,6 +97,16 @@ const HomeScreen = ({ navigation, route }) => {
     })
   }
 
+  const getOwnerId = (GroupId) => {
+    db.collection('groups').doc(GroupId)
+    .get()
+    .then(function(doc) {
+      setOwnerId(doc.data().ownerId)
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }
+
   const EventFlatListDisplay = (
     EventList.length == 0 ? 
     <NoneEventListText>
@@ -106,7 +118,7 @@ const HomeScreen = ({ navigation, route }) => {
       extraData={EventList}
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
-        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
+        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId, ownerId: ownerId }) }}>
           <EventFlatListText>
             {item.name} の記録
           </EventFlatListText>
