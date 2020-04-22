@@ -26,9 +26,9 @@ const ProfileChangeScreen = ({ route, navigation }) => {
 
     const renderUserNameForm = (  
         <UserNameForm 
-          placeholder='名前を入力する（3文字以上 15字以下）'
+          placeholder='名前を入力する（3文字以上 8字以下）'
           value={userName}
-          maxLength={15}
+          maxLength={8}
           autoCapitalize={'none'}
           autoCorrect={ false }
           onChangeText={ text => setUserName(text) }
@@ -132,7 +132,7 @@ const ProfileChangeSubmitBtn = styled.TouchableOpacity`
   width: 80%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
+  padding: 15px 0;
   border-radius: 60px;
   margin-top: 50px;
 `

@@ -27,7 +27,7 @@ const TutorialUserNameScreen = ({ navigation }) => {
   }
 
   const disableSubmit: boolean = (
-    userName && userName.length >= 3 ? false : true
+    userName && userName.length >= 3 && userName.length <= 8 ? false : true
   )
   
   return (
@@ -41,9 +41,10 @@ const TutorialUserNameScreen = ({ navigation }) => {
 
       <TutorialNameContainer>
         <TutorialNameForm 
-          placeholder='名前を入力する（3文字以上）'
+          placeholder='名前を入力する（3文字以上8文字以下）'
           autoCapitalize={'none'}
           autoCorrect={ false }
+          maxLength={8}
           onChangeText={ text => setUserName(text) }
         />
       </TutorialNameContainer>

@@ -106,7 +106,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
         - 最後のステップです！ -
       </TutorialStepTitle>
       <TutorialGroupTitle>マスクルへようこそ！</TutorialGroupTitle>
-        <TutorialGroupSubTitle>マスクルを使って、みんなと一緒に理想な体型を手に入れよう！</TutorialGroupSubTitle>
+        <TutorialGroupSubTitle>マスクルで、みんなと一緒に理想な体型を手に入れよう！</TutorialGroupSubTitle>
 
       <TutorialGroupBtnWrapper>
 
@@ -192,7 +192,7 @@ const TutorialInviteBtn = styled.TouchableOpacity`
   width: 80%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
+  padding: 15px 0;
   border-radius: 60px;
   margin-top: 50px;
 `

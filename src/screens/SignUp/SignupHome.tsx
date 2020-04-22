@@ -125,7 +125,7 @@ const LoginButtonWrapper = styled.View`
 const LoginButton = styled.TouchableOpacity`
   border: 2px solid ${COLORS.BASE_MUSCLEW};
   border-radius: 60px;
-  padding: 17px 0;
+  padding: 15px 0;
   width: 95%;
   align-self: center;
 `

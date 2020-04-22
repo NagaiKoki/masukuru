@@ -165,7 +165,7 @@ const LoginSubmitButton = styled.TouchableOpacity<{disabled: boolean}>`
   width: 100%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
+  padding: 15px 0;
   border-radius: 60px;
   margin-top: 40px;
   opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
