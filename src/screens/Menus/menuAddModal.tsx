@@ -21,7 +21,7 @@ interface MenuAddModalProps {
 
 const MenuAddModal = (props: MenuAddModalProps) => {  
   const [count, SetCount] = useState<number>(1)
-  const [amount1, setAmount1] = useState<number>()
+  const [amount1, setAmount1] = useState<number>(0)
   const [amount2, setAmount2] = useState<number>(0)
   const [amount3, setAmount3] = useState<number>(0)
   const [amount4, setAmount4] = useState<number>(0)
@@ -197,6 +197,12 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     return weightForm;
   }
 
+  const disableSubmit: boolean = (
+    amount1 && count ? false : true
+  )
+
+  // 6DwLTu
+
   return (
     <React.Fragment>
     <Modal isVisible={isVisibleToBoolean}>
@@ -220,13 +226,13 @@ const MenuAddModal = (props: MenuAddModalProps) => {
                 {renderAmountForm()}
               </MenuAmountFormWrapper>
 
-            <MenuFormTitle>各セット、重さは何kgでしたか？</MenuFormTitle>
+            <MenuFormTitle>各セット、重さは何kgでしたか？（任意）</MenuFormTitle>
               <MenuAmountFormWrapper>
                 {renderWeightForm()}
               </MenuAmountFormWrapper>
               </ScrollView>
             </MenuFormContainer>
-        <MenuFormSubmitBtn onPress={onSubmitMenu} >
+        <MenuFormSubmitBtn onPress={onSubmitMenu} disabled={disableSubmit} disableSubmit={disableSubmit}>
           <MenuFormSubmitText>送信する</MenuFormSubmitText>
         </MenuFormSubmitBtn>
       </MenuModalWrapper>
@@ -272,10 +278,10 @@ const MenuFormContainer = styled.View`
 const MenuFormTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   width: 90%;
   align-self: center;
-  padding: 40px 0 10px 0;
+  padding: 30px 0 10px 0;
 `
 
 const MenuFormWrapper = styled.View`
@@ -317,13 +323,14 @@ const MenuAmountForm = styled.TextInput`
   border-bottom-width: 2px;
 `
 
-const MenuFormSubmitBtn = styled.TouchableOpacity`
+const MenuFormSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean}>`
   width: 80%;
   align-self: center;
   border-radius: 30px;
   padding: 15px 0;
-  margin: 40px 0 20px 0;
+  margin: 30px 0 20px 0;
   background-color: ${COLORS.BASE_MUSCLEW};
+  opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
 `
 
 const MenuFormSubmitText = styled.Text`

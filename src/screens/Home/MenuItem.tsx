@@ -11,6 +11,7 @@ interface Props {
 }
 
 const MenuItem = (props: Props) => {
+  const [userName, setUserName] = useState('')
   const [userImgUrl, setUserImgUrl] = useState('')
   const { item } = props
   const { uid } = item
@@ -18,13 +19,14 @@ const MenuItem = (props: Props) => {
   db.collection('users').doc(uid).get().then(doc => {
     if (!doc.exists) return;
     setUserImgUrl(doc.data().imageUrl)
+    setUserName(doc.data().name)
   })
 
   return (
     <RecentActivitiesMenuFlatListView>
       <UserImage uri={userImgUrl} width={30} height={30} borderRadius={50} />
       <RecentActivitiesMenuFlatListName>
-        {item.name}を{item.set}セット行いました！
+        {userName}が{item.name}を{item.set}セット行いました！
       </RecentActivitiesMenuFlatListName>
     </RecentActivitiesMenuFlatListView>
   )
@@ -42,5 +44,6 @@ const RecentActivitiesMenuFlatListView = styled.View`
 const RecentActivitiesMenuFlatListName = styled.Text`
   margin-left: 20px;
   letter-spacing: 1;
+  font-size: 14px;
   color: ${COLORS.BASE_BLACK};
 `
