@@ -72,7 +72,7 @@ const MenuItem = (props: Props) => {
           ))}
 
           {weightArray.map((weight, index) => (
-            <ItemColumn key={index}>
+            <ItemColumn key={index} value={weight.value}>
               <ItemLabel>重さ（{weight.key}セット目）</ItemLabel>
               <ItemText>:   {weight.value}kg</ItemText>
             </ItemColumn>
@@ -108,10 +108,11 @@ const ItemTimestampText = styled.Text`
   padding-bottom: 20px;
 `
 
-const ItemColumn = styled.View`
+const ItemColumn = styled.View<{ value: number }>`
   flex-direction: row;
   align-items: center;
   padding: 7px 0;
+  display: ${props => props.value === 0 ? 'none' : "flex"};
 `
 
 const ItemLabel = styled.Text`
