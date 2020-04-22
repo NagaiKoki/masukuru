@@ -127,7 +127,7 @@ const GoogleSignInWrapper = styled.TouchableOpacity`
   padding: 15px 0;
   margin: 20px 0;
   margin-bottom: 40px;
-  border-radius: 5px;
+  border-radius: 60px;
 `
 
 const GoogleSignInTextWrapper = styled.Text`

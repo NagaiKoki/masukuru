@@ -108,7 +108,6 @@ const LoginFormCard = styled.View`
   width: 90%;
   height: auto;
   padding: 30px 0 50px 0;
-  margin-top: 30px;
   align-self: center;
   background-color: ${COLORS.BASE_WHITE};
 `
@@ -120,7 +119,7 @@ const GoogleSignInWrapper = styled.TouchableOpacity`
   padding: 15px 0;
   margin: 20px 0;
   margin-bottom: 40px;
-  border-radius: 5px;
+  border-radius: 60px;
 `
 
 const GoogleSignInTextWrapper = styled.Text`
@@ -157,7 +156,7 @@ const LoginTextForm = styled.TextInput`
   width: 100%;
   align-self: center;
   border-radius: 5px;
-  padding: 20px 15px;
+  padding: 15px 15px;
   margin: 10px 0;
 `
 
