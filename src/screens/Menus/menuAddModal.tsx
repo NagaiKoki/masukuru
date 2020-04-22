@@ -204,7 +204,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   return (
     <React.Fragment>
     <Modal isVisible={isVisibleToBoolean}>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.7 }} keyboardVerticalOffset={300}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.9 }} keyboardVerticalOffset={300}>
       <MenuModalWrapper>
         <ModalCloseBtn>
           <Icon name='close' size={30} onPress={handleCloseModal}/>
@@ -243,7 +243,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
 const MenuModalWrapper = styled.View`
   background-color: ${COLORS.BASE_WHITE};
   border-radius: 10px;
-  padding: 15px;
+  padding: 10px;
   position: absolute;
   left: 0;
   right: 0;
@@ -255,13 +255,14 @@ const MenuModalTitle = styled.Text`
   font-size: 25px;
   font-weight: bold;
   text-align: center;
-  padding: 10px 0;
+  padding: 10px 0 0 0;
 `
 
 const MenuModalSubText = styled.Text`
   color: ${COLORS.SUB_BLACK};
   text-align: center;
   padding: 10px;
+  padding-bottom: 30px;
 `
 
 const ModalCloseBtn = styled.TouchableOpacity`
@@ -276,10 +277,10 @@ const MenuFormContainer = styled.View`
 const MenuFormTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 16px;
+  font-size: 15px;
   width: 90%;
   align-self: center;
-  padding: 30px 0 10px 0;
+  padding: 20px 0 10px 0;
 `
 
 const MenuFormWrapper = styled.View`
