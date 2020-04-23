@@ -11,7 +11,7 @@
     ],
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/logo.png",
     "splash": {
       "image": "./src/assets/masukuru_splash.png",
       "resizeMode": "contain",
