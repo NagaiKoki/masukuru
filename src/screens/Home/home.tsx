@@ -295,6 +295,7 @@ const MemberView = styled.View`
 `
 
 const MemberListView = styled.View`
+  width: 85%;
 `
 
 const MemberFlatList = styled.FlatList`
