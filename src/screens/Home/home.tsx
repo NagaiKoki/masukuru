@@ -375,12 +375,13 @@ const InviteSubText = styled.Text`
   margin: 0 auto;
   margin-top: 8px;
   text-align: center;
+  font-size: 13px;
   color: ${COLORS.SUB_BLACK};
 `
 
 const InviteModalTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   padding-top: 50px;
   text-align: center;
@@ -393,7 +394,7 @@ const RecentActivities = styled.View`
 const RecentActivitiesListView = styled.View`
   margin-top: 20px;
   background-color: #FFF;
-  height: 230px;
+  height: 240px;
   border-radius: 5px;
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
   border: 1px solid #e9e9e9;

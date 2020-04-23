@@ -36,8 +36,9 @@ export default MenuItem;
 
 const RecentActivitiesMenuFlatListView = styled.View`
   flex-direction: row;
-  margin-top: 10px;
+  margin-top: 13px;
   margin-left: 15px;
+  width: 87%;
   align-items: center;
 `
 

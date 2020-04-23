@@ -16,7 +16,6 @@ export const requestMenuList = (setList: Dispatch<SetStateAction<MenuType[]>>, s
     
     query.get().then(snapshot  => {
       if (snapshot.empty) {
-        console.log('no data')
         setIsLoading(false)
       } else {
         snapshot.forEach(doc => {
@@ -28,7 +27,6 @@ export const requestMenuList = (setList: Dispatch<SetStateAction<MenuType[]>>, s
       }
       })
     } catch(error) {
-      console.log(error)
       alert('データの取得に失敗しました。時間をおいてから再度お試しください。')
     }
   }
