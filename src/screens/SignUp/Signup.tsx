@@ -59,12 +59,6 @@ const SignupScreen = ({ route }) => {
   return (
     <SignUpFormWrapper>
       <SignUpFormCard>
-
-        <Toast 
-          message={error} 
-          onDismiss={handleErrorClear} 
-        />
-
         <GoogleSignInWrapper onPress={ () => GoogleLogin(route) }>
           <GoogleSignInTextWrapper>
             <GoogleSignInText>Google アカウントで登録する</GoogleSignInText>
@@ -72,6 +66,10 @@ const SignupScreen = ({ route }) => {
         </GoogleSignInWrapper>
 
         <FormEmailSignInWrapper>
+        <Toast 
+          message={error} 
+          onDismiss={handleErrorClear} 
+        />
           <FormLable>メールアドレス</FormLable>
           <SignUpTextForm 
             placeholder='メールアドレスを入力する'

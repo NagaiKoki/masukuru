@@ -55,12 +55,6 @@ const LoginScreen = ({ route, navigation }) => {
   return (
     <LoginFormWrapper>
       <LoginFormCard>
-
-      <Toast 
-        message={error} 
-        onDismiss={handleErrorClear} 
-      />
-
         <GoogleSignInWrapper onPress={ () => GoogleLogin(route) }>
           <GoogleSignInTextWrapper>
             <GoogleSignInText>Google アカウントでログインする</GoogleSignInText>
@@ -69,6 +63,10 @@ const LoginScreen = ({ route, navigation }) => {
 
 
         <FormEmailLoginWrapper>
+        <Toast 
+          message={error} 
+          onDismiss={handleErrorClear} 
+        />
           <FormLable>メールアドレス</FormLable>
           <LoginTextForm 
             placeholder='メールアドレスを入力する'
