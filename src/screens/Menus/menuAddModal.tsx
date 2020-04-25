@@ -303,6 +303,7 @@ const MenuSetForm = styled.TextInput`
   font-size: 16px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 2px;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const MenuFormSubText = styled.Text`
@@ -320,6 +321,7 @@ const MenuAmountForm = styled.TextInput`
   font-size: 16px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 2px;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const MenuFormSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean}>`

@@ -186,6 +186,7 @@ const TextForm = styled.TextInput`
   align-self: center;
   border-radius: 5px;
   background-color: ${COLORS.BASE_WHITE};
+  color: ${COLORS.BASE_BLACK};
 `
 
 const TextFromWrapper = styled.View`

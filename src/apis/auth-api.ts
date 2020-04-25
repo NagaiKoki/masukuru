@@ -78,30 +78,35 @@ export const RegisterUser = async ({ email, password }) => {
 
 // google 認証
 export const GoogleLogin = (route) => {
-  Google.logInAsync({
-    behavior: 'web',
-    iosClientId: GOOGLE_CONFIG.CLIENT_ID,
-    scopes: ['email']
-  }).then((result) => {
-    if (result.type === 'success') {
-      const { idToken, accessToken, user } = result;
-      const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-      firebase.auth().signInWithCredential(credential).then( async () => {
-        const currentUser = firebase.auth().currentUser
-        // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
-        db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
-          if (snapshot.empty) {
-            // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
-            await currentUser.updateProfile({ displayName: null })
-            route.params.setIsChange(true)
-            await db.collection('users').doc(currentUser.uid).set({
-              uid: currentUser.uid,
-              email: currentUser.email
-            })
-            route.params.setIsChange(false)
-          }
+  try {
+    Google.logInAsync({
+      behavior: 'web',
+      iosClientId: GOOGLE_CONFIG.CLIENT_ID,
+      iosStandaloneAppClientId: GOOGLE_CONFIG.STANDALONE_CLIENT_ID,
+      scopes: ['profile', 'email']
+    }).then((result) => {
+      if (result.type === 'success') {
+        const { idToken, accessToken, user } = result;
+        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        firebase.auth().signInWithCredential(credential).then( async () => {
+          const currentUser = firebase.auth().currentUser
+          // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
+          db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
+            if (snapshot.empty) {
+              // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
+              await currentUser.updateProfile({ displayName: null })
+              route.params.setIsChange(true)
+              await db.collection('users').doc(currentUser.uid).set({
+                uid: currentUser.uid,
+                email: currentUser.email
+              })
+              route.params.setIsChange(false)
+            }
+          })
         })
-      })
-    }
-  })
+      }
+    })
+  } catch (error) {
+    alert(error)
+  }
 }

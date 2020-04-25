@@ -87,6 +87,7 @@ const TutorialNameForm = styled.TextInput`
   padding: 15px;
   border-radius: 5px;
   background-color: ${COLORS.BASE_WHITE};
+  color: ${COLORS.BASE_BLACK};
 `
 
 const TutorialSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`

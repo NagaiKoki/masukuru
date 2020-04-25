@@ -63,6 +63,7 @@ const ResetForm = styled.TextInput`
   margin-top: 30px;
   border-radius: 5px;
   background-color: ${COLORS.FORM_BACKGROUND};
+  color: ${COLORS.BASE_BLACK};
 `
 
 const TutorialSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`

@@ -170,6 +170,7 @@ const SignUpTextForm = styled.TextInput`
   border-radius: 5px;
   padding: 15px 15px;
   margin: 10px 0;
+  color: ${COLORS.BASE_BLACK};
 `
 const PrivacyWrapper = styled.Text`
   color: ${COLORS.BASE_BLACK};

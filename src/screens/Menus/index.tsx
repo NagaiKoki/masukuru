@@ -55,6 +55,8 @@ const MunuScreen = ({ navigation, route }) => {
       console.error("Error removing document: ", error);
     })
   }
+
+  console.log(user)
   
   return (
     <MenuContainer>

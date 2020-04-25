@@ -25,7 +25,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "jp.masukuru"
+      "bundleIdentifier": "jp.masukuru",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.1023959623519-lrm0q0c294ptbvgj3knotjrk9ul0auir"
+        }
+      }
     },
     "description": "",
     "githubUrl": "https://github.com/NagaiKoki/musclew_native"

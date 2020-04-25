@@ -7,5 +7,6 @@ export const CONFIG = {
 };
 
 export const GOOGLE_CONFIG = {
-  CLIENT_ID: '1023959623519-a81fj37ghcvukorobpk5mncdppe0gk4o.apps.googleusercontent.com'
+  CLIENT_ID: '1023959623519-a81fj37ghcvukorobpk5mncdppe0gk4o.apps.googleusercontent.com',
+  STANDALONE_CLIENT_ID: '1023959623519-lrm0q0c294ptbvgj3knotjrk9ul0auir.apps.googleusercontent.com'
 }

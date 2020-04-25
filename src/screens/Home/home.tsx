@@ -485,6 +485,7 @@ const EventAddForm = styled.TextInput`
   align-self: center;
   border-radius: 5px;
   padding: 20px 15px;
+  color: ${COLORS.BASE_BLACK};
   margin: 40px 0 10px 0;
 `
 

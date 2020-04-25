@@ -160,6 +160,7 @@ const LoginTextForm = styled.TextInput`
   border-radius: 5px;
   padding: 15px 15px;
   margin: 10px 0;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const LoginSubmitButton = styled.TouchableOpacity<{disabled: boolean}>`
