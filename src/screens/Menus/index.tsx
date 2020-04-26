@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, View, Button, Alert } from 'react-native'
 import { COLORS } from '../../constants/Styles';
 import MenuList from './menuList'
 import MenuAddModal from './menuAddModal';
+import MenuTitleUpdate from './menuTitleUpdate'
 import firebase, { db } from '../../config/firebase';
 import { MenuType } from '../../types/menu';
 import CheerModal from './cheerModal';
@@ -16,7 +17,7 @@ const MunuScreen = ({ navigation, route }) => {
   const { params } = route;
   const { currentGroupId, item, ownerId } = params;
   const user = firebase.auth().currentUser
-  const itemName = item.name;
+  const [itemName, setItemName] = useState(item.name)
   const currentUserMenuLength = list.filter(l => l.uid === user.uid).length
 
   useLayoutEffect(() => {
@@ -55,12 +56,13 @@ const MunuScreen = ({ navigation, route }) => {
       console.error("Error removing document: ", error);
     })
   }
-
-  console.log(user)
   
   return (
     <MenuContainer>
-      <MenuTitle>{item.name}</MenuTitle>
+      <MenuTitleView>
+        <MenuTitle>{itemName}</MenuTitle> 
+        <MenuTitleUpdate currentGroupId={currentGroupId} item={item} itemName={itemName} setItemName={setItemName} ownerId={ownerId}/>
+      </MenuTitleView>
       <MenuAddButton block onPress={setIsVisible}>
         <MenuAddText>記録を追加する</MenuAddText>
       </MenuAddButton>
@@ -81,12 +83,20 @@ const MenuContainer = styled.View`
   flex: 1;
 `
 
+const MenuTitleView = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+`
+
 const MenuTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
   font-weight: bold;
-  text-align: center;
+  /* text-align: center; */
   padding-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 const MenuAddButton = styled.TouchableOpacity`
