@@ -43,7 +43,7 @@ const MenuList = (props: TrainingListProps) => {
   // スクロールリロード
   const onRefresh = async () => {
     setIsRefresh(true)
-    await requestMenuList(setList, setIsLoading, user)
+    await requestMenuList(setList, setIsLoading, user, isShowPage, currentGroupId, item)
     setIsRefresh(false)
   }
 
