@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import { LoginUser } from "../../apis/auth-api";
+import { LoginUser } from "../../apis/auth";
 import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
-import { GoogleLogin } from '../../apis/auth-api'
+import { GoogleLogin } from '../../apis/auth'
 import Toast from '../../components/Toaster';
 
 const LoginScreen = ({ route, navigation }) => {
@@ -55,13 +55,6 @@ const LoginScreen = ({ route, navigation }) => {
   return (
     <LoginFormWrapper>
       <LoginFormCard>
-        <GoogleSignInWrapper onPress={ () => GoogleLogin(route) }>
-          <GoogleSignInTextWrapper>
-            <GoogleSignInText>Google アカウントでログインする</GoogleSignInText>
-          </GoogleSignInTextWrapper>
-        </GoogleSignInWrapper>
-
-
         <FormEmailLoginWrapper>
         <Toast 
           message={error} 
@@ -109,38 +102,14 @@ const LoginFormCard = styled.View`
   border-radius: 15px;
   width: 90%;
   height: auto;
+  margin-top: 20px;
   padding: 30px 0 50px 0;
   align-self: center;
   background-color: ${COLORS.BASE_WHITE};
 `
 
-const GoogleSignInWrapper = styled.TouchableOpacity`
-  background-color: #dd4b39;
-  width: 90%;
-  align-self: center;
-  padding: 15px 0;
-  margin: 20px 0;
-  margin-bottom: 40px;
-  border-radius: 60px;
-`
-
-const GoogleSignInTextWrapper = styled.Text`
-  padding: 0 20px;
-  flex-direction: row;
-  text-align: center;
-  justify-content: space-around;
-  color: ${COLORS.BASE_WHITE};
-`
-
-const GoogleSignInText = styled.Text`
-  color: ${COLORS.BASE_WHITE};
-  font-weight: bold;
-`
-
 const FormEmailLoginWrapper = styled.View`
   align-self: center;
-  border-top-color: ${COLORS.BASE_BORDER_COLOR};
-  border-top-width: 1;
   padding-top: 30px;
   width: 90%;
 `

@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, Text } from 'react-native';
+import SignUpModal from './SignUpModal';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 
-const TwitterTest = styled.TouchableOpacity`
-`
 const SignupHomeScreen = ({ navigation, route }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true)
+
+  const handleOpenModal = (fromSignUp: boolean) => {
+    setIsSignUp(fromSignUp)
+    setIsVisible(true)
+  }
+
   return (
     <Container>
       <ImageWrapper>
@@ -32,7 +39,7 @@ const SignupHomeScreen = ({ navigation, route }) => {
 
       <SignUpCard>
         <SignUpButtonWrapper>
-          <SignUpButton onPress={ () => navigation.navigate('Signup') }>
+          <SignUpButton onPress={ () => handleOpenModal(true) }>
             <SignUpText>無料登録する</SignUpText>
           </SignUpButton>
         </SignUpButtonWrapper>
@@ -42,11 +49,19 @@ const SignupHomeScreen = ({ navigation, route }) => {
         </LoginSupportWrapper>
 
         <LoginButtonWrapper>
-          <LoginButton onPress={ () => navigation.navigate('Login') }>
+          <LoginButton onPress={ () => handleOpenModal(false) }>
             <LoginText>ログインする</LoginText>
           </LoginButton>
         </LoginButtonWrapper>
-      </SignUpCard>    
+      </SignUpCard> 
+
+      <SignUpModal 
+        isSignUp={isSignUp} 
+        route={route} 
+        navigation={navigation} 
+        isVisible={isVisible} 
+        setIsVisible={setIsVisible}
+      />   
     </Container>
   )
 }
