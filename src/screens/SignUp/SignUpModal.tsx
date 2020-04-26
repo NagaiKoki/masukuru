@@ -49,12 +49,12 @@ const SignUpModal = (props: SignUpModalProps) => {
 
 const Container = styled.View`
   position: absolute;
-  bottom: -20;
+  bottom: -20px;
   width: 110%;
   align-self: center;
   border-radius: 10px;
   padding: 5px 10px 0;
-  height: 280px;
+  height: 330px;
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
@@ -63,6 +63,7 @@ const CloseBar = styled.View`
   height: 5px;
   width: 100px;
   margin-top: 7px;
+  margin-bottom: 20px;
   border-radius: 60px;
   align-self: center;
 `
