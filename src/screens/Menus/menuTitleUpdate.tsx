@@ -19,7 +19,6 @@ const MenuTitleUpdate = (props: MenuTitleUpdateProps) => {
   const { currentGroupId, item, itemName, setItemName, ownerId} = props;
   const currentItemName = item.name
   const user = firebase.auth().currentUser
-  console.log(currentItemName)
 
   const updateTitle = () => {
     db.collection('groups').doc(currentGroupId).collection('events').where('name', '==', currentItemName)
@@ -36,7 +35,6 @@ const MenuTitleUpdate = (props: MenuTitleUpdateProps) => {
           doc.ref.update({
             name: itemName
           })
-          console.log(currentItemName)
         });
       });
     }).then(function() {
