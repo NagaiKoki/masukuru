@@ -28,6 +28,7 @@ const AuthentificationNavigator = ({ route }) => {
     <AuthenticateStack.Screen 
       name="SignupHome" 
       component={SignupHomeScreen} 
+      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         headerShown: false,
       }}
