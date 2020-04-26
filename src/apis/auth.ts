@@ -1,6 +1,8 @@
+import { Alert } from 'react-native'
 import firebase, { db } from '../config/firebase';
 import * as Google from 'expo-google-app-auth';
-import { LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import { COMMON_ERROR_MESSSAGE, LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
 import { GOOGLE_CONFIG } from '../config/firebaseConfig';
 
 export const LogoutUser = async () => {
@@ -107,6 +109,53 @@ export const GoogleLogin = (route) => {
       }
     })
   } catch (error) {
-    alert(error)
+    Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+  }
+}
+
+// apple認証
+export const AppleLogin = (route) => {
+  const nonceGen = (length) => {
+    let result = ''
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let charactersLength = characters.length
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    }
+    return result
+  }
+  const nonceString = nonceGen(32)
+  try {
+    AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL
+      ],
+      state: nonceString
+    }).then(result => {
+      let provider = new firebase.auth.OAuthProvider("apple.com");
+      let credential = provider.credential({
+        idToken: result.identityToken,
+        rawNonce: nonceString
+      });
+      firebase.auth().signInWithCredential(credential).then( async () => {
+        const currentUser = firebase.auth().currentUser
+        // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
+        db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
+          if (snapshot.empty) {
+            // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
+            await currentUser.updateProfile({ displayName: null })
+            route.params.setIsChange(true)
+            await db.collection('users').doc(currentUser.uid).set({
+              uid: currentUser.uid,
+              email: currentUser.email
+            })
+            route.params.setIsChange(false)
+          }
+        })
+      })
+    })
+  } catch {
+    Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
   }
 }

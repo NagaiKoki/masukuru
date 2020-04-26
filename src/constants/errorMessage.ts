@@ -36,3 +36,7 @@ export const SIGNUP_ERROR_MESSAGE = {
   TOO_MANY_REQUEST: "少しお待ちしてから、もう一度入力してください。",
   DEFAULT_MESSAGE: "エラーが発生しました。しばらく経ってからもう一度お試しください。"
 }
+
+export const COMMON_ERROR_MESSSAGE = {
+  TRY_AGAIN: '問題が発生しました。しばらくしてから、再度お試しください。'
+}

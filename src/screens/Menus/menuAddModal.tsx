@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import Modal from 'react-native-modal';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 import Icon from 'react-native-vector-icons/AntDesign';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
 import firebase, { db } from '../../config/firebase';
@@ -122,7 +123,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
       })
     } catch(error) {
       console.log(error)
-      alert('問題が発生しました。しばらくしてから、再度お試しください。')
+      Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
   }
 
