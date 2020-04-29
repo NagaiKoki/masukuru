@@ -21,8 +21,6 @@ export const joinInvitedGroup = async (invitedCode: string) => {
               name: currentUser.displayName,
               imageUrl: currentUser.photoURL
             })
-            const groupRef = db.collection('groups').doc(currentUser.uid)
-            await transaction.delete(groupRef)
           })
         }
       })

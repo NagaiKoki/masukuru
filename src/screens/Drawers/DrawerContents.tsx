@@ -130,7 +130,6 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 招待された場合用ナビ
   const renderInvidedItem = () => {
-    if (!isHost) return;
     return (
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
@@ -171,6 +170,7 @@ const DrawerContent = (props: DrawerProps) => {
         {/* グループを切り替えるモーダル */}
         <TranferModal 
           showTransferModal={showTransferModal}
+          currentGroupId={currentGroupId}
         />
         {/* 招待コード入力用モーダル */}
         <InvitedCodeModal 
