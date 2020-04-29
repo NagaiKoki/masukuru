@@ -55,7 +55,8 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
             snapshot.docs[0].ref.collection('groupUsers').doc(currentUser.uid).set({
               uid: currentUser.uid,
               name: currentUser.displayName,
-              imageUrl: currentUser.photoURL
+              imageUrl: currentUser.photoURL,
+              currentGroupId: snapshot.docs[0].data().ownerId
             }).then(function() {
               route.params.setIsChange(true)
               navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
@@ -75,7 +76,8 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
     groupRef.doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
       uid: currentUser.uid,
       name: currentUser.displayName,
-      imageUrl: currentUser.photoURL
+      imageUrl: currentUser.photoURL,
+      currentGroupId: currentUser.uid
     })
   }
 

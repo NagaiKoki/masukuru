@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native'
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
 import { COLORS } from '../../constants/Styles';
@@ -8,13 +7,17 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // import component
 import Loading from '../Loading'
 // import apis
-import requestBelongGroups from '../../apis/Groups/transfer'
+import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
 import truncateText from '../../lib/truncateText'
 
 interface TransferModalProps {
   showTransferModal: boolean
   currentGroupId: string
+  setShowTransferModal: Dispatch<SetStateAction<boolean>>
+  navigation: any
+  setDrawerIsLoading: Dispatch<SetStateAction<boolean>>
+  setCurrentGroupId: Dispatch<SetStateAction<string>>
 }
 
 type responseGroupType = {
@@ -33,7 +36,12 @@ type Users = {
 const TranferModal = (props: TransferModalProps) => {
   const [isloading, setIsloading] = useState(false)
   const [groups, setGroups] = useState<responseGroupType[]>([])
-  const { showTransferModal, currentGroupId } = props
+  const { showTransferModal, 
+          currentGroupId, 
+          setShowTransferModal, 
+          navigation, 
+          setDrawerIsLoading,
+          setCurrentGroupId } = props 
 
   useEffect(() => {
     getBelongGroups()
@@ -44,6 +52,22 @@ const TranferModal = (props: TransferModalProps) => {
     const groups = await requestBelongGroups()
     setGroups(groups)
     return;
+  }
+
+  const handleCloseModal = () => {
+    setShowTransferModal(false)
+  }
+
+  const handleTransfer = (groupId: string) => {
+    setDrawerIsLoading(true)
+    setTimeout(() => {
+      requestTransfer(groupId)
+      navigation.navigate('main', { currentGroupId: groupId })
+      setCurrentGroupId(groupId)
+      setIsloading(false)
+      setShowTransferModal(false)
+      setDrawerIsLoading(false)
+    }, 1000)
   }
 
   if (isloading || !currentGroupId) {
@@ -60,7 +84,7 @@ const TranferModal = (props: TransferModalProps) => {
           userNames += user.name + "  "
         })
         return (
-          <GroupNameWrapper key={group.ownerId}>
+          <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
             <FeatherIcon name="users" size={25} style={{ color: COLORS.BASE_BLACK }} />
             <GroupNameText>{truncateText(userNames, 40)}</GroupNameText>
             {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
@@ -73,9 +97,12 @@ const TranferModal = (props: TransferModalProps) => {
   )
 
   return (
-    <Modal isVisible={showTransferModal}>
+    <Modal isVisible={showTransferModal} swipeDirection='down' onSwipeComplete={handleCloseModal}>
       <Container>
-        <TransferTitle>グループを切り替える</TransferTitle>
+        <CloseBar />
+        <TransferTitleWrapper>
+          <TransferTitle>グループを切り替える</TransferTitle>
+        </TransferTitleWrapper>
         <GroupContainer>
           {renderGroups}
         </GroupContainer>
@@ -97,6 +124,10 @@ const Container = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
+const TransferTitleWrapper = styled.View`
+  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
+  border-bottom-width: 1px;
+`
 
 const TransferTitle = styled.Text`
   font-size: 20px;
@@ -109,11 +140,11 @@ const TransferTitle = styled.Text`
 const GroupContainer = styled.View`
 `
 
-const GroupNameWrapper = styled.View`
+const GroupNameWrapper = styled.TouchableOpacity`
   flex-direction: row;
-  border-top-color: ${COLORS.BASE_BORDER_COLOR};
-  border-top-width: 1px;
-  padding: 10px 20px;
+  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
+  border-bottom-width: 1px;
+  padding: 15px 20px;
 `
 
 const GroupNameText = styled.Text`
@@ -121,4 +152,13 @@ const GroupNameText = styled.Text`
   padding: 0 20px 0 15px;
   color: ${COLORS.BASE_BLACK};
   font-size: 20px;
+`
+
+const CloseBar = styled.View`
+  background-color: ${COLORS.BASE_BLACK};
+  height: 5px;
+  width: 100px;
+  margin-top: 7px;
+  border-radius: 60px;
+  align-self: center;
 `

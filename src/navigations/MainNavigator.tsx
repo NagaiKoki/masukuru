@@ -18,10 +18,15 @@ const MainNavigator = ({ navigation }) => {
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
+        db.collectionGroup("groupUsers").where('uid', '==', user.uid).get()
         .then(function(querySnapshot) {
           querySnapshot.forEach(doc => {
-            setCurrentGroupId(doc.ref.parent.parent.id);
+            // TODO: currentGroupIdをcurrentGroupドキュメントに含めるにあたり、カラムない場合は所属するグループが一つしかないようにする
+            if (doc.data().currentGroupId) {
+              return setCurrentGroupId(doc.data().currentGroupId);
+            } else {
+              setCurrentGroupId(doc.ref.parent.parent.id);
+            }
           });
         })
         setloading(false);

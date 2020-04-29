@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import firebase, { db } from '../../config/firebase';
-import { log } from 'react-native-reanimated';
+import { Alert } from 'react-native'
+// import constants
+import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 
 const requestBelongsGroupIds = async () => {
   const currrentUser = firebase.auth().currentUser
@@ -27,7 +29,6 @@ const requestGroupUsers = async (groupId) => {
       })
     }
   })
-  // console.log(users)
   return users
 }
 
@@ -48,10 +49,38 @@ const requestBelongGroup = async (groupIds: string[]) => {
   return groups
 }
 
-const requestBelongGroups = async () => {
+// 所属しているグループ一覧取得
+export const requestBelongGroups = async () => {
   const belongGroupIds = await requestBelongsGroupIds()
   const belongGroups = await requestBelongGroup(belongGroupIds)
   return belongGroups
 }
 
-export default requestBelongGroups;
+export const requestTransfer = async (groupId: string) => {
+  const currentUser = firebase.auth().currentUser
+  try {
+    let batch = db.batch()
+    // 現在所属しているgroupUserのcurrentGroupIdを、招待された側のidに切り替える
+    await db.collectionGroup('groupUsers').where('uid', '==', currentUser.uid).get().then(snapshot => {
+      snapshot.forEach(doc => {
+        batch.update(doc.ref, {
+          currentGroupId: groupId
+        })
+      })
+    })
+
+    // 招待された側にgroupUserのデータを差し込む
+    const groupUserRef = db.collection('groups').doc(groupId).collection('groupUsers').doc(currentUser.uid)
+    batch.set(groupUserRef, {
+      uid: currentUser.uid,
+      name: currentUser.displayName,
+      imageUrl: currentUser.photoURL,
+      currentGroupId: groupId
+    })
+
+    return batch.commit()
+  } catch (error) {
+    console.log(error)
+    Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+  }
+}

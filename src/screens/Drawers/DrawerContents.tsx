@@ -32,10 +32,14 @@ const DrawerContent = (props: DrawerProps) => {
   const groupRef = db.collection('groups')
 
   useEffect(() => {
-    db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
+    db.collectionGroup("groupUsers").where('uid', '==', user.uid).get()
     .then(function(querySnapshot) {
       querySnapshot.forEach(doc => {
-        setCurrentGroupId(doc.ref.parent.parent.id);
+        if (doc.data().currentGroupId) {
+          setCurrentGroupId(doc.data().currentGroupId)
+        } else {
+          setCurrentGroupId(doc.ref.parent.parent.id);
+        }
         // 自分がホストではない場合の状態管理
         doc.ref.parent.parent.id === user.uid ? setIsHost(true) : setIsHost(false)
       });
@@ -54,7 +58,7 @@ const DrawerContent = (props: DrawerProps) => {
     setTimeout(() => {
       setIsLoading(false)
       logout()
-    }, 1500)
+    }, 1000)
   }
   
   // 招待された場合のモーダル出現
@@ -83,7 +87,10 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 招待されたグループに移動する
   const replaceGroup = async () => {
-   const resGroupId = await joinInvitedGroup(codeText)
+   const resGroupId = await joinInvitedGroup(codeText, currentGroupId)
+   if (!resGroupId) {
+     return
+   }
    setIsLoading(true)
    setTimeout(() => {
     navigation.navigate("main", { currentGroupId: resGroupId })
@@ -171,6 +178,10 @@ const DrawerContent = (props: DrawerProps) => {
         <TranferModal 
           showTransferModal={showTransferModal}
           currentGroupId={currentGroupId}
+          setShowTransferModal={setShowTransferModal}
+          navigation={navigation}
+          setDrawerIsLoading={setIsLoading}
+          setCurrentGroupId={setCurrentGroupId}
         />
         {/* 招待コード入力用モーダル */}
         <InvitedCodeModal 
