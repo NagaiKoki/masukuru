@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import UserImage from '../../components/Image/userImage'
 import InviteCodeModal from '../../components/InviteModal/invite'
 import InvitedCodeModal from '../../components/InviteModal/invited'
+import TranferModal from '../../components/Groups/transferModal'
+import Loading from '../../components/Loading'
 // import apis
 import { joinInvitedGroup } from '../../apis/invite';
 import { logout } from '../../apis/auth';
@@ -20,6 +22,7 @@ type DrawerProps = {
 const DrawerContent = (props: DrawerProps) => {
   const [showInvitedCodeModal, setShowInvitedCodeModal] = useState<boolean>(false);
   const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
+  const [showTransferModal, setShowTransferModal] = useState<boolean>(false)
   const [currentGroupId, setCurrentGroupId] = useState('')
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
@@ -41,8 +44,17 @@ const DrawerContent = (props: DrawerProps) => {
 
   if (isLoading) {
     return (
-      <ActivityIndicator size="large" style={[styles.loading]} />
+      <Loading size='large' />
     )
+  }
+
+  // ログアウト
+  const handleLogout = () => {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      logout()
+    }, 1500)
   }
   
   // 招待された場合のモーダル出現
@@ -63,6 +75,10 @@ const DrawerContent = (props: DrawerProps) => {
       Alert.alert('取得に失敗しました。時間を置いてからやり直してください。')
     }
     setShowInviteCodeModal(true)
+  }
+
+  const handleTransferOnClick = () => {
+    setShowTransferModal(true)
   }
 
   // 招待されたグループに移動する
@@ -100,6 +116,18 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
+  // 招待用ナビ
+  const renderTransferGroupItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={handleTransferOnClick}>
+          <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>グループを切り替える</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
   // 招待された場合用ナビ
   const renderInvidedItem = () => {
     if (!isHost) return;
@@ -117,7 +145,7 @@ const DrawerContent = (props: DrawerProps) => {
   const renderLogoutItem = () => {
     return (
       <DrawerListItem>
-        <DrawerListItemBtn block onPress={ () => logout(setIsLoading) }>
+        <DrawerListItemBtn block onPress={ () => handleLogout() }>
           <Icon name="logout" size={25} color={COLORS.BASE_BORDER_COLOR}/>
           <DrawerListItemText>ログアウト</DrawerListItemText>
         </DrawerListItemBtn>
@@ -136,9 +164,14 @@ const DrawerContent = (props: DrawerProps) => {
 
       <DrawerListContainer>
         {renderMyPageItem()}
+        {renderTransferGroupItem()}
         {renderInvideItem()}
         {renderInvidedItem()}
         {renderLogoutItem()}
+        {/* グループを切り替えるモーダル */}
+        <TranferModal 
+          showTransferModal={showTransferModal}
+        />
         {/* 招待コード入力用モーダル */}
         <InvitedCodeModal 
           showInvitedCodeModal={showInvitedCodeModal}
@@ -153,14 +186,6 @@ const DrawerContent = (props: DrawerProps) => {
     </DrawerContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center'
-  }
-})
 
 const DrawerContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};

@@ -7,14 +7,13 @@ import { COMMON_ERROR_MESSSAGE, LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ER
 import { GOOGLE_CONFIG } from '../config/firebaseConfig';
 import Analytics from '../config/amplitude'
 
-export const logout = async (setIsLoading: Dispatch<SetStateAction<boolean>>) => {
-  setIsLoading(true)
-  await firebase.auth().signOut().then(() => {
-    setIsLoading(false) 
-  }).catch(error => {
-    console.log(error)
+export const logout = async () => {
+  try {
+    await firebase.auth().signOut()
+    return;
+  } catch { (error) => {
     alert(error)
-  })
+  }}
 };
 
 // ログイン
