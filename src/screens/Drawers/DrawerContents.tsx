@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import { ActivityIndicator, Clipboard, StyleSheet, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 // import component
 import UserImage from '../../components/Image/userImage'
@@ -128,7 +128,7 @@ const DrawerContent = (props: DrawerProps) => {
     return (
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleTransferOnClick}>
-          <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <Icon name="people" size={25} color={COLORS.BASE_BORDER_COLOR}/>
           <DrawerListItemText>グループを切り替える</DrawerListItemText>
         </DrawerListItemBtn>
       </DrawerListItem>
@@ -238,110 +238,6 @@ const DrawerListItemText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   padding-left: 15px;
   font-size: 16px;
-`
-
-// 招待コード入力モーダル
-const InvitedModalView = styled.View`
-  position: absolute;
-  bottom: -20;
-  width: 110%;
-  border-radius: 10px;
-  height: 600px;
-  background-color: ${COLORS.BASE_BACKGROUND};
-  align-self: center;
-`
-
-const InviteModalView = styled.View`
-  position: absolute;
-  bottom: -20;
-  width: 110%;
-  border-radius: 10px;
-  padding: 0 10px;
-  height: 320px;
-  background-color: ${COLORS.BASE_BACKGROUND};
-  align-self: center;
-`
-
-const InvitedModalTitle = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  font-weight: bold;
-  font-size: 18px;
-  padding-top: 30px;
-  text-align: center;
-`
-
-const InviteModalTitle = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  font-size: 16px;
-  font-weight: bold;
-  padding-top: 50px;
-  text-align: center;
-`
-
-const InviteCodeWrapper = styled.TouchableOpacity`
-  align-items: center;
-  width: 80%;
-  margin: 0 auto;
-  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
-  border-radius: 5px;
-  margin-top: 30px;
-`
-
-const InviteCodeText = styled.Text`
-  padding: 10px 50px;
-  color: ${COLORS.BASE_BLACK};
-  font-size: 30px;
-  letter-spacing: 4;
-  font-weight: bold;
-  text-align: center;
-`
-
-const InviteSubText = styled.Text`
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 8px;
-  text-align: center;
-  color: ${COLORS.SUB_BLACK};
-`
-
-const InvitedModalFormWrapper = styled.View`
-  align-self: center;
-  margin-top: 30px;
-  width: 80%;
-`
-
-const InvitedModalForm = styled.TextInput`
-  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
-  padding: 15px;
-  border-radius: 5px;
-  background-color: ${COLORS.BASE_WHITE};
-  color: ${COLORS.BASE_BLACK};
-`
-
-const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
-  width: 80%;
-  align-self: center;
-  background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
-  border-radius: 60px;
-  margin-top: 30px;
-  opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
-`
-
-const InvitedModalSubmitText = styled.Text`
-  color: ${COLORS.BASE_WHITE};
-  font-weight: bold;
-  text-align: center;
-  font-size: 16px;
-`
-
-const InviteCloseBar = styled.View`
-  background-color: ${COLORS.BASE_BLACK};
-  height: 5px;
-  width: 100px;
-  margin-top: 7px;
-  border-radius: 60px;
-  align-self: center;
 `
 
 export default DrawerContent;

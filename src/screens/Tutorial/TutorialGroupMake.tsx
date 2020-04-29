@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Alert } from 'react-native';
-import { COLORS } from '../../constants/Styles';
 import Modal from 'react-native-modal';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
 import firebase, { db } from '../../config/firebase';
 import Icon from 'react-native-vector-icons/AntDesign';
+// import constans
+import { COLORS } from '../../constants/Styles';
+import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 
 const TutorialGroupMakeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -36,38 +38,41 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
         alert(error);
       })
     } catch(error) {
-      alert('原因不明のエラーが発生しました。')
+      alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
   }
 
   // 招待された場合の処理
-  const InvitedGroupJoin = () => {
+  const InvitedGroupJoin = async () => {
     try {
       groupRef.where('inviteCode', '==', codeText).get()
-        .then(snapshot => {
+        .then( async snapshot => {
       if (snapshot.empty) {
-        Alert.alert('入力した招待コードは存在しません。今一度、招待コードをお確かめください。');
+        Alert.alert(INVITE_ERROR_MESSAGE.EMPTY_GROUP);
       } else {
-        snapshot.docs[0].ref.collection('groupUsers').get().then(snap => {
-          if (snap.size >= 5) {
-            return Alert.alert('招待されたグループの人数が5人以上のため、参加することができません。別のグループに参加するか、まずは１人で使うを選択してください。')
-          } else {
-            snapshot.docs[0].ref.collection('groupUsers').doc(currentUser.uid).set({
-              uid: currentUser.uid,
-              name: currentUser.displayName,
-              imageUrl: currentUser.photoURL,
-              currentGroupId: snapshot.docs[0].data().ownerId
-            }).then(function() {
-              route.params.setIsChange(true)
-              navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
-              route.params.setIsChange(false)
-            })
-          }
+        const groupUsersRef = snapshot.docs[0].ref.collection('groupUsers')
+        let groupUsersLength: number;
+        await groupUsersRef.get().then(snap => {
+          groupUsersLength = snap.size
         })
+        if (groupUsersLength >= 5) {
+          return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_USERS)
+        } else {
+          groupUsersRef.doc(currentUser.uid).set({
+            uid: currentUser.uid,
+            name: currentUser.displayName,
+            imageUrl: currentUser.photoURL,
+            currentGroupId: snapshot.docs[0].data().ownerId
+          }).then(function() {
+            route.params.setIsChange(true)
+            navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
+            route.params.setIsChange(false)
+          })
+        }
       }
     })
     } catch(error) {
-      Alert.alert('原因不明のエラーが発生しました。')
+      Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
   }
 

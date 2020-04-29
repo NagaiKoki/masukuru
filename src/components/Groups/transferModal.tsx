@@ -59,15 +59,19 @@ const TranferModal = (props: TransferModalProps) => {
   }
 
   const handleTransfer = (groupId: string) => {
-    setDrawerIsLoading(true)
-    setTimeout(() => {
-      requestTransfer(groupId)
-      navigation.navigate('main', { currentGroupId: groupId })
-      setCurrentGroupId(groupId)
-      setIsloading(false)
-      setShowTransferModal(false)
-      setDrawerIsLoading(false)
-    }, 1000)
+    if (currentGroupId === groupId) {
+      return;
+    } else {
+      setDrawerIsLoading(true)
+      setTimeout(() => {
+        requestTransfer(groupId)
+        navigation.navigate('main', { currentGroupId: groupId })
+        setCurrentGroupId(groupId)
+        setIsloading(false)
+        setShowTransferModal(false)
+        setDrawerIsLoading(false)
+      }, 1000)
+    }
   }
 
   if (isloading || !currentGroupId) {
@@ -119,18 +123,20 @@ const Container = styled.View`
   bottom: -20px;
   width: 110%;
   border-radius: 10px;
-  padding: 0 10px;
-  height: 320px;
+  padding: 5px 0px;
+  max-height: 450px;
+  min-height: 300px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
 const TransferTitleWrapper = styled.View`
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 1px;
+  padding-bottom: 10px;
 `
 
 const TransferTitle = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   text-align: center;
   padding: 20px 0 15px 0;
