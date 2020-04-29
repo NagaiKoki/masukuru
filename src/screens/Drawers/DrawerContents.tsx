@@ -3,9 +3,15 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import { ActivityIndicator, Clipboard, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import Modal from 'react-native-modal';
+// import component
 import UserImage from '../../components/Image/userImage'
+import InviteCodeModal from '../../components/InviteModal/invite'
+import InvitedCodeModal from '../../components/InviteModal/invited'
+import TranferModal from '../../components/Groups/transferModal'
+import Loading from '../../components/Loading'
+// import apis
 import { joinInvitedGroup } from '../../apis/invite';
+import { logout } from '../../apis/auth';
 import firebase, { db } from '../../config/firebase';
 
 type DrawerProps = {
@@ -16,6 +22,7 @@ type DrawerProps = {
 const DrawerContent = (props: DrawerProps) => {
   const [showInvitedCodeModal, setShowInvitedCodeModal] = useState<boolean>(false);
   const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
+  const [showTransferModal, setShowTransferModal] = useState<boolean>(false)
   const [currentGroupId, setCurrentGroupId] = useState('')
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
@@ -25,38 +32,35 @@ const DrawerContent = (props: DrawerProps) => {
   const groupRef = db.collection('groups')
 
   useEffect(() => {
-    db.collectionGroup("groupUsers").where('uid', '==', user.uid).limit(1).get()
+    db.collectionGroup("groupUsers").where('uid', '==', user.uid).get()
     .then(function(querySnapshot) {
       querySnapshot.forEach(doc => {
-        setCurrentGroupId(doc.ref.parent.parent.id);
+        if (doc.data().currentGroupId) {
+          setCurrentGroupId(doc.data().currentGroupId)
+        } else {
+          setCurrentGroupId(doc.ref.parent.parent.id);
+        }
         // 自分がホストではない場合の状態管理
         doc.ref.parent.parent.id === user.uid ? setIsHost(true) : setIsHost(false)
       });
     })
   }, [])
 
-  // TODO ロジックは違うファイルに押し込みたい
-  const logout = async () => {
-    setIsLoading(true)
-    await firebase.auth().signOut().then(() => {
-      setIsLoading(false) 
-    }).catch(error => {
-      console.log(error)
-      alert(error)
-    })
-  };
-
   if (isLoading) {
     return (
-      <ActivityIndicator size="large" style={[styles.loading]} />
+      <Loading size='large' />
     )
   }
-  
-  // 招待コード送信制御
-  const disableSubmit: boolean = (
-    codeText && codeText.length === 6 ? false : true
-  )
 
+  // ログアウト
+  const handleLogout = () => {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      logout()
+    }, 1000)
+  }
+  
   // 招待された場合のモーダル出現
   const handleInvitedCodeOnClick = () => {
     setShowInvitedCodeModal(true);
@@ -77,63 +81,22 @@ const DrawerContent = (props: DrawerProps) => {
     setShowInviteCodeModal(true)
   }
 
+  const handleTransferOnClick = () => {
+    setShowTransferModal(true)
+  }
+
   // 招待されたグループに移動する
   const replaceGroup = async () => {
-   const resGroupId = await joinInvitedGroup(codeText)
+   const resGroupId = await joinInvitedGroup(codeText, currentGroupId)
+   if (!resGroupId) {
+     return
+   }
    setIsLoading(true)
    setTimeout(() => {
     navigation.navigate("main", { currentGroupId: resGroupId })
     setIsLoading(false)
    }, 2000)
    return setShowInvitedCodeModal(false)
-  }
-
-  const copyInviteCode = (code) => {
-    Clipboard.setString(code)
-    Alert.alert('コピーされました！')
-  }
-
-  // 招待入力用コードモーダル
-  const InvitedCodeModal = () => {
-    return (
-      <Modal isVisible={showInvitedCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInvitedCodeModal(false)}>
-        <InvitedModalView>
-          <InviteCloseBar />
-          <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
-
-          <InvitedModalFormWrapper>
-            <InvitedModalForm 
-              placeholder='6桁の招待コード'
-              autoCapitalize={'none'}
-              autoCorrect={ false }
-              onChangeText={ text => setCodeText(text) }
-              maxLength={6}
-            />
-          </InvitedModalFormWrapper>
-
-          <InvitedModalSubmitBtn block onPress={replaceGroup} disabled={disableSubmit} disableSubmit={disableSubmit}>
-            <InvitedModalSubmitText>招待されたグループに参加する</InvitedModalSubmitText>
-          </InvitedModalSubmitBtn>
-        </InvitedModalView>
-    </Modal>
-    )
-  }
-
-  // 所属するグループの招待コード表示用モーダル
-  const InviteCodeModal = () => {
-    return (
-      <Modal isVisible={showInviteCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInviteCodeModal(false)}>
-        <InviteModalView>
-          <InviteCloseBar />
-          <InviteCodeWrapper onPress={() => copyInviteCode(ownCode)}>
-            <InviteCodeText>{ownCode}</InviteCodeText>
-          </InviteCodeWrapper>
-          <InviteSubText>タップするとコピーされます</InviteSubText>
-          <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
-          <InviteSubText>※ グループに参加できる人数は最大で5人までです</InviteSubText>
-       </InviteModalView>
-      </Modal>
-    )
   }
 
   // マイページ
@@ -160,9 +123,20 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
+  // 招待用ナビ
+  const renderTransferGroupItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={handleTransferOnClick}>
+          <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>グループを切り替える</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
   // 招待された場合用ナビ
   const renderInvidedItem = () => {
-    if (!isHost) return;
     return (
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
@@ -177,7 +151,7 @@ const DrawerContent = (props: DrawerProps) => {
   const renderLogoutItem = () => {
     return (
       <DrawerListItem>
-        <DrawerListItemBtn block onPress={ () => logout() }>
+        <DrawerListItemBtn block onPress={ () => handleLogout() }>
           <Icon name="logout" size={25} color={COLORS.BASE_BORDER_COLOR}/>
           <DrawerListItemText>ログアウト</DrawerListItemText>
         </DrawerListItemBtn>
@@ -196,25 +170,33 @@ const DrawerContent = (props: DrawerProps) => {
 
       <DrawerListContainer>
         {renderMyPageItem()}
+        {renderTransferGroupItem()}
         {renderInvideItem()}
         {renderInvidedItem()}
         {renderLogoutItem()}
+        {/* グループを切り替えるモーダル */}
+        <TranferModal 
+          showTransferModal={showTransferModal}
+          currentGroupId={currentGroupId}
+          setShowTransferModal={setShowTransferModal}
+          navigation={navigation}
+          setDrawerIsLoading={setIsLoading}
+          setCurrentGroupId={setCurrentGroupId}
+        />
         {/* 招待コード入力用モーダル */}
-        {InvitedCodeModal()}
+        <InvitedCodeModal 
+          showInvitedCodeModal={showInvitedCodeModal}
+          setShowInvitedCodeModal={setShowInvitedCodeModal}
+          setCodeText={setCodeText}
+          replaceGroup={replaceGroup}
+          codeText={codeText}
+        />
         {/* 所属しているグループの招待コード表示用モーダル */}
-        {InviteCodeModal()}
+        <InviteCodeModal showInviteCodeModal={showInviteCodeModal} setShowInviteCodeModal={setShowInviteCodeModal} ownCode={ownCode}/>
       </DrawerListContainer>
     </DrawerContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center'
-  }
-})
 
 const DrawerContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};

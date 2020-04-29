@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react'
 import { Alert } from 'react-native'
 import firebase, { db } from '../config/firebase';
 import * as Google from 'expo-google-app-auth';
@@ -6,9 +7,13 @@ import { COMMON_ERROR_MESSSAGE, LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ER
 import { GOOGLE_CONFIG } from '../config/firebaseConfig';
 import Analytics from '../config/amplitude'
 
-export const LogoutUser = async () => {
-  await firebase.auth().signOut().then(function() {
-  })
+export const logout = async () => {
+  try {
+    await firebase.auth().signOut()
+    return;
+  } catch { (error) => {
+    alert(error)
+  }}
 };
 
 // ログイン
