@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import { ActivityIndicator, Clipboard, StyleSheet, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 // import component
 import UserImage from '../../components/Image/userImage'
@@ -128,7 +128,7 @@ const DrawerContent = (props: DrawerProps) => {
     return (
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleTransferOnClick}>
-          <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <Icon name="people" size={25} color={COLORS.BASE_BORDER_COLOR}/>
           <DrawerListItemText>グループを切り替える</DrawerListItemText>
         </DrawerListItemBtn>
       </DrawerListItem>
