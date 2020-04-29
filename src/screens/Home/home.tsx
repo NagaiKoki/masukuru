@@ -9,6 +9,7 @@ import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
 import { MenuType } from '../../types/menu';
+import Analitycs from '../../config/amplitude'
 
 const HomeScreen = ({ navigation, route }) => {
   const [EventName, setEventName] = useState('');
@@ -36,6 +37,7 @@ const HomeScreen = ({ navigation, route }) => {
       GetUserList(currentGroupId)
       getOwnerId(currentGroupId)
       setIsLoading(false)
+      Analitycs.getUserId(current_user_uid)
     },[currentGroupId])
   );
 
@@ -47,6 +49,7 @@ const HomeScreen = ({ navigation, route }) => {
       date: today.getTime()
     }).then(function() {
       setEventList(state => [ ...state, {name: EventName, uid: current_user_uid, date: today.getTime(), groupId: currentGroupId }]);
+      Analitycs.track('add events')
       setEventModal(false);
     }).catch(function(error) {
       alert(error);

@@ -4,6 +4,7 @@ import * as Google from 'expo-google-app-auth';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { COMMON_ERROR_MESSSAGE, LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
 import { GOOGLE_CONFIG } from '../config/firebaseConfig';
+import Analytics from '../config/amplitude'
 
 export const LogoutUser = async () => {
   await firebase.auth().signOut().then(function() {
@@ -14,6 +15,8 @@ export const LogoutUser = async () => {
 export const LoginUser = async ({ email, password }) => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password).then( (user) => {
+      Analytics.getUserId(user.user.uid);
+      Analytics.track('login')
     }); 
     return {};
   } catch(error) {
@@ -49,6 +52,8 @@ export const RegisterUser = async ({ email, password }) => {
     if (response.user.uid) {
       const uid = response.user.uid
       await db.collection('users').doc(uid).set({ uid: response.user.uid })
+      Analytics.getUserId(uid);
+      Analytics.track('register')
       return {};
     } 
   } catch(error) {
@@ -92,6 +97,8 @@ export const GoogleLogin = (route) => {
         const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
         firebase.auth().signInWithCredential(credential).then( async () => {
           const currentUser = firebase.auth().currentUser
+          Analytics.getUserId(currentUser.uid);
+          Analytics.track('login')
           // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
           db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
             if (snapshot.empty) {
@@ -140,6 +147,8 @@ export const AppleLogin = (route) => {
       });
       firebase.auth().signInWithCredential(credential).then( async () => {
         const currentUser = firebase.auth().currentUser
+        Analytics.getUserId(currentUser.uid);
+        Analytics.track('login')
         // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
         db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
           if (snapshot.empty) {
