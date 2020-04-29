@@ -120,7 +120,7 @@ const Container = styled.View`
   width: 110%;
   border-radius: 10px;
   padding: 0 10px;
-  height: 320px;
+  max-height: 450px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `

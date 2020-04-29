@@ -37,7 +37,7 @@ export default InviteCodeModal;
 
 const InviteModalView = styled.View`
   position: absolute;
-  bottom: -20;
+  bottom: -20px;
   width: 110%;
   border-radius: 10px;
   padding: 0 10px;

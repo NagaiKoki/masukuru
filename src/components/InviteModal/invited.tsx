@@ -35,6 +35,8 @@ const InvitedCodeModal = (props: InvitedCodeModalProps) => {
             maxLength={6}
           />
         </InvitedModalFormWrapper>
+        <InvitedSubText>※ 所属できるグループ数は5つまでです。</InvitedSubText>
+        <InvitedSubText>※ 招待先のグループが5人以上の場合、参加できません。</InvitedSubText>
 
         <InvitedModalSubmitBtn block onPress={replaceGroup} disabled={disableSubmit} disableSubmit={disableSubmit}>
           <InvitedModalSubmitText>招待されたグループに参加する</InvitedModalSubmitText>
@@ -49,21 +51,10 @@ export default InvitedCodeModal;
 // 招待コード入力モーダル
 const InvitedModalView = styled.View`
   position: absolute;
-  bottom: -20;
+  bottom: -20px;
   width: 110%;
   border-radius: 10px;
-  height: 600px;
-  background-color: ${COLORS.BASE_BACKGROUND};
-  align-self: center;
-`
-
-const InviteModalView = styled.View`
-  position: absolute;
-  bottom: -20;
-  width: 110%;
-  border-radius: 10px;
-  padding: 0 10px;
-  height: 320px;
+  height: 500px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
@@ -94,7 +85,7 @@ const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>
   width: 80%;
   align-self: center;
   background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 20px 0;
+  padding: 15px 0;
   border-radius: 60px;
   margin-top: 30px;
   opacity: ${ props => ( props.disableSubmit ? 0.5 : 1 ) };
@@ -105,6 +96,14 @@ const InvitedModalSubmitText = styled.Text`
   font-weight: bold;
   text-align: center;
   font-size: 16px;
+`
+
+const InvitedSubText = styled.Text`
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 8px;
+  text-align: center;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const InviteCloseBar = styled.View`
