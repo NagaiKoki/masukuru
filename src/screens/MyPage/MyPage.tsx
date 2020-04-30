@@ -5,6 +5,7 @@ import firebase, { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
 import UserImage from '../../components/Image/userImage'
 import MenuList from '../../components/MyPage/menuList';
+import Event from './Event'
 
 const MyPageScreen = ({ navigation }) => {
   const [isChanged, setIsChanged] = useState(false)
@@ -18,11 +19,12 @@ const MyPageScreen = ({ navigation }) => {
         </MypageUserImage>
         <MyPpageUserName>{user.displayName}</MyPpageUserName>
       </MypageUserWrapper>
-        <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user, setIsChanged: setIsChanged }) } }>
-          <ProfileChangeText>プロフィールを編集する</ProfileChangeText>
-        </ProfileChangeBtn>
-        <TrainingListTitle>記録一覧</TrainingListTitle>
-        <MenuList user={user} />
+      <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user, setIsChanged: setIsChanged }) } }>
+        <ProfileChangeText>プロフィールを編集する</ProfileChangeText>
+      </ProfileChangeBtn>
+      <EventView>
+        <Event navigation={navigation}/>
+      </EventView>
     </MypageContainer>
   );
 };
@@ -63,6 +65,9 @@ const ProfileChangeText = styled.Text`
   align-items: center;
   align-self: center;
   width: 80%;
+`
+
+const EventView = styled.View`
 `
 
 const TrainingListTitle = styled.Text`
