@@ -1,7 +1,8 @@
 import * as Amplitude from 'expo-analytics-amplitude';
+import Constants from 'expo-constants'
 
 let isInitialzed = false
-const API_KEY = '6689a653193f8642ab2354f78bc7de4c'
+const API_KEY = Constants.manifest.extra.amplitude.apiKey
 
 export const initialize = () => {
   if (isInitialzed || !API_KEY) {
