@@ -118,14 +118,13 @@ const TranferModal = (props: TransferModalProps) => {
 export default TranferModal;
 
 const Container = styled.View`
-  max-height: 300px;
   position: absolute;
   bottom: -20px;
   width: 110%;
   border-radius: 10px;
   padding: 5px 0px;
   max-height: 450px;
-  min-height: 300px;
+  min-height: 380px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
