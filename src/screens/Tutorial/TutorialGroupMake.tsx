@@ -55,7 +55,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
   }
-  
+
   // 招待コード送信制御
   const disableSubmit: boolean = (
     codeText && codeText.length === 6 ? false : true
@@ -72,10 +72,9 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       <TutorialGroupBtnWrapper>
 
         <TutorialInviteBtnWrapper>
-          <TutorialInviteBtn onPress={ () => createGroup(route, navigation) }>
-            <TutorialInviteText>ひとまず１人で使う</TutorialInviteText>
+          <TutorialInviteBtn onPress={ () => createGroup(navigation, route) }>
+            <TutorialInviteText>最初は１人で使う</TutorialInviteText>
           </TutorialInviteBtn>
-          <TutorialInviteSubText>１人で使ってみて、その後に友達を招待しよう！</TutorialInviteSubText>
           <TutorialInviteSubText>※ 後から友達を招待することもできます</TutorialInviteSubText>
         </TutorialInviteBtnWrapper>
 
