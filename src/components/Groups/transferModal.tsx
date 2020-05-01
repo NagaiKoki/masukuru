@@ -129,7 +129,7 @@ const TranferModal = (props: TransferModalProps) => {
   const handleAddGroup = () => 
     Alert.alert(
       "本当にグループを作成しますか？",
-      "※ 自身がホストのグループは1つまでしか作成できません。",
+      "※ 自身がホストのグループは\n1つまでしか作成できません。",
       [
         {
           text: "キャンセル",
