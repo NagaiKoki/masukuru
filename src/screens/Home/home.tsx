@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation, route }) => {
   const current_user_uid = current_user.uid
 
   const today = new Date();
-  
+
   useFocusEffect(
     useCallback(() => {
       GetEventList(currentGroupId)

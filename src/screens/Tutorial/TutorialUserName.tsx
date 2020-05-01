@@ -12,12 +12,12 @@ const TutorialUserNameScreen = ({ navigation }) => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         user.updateProfile({
-          displayName: userName
+          displayName: null
         }).then(async function() {
           const userdata = { name: userName };
           await db.collection('users').doc(user.uid).update(userdata)
         }).then(function() {
-          navigation.navigate('TutorialBodyInfo')
+          navigation.navigate('TutorialBodyInfo', { userName: userName })
         }).catch(function(error) {
           console.log(error)
         });

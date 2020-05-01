@@ -3,43 +3,38 @@ import styled from 'styled-components';
 import { Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
-import firebase, { db } from '../../config/firebase';
 import Icon from 'react-native-vector-icons/AntDesign';
 // import constans
 import { COLORS } from '../../constants/Styles';
 import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
+// import apis
+import { createGroup } from '../../apis/Groups/create';
+import firebase, { db } from '../../config/firebase';
+import Loading from '../../components/Loading'
 
 const TutorialGroupMakeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [codeText, setCodeText] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true)
+  const [userName, setUserName] = useState('')
   const currentUser = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
+  const curretUserRef = db.collection('users').doc(currentUser.uid)
+
+  const getUserName = async () => {
+    await curretUserRef.get().then(snap => {
+      if (!snap.exists) return
+      setUserName(snap.data().name)
+    })
+  }
 
   React.useEffect(() => {
     setIsLoading(false)
+    getUserName()
   }, [])
 
-  // １人で使う場合の処理
-  const notInvitedGroupCreate = () => {    
-    try {
-      groupRef.doc(currentUser.uid).set({
-        ownerId: currentUser.uid,
-        name: currentUser.displayName
-      }).then(function() {
-        groupUser()
-      }).then(function(){
-        saveInvideCode()
-      }).then(function() {
-        route.params.setIsChange(true)
-        navigation.navigate('home', { currentGroupId: currentUser.uid })
-        route.params.setIsChange(false)
-      }).catch(function(error) {
-        alert(error);
-      })
-    } catch(error) {
-      alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
-    }
+  if (isLoading) {
+    return <Loading size="small"/>
   }
 
   // 招待された場合の処理
@@ -58,9 +53,10 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
         if (groupUsersLength >= 5) {
           return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_USERS)
         } else {
+          await currentUser.updateProfile({ displayName: userName })
           groupUsersRef.doc(currentUser.uid).set({
             uid: currentUser.uid,
-            name: currentUser.displayName,
+            name: userName,
             imageUrl: currentUser.photoURL,
             currentGroupId: snapshot.docs[0].data().ownerId
           }).then(function() {
@@ -75,32 +71,6 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
   }
-
-  // グループコレクション配下に、所属するユーザーのサブコレクションを作成する
-  const groupUser = () => {
-    groupRef.doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
-      uid: currentUser.uid,
-      name: currentUser.displayName,
-      imageUrl: currentUser.photoURL,
-      currentGroupId: currentUser.uid
-    })
-  }
-
-  // 招待コードを保存する
-  const saveInvideCode = () => {
-    const inviteCode = factoryRandomCode(6);
-    groupRef.where('inviteCode', '==', inviteCode).get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        groupRef.doc(currentUser.uid).update({
-          inviteCode: inviteCode
-        })
-      } else {
-        // まずないが、ランダムな生成コードが他のグループと被った場合に、再帰処理をする
-        saveInvideCode();
-      };
-    })
-  };
 
   // 招待コード送信制御
   const disableSubmit: boolean = (
@@ -118,10 +88,9 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       <TutorialGroupBtnWrapper>
 
         <TutorialInviteBtnWrapper>
-          <TutorialInviteBtn onPress={ () => notInvitedGroupCreate() }>
-            <TutorialInviteText>ひとまず１人で使う</TutorialInviteText>
+          <TutorialInviteBtn onPress={ () => createGroup(navigation, route, userName) }>
+            <TutorialInviteText>最初は１人で使う</TutorialInviteText>
           </TutorialInviteBtn>
-          <TutorialInviteSubText>１人で使ってみて、その後に友達を招待しよう！</TutorialInviteSubText>
           <TutorialInviteSubText>※ 後から友達を招待することもできます</TutorialInviteSubText>
         </TutorialInviteBtnWrapper>
 

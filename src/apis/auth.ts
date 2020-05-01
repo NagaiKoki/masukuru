@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction } from 'react'
 import { Alert } from 'react-native'
 import firebase, { db } from '../config/firebase';
 import * as Google from 'expo-google-app-auth';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { COMMON_ERROR_MESSSAGE, LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
-import { GOOGLE_CONFIG } from '../config/firebaseConfig';
+import Constants from 'expo-constants'
 import Analytics from '../config/amplitude'
 
 export const logout = async () => {
@@ -93,8 +92,8 @@ export const GoogleLogin = (route) => {
   try {
     Google.logInAsync({
       behavior: 'web',
-      iosClientId: GOOGLE_CONFIG.CLIENT_ID,
-      iosStandaloneAppClientId: GOOGLE_CONFIG.STANDALONE_CLIENT_ID,
+      iosClientId: Constants.manifest.extra.googleConfig.clientId,
+      iosStandaloneAppClientId: Constants.manifest.extra.googleConfig.strageClientId,
       scopes: ['profile', 'email']
     }).then((result) => {
       if (result.type === 'success') {

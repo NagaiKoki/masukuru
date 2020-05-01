@@ -94,6 +94,7 @@ const DrawerContent = (props: DrawerProps) => {
    setIsLoading(true)
    setTimeout(() => {
     navigation.navigate("main", { currentGroupId: resGroupId })
+    setCurrentGroupId(resGroupId)
     setIsLoading(false)
    }, 2000)
    return setShowInvitedCodeModal(false)

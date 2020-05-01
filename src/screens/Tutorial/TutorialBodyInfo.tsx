@@ -6,17 +6,17 @@ import { Alert, Text, StyleSheet } from 'react-native';
 import firebase, { db } from '../../config/firebase';
 import { KeyboardAvoidingView } from 'react-native';
 
-const TutorialBodyInfoScreen = ({ navigation }) => {
+const TutorialBodyInfoScreen = ({ navigation, userName }) => {
   const [age, setAge] = useState<number>(null)
   const [sex, setSex] = useState('');
   const [weight, setWeight] = useState<number>(null)
   const [heigjt, setHeight] = useState<number>(null)
   const currentUser = firebase.auth().currentUser
-
+  
   const onSubmit = () => {
     const updatedata = { age: age, sex: sex, heigjt: heigjt, weight: weight }
     db.collection('users').doc(currentUser.uid).update(updatedata).then(() => {
-      navigation.navigate('TutorialUserImage')
+      navigation.navigate('TutorialUserImage', { userName: userName })
     }).catch((error) => {
       console.log(error)
       Alert.alert('原因不明のエラーが発生しました。時間をおいてから再度お試しください。')

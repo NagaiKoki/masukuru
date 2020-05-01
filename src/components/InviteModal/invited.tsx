@@ -24,7 +24,7 @@ const InvitedCodeModal = (props: InvitedCodeModalProps) => {
     <Modal isVisible={showInvitedCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInvitedCodeModal(false)}>
       <InvitedModalView>
         <InviteCloseBar />
-        <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
+        <InvitedModalTitle>6桁の招待コードを入力しよう！</InvitedModalTitle>
 
         <InvitedModalFormWrapper>
           <InvitedModalForm 
@@ -75,6 +75,7 @@ const InvitedModalFormWrapper = styled.View`
 
 const InvitedModalForm = styled.TextInput`
   border: 1px solid ${COLORS.BASE_BORDER_COLOR};
+  margin-bottom: 20px;
   padding: 15px;
   border-radius: 5px;
   background-color: ${COLORS.BASE_WHITE};
@@ -99,10 +100,10 @@ const InvitedModalSubmitText = styled.Text`
 `
 
 const InvitedSubText = styled.Text`
-  width: 90%;
+  width: 85%;
   margin: 0 auto;
   margin-top: 8px;
-  text-align: center;
+  
   color: ${COLORS.SUB_BLACK};
 `
 
