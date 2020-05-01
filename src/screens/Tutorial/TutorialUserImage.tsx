@@ -5,7 +5,7 @@ import UserImage from '../../components/Image/userImage'
 import { ImageUpload } from '../../lib/cameraRoll';
 import firebase, { db } from '../../config/firebase';
 
-const TutorialUserImageScreen = ({ navigation }) => {
+const TutorialUserImageScreen = ({ navigation, userName }) => {
   const [progress, setProgress] = useState<string>('');
   const [uri, setUri] = useState<string>('');
   const user = firebase.auth().currentUser;
@@ -30,7 +30,7 @@ const TutorialUserImageScreen = ({ navigation }) => {
         const userdata  = { imageUrl: uri };
         db.collection('users').doc(user.uid).update(userdata);
       }).then(function() {
-        navigation.navigate('TutorialGroupMake')
+        navigation.navigate('TutorialGroupMake', { userName: userName })
       }).catch(function(error) {
         alert(error);
       })

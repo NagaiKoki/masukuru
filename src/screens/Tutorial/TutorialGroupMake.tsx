@@ -10,17 +10,32 @@ import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../constants/err
 // import apis
 import { createGroup } from '../../apis/Groups/create';
 import firebase, { db } from '../../config/firebase';
+import Loading from '../../components/Loading'
 
 const TutorialGroupMakeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [codeText, setCodeText] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true)
+  const [userName, setUserName] = useState('')
   const currentUser = firebase.auth().currentUser;
   const groupRef = db.collection('groups')
+  const curretUserRef = db.collection('users').doc(currentUser.uid)
+
+  const getUserName = async () => {
+    await curretUserRef.get().then(snap => {
+      if (!snap.exists) return
+      setUserName(snap.data().name)
+    })
+  }
 
   React.useEffect(() => {
     setIsLoading(false)
+    getUserName()
   }, [])
+
+  if (isLoading) {
+    return <Loading size="small"/>
+  }
 
   // 招待された場合の処理
   const InvitedGroupJoin = async () => {
@@ -38,9 +53,10 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
         if (groupUsersLength >= 5) {
           return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_USERS)
         } else {
+          await currentUser.updateProfile({ displayName: userName })
           groupUsersRef.doc(currentUser.uid).set({
             uid: currentUser.uid,
-            name: currentUser.displayName,
+            name: userName,
             imageUrl: currentUser.photoURL,
             currentGroupId: snapshot.docs[0].data().ownerId
           }).then(function() {
@@ -72,7 +88,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
       <TutorialGroupBtnWrapper>
 
         <TutorialInviteBtnWrapper>
-          <TutorialInviteBtn onPress={ () => createGroup(navigation, route) }>
+          <TutorialInviteBtn onPress={ () => createGroup(navigation, route, userName) }>
             <TutorialInviteText>最初は１人で使う</TutorialInviteText>
           </TutorialInviteBtn>
           <TutorialInviteSubText>※ 後から友達を招待することもできます</TutorialInviteSubText>

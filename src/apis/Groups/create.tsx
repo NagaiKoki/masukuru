@@ -6,14 +6,18 @@ import { factoryRandomCode } from '../../lib/randomTextFactory';
 import { COMMON_ERROR_MESSSAGE, INVITE_ERROR_MESSAGE } from '../../constants/errorMessage'
 
 //  １人のグループを作成
-export const createGroup = async (navigation?: any, route?: any) => {
+export const createGroup = async (navigation?: any, route?: any, userName?: string) => {
+  
   try {
     const groupRef = db.collection('groups')
     const currentUser = firebase.auth().currentUser
+    let name = userName ? userName : currentUser.displayName
   
     await groupRef.doc(currentUser.uid).set({
       ownerId: currentUser.uid,
-      name: currentUser.displayName
+      name: name
+    }).then( async () => {
+      await currentUser.updateProfile({ displayName: name })
     }).then(() => {
       createGroupUser(currentUser)
     }).then(() => {
