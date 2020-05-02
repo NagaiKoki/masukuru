@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import firebase, { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
 import UserImage from '../../components/Image/userImage'
-import MenuList from '../../components/MyPage/menuList';
 import Event from './Event'
 
 const MyPageScreen = ({ navigation }) => {

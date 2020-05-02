@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import { Text, StyleSheet, ActivityIndicator } from 'react-native';
 import styled from 'styled-components';
 import firebase, { db } from '../../config/firebase';
@@ -7,8 +8,9 @@ import Analitycs from '../../config/amplitude'
 import Icon from 'react-native-vector-icons/AntDesign';
 import Modal from "react-native-modal";
 import RNPickerSelect from 'react-native-picker-select';
+import { factoryRandomCode } from '../../lib/randomTextFactory';
 
-const EventScreen = ({ navigation }) => {
+const Event = ({ navigation }) => {
   const currentUser = firebase.auth().currentUser;
   const currentUserId = currentUser.uid
   const today = new Date();
@@ -18,19 +20,23 @@ const EventScreen = ({ navigation }) => {
   const [eventName, setEventName] = useState('');
   const [eventCategory, setEventCategory] = useState('')
 
-  useEffect(() => {
-    GetEventList(currentUserId)
-    setIsLoading(false)
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      GetEventList(currentUserId)
+      setIsLoading(false)
+    },[])
+  );
 
   const AddEvent = () => {
-    db.collection('users').doc(currentUserId).collection('events').add({
+    const id = factoryRandomCode(10)
+    db.collection('users').doc(currentUserId).collection('events').doc(id).set({
+      id: id,
       name: eventName,
       uid: currentUserId,
       date: today.getTime(),
       category: eventCategory
     }).then(function() {
-      setEventList(state => [ ...state, {name: eventName, uid: currentUserId, date: today.getTime() }]);
+      setEventList(state => [ ...state, {id: id, name: eventName, uid: currentUserId, date: today.getTime(), category: eventCategory }]);
       Analitycs.track('add events')
       setEventModal(false);
     }).catch(function(error) {
@@ -80,7 +86,7 @@ const EventScreen = ({ navigation }) => {
       extraData={eventList}
       keyExtractor={item => item.date.toString()}
       renderItem={({item}) => 
-        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item }) }}>
+        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentUser: currentUser }) }}>
           <EventFlatListText>
             {item.name} の記録
           </EventFlatListText>
@@ -291,4 +297,4 @@ const EventFlatListText = styled.Text`
   color: ${COLORS.BASE_BLACK};
 `
 
-export default EventScreen;
+export default Event;

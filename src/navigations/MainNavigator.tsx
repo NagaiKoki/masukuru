@@ -111,17 +111,6 @@ const MainNavigator = ({ navigation }) => {
       />
 
       <MainStack.Screen
-        name="menu"
-        component={MenuScreen}
-        initialParams={{ currentGroupId: currentGroupId }}
-        options={({route}) => ({
-          headerBackTitleVisible: false,
-          headerTitle: getHeaderMenuTitle(route),
-          headerTintColor: COLORS.BASE_MUSCLEW
-        })}
-      />
-
-      <MainStack.Screen
         name="UserPage"
         component={MyPageScreen}
         options={({route}) => ({
