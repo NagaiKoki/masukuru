@@ -67,7 +67,7 @@ const InviteCodeText = styled.Text`
   padding: 10px 50px;
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
-  letter-spacing: 4;
+  letter-spacing: 4px;
   font-weight: bold;
   text-align: center;
 `

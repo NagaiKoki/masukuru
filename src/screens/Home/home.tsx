@@ -181,7 +181,7 @@ const HomeScreen = ({ navigation, route }) => {
             extraData={UserList}
             keyExtractor={item => item.uid.toString()}
             renderItem={({item}) => 
-            <MemberFlatListView onPress={() => item.uid !== current_user_uid ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('マイページ')}>
+            <MemberFlatListView onPress={() => item.uid !== current_user_uid ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('groupInfo', { currentGroupId: currentGroupId })}>
               <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={60} />
               <MemberFlatListName>
                 {item.name}
@@ -369,7 +369,7 @@ const InviteCodeText = styled.Text`
   padding: 10px 50px;
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
-  letter-spacing: 4;
+  letter-spacing: 4px;
   font-weight: bold;
   text-align: center;
 `

@@ -3,11 +3,13 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
 import firebase, { db } from '../config/firebase'
 import { COLORS } from '../constants/Styles'
+import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen
-import HomeScreen from '../screens/Home';
+import HomeScreen from '../screens/Home'
 import MenuScreen from '../screens/Menus/index'
 import MyPageScreen from '../screens/UserPage'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import GroupInfoScreen from '../screens/Groups/GroupInfo'
+import GroupEditScreen from '../screens/Groups/GroupEdit'
 
 const MainNavigator = ({ navigation }) => { 
   const MainStack = createStackNavigator()
@@ -64,6 +66,26 @@ const MainNavigator = ({ navigation }) => {
           gestureEnabled: false,
           headerTintColor: COLORS.BASE_MUSCLEW,
           headerTitle: 'ホーム'
+        }}
+      />
+
+      <MainStack.Screen
+        name="groupInfo"
+        component={GroupInfoScreen}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: "このグループについて",
+          headerTintColor: COLORS.BASE_MUSCLEW
+        }}
+      />
+
+      <MainStack.Screen
+        name="groupEdit"
+        component={GroupEditScreen}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: "グループを編集する",
+          headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
 
