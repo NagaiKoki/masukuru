@@ -23,22 +23,14 @@ const HomeScreen = ({ navigation, route }) => {
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const [ownCode, setOwnCode] = useState<string>('')
   const [ownerId, setOwnerId] = useState('');
+  const [name, setName] = useState('ホーム')
   const { params } = route;
   const { currentGroupId } = params;
   const groupRef = db.collection('groups')
   
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
-
   const today = new Date();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <EvilIcons name="gear" size={26} onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} style={{ paddingRight: 20, color: COLORS.SUB_BLACK }}/>
-      ),
-    });
-  }, [navigation]);
 
   useFocusEffect(
     useCallback(() => {
@@ -47,6 +39,28 @@ const HomeScreen = ({ navigation, route }) => {
       getOwnerId(currentGroupId)
       setIsLoading(false)
       Analitycs.getUserId(current_user_uid)
+
+      const getHeaderNav= async () => {
+        let groupName;
+        await db.collection('groups').doc(currentGroupId).get().then(snap => {
+          if (snap.data().groupName) {
+            groupName = snap.data().groupName
+          } 
+        })
+
+          // グループ編集遷移
+      navigation.setOptions({
+        headerRight: () => (
+          <EvilIcons name="gear" 
+                     size={26} 
+                     onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} 
+                     style={{ paddingRight: 20, color: COLORS.SUB_BLACK }}
+          />
+        ),
+        headerTitle: groupName ? groupName : ''
+      });
+    }
+    getHeaderNav()
     },[currentGroupId])
   );
 

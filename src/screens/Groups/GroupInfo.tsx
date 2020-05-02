@@ -26,8 +26,6 @@ const GroupInfoScreen = ({ navigation, route }) => {
     }, [])
   )
 
-  console.log(!groupInfo)
-
   if (isLoading || !groupInfo) {
     return <Loading size="small" />
   }
