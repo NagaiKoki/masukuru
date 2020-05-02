@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useLayoutEffect, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import {StyleSheet, ActivityIndicator, RefreshControl, Clipboard, Alert} from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
@@ -30,6 +31,14 @@ const HomeScreen = ({ navigation, route }) => {
   const current_user_uid = current_user.uid
 
   const today = new Date();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <EvilIcons name="gear" size={26} onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} style={{ paddingRight: 20, color: COLORS.SUB_BLACK }}/>
+      ),
+    });
+  }, [navigation]);
 
   useFocusEffect(
     useCallback(() => {
@@ -181,7 +190,7 @@ const HomeScreen = ({ navigation, route }) => {
             extraData={UserList}
             keyExtractor={item => item.uid.toString()}
             renderItem={({item}) => 
-            <MemberFlatListView onPress={() => item.uid !== current_user_uid ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('groupInfo', { currentGroupId: currentGroupId })}>
+            <MemberFlatListView onPress={() => item.uid !== current_user_uid ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('マイページ')}>
               <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={60} />
               <MemberFlatListName>
                 {item.name}
