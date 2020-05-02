@@ -17,7 +17,7 @@ const MainTabNavigator = () => {
         tabBarIcon: ({focused, color}) => {
           let iconName: string;
           if (route.name === 'ホーム') {
-            iconName = 'home'
+            iconName = 'people'
           } else if (route.name === 'マイページ') {
                 iconName = 'user'
           }
@@ -40,6 +40,9 @@ const MainTabNavigator = () => {
       <Tab.Screen 
         name='ホーム' 
         component={MainNavigator}
+        options={{
+          tabBarLabel: 'グループ' 
+        }}
       />
       <Tab.Screen 
         name='マイページ' 
