@@ -7,11 +7,13 @@ export const requestMenuList = (setList: Dispatch<SetStateAction<MenuType[]>>, s
     let listArray = []
     let query;
     let documents;
-    if (isShowPage) {
-      documents = db.collectionGroup('menus').where('groupId', '==', currentGroupId).where('name', '==', item.name) 
-    } else {
-      documents = db.collectionGroup('menus').where('uid', '==', user.uid)
-    }
+    // if (isShowPage) {
+    //   documents = db.collectionGroup('menus').where('groupId', '==', currentGroupId).where('name', '==', item.name) 
+    // } else {
+    documents = db.collectionGroup('menus').where('uid', '==', user.uid).where('eventId', '==', item.id)
+    // }
+
+    // documents = db.collection('users').doc(user.uid).collection('events').doc(item.id).collection('menus')
     query = documents.orderBy('createdAt', 'desc')
     
     query.get().then(snapshot  => {
