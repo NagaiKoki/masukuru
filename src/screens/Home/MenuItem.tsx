@@ -44,7 +44,7 @@ const RecentActivitiesMenuFlatListView = styled.View`
 
 const RecentActivitiesMenuFlatListName = styled.Text`
   margin-left: 20px;
-  letter-spacing: 1;
+  letter-spacing: 1px;
   font-size: 14px;
   color: ${COLORS.BASE_BLACK};
 `

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useLayoutEffect, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import {StyleSheet, ActivityIndicator, RefreshControl, Clipboard, Alert} from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import firebase, { db } from '../../config/firebase';
 import UserImage from '../../components/Image/userImage'
 import MenuList from './MenuList'
@@ -22,13 +23,13 @@ const HomeScreen = ({ navigation, route }) => {
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const [ownCode, setOwnCode] = useState<string>('')
   const [ownerId, setOwnerId] = useState('');
+  const [name, setName] = useState('ホーム')
   const { params } = route;
   const { currentGroupId } = params;
   const groupRef = db.collection('groups')
   
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
-
   const today = new Date();
 
   useFocusEffect(
@@ -38,6 +39,28 @@ const HomeScreen = ({ navigation, route }) => {
       getOwnerId(currentGroupId)
       setIsLoading(false)
       Analitycs.getUserId(current_user_uid)
+
+      const getHeaderNav= async () => {
+        let groupName;
+        await db.collection('groups').doc(currentGroupId).get().then(snap => {
+          if (snap.data().groupName) {
+            groupName = snap.data().groupName
+          } 
+        })
+
+          // グループ編集遷移
+      navigation.setOptions({
+        headerRight: () => (
+          <EvilIcons name="gear" 
+                     size={26} 
+                     onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} 
+                     style={{ paddingRight: 20, color: COLORS.SUB_BLACK }}
+          />
+        ),
+        headerTitle: groupName ? groupName : ''
+      });
+    }
+    getHeaderNav()
     },[currentGroupId])
   );
 
@@ -369,7 +392,7 @@ const InviteCodeText = styled.Text`
   padding: 10px 50px;
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
-  letter-spacing: 4;
+  letter-spacing: 4px;
   font-weight: bold;
   text-align: center;
 `
