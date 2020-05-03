@@ -50,11 +50,11 @@ const FeedbackModal = (props: FeedbackProps) => {
 }
 
 const Container = styled.View`
-  flex: 1;
+  height: 95%;
   background-color: ${COLORS.BASE_BACKGROUND};
-  width: 112%;
-  margin-bottom: -30px;
-  border-radius: 10px;
+  width: 110%;
+  margin-bottom: -25%;
+  border-radius: 15px;
   align-self: center;
 `
 
@@ -77,7 +77,7 @@ const FeedbackCloseText = styled.Text`
 
 const FeedbackWrapper = styled.View`
   height: 100%;
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   padding: 30px 0;
 `
