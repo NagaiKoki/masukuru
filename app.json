@@ -27,6 +27,7 @@
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "jp.masukuru",
+      "appStoreUrl": "https://apps.apple.com/us/app/%E3%83%9E%E3%82%B9%E3%82%AF%E3%83%AB/id1509482384?l=ja&ls=1",
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.1023959623519-lrm0q0c294ptbvgj3knotjrk9ul0auir"
@@ -34,6 +35,8 @@
       }
     },
     "extra": {
+      "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
+      "inquiryUrl": "https://docs.google.com/forms/d/e/1FAIpQLScp6GbJc_vGXyfYqPNh9Dpbc8moSs5LXfCU0Epe2TUmgO-HTw/viewform",
       "firebaseConfig": {
         "apiKey": "AIzaSyCdjL3-z11TE4QgP65uvAds6ufm5SbD0Rk",
         "authDomain": "musclew-47ec1.firebaseapp.com",
