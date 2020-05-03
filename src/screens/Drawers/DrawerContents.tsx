@@ -98,8 +98,14 @@ const DrawerContent = (props: DrawerProps) => {
     setShowInviteCodeModal(true)
   }
 
+  // グループ切り替えのモーダル出現
   const handleTransferOnClick = () => {
     setShowTransferModal(true)
+  }
+
+  // フィードバックのモーダル出現
+  const handleFeedbackOnClick = () => {
+    setShowFeedbackModal(true)
   }
 
   // 招待されたグループに移動する
@@ -168,9 +174,9 @@ const DrawerContent = (props: DrawerProps) => {
   const renderFeedbackItem = () => {
     return (
       <DrawerListItem>
-        <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
-          <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-          <DrawerListItemText>レビューとフィードバック</DrawerListItemText>
+        <DrawerListItemBtn block onPress={handleFeedbackOnClick}>
+          <Icon name="question" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>フィードバック</DrawerListItemText>
         </DrawerListItemBtn>
       </DrawerListItem>
     )
@@ -202,6 +208,7 @@ const DrawerContent = (props: DrawerProps) => {
         {renderTransferGroupItem()}
         {renderInvideItem()}
         {renderInvidedItem()}
+        {renderFeedbackItem()}
         {renderLogoutItem()}
         {/* グループを切り替えるモーダル */}
         <TranferModal 

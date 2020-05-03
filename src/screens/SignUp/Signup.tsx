@@ -3,7 +3,7 @@ import { RegisterUser } from '../../apis/auth';
 import { emailValidator, passwordValidator } from '../../validators/AuthValidator';
 import Toast from '../../components/Toaster';
 import styled from 'styled-components';
-import { GoogleLogin } from '../../apis/auth';
+import Constants from 'expo-constants'
 import { Linking } from 'expo';
 import { COLORS } from '../../constants/Styles';
 
@@ -48,9 +48,9 @@ const SignupScreen = ({ route }) => {
   };
 
   const handleLink = () => {
-    Linking.openURL('https://nagaikoki.github.io/masukuru_privacy/')
+    Linking.openURL(Constants.manifest.extra.policyUrl)
   }
-
+  
   // 文字が入力されるまでsubmit不可
   const disableSubmit: boolean = (
     email.value.length && (password.value.length && password.value.length > 6) ? false : true
