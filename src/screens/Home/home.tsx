@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import {StyleSheet, ActivityIndicator, RefreshControl, Clipboard, Alert} from 'react-native';
+import {StyleSheet, ActivityIndicator, RefreshControl, Clipboard, Alert } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Modal from "react-native-modal";

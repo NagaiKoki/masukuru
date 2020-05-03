@@ -8,6 +8,7 @@ import UserImage from '../../components/Image/userImage'
 import InviteCodeModal from '../../components/InviteModal/invite'
 import InvitedCodeModal from '../../components/InviteModal/invited'
 import TranferModal from '../../components/Groups/transferModal'
+import FeedbackModal from '../../components/Feedback'
 import Loading from '../../components/Loading'
 // import apis
 import { joinInvitedGroup } from '../../apis/invite';
@@ -23,11 +24,11 @@ const DrawerContent = (props: DrawerProps) => {
   const [showInvitedCodeModal, setShowInvitedCodeModal] = useState<boolean>(false);
   const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
   const [showTransferModal, setShowTransferModal] = useState<boolean>(false)
+  const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false)
   const [currentGroupId, setCurrentGroupId] = useState('')
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isHost, setIsHost] = useState(false)
   const { user, navigation } = props;
   const groupRef = db.collection('groups')
 
@@ -40,8 +41,6 @@ const DrawerContent = (props: DrawerProps) => {
         } else {
           setCurrentGroupId(doc.ref.parent.parent.id);
         }
-        // 自分がホストではない場合の状態管理
-        doc.ref.parent.parent.id === user.uid ? setIsHost(true) : setIsHost(false)
       });
     })
   }, [])
@@ -52,8 +51,26 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
-  // ログアウト
   const handleLogout = () => {
+    Alert.alert(
+      firebase.auth().currentUser.displayName,
+      "マスクルからログアウトしてもよろしいですか？",
+      [
+        {
+          text: "キャンセル",
+          style: 'cancel'
+        },
+        {
+          text: 'ログアウト',
+          onPress: () => requestLogout()
+        }
+      ],
+      { cancelable: false }
+    )
+  }
+
+  // ログアウト
+  const requestLogout = () => {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
@@ -148,6 +165,17 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
+  const renderFeedbackItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
+          <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>レビューとフィードバック</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
   // ログアウト
   const renderLogoutItem = () => {
     return (
@@ -193,7 +221,15 @@ const DrawerContent = (props: DrawerProps) => {
           codeText={codeText}
         />
         {/* 所属しているグループの招待コード表示用モーダル */}
-        <InviteCodeModal showInviteCodeModal={showInviteCodeModal} setShowInviteCodeModal={setShowInviteCodeModal} ownCode={ownCode}/>
+        <InviteCodeModal 
+          showInviteCodeModal={showInviteCodeModal} 
+          setShowInviteCodeModal={setShowInviteCodeModal} 
+          ownCode={ownCode}
+        />
+        <FeedbackModal 
+          showFeedbackModal={showFeedbackModal}
+          setShowFeedbackModal={setShowFeedbackModal}
+        />
       </DrawerListContainer>
     </DrawerContainer>
   )
