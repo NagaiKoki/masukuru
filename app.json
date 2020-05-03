@@ -37,7 +37,14 @@
     "extra": {
       "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
       "inquiryUrl": "https://docs.google.com/forms/d/e/1FAIpQLScp6GbJc_vGXyfYqPNh9Dpbc8moSs5LXfCU0Epe2TUmgO-HTw/viewform",
-      "firebaseConfig": {
+      "firebaseProductionConfig": {
+        "apiKey": "AIzaSyDQxn6ugpzsDo_WL-DLlVELCnYqRSbCQEU",
+        "authDomain": "musclew-9dab1.firebaseapp.com",
+        "databaseUrl": "https://musclew-9dab1.firebaseio.com",
+        "strageBucket": "musclew-9dab1.appspot.com",
+        "projectId": "musclew-9dab1"
+      },
+      "firebaseStagingConfig": {
         "apiKey": "AIzaSyCdjL3-z11TE4QgP65uvAds6ufm5SbD0Rk",
         "authDomain": "musclew-47ec1.firebaseapp.com",
         "databaseUrl": "https://musclew-47ec1.firebaseio.com",

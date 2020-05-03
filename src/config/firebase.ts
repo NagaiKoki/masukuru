@@ -3,11 +3,11 @@ import 'firebase/firestore';
 import Constants from 'expo-constants';
 
 const config = {
-  apiKey: Constants.manifest.extra.firebaseConfig.apiKey,
-  authDomain: Constants.manifest.extra.firebaseConfig.authDomain,
-  databaseURL: Constants.manifest.extra.firebaseConfig.databaseURL,
-  projectId: Constants.manifest.extra.firebaseConfig.projectId,
-  storageBucket: Constants.manifest.extra.firebaseConfig.storageBucket,
+  apiKey: Constants.manifest.extra.firebaseProductionConfig.apiKey,
+  authDomain: Constants.manifest.extra.firebaseProductionConfig.authDomain,
+  databaseURL: Constants.manifest.extra.firebaseProductionConfig.databaseURL,
+  projectId: Constants.manifest.extra.firebaseProductionConfig.projectId,
+  storageBucket: Constants.manifest.extra.firebaseProductionConfig.storageBucket,
 };
 
 if (!firebase.apps.length) {
