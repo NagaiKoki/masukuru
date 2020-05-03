@@ -4,6 +4,9 @@ import { COLORS } from '../../constants/Styles';
 // import apis
 import { requestEditGroup } from '../../apis/Groups/edit'
 
+import firebase from '../../config/firebase'
+import { UnSettingGroupImage } from '../../components/Image/groupImage'
+
 const GroupEditScreen = ({ navigation, route }) => {
   const currentGroupName = route.params.name
   const [name, setName] = useState(currentGroupName)
@@ -34,6 +37,15 @@ const GroupEditScreen = ({ navigation, route }) => {
     </GroupEditContainer>
   )
 }
+
+const Sample = styled.View`
+  border-radius: 60px;
+`
+
+const SampleImage = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
 
 const GroupEditContainer = styled.View`
   flex: 1;

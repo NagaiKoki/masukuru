@@ -7,6 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import component
 import Loading from '../Loading'
+import { UnSettingGroupImage } from '../Image/groupImage';
 // import apis
 import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
@@ -155,12 +156,14 @@ const TranferModal = (props: TransferModalProps) => {
     groups.length && groups[0].users.length ? (
       groups.map(group => {
         let userNames = ""
+        let userImages: string[] = []
         group.users.map(user => {
           userNames += user.name + "  "
+          userImages.push(user.imageUrl)
         })
         return (
           <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
-            <FeatherIcon name="users" size={25} style={{ color: COLORS.BASE_BLACK }} />
+            <UnSettingGroupImage urls={userImages} width={50} height={50} />
             <GroupNameText>{truncateText(userNames, 40)}</GroupNameText>
             {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
           </GroupNameWrapper>
@@ -229,16 +232,18 @@ const GroupContainer = styled.View`
 
 const GroupNameWrapper = styled.TouchableOpacity`
   flex-direction: row;
+  align-items: center;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 1px;
-  padding: 15px 20px;
+  padding: 10px 20px;
 `
 
 const GroupNameText = styled.Text`
-  width: 85%;
-  padding: 0 20px 0 15px;
+  width: 80%;
+  padding: 0 15px;
   color: ${COLORS.BASE_BLACK};
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: bold;
 `
 
 const CloseBar = styled.View`

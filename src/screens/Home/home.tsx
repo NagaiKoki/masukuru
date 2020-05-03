@@ -31,7 +31,6 @@ const HomeScreen = ({ navigation, route }) => {
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const [ownCode, setOwnCode] = useState<string>('')
   const [ownerId, setOwnerId] = useState('');
-  const [name, setName] = useState('ホーム')
   const { params } = route;
   const { currentGroupId } = params;
   const groupRef = db.collection('groups')
