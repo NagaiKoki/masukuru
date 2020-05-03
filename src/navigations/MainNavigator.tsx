@@ -14,9 +14,7 @@ import GroupEditScreen from '../screens/Groups/GroupEdit'
 
 const MainNavigator = ({ navigation }) => { 
   const MainStack = createStackNavigator()
-  const [initialNav, setInitialNav] = useState<string>('main')
   const [currentGroupId, setCurrentGroupId] = useState('');
-  const [currentGroupName, setCurrentGroupName] = useState('ホーム')
   const [loading, setloading] = useState(true)
 
   useFocusEffect(
@@ -57,25 +55,12 @@ const MainNavigator = ({ navigation }) => {
     return route.params.user.name
   }
 
-  const getHeaderGroupName = () => {
-    let groupName;
-    const getName = async () => {
-      await db.collection('groups').doc(currentGroupId).get().then(snap => {
-        if (snap.data().groupName) {
-          groupName = snap.data().groupName
-        } 
-      })
-    }
-    getName()
-  }
-
   return (
-    <MainStack.Navigator initialRouteName={initialNav}>
-    
+    <MainStack.Navigator initialRouteName="main">
       <MainStack.Screen 
         name="main" 
         component={HomeScreen}
-        initialParams={{ currentGroupId: currentGroupId, currentGroupName: currentGroupName }}
+        initialParams={{ currentGroupId: currentGroupId }}
         options={({route}) => ({
           headerLeft: () => (
             <Icon name="bars" 
