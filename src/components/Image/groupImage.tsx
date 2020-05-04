@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components';
+import { COLORS } from '../../constants/Styles';
 
 interface GroupImageProps {
   url: string
@@ -37,89 +38,107 @@ export const UnSettingGroupImage = (props: UnsettingGroupImage) => {
     )
   } else if (length === 2) {
     return (
-      <React.Fragment>
-        <Image source={ urls[0] ? { uri: urls[0] } : require('../../assets/profileDefaultImage.png') } 
-             style={{ width: width, 
-             height: height / 2, 
-             borderBottomLeftRadius: 60,
-             borderBottomRightRadius: 60,
-             resizeMode: 'cover', 
-             alignSelf: 'center' }} 
-       />
-       <Image source={ urls[1] ? { uri: urls[1] } : require('../../assets/profileDefaultImage.png') } 
-            style={{ width: width, 
-                    height: height / 2, 
-                    borderBottomLeftRadius: 60,
-                    borderBottomRightRadius: 60,
-                    resizeMode: 'cover', 
-                    alignSelf: 'center' }} 
-       />
-      </React.Fragment>
+      <MeshWrapper>
+        <LeftTwoMeshWrapper>
+          <Image source={ urls[0] ? { uri: urls[0] } : require('../../assets/profileDefaultImage.png') } 
+              style={{ width: width / 2, 
+              height: height, 
+              borderTopLeftRadius: 60,
+              borderBottomLeftRadius: 60,
+              resizeMode: 'cover', 
+              alignSelf: 'center' }} 
+        />
+        </LeftTwoMeshWrapper>
+        <RigthTwoMeshWrapper>
+          <Image source={ urls[1] ? { uri: urls[1] } : require('../../assets/profileDefaultImage.png') } 
+              style={{ width: width / 2, 
+                      height: height, 
+                      borderTopRightRadius: 60,
+                      borderBottomRightRadius: 60,
+                      resizeMode: 'cover', 
+                      alignSelf: 'center' }} 
+          />
+        </RigthTwoMeshWrapper>
+      </MeshWrapper>
     )
   } else if (length === 3) {
     return (
       <MeshWrapper>
-        <Image source={ urls[0] ? { uri: urls[0] } : require('../../assets/profileDefaultImage.png') } 
-          style={{ width: width / 2, 
-                  height: height, 
-                  borderTopLeftRadius: 60,
-                  borderBottomLeftRadius: 60,
-                  resizeMode: 'cover', 
-                  alignSelf: 'center' }} 
-        />
-       <TwoMeshWrapper>
-        <Image source={ urls[1] ? { uri: urls[1] } : require('../../assets/profileDefaultImage.png') } 
-          style={{ width: width / 2, 
-                  height: height / 2, 
-                  borderTopRightRadius: 60,
-                  resizeMode: 'cover', 
-                  alignSelf: 'center' }} 
-        />
-        <Image source={ urls[2] ? { uri: urls[2] } : require('../../assets/profileDefaultImage.png') } 
-          style={{ width: width / 2, 
-                  height: height / 2, 
-                  borderBottomRightRadius: 60,
-                  resizeMode: 'cover', 
-                  alignSelf: 'center' }} 
-        />
-       </TwoMeshWrapper>
+        <LeftTwoMeshWrapper>
+          <Image source={ urls[0] ? { uri: urls[0] } : require('../../assets/profileDefaultImage.png') } 
+            style={{ width: width / 2, 
+                    height: height, 
+                    borderTopLeftRadius: 60,
+                    borderBottomLeftRadius: 60,
+                    resizeMode: 'cover', 
+                    alignSelf: 'center' }} 
+          />
+        </LeftTwoMeshWrapper>
+       <Wrapper>
+         <RightTopMeshWrapper>
+          <Image source={ urls[1] ? { uri: urls[1] } : require('../../assets/profileDefaultImage.png') } 
+            style={{ width: width / 2, 
+                    height: height / 2, 
+                    borderTopRightRadius: 60,
+                    resizeMode: 'cover', 
+                    alignSelf: 'center' }} 
+          />
+         </RightTopMeshWrapper>
+         <RightBottomMeshWrapper>
+          <Image source={ urls[2] ? { uri: urls[2] } : require('../../assets/profileDefaultImage.png') } 
+            style={{ width: width / 2, 
+                    height: height / 2, 
+                    borderBottomRightRadius: 60,
+                    resizeMode: 'cover', 
+                    alignSelf: 'center' }} 
+          />
+         </RightBottomMeshWrapper>
+       </Wrapper>
       </MeshWrapper>
     )
   } else if (length >= 4) {
     return (
       <MeshWrapper>
-        <TwoMeshWrapper>
-          <Image source={ urls[0] ? { uri: urls[0] } : require('../../assets/profileDefaultImage.png') } 
-            style={{ width: width / 2, 
-                    height: height / 2, 
-                    borderTopLeftRadius: 60,
-                    resizeMode: 'cover', 
-                    alignSelf: 'center' }} 
-          />
-          <Image source={ urls[1] ? { uri: urls[1] } : require('../../assets/profileDefaultImage.png') } 
-          style={{ width: width / 2, 
-                  height: height / 2, 
-                  borderBottomLeftRadius: 60,
-                  resizeMode: 'cover', 
-                  alignSelf: 'center' }} 
-        />
-        </TwoMeshWrapper>
-       <TwoMeshWrapper>
-        <Image source={ urls[2] ? { uri: urls[2] } : require('../../assets/profileDefaultImage.png') } 
-          style={{ width: width / 2, 
-                  height: height / 2, 
-                  borderTopRightRadius: 60,
-                  resizeMode: 'cover', 
-                  alignSelf: 'center' }} 
-        />
-        <Image source={ urls[3] ? { uri: urls[3] } : require('../../assets/profileDefaultImage.png') } 
-          style={{ width: width / 2, 
-                  height: height / 2, 
-                  borderBottomRightRadius: 60,
-                  resizeMode: 'cover', 
-                  alignSelf: 'center' }} 
-        />
-       </TwoMeshWrapper>
+        <Wrapper>
+          <LeftTopMeshWrapper>
+            <Image source={ urls[0] ? { uri: urls[0] } : require('../../assets/profileDefaultImage.png') } 
+              style={{ width: width / 2, 
+                      height: height / 2, 
+                      borderTopLeftRadius: 60,
+                      resizeMode: 'cover', 
+                      alignSelf: 'center' }} 
+            />
+          </LeftTopMeshWrapper>
+          <LeftBottomMeshWrapper>
+            <Image source={ urls[1] ? { uri: urls[1] } : require('../../assets/profileDefaultImage.png') } 
+                  style={{ width: width / 2, 
+                      height: height / 2, 
+                      borderBottomLeftRadius: 60,
+                      resizeMode: 'cover', 
+                      alignSelf: 'center' }} 
+            />
+          </LeftBottomMeshWrapper>
+        </Wrapper>
+        <Wrapper>
+          <RightTopMeshWrapper>
+            <Image source={ urls[2] ? { uri: urls[2] } : require('../../assets/profileDefaultImage.png') } 
+              style={{ width: width / 2, 
+                      height: height / 2, 
+                      borderTopRightRadius: 60,
+                      resizeMode: 'cover', 
+                      alignSelf: 'center' }} 
+            />
+          </RightTopMeshWrapper>
+          <RightBottomMeshWrapper>
+            <Image source={ urls[3] ? { uri: urls[3] } : require('../../assets/profileDefaultImage.png') } 
+              style={{ width: width / 2, 
+                      height: height / 2, 
+                      borderBottomRightRadius: 60,
+                      resizeMode: 'cover', 
+                      alignSelf: 'center' }} 
+            />
+          </RightBottomMeshWrapper>
+        </Wrapper>
       </MeshWrapper>
     )
   }
@@ -130,5 +149,42 @@ const MeshWrapper = styled.View`
   flex-direction: row;
 `
 
-const TwoMeshWrapper = styled.View``
+const Wrapper = styled.View``
 
+const RigthTwoMeshWrapper = styled.View`
+  border-left-color: ${COLORS.BASE_BLACK};
+  border-left-width: 0.5px;
+`
+
+const LeftTwoMeshWrapper = styled.View`
+  border-right-color: ${COLORS.BASE_BLACK};
+  border-right-width: 0.5px;
+`
+
+const LeftTopMeshWrapper = styled.View`
+  border-right-color: ${COLORS.BASE_BLACK};
+  border-bottom-color: ${COLORS.BASE_BLACK};
+  border-right-width: 0.5px;
+  border-bottom-width: 0.5px;
+`
+
+const LeftBottomMeshWrapper = styled.View`
+  border-top-color: ${COLORS.BASE_BLACK};
+  border-right-color: ${COLORS.BASE_BLACK};
+  border-right-width: 0.5px;
+  border-top-width: 0.5px;
+`
+
+const RightTopMeshWrapper = styled.View`
+  border-left-color: ${COLORS.BASE_BLACK};
+  border-bottom-color: ${COLORS.BASE_BLACK};
+  border-left-width: 0.5px;
+  border-bottom-width: 0.5px;
+`
+
+const RightBottomMeshWrapper = styled.View`
+  border-left-color: ${COLORS.BASE_BLACK};
+  border-top-color: ${COLORS.BASE_BLACK};
+  border-left-width: 0.5px;
+  border-top-width: 0.5px;
+`
