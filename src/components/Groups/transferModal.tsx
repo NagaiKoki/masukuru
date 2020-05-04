@@ -155,6 +155,7 @@ const TranferModal = (props: TransferModalProps) => {
     )
   }
 
+  // グループ画像の表示
   const renderGroupImage = (imageUrl: string | undefined, userImages: string[]) => {
     return (
       imageUrl ? <GroupImage url={imageUrl} height={50} width={50} />
@@ -172,10 +173,11 @@ const TranferModal = (props: TransferModalProps) => {
           userNames += user.name + "  "
           userImages.push(user.imageUrl)
         })
+        console.log(group.groupName)
         return (
           <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
             {renderGroupImage(group.imageUrl, userImages)}
-            <GroupNameText>{truncateText(userNames, 40)}</GroupNameText>
+            <GroupNameText>{group.groupName ? group.groupName : truncateText(userNames, 40)}</GroupNameText>
             {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
           </GroupNameWrapper>
         )
