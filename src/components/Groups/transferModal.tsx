@@ -220,8 +220,8 @@ const Container = styled.View`
   bottom: -20px;
   width: 110%;
   border-radius: 10px;
-  padding: 5px 0px;
-  max-height: 470px;
+  padding: 5px 0px 30px 0;
+  max-height: 500px;
   min-height: 400px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
@@ -236,7 +236,7 @@ const TransferTitle = styled.Text`
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  padding: 20px 0 15px 0;
+  padding: 25px 0 5px 0;
   color: ${COLORS.BASE_BLACK};
 `
 
