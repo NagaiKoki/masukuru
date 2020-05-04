@@ -2,10 +2,23 @@ import React from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components';
 
+interface GroupImageProps {
+  url: string
+  width: number
+  height: number
+}
+
 interface UnsettingGroupImage {
   urls: string[]
   width: number
   height: number
+}
+
+export const GroupImage = (props: GroupImageProps) => {
+  const { url, width, height } = props
+  return (
+    <Image source={{ uri: url }} style={{ width: width, height: height, borderRadius: 60, resizeMode: 'cover', alignSelf: 'center' }} />
+  )
 }
 
 export const UnSettingGroupImage = (props: UnsettingGroupImage) => {

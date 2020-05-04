@@ -6,8 +6,13 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-export const ImageUpload = async (user: firebase.User, setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>) => {
-  const ImageName = `profile_image_${user.uid}`;
+export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string) => {
+    let ImageName: string;
+    if (!!user) {
+      ImageName = `profile_image_${user.uid}`;
+    } else if (groupId) {
+      ImageName = `profile_image_${groupId}`;
+    }
 
     if (IsCameraEnable) {
       const result = await ImagePicker.launchImageLibraryAsync({

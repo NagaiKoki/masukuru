@@ -18,7 +18,7 @@ const ProfileChangeScreen = ({ route, navigation }) => {
       uri || user.photoURL ? btnText = '写真を変更する' : btnText = '写真を追加する'
       
       return (
-        <ChangeImageBtn block onPress={ () => ImageUpload(user, setProgress, setUri) } >
+        <ChangeImageBtn block onPress={ () => ImageUpload(setProgress, setUri, user) } >
             <ChangeImageWord>{btnText}</ChangeImageWord>
         </ChangeImageBtn>   
         )
@@ -61,7 +61,7 @@ const ProfileChangeScreen = ({ route, navigation }) => {
   return (
     <ProfileChangeContainer>
       <ProfileImageWrapper>
-        <ImageUploadWrapper onPress={ () => ImageUpload(user, setProgress, setUri)}>
+        <ImageUploadWrapper onPress={ () => ImageUpload(setProgress, setUri, user)}>
           <UserImage uri={uri} user={user} width={120} height={120} borderRadius={60} forProfile={true} />
         </ImageUploadWrapper>        
         <ImageProgressText>{progress}</ImageProgressText>

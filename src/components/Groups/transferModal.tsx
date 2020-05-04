@@ -7,7 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import component
 import Loading from '../Loading'
-import { UnSettingGroupImage } from '../Image/groupImage';
+import { UnSettingGroupImage, GroupImage } from '../Image/groupImage';
 // import apis
 import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
@@ -30,6 +30,8 @@ interface TransferModalProps {
 type responseGroupType = {
   inviteCode: string
   name: string
+  imageUrl: string
+  groupName: string
   ownerId: string
   users: Users[]
 }
@@ -116,7 +118,9 @@ const TranferModal = (props: TransferModalProps) => {
         setCurrentGroupId(currentUser.uid)
         setGroups(state => 
           [...state, { name: currentUser.displayName, 
-                       inviteCode: '', 
+                       inviteCode: '',
+                       imageUrl: '',
+                       groupName: '',
                        ownerId: currentUser.uid, 
                        users: [{ imageUrl: currentUser.photoURL, name: currentUser.displayName, uid: currentUser.uid }]}])
         setIsloading(false)
@@ -151,6 +155,13 @@ const TranferModal = (props: TransferModalProps) => {
     )
   }
 
+  const renderGroupImage = (imageUrl: string | undefined, userImages: string[]) => {
+    return (
+      imageUrl ? <GroupImage url={imageUrl} height={50} width={50} />
+      : <UnSettingGroupImage urls={userImages} width={50} height={50} />
+    )
+  } 
+
   // グループを表示する
   const renderGroups = (
     groups.length && groups[0].users.length ? (
@@ -163,7 +174,7 @@ const TranferModal = (props: TransferModalProps) => {
         })
         return (
           <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
-            <UnSettingGroupImage urls={userImages} width={50} height={50} />
+            {renderGroupImage(group.imageUrl, userImages)}
             <GroupNameText>{truncateText(userNames, 40)}</GroupNameText>
             {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
           </GroupNameWrapper>

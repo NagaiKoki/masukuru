@@ -6,12 +6,14 @@ import { COLORS } from '../../constants/Styles'
 // import components
 import Loading from '../../components/Loading'
 import UserImage from '../../components/Image/userImage'
+import { GroupImage, UnSettingGroupImage } from '../../components/Image/groupImage'
 // import apis
-import { getGroupInfo, GroupInfoResponse } from '../../apis/Groups/edit'
+import { getGroupInfo, GroupInfoResponse, requestGroupUserImage } from '../../apis/Groups/edit'
 
 const GroupInfoScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [groupInfo, setGroupInfo] = useState<GroupInfoResponse>(null)
+  const [groupUserImages, setGroupUserImages] = useState([])
 
   const currentGroupId = route.params.currentGroupId
   
@@ -19,20 +21,29 @@ const GroupInfoScreen = ({ navigation, route }) => {
     useCallback(() => {
       const getInfo = async () => {
         const info = await getGroupInfo(currentGroupId)
+        const groupUserImages = await requestGroupUserImage(currentGroupId)
         setGroupInfo(info)
+        setGroupUserImages(groupUserImages)
       }
       getInfo()
       setIsLoading(false)
     }, [])
   )
 
-  if (isLoading || !groupInfo) {
+  if (isLoading || !groupInfo || !groupUserImages.length) {
     return <Loading size="small" />
   }
+
+  const renderGroupImage = 
+    groupInfo.imageUrl ? <GroupImage url={groupInfo.imageUrl} height={90} width={90} />
+    : <UnSettingGroupImage urls={groupUserImages} width={90} height={90} />
 
   return (
     <GroupContainer>
       <GroupInfoWrapper>
+      <GroupImageWrapper>
+        {renderGroupImage}
+      </GroupImageWrapper>
       <GroupInfoTitle>グループ名</GroupInfoTitle>
         <GroupInfoName>{groupInfo.groupName ? groupInfo.groupName : "未設定"}</GroupInfoName>
         <GroupInfoTitle>グループのホスト</GroupInfoTitle>
@@ -40,7 +51,7 @@ const GroupInfoScreen = ({ navigation, route }) => {
           <UserImage uri={groupInfo.owner.imageUrl} width={30} height={30} borderRadius={60} />
           <GroupInfoOwnerName>{groupInfo.owner.name}</GroupInfoOwnerName>
         </GroupInfoOwner>
-        <GroupInfoSubmitBtn onPress={ () => navigation.navigate('groupEdit', { currentGroupId: currentGroupId, name: groupInfo.groupName }) }>
+        <GroupInfoSubmitBtn onPress={ () => navigation.navigate('groupEdit', { currentGroupId: currentGroupId, groupInfo: groupInfo, groupUserImages: groupUserImages }) }>
           <GroupInfoSubmitText>編集する</GroupInfoSubmitText>
         </GroupInfoSubmitBtn>
       </GroupInfoWrapper>
@@ -57,6 +68,13 @@ const GroupInfoWrapper = styled.View`
   margin: 0 auto;
   width: 85%;
   padding: 30px 0;
+`
+
+const GroupImageWrapper = styled.TouchableOpacity`
+  align-self: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 60px;
 `
 
 const GroupInfoTitle = styled.Text`
