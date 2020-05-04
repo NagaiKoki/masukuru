@@ -16,7 +16,7 @@ const TutorialUserImageScreen = ({ navigation, userName }) => {
       uri ? btnText = '写真を変更する' : btnText = '写真を追加する'
       
       return (
-        <ChangeImageBtn block onPress={ () => ImageUpload(user, setProgress, setUri) } >
+        <ChangeImageBtn block onPress={ () => ImageUpload(setProgress, setUri, user) } >
           <ChangeImageWord>{btnText}</ChangeImageWord>
         </ChangeImageBtn>   
         )
@@ -45,7 +45,7 @@ const TutorialUserImageScreen = ({ navigation, userName }) => {
         プロフィール写真を登録しよう！
       </TutorialTitle>
       <TutorialProfileImageWrapper>
-        <ImageUploadWrapper onPress={ () => ImageUpload(user, setProgress, setUri)}>
+        <ImageUploadWrapper onPress={ () => ImageUpload(setProgress, setUri, user)}>
           <UserImage uri={uri} width={120} height={120} borderRadius={60} forProfile={true} />
         </ImageUploadWrapper>        
         <ImageProgressText>{progress}</ImageProgressText>

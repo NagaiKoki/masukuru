@@ -7,6 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import component
 import Loading from '../Loading'
+import { UnSettingGroupImage, GroupImage } from '../Image/groupImage';
 // import apis
 import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
@@ -29,6 +30,8 @@ interface TransferModalProps {
 type responseGroupType = {
   inviteCode: string
   name: string
+  imageUrl: string
+  groupName: string
   ownerId: string
   users: Users[]
 }
@@ -115,7 +118,9 @@ const TranferModal = (props: TransferModalProps) => {
         setCurrentGroupId(currentUser.uid)
         setGroups(state => 
           [...state, { name: currentUser.displayName, 
-                       inviteCode: '', 
+                       inviteCode: '',
+                       imageUrl: '',
+                       groupName: '',
                        ownerId: currentUser.uid, 
                        users: [{ imageUrl: currentUser.photoURL, name: currentUser.displayName, uid: currentUser.uid }]}])
         setIsloading(false)
@@ -150,18 +155,29 @@ const TranferModal = (props: TransferModalProps) => {
     )
   }
 
+  // グループ画像の表示
+  const renderGroupImage = (imageUrl: string | undefined, userImages: string[]) => {
+    return (
+      imageUrl ? <GroupImage url={imageUrl} height={50} width={50} />
+      : <UnSettingGroupImage urls={userImages} width={50} height={50} />
+    )
+  } 
+
   // グループを表示する
   const renderGroups = (
     groups.length && groups[0].users.length ? (
       groups.map(group => {
         let userNames = ""
+        let userImages: string[] = []
         group.users.map(user => {
           userNames += user.name + "  "
+          userImages.push(user.imageUrl)
         })
+        console.log(group.groupName)
         return (
           <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
-            <FeatherIcon name="users" size={25} style={{ color: COLORS.BASE_BLACK }} />
-            <GroupNameText>{truncateText(userNames, 40)}</GroupNameText>
+            {renderGroupImage(group.imageUrl, userImages)}
+            <GroupNameText>{group.groupName ? group.groupName : truncateText(userNames, 40)}</GroupNameText>
             {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
           </GroupNameWrapper>
         )
@@ -204,8 +220,8 @@ const Container = styled.View`
   bottom: -20px;
   width: 110%;
   border-radius: 10px;
-  padding: 5px 0px;
-  max-height: 470px;
+  padding: 5px 0px 30px 0;
+  max-height: 500px;
   min-height: 400px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
@@ -220,7 +236,7 @@ const TransferTitle = styled.Text`
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  padding: 20px 0 15px 0;
+  padding: 25px 0 5px 0;
   color: ${COLORS.BASE_BLACK};
 `
 
@@ -229,16 +245,18 @@ const GroupContainer = styled.View`
 
 const GroupNameWrapper = styled.TouchableOpacity`
   flex-direction: row;
+  align-items: center;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 1px;
-  padding: 15px 20px;
+  padding: 10px 20px;
 `
 
 const GroupNameText = styled.Text`
-  width: 85%;
-  padding: 0 20px 0 15px;
+  width: 80%;
+  padding: 0 15px;
   color: ${COLORS.BASE_BLACK};
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: bold;
 `
 
 const CloseBar = styled.View`

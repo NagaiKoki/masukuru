@@ -7,7 +7,7 @@ const config = {
   authDomain: Constants.manifest.extra.firebaseStagingConfig.authDomain,
   databaseURL: Constants.manifest.extra.firebaseStagingConfig.databaseURL,
   projectId: Constants.manifest.extra.firebaseStagingConfig.projectId,
-  storageBucket: Constants.manifest.extra.firebaseStagingConfig.storageBucket,
+  storageBucket: Constants.manifest.extra.firebaseStagingConfig.strageBucket,
 };
 
 if (!firebase.apps.length) {
