@@ -16,35 +16,49 @@ import MenuList from './MenuList'
 import InviteCodeModal from '../../components/InviteModal/invite'
 // import types
 import { MenuType } from '../../types/menu';
+<<<<<<< HEAD
 // import apis
 import { getEventList, addEvent } from '../../apis/Home/event'
 import { getMemberList } from '../../apis/Home/menber'
 
 const HomeScreen = ({ navigation, route }) => {
   const [eventName, setEventName] = useState('');
+=======
+import Analitycs from '../../config/amplitude';
+import { eventCategoryList } from '../../lib/eventCategory'
+import { requestGroupMenuList } from '../../apis/Homes/groupMenuList'
+
+const HomeScreen = ({ navigation, route }) => {
+>>>>>>> みんなの活動表示
   const [MemberModal, setMemberModal] = useState(false);
-  const [EventModal, setEventModal] = useState(false);
-  const [EventList, setEventList] = useState([]);
   const [UserList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const [ownCode, setOwnCode] = useState<string>('')
+<<<<<<< HEAD
   const [ownerId, setOwnerId] = useState('');
+=======
+>>>>>>> みんなの活動表示
   const { params } = route;
   const { currentGroupId } = params;
   const groupRef = db.collection('groups')
-  
+
   const current_user = firebase.auth().currentUser;
   const current_user_uid = current_user.uid
   
 
   useFocusEffect(
     useCallback(() => {
+<<<<<<< HEAD
       getEventList(currentGroupId, setEventList)
       getMemberList(currentGroupId, setUserList)
       getOwnerId(currentGroupId)
       setIsLoading(false)
+=======
+      GetUserList(currentGroupId)
+      requestGroupMenuList(setMenuList, setIsLoading, currentGroupId)
+>>>>>>> みんなの活動表示
       Analitycs.getUserId(current_user_uid)
 
       const getHeaderNav= async () => {
@@ -71,50 +85,38 @@ const HomeScreen = ({ navigation, route }) => {
     },[currentGroupId])
   );
 
+<<<<<<< HEAD
   // イベントの追加
   const handleAddEvent = () => {
     addEvent(currentGroupId, eventName, current_user_uid, setEventList, setEventModal)
   }
 
-
-  const GetMenuList = (GroupId) => {
+=======
+  const GetUserList = (GroupId) => {
     let list = []
-    db.collectionGroup('menus').where('groupId', '==', GroupId).orderBy('createdAt', 'desc').limit(4)
+    db.collection('groups').doc(GroupId).collection('groupUsers')
     .get()
     .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-        list.push({name: doc.data().name, uid: doc.data().uid, id: doc.id, set: doc.data().set})})
-      setMenuList(list)
+        const data = doc.data()
+        list.push(data)})
+      setUserList(list)
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
     })
   }
-
-  const getOwnerId = (GroupId) => {
-    db.collection('groups').doc(GroupId)
-    .get()
-    .then(function(doc) {
-      setOwnerId(doc.data().ownerId)
-    }).catch(function(error) {
-      console.log("Error getting document:", error);
-    });
-  }
+>>>>>>> みんなの活動表示
 
   const EventFlatListDisplay = (
-    EventList.length == 0 ? 
-    <NoneEventListText>
-       まずはトレーニングを追加しよう！
-    </NoneEventListText>
-                          :
     <EventFlatList
-      data={EventList}
-      extraData={EventList}
-      keyExtractor={item => item.date.toString()}
+      data={eventCategoryList()}
+      extraData={eventCategoryList()}
+      keyExtractor={item => item.key.toString()}
       renderItem={({item}) => 
-        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId, ownerId: ownerId }) }}>
+        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
           <EventFlatListText>
-            {item.name} の記録
+            {item.name} の記録一覧
           </EventFlatListText>
           <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>
@@ -139,17 +141,22 @@ const HomeScreen = ({ navigation, route }) => {
 
   const onRefresh = async () => {
     setIsRefresh(true)
+<<<<<<< HEAD
     await getEventList(currentGroupId, setEventList) 
     await getMemberList(currentGroupId, setUserList)
     await GetMenuList(currentGroupId)
+=======
+    await GetUserList(currentGroupId)
+    await requestGroupMenuList(setMenuList, setIsLoading, currentGroupId)
+>>>>>>> みんなの活動表示
     setIsRefresh(false)
   }
   
   return (
     isLoading? 
-      <LoadingContainer>
-        <ActivityIndicator size='small' style={[ styles.loading ]} />
-      </LoadingContainer>
+      // <LoadingContainer>
+        <ActivityIndicator size='large' style={[ styles.loading ]} />
+      /* </LoadingContainer> */
     :
     <Container
       refreshControl={
@@ -191,7 +198,7 @@ const HomeScreen = ({ navigation, route }) => {
             みんなの活動
           </RecentActivitiesListText>
           <RecentActivitiesMenuListView>
-            <MenuList menuList={menuList} currentGroupId={currentGroupId} GetMenuList={GetMenuList}/>
+            <MenuList menuList={menuList} setMenuList={setMenuList} currentGroupId={currentGroupId} requestGroupMenuList={requestGroupMenuList}/>
           </RecentActivitiesMenuListView>
           {/* TODO 以下は今後追加予定 */}
           {/* <RecentActivitiesListDetailButton>
@@ -207,6 +214,7 @@ const HomeScreen = ({ navigation, route }) => {
           <EventTitle>
             トレーニングリスト
           </EventTitle>
+<<<<<<< HEAD
           <EventPlusButton onPress={ () => setEventModal(true) }>
             <EventPlusButtonText>
               + 追加する
@@ -237,6 +245,8 @@ const HomeScreen = ({ navigation, route }) => {
               </EventAddButton>
             </EventModalView>
           </Modal>
+=======
+>>>>>>> みんなの活動表示
         </EventPlus>
         
         <EvetnListView>
@@ -252,8 +262,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.BASE_BACKGROUND,
-    paddingTop: 10
+    // backgroundColor: COLORS.BASE_BACKGROUND,
+    // paddingTop: 10
   }
 })
 
@@ -300,7 +310,7 @@ const MemberAddButton = styled.TouchableOpacity`
   width: 50px;
   height: 50px;
   margin: 5px 0 5px 0;	
-  align-self: flex-end;	
+  align-self: flex-end;
   border-radius: 60px;
 `
 
@@ -351,79 +361,9 @@ const EventTitle = styled.Text`
   font-weight: bold;
 `
 
-const EventPlusButton = styled.TouchableOpacity`
-`
-
-const EventPlusButtonText = styled.Text`
-  margin-right: 10px;
-  color: ${COLORS.BASE_MUSCLEW};
-  font-weight: bold;
-  font-size: 18px;
-`
-
-const EventModalView = styled.View`
-  height: 320px;
-  border-radius: 10px;
-  background-color: #fff;
-`
-
-const EventModalCloseButton = styled.TouchableOpacity`
-  align-self: flex-end;
-  padding: 10px;
-`
-
-const EventModalTitle = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-`
-
-const EventAddForm = styled.TextInput`
-  background-color: ${COLORS.FORM_BACKGROUND};
-  width: 90%;
-  align-self: center;
-  border-radius: 5px;
-  padding: 20px 15px;
-  color: ${COLORS.BASE_BLACK};
-  margin: 40px 0 10px 0;
-`
-
-const EventSubText = styled.Text`
-  width: 90%;
-  margin: 0 auto;
-  padding-bottom: 30px;
-  color: ${COLORS.SUB_BLACK};
-  font-size: 12px;
-`
-
-const EventAddButton = styled.TouchableOpacity`
-  width: 90%;
-  align-self: center;
-  background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 15px 0;
-  border-radius: 60px;
-  margin-top: 10px;
-  opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
-`
-
-const EventAddText = styled.Text`
-  text-align: center;
-  color: #fff;
-  font-size: 18px;
-  font-weight: bold;
-`
-
 const EvetnListView = styled.View`
   box-shadow: 10px 10px 6px ${COLORS.CARD_SHADOW1};
   padding-bottom: 10px;
-`
-
-const NoneEventListText = styled.Text`
-  text-align: center;
-  margin-top: 50px;
-  font-size: 15px;
-  font-weight: bold;
-  color: #808080;
 `
 
 const EventFlatList = styled.FlatList`
