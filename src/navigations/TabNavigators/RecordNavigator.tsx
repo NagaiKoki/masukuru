@@ -20,7 +20,7 @@ const RecordNavigator = () => {
         component={RecordScreen}
         options={{
           headerBackTitleVisible: false,
-          headerTitle: 'きろく',
+          headerTitle: 'じぶんのきろく',
           headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />

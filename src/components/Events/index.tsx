@@ -10,13 +10,12 @@ import Modal from "react-native-modal";
 import RNPickerSelect from 'react-native-picker-select';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
 
-const Event = ({ navigation }) => {
+const Event = ({ navigation, eventModal, setEventModal  }) => {
   const currentUser = firebase.auth().currentUser;
   const currentUserId = currentUser.uid
   const today = new Date();
   const [isLoading, setIsLoading] = useState(true)
   const [eventList, setEventList] = useState([]);
-  const [eventModal, setEventModal] = useState(false);
   const [eventName, setEventName] = useState('');
   const [eventCategory, setEventCategory] = useState('')
 
@@ -151,18 +150,15 @@ const Event = ({ navigation }) => {
   return (
     <EventView>
       <EventPlus>
-        <EventTitle>トレーニングリスト</EventTitle>
-          <EventPlusButton onPress={ () => setEventModal(true) }>
-            <EventPlusButtonText>+ 追加する</EventPlusButtonText>
-          </EventPlusButton>
+        <EventTitle>マイトレーニングリスト</EventTitle>
         </EventPlus> 
         <EvetnListView>
           {EventFlatListDisplay}
         </EvetnListView>
-        {renderEventModal()}
-      </EventView>
-  );
-};
+      {renderEventModal()}
+    </EventView>
+  )
+}
 
 const styles = StyleSheet.create({
   loading: {
@@ -211,25 +207,13 @@ const EventView = styled.View`
 `
 
 const EventPlus = styled.View`
-  margin: 30px 0 10px 0;
-  flex-direction: row;
-  justify-content: space-between;
+  margin: 40px 0 10px 0;
 `
 
 const EventTitle = styled.Text`
-  margin-left: 10px;
+  text-align: center;
   font-size: 20px;
   font-weight: bold;
-`
-
-const EventPlusButton = styled.TouchableOpacity`
-`
-
-const EventPlusButtonText = styled.Text`
-  margin-right: 10px;
-  color: ${COLORS.BASE_MUSCLEW};
-  font-weight: bold;
-  font-size: 18px;
 `
 
 const EventModalView = styled.View`
@@ -291,10 +275,10 @@ const EvetnListView = styled.View`
 
 const NoneEventListText = styled.Text`
   text-align: center;
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 15px;
   font-weight: bold;
-  color: #808080;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const EventFlatList = styled.FlatList`
