@@ -16,30 +16,19 @@ import MenuList from './MenuList'
 import InviteCodeModal from '../../components/InviteModal/invite'
 // import types
 import { MenuType } from '../../types/menu';
-<<<<<<< HEAD
-// import apis
-import { getEventList, addEvent } from '../../apis/Home/event'
-import { getMemberList } from '../../apis/Home/menber'
 
-const HomeScreen = ({ navigation, route }) => {
-  const [eventName, setEventName] = useState('');
-=======
-import Analitycs from '../../config/amplitude';
+// import apis
+import { getMemberList } from '../../apis/Home/menber'
 import { eventCategoryList } from '../../lib/eventCategory'
 import { requestGroupMenuList } from '../../apis/Homes/groupMenuList'
-
+  
 const HomeScreen = ({ navigation, route }) => {
->>>>>>> みんなの活動表示
   const [MemberModal, setMemberModal] = useState(false);
   const [UserList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
   const [menuList, setMenuList] = useState<MenuType[]>([]);
   const [ownCode, setOwnCode] = useState<string>('')
-<<<<<<< HEAD
-  const [ownerId, setOwnerId] = useState('');
-=======
->>>>>>> みんなの活動表示
   const { params } = route;
   const { currentGroupId } = params;
   const groupRef = db.collection('groups')
@@ -50,15 +39,8 @@ const HomeScreen = ({ navigation, route }) => {
 
   useFocusEffect(
     useCallback(() => {
-<<<<<<< HEAD
-      getEventList(currentGroupId, setEventList)
       getMemberList(currentGroupId, setUserList)
-      getOwnerId(currentGroupId)
-      setIsLoading(false)
-=======
-      GetUserList(currentGroupId)
       requestGroupMenuList(setMenuList, setIsLoading, currentGroupId)
->>>>>>> みんなの活動表示
       Analitycs.getUserId(current_user_uid)
 
       const getHeaderNav= async () => {
@@ -84,29 +66,6 @@ const HomeScreen = ({ navigation, route }) => {
     getHeaderNav()
     },[currentGroupId])
   );
-
-<<<<<<< HEAD
-  // イベントの追加
-  const handleAddEvent = () => {
-    addEvent(currentGroupId, eventName, current_user_uid, setEventList, setEventModal)
-  }
-
-=======
-  const GetUserList = (GroupId) => {
-    let list = []
-    db.collection('groups').doc(GroupId).collection('groupUsers')
-    .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        const data = doc.data()
-        list.push(data)})
-      setUserList(list)
-    })
-    .catch(function(error) {
-      console.log("Error getting documents: ", error);
-    })
-  }
->>>>>>> みんなの活動表示
 
   const EventFlatListDisplay = (
     <EventFlatList
@@ -141,14 +100,8 @@ const HomeScreen = ({ navigation, route }) => {
 
   const onRefresh = async () => {
     setIsRefresh(true)
-<<<<<<< HEAD
-    await getEventList(currentGroupId, setEventList) 
     await getMemberList(currentGroupId, setUserList)
-    await GetMenuList(currentGroupId)
-=======
-    await GetUserList(currentGroupId)
     await requestGroupMenuList(setMenuList, setIsLoading, currentGroupId)
->>>>>>> みんなの活動表示
     setIsRefresh(false)
   }
   
@@ -214,39 +167,7 @@ const HomeScreen = ({ navigation, route }) => {
           <EventTitle>
             トレーニングリスト
           </EventTitle>
-<<<<<<< HEAD
-          <EventPlusButton onPress={ () => setEventModal(true) }>
-            <EventPlusButtonText>
-              + 追加する
-            </EventPlusButtonText>
-          </EventPlusButton>
-          <Modal
-            isVisible={EventModal}
-            >
-            <EventModalView>
-              <EventModalCloseButton onPress={ () => setEventModal(false) }>
-                <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
-              </EventModalCloseButton>
 
-              <EventModalTitle>
-                どんなトレーニングを追加しますか？
-              </EventModalTitle>
-              <EventAddForm 
-                placeholder='例）ベンチプレス'
-                autoCapitalize={'none'}
-                autoCorrect={ false }
-                onChangeText={ text => setEventName(text) }
-              />
-              <EventSubText>※ 4文字以上</EventSubText>
-              <EventAddButton onPress={ () => handleAddEvent() }>
-                <EventAddText>
-                  追加する
-                </EventAddText>
-              </EventAddButton>
-            </EventModalView>
-          </Modal>
-=======
->>>>>>> みんなの活動表示
         </EventPlus>
         
         <EvetnListView>
