@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import MenuItem from './menuItem';
+import MenuItem from './menuCategoryItem';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import firebase from 'firebase'
@@ -20,7 +20,6 @@ const MenuList = (props: TrainingListProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
   const { user, list, setList, currentGroupId, item, navigation }  = props;
-  const isShowPage = true;
 
   useEffect(() => {
     requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
@@ -51,7 +50,7 @@ const MenuList = (props: TrainingListProps) => {
     (
       list.length ? 
       <ScrollView　
-        contentContainerStyle={{ paddingBottom: 400 }}
+        contentContainerStyle={{ paddingBottom: 200 }}
         refreshControl={
           <RefreshControl 
             refreshing={isRefresh}
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
 const TrainingListContainer = styled.View`
   background-color: ${COLORS.BASE_WHITE};
   align-self: center;
-  width: 90%;
+  width: 95%;
   padding: 10px;
   margin-top: 20px;
   border-radius: 10px;

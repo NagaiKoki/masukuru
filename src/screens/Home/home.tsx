@@ -179,10 +179,6 @@ const styles = StyleSheet.create({
   }
 })
 
-const LoadingContainer = styled.View`
-  background-color: ${COLORS.BASE_BACKGROUND};
-`
-
 const Container = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};

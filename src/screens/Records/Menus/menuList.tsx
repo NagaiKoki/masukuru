@@ -19,11 +19,16 @@ interface TrainingListProps {
 const MenuList = (props: TrainingListProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
-  const { user, list, setList, currentGroupId, item, navigation }  = props;
-  const isShowPage = true;
+  const { user, list, setList, item, navigation }  = props;
+
+  const getMenuList = async () => {
+    const menuList = await requestMenuList(user, item)
+    setList(menuList)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    requestMenuList(setList, setIsLoading, user, isShowPage, currentGroupId, item)
+    getMenuList()
   }, [])
 
   if (isLoading) {
@@ -42,8 +47,8 @@ const MenuList = (props: TrainingListProps) => {
 
   // スクロールリロード
   const onRefresh = async () => {
-    setIsRefresh(true)
-    await requestMenuList(setList, setIsLoading, user, isShowPage, currentGroupId, item)
+    setIsRefresh(true)    
+    getMenuList()
     setIsRefresh(false)
   }
 
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
 const TrainingListContainer = styled.View`
   background-color: ${COLORS.BASE_WHITE};
   align-self: center;
-  width: 90%;
+  width: 95%;
   padding: 10px;
   margin-top: 20px;
   border-radius: 10px;

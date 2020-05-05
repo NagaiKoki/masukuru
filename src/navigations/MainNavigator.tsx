@@ -7,7 +7,7 @@ import { COLORS } from '../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen
 import HomeScreen from '../screens/Home'
-import MenuScreen from '../screens/Menus/index'
+import MenuScreen from '../screens/MenuCategories/index'
 import MyPageScreen from '../screens/UserPage'
 import GroupInfoScreen from '../screens/Groups/GroupInfo'
 import GroupEditScreen from '../screens/Groups/GroupEdit'

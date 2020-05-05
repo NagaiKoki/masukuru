@@ -9,16 +9,23 @@ import { MenuType } from '../../types/menu';
 
 interface TrainingListProps {
   user: firebase.User
+  item?: any
 }
 
 const MenuList = (props: TrainingListProps) => {
   const [list, setList] = useState<MenuType[]>([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
-  const { user }  = props;
+  const { user, item }  = props;
+
+  const getMenuList = async () => {
+    const menuList = await requestMenuList(user, item)
+    setList(menuList)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    requestMenuList(setList, setIsLoading, user)
+    getMenuList()
   }, [])
 
   if (isLoading) {
@@ -37,7 +44,7 @@ const MenuList = (props: TrainingListProps) => {
 
   const onRefresh = async () => {
     setIsRefresh(true)
-    await requestMenuList(setList, setIsLoading, user)
+    getMenuList()
     setIsRefresh(false)
   }
 
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
 const TrainingListContainer = styled.View`
   background-color: ${COLORS.BASE_WHITE};
   align-self: center;
-  width: 90%;
+  width: 95%;
   padding: 10px;
   margin-top: 20px;
   border-radius: 10px;
@@ -92,16 +99,6 @@ const TrainingListContainer = styled.View`
 
 const LoadingContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
-`
-
-const MenuNextBtn = styled.TouchableOpacity` 
-`
-
-const MenuBtnText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-`
-
-const MenuBackBtn = styled.TouchableOpacity`
 `
 
 const MenuNoDataText = styled.Text`

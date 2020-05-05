@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import UserImage from '../../components/Image/userImage'
-import MenuList from '../../components/MyPage/menuList';
+import MenuList from '../../components/Menus/menuList';
 
 const UserPageScreen = ({ route }) => {  
   const { user } = route.params
@@ -16,7 +16,7 @@ const UserPageScreen = ({ route }) => {
         <MyPpageUserName>{user.name}</MyPpageUserName>
       </MypageUserWrapper>
         <TrainingListTitle>記録一覧</TrainingListTitle>
-        <MenuList user={user} />
+        <MenuList user={user}/>
     </MypageContainer>
   );
 };
