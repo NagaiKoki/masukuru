@@ -49,7 +49,6 @@ const MainNavigator = ({ navigation }) => {
   const getHeaderMenuTitle = (route) => {
     return route.params.item.name + 'の記録'
   }
-  
 
   const getHeaderUserTitle = (route) => {
     return route.params.user.name
@@ -101,6 +100,16 @@ const MainNavigator = ({ navigation }) => {
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderUserTitle(route),
+          headerTintColor: COLORS.BASE_MUSCLEW
+        })}
+      />
+
+      <MainStack.Screen
+        name="menu"
+        component={MenuScreen}
+        options={({route}) => ({
+          headerBackTitleVisible: false,
+          headerTitle: getHeaderMenuTitle(route),
           headerTintColor: COLORS.BASE_MUSCLEW
         })}
       />

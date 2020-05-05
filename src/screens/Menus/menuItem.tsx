@@ -6,6 +6,7 @@ import UserImage from '../../components/Image/userImage'
 import firebase, { db } from '../../config/firebase';
 // import type
 import { MenuType } from '../../types/menu';
+import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
 
 interface Props {
   list: MenuType
@@ -53,7 +54,10 @@ const MenuItem = (props: Props) => {
   return (
     <ItemWrapper>
       <ItemBorder index={index} />
-      <ItemTimestampText>{createdAt}</ItemTimestampText>
+      <ItemTitleView>
+        <ItemTimestampText>{createdAt}</ItemTimestampText>
+        <ItemNameText>{list.name}</ItemNameText>
+      </ItemTitleView>
 
       <ItemContentWrapper>
           {UserWrapper()}
@@ -100,12 +104,24 @@ const ItemBorder = styled.View`
   border-top-width: 1px;
 `
 
+const ItemTitleView = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`
+
 const ItemTimestampText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 20px;
   margin-left: 10px;
   padding-bottom: 20px;
+`
+
+const ItemNameText = styled.Text`
+  font-weight: bold;
+  font-size: 20px;
+  padding-bottom: 20px;
+  margin-right: 20px;
 `
 
 const ItemColumn = styled.View<{ value: number }>`

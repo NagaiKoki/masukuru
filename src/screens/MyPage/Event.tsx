@@ -23,7 +23,6 @@ const Event = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       GetEventList(currentUserId)
-      setIsLoading(false)
     },[])
   );
 
@@ -53,10 +52,19 @@ const Event = ({ navigation }) => {
         const data = doc.data()
         list.push(data)})
       setEventList(list)
+      setIsLoading(false)
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
     })
+  }
+
+  if (isLoading) {
+    return (
+      <LoadingContainer>
+        <ActivityIndicator size="small" style={[styles.loading]} />
+      </LoadingContainer>
+    )
   }
 
   const eventCategorySelectForm = () => {
@@ -76,7 +84,7 @@ const Event = ({ navigation }) => {
   }
 
   const EventFlatListDisplay = (
-    eventList.length == 0 && isLoading ?
+    eventList.length == 0 ?
     <NoneEventListText>
        まずはトレーニングを追加しよう！
     </NoneEventListText>

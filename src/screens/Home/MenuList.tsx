@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react'
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import MenuItem from './MenuItem';
@@ -7,15 +8,16 @@ import styled from 'styled-components';
 interface Props {
   currentGroupId?: string
   menuList: MenuType[]
-  GetMenuList: any;
+  setMenuList: Dispatch<SetStateAction<MenuType[]>>
+  requestGroupMenuList: any;
 }
 
 const MenuList = (props: Props) => {
-  const { menuList, currentGroupId, GetMenuList }  = props;
+  const { menuList, setMenuList, currentGroupId, requestGroupMenuList }  = props;
 
-  useEffect(() => {
-    GetMenuList(currentGroupId)
-  }, [])
+  // useEffect(() => {
+  //   requestGroupMenuList(setMenuList, currentGroupId)
+  // }, [])
 
   const MenuListItem =
     menuList.map((item, index) => (
@@ -23,14 +25,14 @@ const MenuList = (props: Props) => {
   ))
 
   return (
-    menuList.length == 0?
-    <NoneMenuListText>
-      直近の活動が表示されます。
-    </NoneMenuListText>
-    :
+    menuList.length ?
     <View>
       {MenuListItem}
     </View>
+    :
+    <NoneMenuListText>
+      直近の活動が表示されます。
+    </NoneMenuListText>
   )
 }
 
