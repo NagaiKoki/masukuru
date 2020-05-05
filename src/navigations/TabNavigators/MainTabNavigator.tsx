@@ -1,11 +1,10 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/Home';
-import MainNavigator from './MainNavigator';
-import MyPageNavigator from '../navigations/MyPageNavigator';
+import MainNavigator from '../MainNavigator';
+import RecordNavigator from '../TabNavigators/RecordNavigator'
+import MyPageNavigator from './MyPageNavigator';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import { COLORS } from '../constants/Styles';
+import { COLORS } from '../../constants/Styles';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +18,9 @@ const MainTabNavigator = () => {
           if (route.name === 'ホーム') {
             iconName = 'people'
           } else if (route.name === 'マイページ') {
-                iconName = 'user'
+            iconName = 'user'
+          } else if (route.name === 'きろく') {
+            iconName = 'chart'
           }
           focused
           ? color = `${COLORS.BASE_MUSCLEW}`
@@ -44,6 +45,15 @@ const MainTabNavigator = () => {
           tabBarLabel: 'グループ' 
         }}
       />
+
+      <Tab.Screen 
+        name='きろく' 
+        component={RecordNavigator}
+        options={{
+          tabBarLabel: 'きろく' 
+        }}
+      />
+
       <Tab.Screen 
         name='マイページ' 
         component={MyPageNavigator} 

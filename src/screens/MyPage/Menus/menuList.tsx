@@ -92,16 +92,6 @@ const LoadingContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
-const MenuNextBtn = styled.TouchableOpacity` 
-`
-
-const MenuBtnText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-`
-
-const MenuBackBtn = styled.TouchableOpacity`
-`
-
 const MenuNoDataText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
