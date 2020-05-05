@@ -1,9 +1,8 @@
 import React, { useState, useLayoutEffect, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import {StyleSheet, ActivityIndicator, RefreshControl, Clipboard, Alert } from 'react-native';
+import {StyleSheet, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
-import Modal from "react-native-modal";
 // import icons
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -75,7 +74,7 @@ const HomeScreen = ({ navigation, route }) => {
       renderItem={({item}) => 
         <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
           <EventFlatListText>
-            {item.name} の記録一覧
+            {item.name}
           </EventFlatListText>
           <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>
@@ -107,9 +106,7 @@ const HomeScreen = ({ navigation, route }) => {
   
   return (
     isLoading? 
-      // <LoadingContainer>
         <ActivityIndicator size='large' style={[ styles.loading ]} />
-      /* </LoadingContainer> */
     :
     <Container
       refreshControl={
@@ -153,19 +150,13 @@ const HomeScreen = ({ navigation, route }) => {
           <RecentActivitiesMenuListView>
             <MenuList menuList={menuList} setMenuList={setMenuList} currentGroupId={currentGroupId} requestGroupMenuList={requestGroupMenuList}/>
           </RecentActivitiesMenuListView>
-          {/* TODO 以下は今後追加予定 */}
-          {/* <RecentActivitiesListDetailButton>
-            <RecentActivitiesListDetailText>
-              もっと見る    <Icon name="angle-right" size={20} style={{ marginLeft: 'auto'  }}/>
-            </RecentActivitiesListDetailText>
-          </RecentActivitiesListDetailButton> */}
         </RecentActivitiesListView>
       </RecentActivities>
 
       <EventView>
         <EventPlus>
           <EventTitle>
-            トレーニングリスト
+            みんなの記録
           </EventTitle>
 
         </EventPlus>
@@ -187,10 +178,6 @@ const styles = StyleSheet.create({
     // paddingTop: 10
   }
 })
-
-const LoadingContainer = styled.View`
-  background-color: ${COLORS.BASE_BACKGROUND};
-`
 
 const Container = styled.ScrollView`
   flex: 1;

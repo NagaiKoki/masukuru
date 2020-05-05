@@ -10,13 +10,12 @@ import Modal from "react-native-modal";
 import RNPickerSelect from 'react-native-picker-select';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
 
-const Event = ({ navigation }) => {
+const Event = ({ navigation, eventModal, setEventModal  }) => {
   const currentUser = firebase.auth().currentUser;
   const currentUserId = currentUser.uid
   const today = new Date();
   const [isLoading, setIsLoading] = useState(true)
   const [eventList, setEventList] = useState([]);
-  const [eventModal, setEventModal] = useState(false);
   const [eventName, setEventName] = useState('');
   const [eventCategory, setEventCategory] = useState('')
 
@@ -67,11 +66,38 @@ const Event = ({ navigation }) => {
     )
   }
 
+  // イベントのリスト
+  const EventFlatListDisplay = (
+    eventList.length == 0 ?
+    <NoneEventListText>
+       まずはトレーニングを追加しよう！
+    </NoneEventListText>
+    :
+    <EventFlatList
+      data={eventList}
+      extraData={eventList}
+      renderItem={({item, index}) =>
+        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentUser: currentUser }) }} key={index}>
+          <EventFlatListText>
+            {item.name} の記録
+          </EventFlatListText>
+          <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
+        </EventFlatListButton>
+      }
+    />
+  );
+
+  // イベントのセレクトボックス
   const eventCategorySelectForm = () => {
-    const items = [{ label: '胸', value: 'pectoral' }, { label: '背中', value: 'spine' }, { label: '腕', value: 'arm' }, { label: '腹', value: 'abdominal' }, { label: '下半身', value: 'lower' } ]
+    const items = [{ label: '胸', value: 'pectoral' }, 
+                   { label: '背中', value: 'spine' }, 
+                   { label: '腕', value: 'arm' }, 
+                   { label: '腹', value: 'abdominal' }, 
+                   { label: '下半身', value: 'lower' },
+                   { label: 'その他', value: 'others' }]
     return (
       <SelectWrapper>
-        <SelectLabel>種類を選択（必須）</SelectLabel>
+        <SelectLabel>部位を選択（必須）</SelectLabel>
         <RNPickerSelect
           items={items}
           placeholder={{ label: '選択してください', value: '' }} 
@@ -83,71 +109,56 @@ const Event = ({ navigation }) => {
     )
   }
 
-  const EventFlatListDisplay = (
-    eventList.length == 0 ?
-    <NoneEventListText>
-       まずはトレーニングを追加しよう！
-    </NoneEventListText>
-                          :
-    <EventFlatList
-      data={eventList}
-      extraData={eventList}
-      keyExtractor={item => item.date.toString()}
-      renderItem={({item}) => 
-        <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentUser: currentUser }) }}>
-          <EventFlatListText>
-            {item.name} の記録
-          </EventFlatListText>
-          <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
-        </EventFlatListButton>
-      }
-    />
-  );
+  const handleDisableSubmit = (
+    !!eventName ? false : true
+  )
+
+  // モーダルの送信ボタン
+  const renderEventSubmitBtn =
+    <EventAddButton onPress={AddEvent} disabled={handleDisableSubmit}>
+      <EventAddText>追加する</EventAddText>
+    </EventAddButton>
+
+  // イベントモーダル
+  const renderEventModal = () => {
+    return (
+      <Modal isVisible={eventModal}>
+        <EventModalView>
+          <EventModalCloseButton onPress={ () => setEventModal(false) }>
+            <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
+          </EventModalCloseButton>
+          <EventModalTitle>
+            どんなトレーニングを追加しますか？
+          </EventModalTitle>
+          {eventCategorySelectForm()}
+          <SelectLabel>トレーニング名（必須）</SelectLabel>
+          <EventAddForm 
+            placeholder='例）ベンチプレス'
+            autoCapitalize={'none'}
+            maxLength={15}
+            autoCorrect={ false }
+            onChangeText={ text => setEventName(text) }
+          />
+          <EventSubText>※ 15文字以下</EventSubText>
+          {renderEventSubmitBtn}
+        </EventModalView>
+    </Modal>
+    )
+  }
+
 
   return (
     <EventView>
-        <EventPlus>
-          <EventTitle>
-            トレーニングリスト
-          </EventTitle>
-          <EventPlusButton onPress={ () => setEventModal(true) }>
-            <EventPlusButtonText>
-              + 追加する
-            </EventPlusButtonText>
-          </EventPlusButton>
-          <Modal
-            isVisible={eventModal}
-            >
-            <EventModalView>
-              <EventModalCloseButton onPress={ () => setEventModal(false) }>
-                <Icon name="close" size={30} color={COLORS.BASE_BLACK} />
-              </EventModalCloseButton>
-              <EventModalTitle>
-                どんなトレーニングを追加しますか？
-              </EventModalTitle>
-              {eventCategorySelectForm()}
-              <EventAddForm 
-                placeholder='例）ベンチプレス'
-                autoCapitalize={'none'}
-                autoCorrect={ false }
-                onChangeText={ text => setEventName(text) }
-              />
-              <EventSubText>※ 4文字以上</EventSubText>
-              <EventAddButton onPress={ () => AddEvent() }>
-                <EventAddText>
-                  追加する
-                </EventAddText>
-              </EventAddButton>
-            </EventModalView>
-          </Modal>
-        </EventPlus>
-        
+      <EventPlus>
+        <EventTitle>マイトレーニングリスト</EventTitle>
+        </EventPlus> 
         <EvetnListView>
           {EventFlatListDisplay}
         </EvetnListView>
-      </EventView>
-  );
-};
+      {renderEventModal()}
+    </EventView>
+  )
+}
 
 const styles = StyleSheet.create({
   loading: {
@@ -196,25 +207,13 @@ const EventView = styled.View`
 `
 
 const EventPlus = styled.View`
-  margin: 30px 0 0 0;
-  flex-direction: row;
-  justify-content: space-between;
+  margin: 40px 0 10px 0;
 `
 
 const EventTitle = styled.Text`
-  margin-left: 10px;
+  text-align: center;
   font-size: 20px;
   font-weight: bold;
-`
-
-const EventPlusButton = styled.TouchableOpacity`
-`
-
-const EventPlusButtonText = styled.Text`
-  margin-right: 10px;
-  color: ${COLORS.BASE_MUSCLEW};
-  font-weight: bold;
-  font-size: 18px;
 `
 
 const EventModalView = styled.View`
@@ -241,7 +240,7 @@ const EventAddForm = styled.TextInput`
   border-radius: 5px;
   padding: 15px 15px;
   color: ${COLORS.BASE_BLACK};
-  margin: 30px 0 10px 0;
+  margin: 5px 0 10px 0;
 `
 
 const EventSubText = styled.Text`
@@ -276,10 +275,10 @@ const EvetnListView = styled.View`
 
 const NoneEventListText = styled.Text`
   text-align: center;
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 15px;
   font-weight: bold;
-  color: #808080;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const EventFlatList = styled.FlatList`

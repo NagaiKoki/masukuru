@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthenticationNavigator from './AuthentificationNavigator';
 import TutorialNavigator from './TutorialNavigator'
-import MainTabNavigator from './MainTabNavigator';
+import MainTabNavigator from './TabNavigators/MainTabNavigator';
 import styled from 'styled-components';
 import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
 import DrawerContent from '../screens/Drawers/DrawerContents';

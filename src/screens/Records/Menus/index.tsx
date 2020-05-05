@@ -86,13 +86,16 @@ const MenuTitleView = styled.View`
   flex-direction: row;
   justify-content: space-between;
   position: relative;
+  align-self: center;
+  width: 90%;
 `
 
 const MenuTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
   font-weight: bold;
-  /* text-align: center; */
+  width: 85%;
+  text-align: center;
   padding-top: 50px;
   margin-left: auto;
   margin-right: auto;
@@ -116,15 +119,6 @@ const MenuAddText = styled.Text`
 
 // menu list
 const MenuListContainer = styled.View`
+  margin-top: 20px;
 `
-
-const MenuListTitle = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  font-size: 20px;
-  font-weight: bold;
-  width: 80%;
-  align-self: center;
-  padding: 60px 0 20px 0;
-`
-
 export default MunuScreen;

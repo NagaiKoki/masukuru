@@ -6,7 +6,6 @@ import UserImage from '../../components/Image/userImage'
 import firebase, { db } from '../../config/firebase';
 // import type
 import { MenuType } from '../../types/menu';
-import { Item } from 'react-native-paper/lib/typescript/src/components/List/List';
 
 interface Props {
   list: MenuType
@@ -55,8 +54,8 @@ const MenuItem = (props: Props) => {
     <ItemWrapper>
       <ItemBorder index={index} />
       <ItemTitleView>
-        <ItemTimestampText>{createdAt}</ItemTimestampText>
         <ItemNameText>{list.name}</ItemNameText>
+        <ItemTimestampText>{createdAt}</ItemTimestampText>
       </ItemTitleView>
 
       <ItemContentWrapper>
@@ -107,14 +106,16 @@ const ItemBorder = styled.View`
 const ItemTitleView = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `
 
 const ItemTimestampText = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  font-weight: bold;
-  font-size: 20px;
+  font-size: 14px;
   margin-left: 10px;
   padding-bottom: 20px;
+  width: 40%;
 `
 
 const ItemNameText = styled.Text`
@@ -122,6 +123,8 @@ const ItemNameText = styled.Text`
   font-size: 20px;
   padding-bottom: 20px;
   margin-right: 20px;
+  color: ${COLORS.BASE_BLACK};
+  width: 50%;
 `
 
 const ItemColumn = styled.View<{ value: number }>`
@@ -166,8 +169,4 @@ const ItemUserName = styled.Text`
 const ItemRecordWrapper = styled.View`
   align-self: center;
   width: 80%;
-`
-
-const TrainingListItemText = styled.Text`
-  
 `

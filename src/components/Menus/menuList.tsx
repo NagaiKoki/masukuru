@@ -1,29 +1,31 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { requestMenuList } from '../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import firebase from 'firebase'
 import { MenuType } from '../../types/menu';
-import { requestCategroyMenuList } from '../../apis/Menus/categoryMenuList';
 
 interface TrainingListProps {
-  user?: firebase.User
-  currentGroupId?: string
-  list: MenuType[]
-  setList: Dispatch<SetStateAction<MenuType[]>>
-  item: any
-  navigation: any
+  user: firebase.User
+  item?: any
 }
 
 const MenuList = (props: TrainingListProps) => {
+  const [list, setList] = useState<MenuType[]>([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
-  const { user, list, setList, currentGroupId, item, navigation }  = props;
-  const isShowPage = true;
+  const { user, item }  = props;
+
+  const getMenuList = async () => {
+    const menuList = await requestMenuList(user, item)
+    setList(menuList)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
+    getMenuList()
   }, [])
 
   if (isLoading) {
@@ -33,25 +35,23 @@ const MenuList = (props: TrainingListProps) => {
       </LoadingContainer>
     )
   }
-
+  
   // 各トレーニングのデータ
   const TrainingMenuItem = 
     list.map((item, index) => (
-      <MenuItem key={index} index={index} list={item} navigation={navigation}/>  
+      <MenuItem key={index} index={index} list={item}/>  
   ))
 
-  // スクロールリロード
   const onRefresh = async () => {
     setIsRefresh(true)
-    await requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
+    getMenuList()
     setIsRefresh(false)
   }
 
   return (
     (
       list.length ? 
-      <ScrollView　
-        contentContainerStyle={{ paddingBottom: 400 }}
+      <ScrollView
         refreshControl={
           <RefreshControl 
             refreshing={isRefresh}
@@ -62,8 +62,17 @@ const MenuList = (props: TrainingListProps) => {
         <TrainingListContainer>
           {TrainingMenuItem}
         </TrainingListContainer>
-      </ScrollView>
-      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      </ScrollView> 
+      : 
+      <ScrollView
+      refreshControl={
+        <RefreshControl 
+          refreshing={isRefresh}
+          onRefresh={onRefresh}
+        />
+      } >
+      <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      </ScrollView> 
     )
   )
 }
@@ -81,7 +90,7 @@ const styles = StyleSheet.create({
 const TrainingListContainer = styled.View`
   background-color: ${COLORS.BASE_WHITE};
   align-self: center;
-  width: 90%;
+  width: 95%;
   padding: 10px;
   margin-top: 20px;
   border-radius: 10px;
@@ -99,5 +108,6 @@ const MenuNoDataText = styled.Text`
   align-self: center;
   text-align: center;
 `
+
 
 export default MenuList;

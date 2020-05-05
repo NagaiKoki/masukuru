@@ -41,15 +41,15 @@ const MenuItem = (props: Props) => {
       </ItemColumn>
   
       {amountArray.map((amount, index) => (
-        <ItemColumn key={index}>
-          <ItemLabel>回数({amount.key}回目)</ItemLabel>
+        <ItemColumn key={index} value={amount.value}>
+          <ItemLabel>回数({amount.key}セット目)</ItemLabel>
           <ItemText>:   {amount.value}回</ItemText>
          </ItemColumn>
       ))}
 
       {weightArray.map((weight, index) => (
-        <ItemColumn key={index}>
-          <ItemLabel>重さ({weight.key}回目)</ItemLabel>
+        <ItemColumn key={index}  value={weight.value}>
+          <ItemLabel>重さ({weight.key}セット目)</ItemLabel>
           <ItemText>:   {weight.value}kg</ItemText>
          </ItemColumn>
       ))}
@@ -83,10 +83,11 @@ const ItemColumn = styled.View`
   flex-direction: row;
   align-items: center;
   padding: 7px 0;
+  display: ${props => props.value === 0 ? 'none' : "flex"};
 `
 
 const ItemLabel = styled.Text`
-  width: 100px;
+  width: 150px;
   padding-right: 10px;
   font-size: 16px;
   font-weight: bold;
@@ -96,8 +97,4 @@ const ItemLabel = styled.Text`
 const ItemText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
-`
-
-const TrainingListItemText = styled.Text`
-  
 `

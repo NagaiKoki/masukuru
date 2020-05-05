@@ -1,24 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import { requestMenuList } from '../../apis/requestMenuList';
+import { requestMenuList } from '../../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
-import { COLORS } from '../../constants/Styles';
+import { COLORS } from '../../../constants/Styles';
 import firebase from 'firebase'
-import { MenuType } from '../../types/menu';
+import { MenuType } from '../../../types/menu';
 
 interface TrainingListProps {
-  user: firebase.User
+  user?: firebase.User
+  currentGroupId?: string
+  list: MenuType[]
+  setList: Dispatch<SetStateAction<MenuType[]>>
+  item: any
+  navigation: any
 }
 
 const MenuList = (props: TrainingListProps) => {
-  const [list, setList] = useState<MenuType[]>([]);
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
-  const { user }  = props;
+  const { user, list, setList, item, navigation }  = props;
+
+  const getMenuList = async () => {
+    const menuList = await requestMenuList(user, item)
+    setList(menuList)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    requestMenuList(setList, setIsLoading, user)
+    getMenuList()
   }, [])
 
   if (isLoading) {
@@ -28,23 +38,25 @@ const MenuList = (props: TrainingListProps) => {
       </LoadingContainer>
     )
   }
-  
+
   // 各トレーニングのデータ
   const TrainingMenuItem = 
     list.map((item, index) => (
-      <MenuItem key={index} index={index} list={item}/>  
+      <MenuItem key={index} index={index} list={item} navigation={navigation}/>  
   ))
 
+  // スクロールリロード
   const onRefresh = async () => {
-    setIsRefresh(true)
-    await requestMenuList(setList, setIsLoading, user)
+    setIsRefresh(true)    
+    getMenuList()
     setIsRefresh(false)
   }
 
   return (
     (
       list.length ? 
-      <ScrollView
+      <ScrollView　
+        contentContainerStyle={{ paddingBottom: 400 }}
         refreshControl={
           <RefreshControl 
             refreshing={isRefresh}
@@ -55,17 +67,8 @@ const MenuList = (props: TrainingListProps) => {
         <TrainingListContainer>
           {TrainingMenuItem}
         </TrainingListContainer>
-      </ScrollView> 
-      : 
-      <ScrollView
-      refreshControl={
-        <RefreshControl 
-          refreshing={isRefresh}
-          onRefresh={onRefresh}
-        />
-      } >
-      <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
-      </ScrollView> 
+      </ScrollView>
+      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
     )
   )
 }
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
 const TrainingListContainer = styled.View`
   background-color: ${COLORS.BASE_WHITE};
   align-self: center;
-  width: 90%;
+  width: 95%;
   padding: 10px;
   margin-top: 20px;
   border-radius: 10px;
@@ -94,16 +97,6 @@ const LoadingContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
-const MenuNextBtn = styled.TouchableOpacity` 
-`
-
-const MenuBtnText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-`
-
-const MenuBackBtn = styled.TouchableOpacity`
-`
-
 const MenuNoDataText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
@@ -111,6 +104,5 @@ const MenuNoDataText = styled.Text`
   align-self: center;
   text-align: center;
 `
-
 
 export default MenuList;
