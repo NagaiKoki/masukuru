@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import { requestMenuList } from '../../apis/requestMenuList';
 import MenuItem from './menuItem';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import firebase from 'firebase'
 import { MenuType } from '../../types/menu';
+import { requestCategroyMenuList } from '../../apis/Menus/categoryMenuList';
 
 interface TrainingListProps {
   user?: firebase.User
@@ -23,7 +23,7 @@ const MenuList = (props: TrainingListProps) => {
   const isShowPage = true;
 
   useEffect(() => {
-    requestMenuList(setList, setIsLoading, user, isShowPage, currentGroupId, item)
+    requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
   }, [])
 
   if (isLoading) {
@@ -43,7 +43,7 @@ const MenuList = (props: TrainingListProps) => {
   // スクロールリロード
   const onRefresh = async () => {
     setIsRefresh(true)
-    await requestMenuList(setList, setIsLoading, user, isShowPage, currentGroupId, item)
+    await requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
     setIsRefresh(false)
   }
 
@@ -90,16 +90,6 @@ const TrainingListContainer = styled.View`
 
 const LoadingContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
-`
-
-const MenuNextBtn = styled.TouchableOpacity` 
-`
-
-const MenuBtnText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-`
-
-const MenuBackBtn = styled.TouchableOpacity`
 `
 
 const MenuNoDataText = styled.Text`
