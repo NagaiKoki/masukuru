@@ -95,6 +95,7 @@ const MenuTitle = styled.Text`
   font-size: 30px;
   font-weight: bold;
   width: 85%;
+  text-align: center;
   padding-top: 50px;
   margin-left: auto;
   margin-right: auto;
@@ -118,15 +119,6 @@ const MenuAddText = styled.Text`
 
 // menu list
 const MenuListContainer = styled.View`
+  margin-top: 20px;
 `
-
-const MenuListTitle = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  font-size: 20px;
-  font-weight: bold;
-  width: 80%;
-  align-self: center;
-  padding: 60px 0 20px 0;
-`
-
 export default MunuScreen;

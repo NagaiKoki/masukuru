@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation, route }) => {
       renderItem={({item}) => 
         <EventFlatListButton onPress={ () => { navigation.navigate('menu', { item: item, currentGroupId: currentGroupId }) }}>
           <EventFlatListText>
-            {item.name} の記録
+            {item.name}
           </EventFlatListText>
           <Icon name="right" size={20} style={{ marginLeft: 'auto', marginTop: 'auto', marginBottom: 'auto', marginRight: 20, color: '#808080' }}/>
         </EventFlatListButton>

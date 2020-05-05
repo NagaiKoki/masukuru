@@ -107,14 +107,17 @@ const ItemBorder = styled.View`
 const ItemTitleView = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `
 
 const ItemTimestampText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 20px;
+  font-size: 14px;
   margin-left: 10px;
   padding-bottom: 20px;
+  width: 45%;
 `
 
 const ItemNameText = styled.Text`
@@ -122,6 +125,8 @@ const ItemNameText = styled.Text`
   font-size: 20px;
   padding-bottom: 20px;
   margin-right: 20px;
+  color: ${COLORS.BASE_MUSCLEW};
+  width: 55%;
 `
 
 const ItemColumn = styled.View<{ value: number }>`
