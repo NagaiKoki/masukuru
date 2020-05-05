@@ -173,7 +173,6 @@ const TranferModal = (props: TransferModalProps) => {
           userNames += user.name + "  "
           userImages.push(user.imageUrl)
         })
-        console.log(group.groupName)
         return (
           <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
             {renderGroupImage(group.imageUrl, userImages)}
