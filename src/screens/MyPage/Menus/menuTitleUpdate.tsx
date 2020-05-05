@@ -61,9 +61,10 @@ const MenuTitleUpdate = (props: MenuTitleUpdateProps) => {
             placeholderTextColor={'#000'}
             autoCapitalize={'none'}
             autoCorrect={ false }
+            maxLength={15}
             onChangeText={ text => setItemName(text) }
           />
-          <SubText>※ 4文字以上</SubText>
+          <SubText>※ 15字以下</SubText>
           <UpdateButton>
             <UpdateText onPress={ () => updateTitle()}>
               送信する
@@ -78,6 +79,7 @@ const MenuTitleUpdate = (props: MenuTitleUpdateProps) => {
 }
 
 const MenuTitleUpdateView = styled.View`
+  width: 10%;
 `
 
 const ModalView = styled.View`
@@ -99,7 +101,7 @@ const ModalTitle = styled.Text`
 
 const UpdateForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
-  width: 80%;
+  width: 90%;
   align-self: center;
   border-radius: 5px;
   padding: 20px 15px;

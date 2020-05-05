@@ -86,13 +86,15 @@ const MenuTitleView = styled.View`
   flex-direction: row;
   justify-content: space-between;
   position: relative;
+  align-self: center;
+  width: 90%;
 `
 
 const MenuTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 30px;
   font-weight: bold;
-  /* text-align: center; */
+  width: 85%;
   padding-top: 50px;
   margin-left: auto;
   margin-right: auto;

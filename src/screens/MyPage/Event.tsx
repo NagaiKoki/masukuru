@@ -68,7 +68,12 @@ const Event = ({ navigation }) => {
   }
 
   const eventCategorySelectForm = () => {
-    const items = [{ label: '胸', value: 'pectoral' }, { label: '背中', value: 'spine' }, { label: '腕', value: 'arm' }, { label: '腹', value: 'abdominal' }, { label: '下半身', value: 'lower' } ]
+    const items = [{ label: '胸', value: 'pectoral' }, 
+                   { label: '背中', value: 'spine' }, 
+                   { label: '腕', value: 'arm' }, 
+                   { label: '腹', value: 'abdominal' }, 
+                   { label: '下半身', value: 'lower' },
+                   { label: 'その他', value: 'others' }]
     return (
       <SelectWrapper>
         <SelectLabel>種類を選択（必須）</SelectLabel>
@@ -129,10 +134,11 @@ const Event = ({ navigation }) => {
               <EventAddForm 
                 placeholder='例）ベンチプレス'
                 autoCapitalize={'none'}
+                maxLength={15}
                 autoCorrect={ false }
                 onChangeText={ text => setEventName(text) }
               />
-              <EventSubText>※ 4文字以上</EventSubText>
+              <EventSubText>※ 15文字以下</EventSubText>
               <EventAddButton onPress={ () => AddEvent() }>
                 <EventAddText>
                   追加する
