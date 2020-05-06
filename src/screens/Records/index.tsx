@@ -11,11 +11,11 @@ const RecordScreen = ({ navigation }) => {
   const [eventModal, setEventModal] = useState(false);
   return (
     <RecordContainer>
+      <ScrollView>
       <EventView>
-        <ScrollView>
-          <Event navigation={navigation} eventModal={eventModal} setEventModal={setEventModal}/>
-        </ScrollView>
+        <Event navigation={navigation} eventModal={eventModal} setEventModal={setEventModal}/>
       </EventView>
+      </ScrollView>
       <EventAddBtn onPress={() => setEventModal(true)}>
         <Icon name="plus" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </EventAddBtn>
