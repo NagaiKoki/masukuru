@@ -41,13 +41,14 @@ const categoryMenuListSort = (list) => {
   })
 }
 
-export const requestCategroyMenuList = async (currentGroupId?: string, item?: any) => {
+export const requestCategroyMenuList = async (setList?: Dispatch<SetStateAction<MenuType[]>>, setIsLoading?: any, currentGroupId?: string, item?: any) => {
   try {
     const groupUsers = await getGroupUsers(currentGroupId);
     const usersCategoryEvents = await getUsersCategoryEvents(groupUsers, item.category)
     let categoryMenus = await getCategoryMenus(usersCategoryEvents)
     categoryMenuListSort(categoryMenus)
-    return categoryMenus
+    setIsLoading(false)
+    setList(categoryMenus)
   } catch (error) {
     console.log(error)
   }

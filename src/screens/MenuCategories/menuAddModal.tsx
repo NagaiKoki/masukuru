@@ -56,7 +56,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
     const currentTime = firebase.firestore.FieldValue.serverTimestamp()
     const menuId = factoryRandomCode(10)
     try {
-      await db.collectionGroup('events').where('groupId', '==', currentGroupId).where('name', '==', item.name).get().then(snapshot => {
+      await await db.collection('users').doc(currentUser.uid).collection('events').where('name', '==', item.name).get().then(snapshot => {
         snapshot.docs[0].ref.collection('menus').doc(menuId).set({
           uid: currentUser.uid,
           menuId: menuId,
@@ -90,6 +90,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           menuId: menuId,
           name: item.name,
           set: count,
+          eventId: item.id,
           amount1: amount1,
           amount2: amount2,
           amount3: amount3,
@@ -99,7 +100,6 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           amount7: amount7,
           amount8: amount8,
           amount9: amount9,
-          groupId: currentGroupId,
           weight1: weight1,
           weight2: weight2,
           weight3: weight3,

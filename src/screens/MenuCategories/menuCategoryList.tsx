@@ -21,14 +21,8 @@ const MenuList = (props: TrainingListProps) => {
   const [isRefresh, setIsRefresh] = useState(false)
   const { list, setList, currentGroupId, item, navigation }  = props;
 
-  const getMenuList = async () => {
-    const menuList = await requestCategroyMenuList(currentGroupId, item)
-    setList(menuList)
-    setIsLoading(false)
-  }
-
   useEffect(() => {
-    getMenuList()
+    requestCategroyMenuList(setList, setIsLoading, currentGroupId, item)
   }, [])
 
   if (isLoading) {
@@ -48,7 +42,7 @@ const MenuList = (props: TrainingListProps) => {
   // スクロールリロード
   const onRefresh = async () => {
     setIsRefresh(true)
-    getMenuList()
+    // getMenuList()
     setIsRefresh(false)
   }
 

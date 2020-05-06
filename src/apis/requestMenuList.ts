@@ -2,16 +2,12 @@ import { Dispatch, SetStateAction } from 'react'
 import firebase, { db } from '../config/firebase';
 import { MenuType } from '../types/menu';
 
-export const requestMenuList = async (user?: firebase.User, item?: any) => {
+export const requestMenuList = async (setList?: any, setIsLoading?: any, user?: firebase.User, item?: any) => {
   let listArray = []
   let query;
   let documents;
   try {
-    if (!!item) {
-      documents = db.collectionGroup('menus').where('uid', '==', user.uid).where('eventId', '==', item.id)
-    } else {
-      documents = db.collectionGroup('menus').where('uid', '==', user.uid)
-    }
+    documents = db.collectionGroup('menus').where('uid', '==', user.uid).where('eventId', '==', item.id)
   
     query = documents.orderBy('createdAt', 'desc')
     
@@ -25,8 +21,8 @@ export const requestMenuList = async (user?: firebase.User, item?: any) => {
         })
       }
       })
-      console.log('fdsaf')
-      return listArray
+      setIsLoading(false)
+      setList(listArray)
     } catch(error) {
       console.log(error)
       alert('データの取得に失敗しました。時間をおいてから再度お試しください。')
