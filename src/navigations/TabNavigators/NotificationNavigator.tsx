@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import NotificationScreen from '../../screens/Notifications/'
+import NotificationContentScreen from '../../screens/Notifications/NotificationContent';
 import { COLORS } from '../../constants/Styles'
 
 
@@ -10,7 +11,7 @@ const NotificationNavigator = () => {
   return (
     <NotificationStack.Navigator initialRouteName='おしらせ'>
       <NotificationStack.Screen
-        name="notification"
+        name="Notification"
         component={NotificationScreen}
         options={{
           headerBackTitleVisible: false,
@@ -18,16 +19,16 @@ const NotificationNavigator = () => {
           headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />
-{/* 
+
       <NotificationStack.Screen
-        name="menu"
-        component={MenuScreen}
+        name="NotificationContent"
+        component={NotificationContentScreen}
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: 'おしらせ',
           headerTintColor: COLORS.BASE_MUSCLEW
         })}
-      /> */}
+      />
     </NotificationStack.Navigator>
   )
 }
