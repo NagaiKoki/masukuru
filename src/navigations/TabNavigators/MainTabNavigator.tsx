@@ -35,7 +35,7 @@ const MainTabNavigator = () => {
         activeTintColor: `${COLORS.BASE_MUSCLEW}`,
         inactiveTintColor: `${COLORS.SUB_BLACK}`,
         style: {
-          height: '10%',
+          height: '9%',
           paddingTop: '2%',
           paddingBottom: '2%'
         }
