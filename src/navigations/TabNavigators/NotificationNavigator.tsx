@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import NotificationScreen from '../../screens/Notifications/'
+import NotificationScreen from '../../screens/Notifications'
 import NotificationContentScreen from '../../screens/Notifications/NotificationContent';
 import { COLORS } from '../../constants/Styles'
 

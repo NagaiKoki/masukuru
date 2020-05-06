@@ -19,9 +19,7 @@ const MenuList = (props: TrainingListProps) => {
   const { user, item }  = props;
 
   const getMenuList = async () => {
-    const menuList = await requestMenuList(user, item)
-    setList(menuList)
-    setIsLoading(false)
+    requestMenuList(setList, setIsLoading, user, item)
   }
 
   useEffect(() => {
