@@ -7,7 +7,11 @@ export const requestMenuList = async (setList?: any, setIsLoading?: any, user?: 
   let query;
   let documents;
   try {
-    documents = db.collectionGroup('menus').where('uid', '==', user.uid).where('eventId', '==', item.id)
+    if (!!item) {
+      documents = db.collectionGroup('menus').where('uid', '==', user.uid).where('eventId', '==', item.id)	
+    } else {	
+      documents = db.collectionGroup('menus').where('uid', '==', user.uid)	
+    }
   
     query = documents.orderBy('createdAt', 'desc')
     

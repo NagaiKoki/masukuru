@@ -51,7 +51,7 @@ const MunuScreen = ({ navigation, route }) => {
     .then(function(querySnapshot) {
       querySnapshot.docs[0].ref.delete()
     }).then(function() {
-      navigation.navigate("マイページ")
+      navigation.navigate("record")
     }).catch(function(error) {
       console.error("Error removing document: ", error);
     })
