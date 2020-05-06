@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MenuScreen from '../../screens/Records/Menus'
 import RecordScreen from '../../screens/Records'

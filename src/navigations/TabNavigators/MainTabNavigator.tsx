@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainNavigator from '../MainNavigator';
-import RecordNavigator from '../TabNavigators/RecordNavigator'
+import RecordNavigator from './RecordNavigator'
+import NotificationNavigator from './NotificationNavigator';
 import MyPageNavigator from './MyPageNavigator';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { COLORS } from '../../constants/Styles';
@@ -21,6 +22,8 @@ const MainTabNavigator = () => {
             iconName = 'user'
           } else if (route.name === 'きろく') {
             iconName = 'chart'
+          } else if (route.name === 'おしらせ') {
+            iconName = 'bell'
           }
           focused
           ? color = `${COLORS.BASE_MUSCLEW}`
@@ -51,6 +54,14 @@ const MainTabNavigator = () => {
         component={RecordNavigator}
         options={{
           tabBarLabel: 'きろく' 
+        }}
+      />
+
+      <Tab.Screen 
+        name='おしらせ' 
+        component={NotificationNavigator}
+        options={{
+          tabBarLabel: 'おしらせ' 
         }}
       />
 
