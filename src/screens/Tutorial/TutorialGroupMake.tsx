@@ -80,9 +80,8 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
   return (
     <TutorialGroupContainer>
       <TutorialStepTitle>
-        - 最後のステップです！ -
       </TutorialStepTitle>
-      <TutorialGroupTitle>マスクルへようこそ！</TutorialGroupTitle>
+      <TutorialGroupTitle>グループを作成しよう！</TutorialGroupTitle>
         <TutorialGroupSubTitle>マスクルで、みんなと一緒に理想な体型を手に入れよう！</TutorialGroupSubTitle>
 
       <TutorialGroupBtnWrapper>
