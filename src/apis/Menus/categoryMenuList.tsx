@@ -41,11 +41,14 @@ const categoryMenuListSort = (list) => {
   })
 }
 
-export const requestCategroyMenuList = async (setList: Dispatch<SetStateAction<MenuType[]>>, setIsLoading?: any, user?: firebase.User, currentGroupId?: string, item?: any) => {
-  const groupUsers = await getGroupUsers(currentGroupId);
-  const usersCategoryEvents = await getUsersCategoryEvents(groupUsers, item.category)
-  let categoryMenus = await getCategoryMenus(usersCategoryEvents)
-  categoryMenuListSort(categoryMenus)
-  setList(categoryMenus)
-  setIsLoading(false)
+export const requestCategroyMenuList = async (currentGroupId?: string, item?: any) => {
+  try {
+    const groupUsers = await getGroupUsers(currentGroupId);
+    const usersCategoryEvents = await getUsersCategoryEvents(groupUsers, item.category)
+    let categoryMenus = await getCategoryMenus(usersCategoryEvents)
+    categoryMenuListSort(categoryMenus)
+    return categoryMenus
+  } catch (error) {
+    console.log(error)
+  }
 }

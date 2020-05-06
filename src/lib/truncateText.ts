@@ -1,4 +1,4 @@
-const truncateText = (text: string, maxLength: number = 30) => {
+const truncateText = (text: string, maxLength: number = 30): string => {
   if (text.length >= maxLength) {
     return `${text.slice(0, 30)}...`
   }

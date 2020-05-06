@@ -19,10 +19,16 @@ interface TrainingListProps {
 const MenuList = (props: TrainingListProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefresh, setIsRefresh] = useState(false)
-  const { user, list, setList, currentGroupId, item, navigation }  = props;
+  const { list, setList, currentGroupId, item, navigation }  = props;
+
+  const getMenuList = async () => {
+    const menuList = await requestCategroyMenuList(currentGroupId, item)
+    setList(menuList)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
+    getMenuList()
   }, [])
 
   if (isLoading) {
@@ -42,7 +48,7 @@ const MenuList = (props: TrainingListProps) => {
   // スクロールリロード
   const onRefresh = async () => {
     setIsRefresh(true)
-    await requestCategroyMenuList(setList, setIsLoading, user, currentGroupId, item)
+    getMenuList()
     setIsRefresh(false)
   }
 
