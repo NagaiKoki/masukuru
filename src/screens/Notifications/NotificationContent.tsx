@@ -11,7 +11,7 @@ const NotificationContentScreen = ({ navigation, route }) => {
     <ContentWrapper>
       <ContentTitle>{title}</ContentTitle>
       <ContentTimestamp>{time}</ContentTimestamp>
-      <ContentMain>{contents}</ContentMain>
+      <ContentMain>{contents.replace(/\s\s/g, '\n')}</ContentMain>
     </ContentWrapper>
   )
 }

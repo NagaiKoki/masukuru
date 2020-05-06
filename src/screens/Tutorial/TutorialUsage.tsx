@@ -62,11 +62,6 @@ const TutorialUsageScreen = ({navigation, userName}) => {
             <Image source={ require('../../assets/tutorialUsageHome2.png')} resizeMode="cover" style={{width: '100%', height: 500, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
           </UsageImageWrapper2>
       </UsageTextWrapper3>
-
-      <UsageNextBtn onPress={() => { navigation.replace('TutorialGroupMake', { userName: userName }) }}>
-        <UsageNextText>グループの作成へ</UsageNextText>
-        <Icon name="right" size={20} style={{ color: '#fff', marginLeft: 10 }} />
-      </UsageNextBtn>
       </UsageWrapper3>
     </ScrollView>
 
@@ -84,7 +79,13 @@ const TutorialUsageScreen = ({navigation, userName}) => {
         {rendeFIrstView}
         {renderSecondView}
         {renderThirdView}
-        {renderForthView}
+        <React.Fragment>
+          {renderForthView}
+          <UsageNextBtn onPress={() => { navigation.replace('TutorialGroupMake', { userName: userName }) }}>
+            <UsageNextText>グループの作成へ</UsageNextText>
+            <Icon name="right" size={20} style={{ color: '#fff', marginLeft: 10 }} />
+          </UsageNextBtn>
+        </React.Fragment>
       </Swiper>
     </UsageContainer>
   )
@@ -155,7 +156,7 @@ const UsageNextBtn = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 110%;
+  width: 100%;
   align-self: center;
   margin-top: 50px;
   padding: 25px 0;
