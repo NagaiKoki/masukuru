@@ -5,6 +5,7 @@ import TutorialUserNameScreen from '../screens/Tutorial/TutorialUserName';
 import TutorialBodyInfoScreen from '../screens/Tutorial/TutorialBodyInfo';
 import TutorialUserImageScreen from '../screens/Tutorial/TutorialUserImage';
 import TutorialGroupMakeScreen from '../screens/Tutorial/TutorialGroupMake';
+import TutorialUsageScreen from '../screens/Tutorial/TutorialUsage';
 import HomeScreen from '../screens/Home';
 import { COLORS } from '../constants/Styles';
 
@@ -67,7 +68,21 @@ const TutorialNavigator = ({ route }) => {
         initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false,
+          headerShown: false,
           headerTitle: "グループを作る",
+          headerTintColor: COLORS.BASE_MUSCLEW
+        }}
+      />
+
+      <TotorialStack.Screen
+        name="TutorialUsage"
+        component={TutorialUsageScreen}
+        initialParams={{ setIsChange: route.params.setIsChange }}
+        options={{
+          headerBackTitleVisible: false,
+          gestureEnabled: false,
+          headerShown: false,
+          headerTitle: "マスクルの使い方",
           headerTintColor: COLORS.BASE_MUSCLEW
         }}
       />

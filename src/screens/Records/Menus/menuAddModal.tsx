@@ -203,7 +203,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
   return (
     <React.Fragment>
     <Modal isVisible={isVisibleToBoolean}>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.9 }} keyboardVerticalOffset={300}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 0.8 }} keyboardVerticalOffset={300}>
       <MenuModalWrapper>
         <ModalCloseBtn>
           <Icon name='close' size={30} onPress={handleCloseModal}/>

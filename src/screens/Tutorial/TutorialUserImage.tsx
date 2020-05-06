@@ -30,7 +30,7 @@ const TutorialUserImageScreen = ({ navigation, userName }) => {
         const userdata  = { imageUrl: uri };
         db.collection('users').doc(user.uid).update(userdata);
       }).then(function() {
-        navigation.navigate('TutorialGroupMake', { userName: userName })
+        navigation.navigate('TutorialUsage', { userName: userName })
       }).catch(function(error) {
         alert(error);
       })

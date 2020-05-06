@@ -23,10 +23,12 @@ export const createGroup = async (navigation?: any, route?: any, userName?: stri
     }).then(() => {
       saveInvideCode(currentUser)
     }).then((snapshot) => {
-      if (!!route) {
+      if (!!route && !!route.params.setIsChange) {
         route.params.setIsChange(true)
         navigation.navigate('home', { currentGroupId: currentUser.uid })
         route.params.setIsChange(false)
+      } else {
+        navigation.navigate('TutorialUsage', { currentGroupId: currentUser.uid })
       }
     })
     
