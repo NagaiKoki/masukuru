@@ -2,6 +2,7 @@ import { Timestamp } from '@firebase/firestore-types'
 
 export interface MenuType {
   uid: string
+  menuId: string
   name: string
   set: number
   eventId: string
@@ -25,5 +26,4 @@ export interface MenuType {
   weight9: number
   
   createdAt: any
-  menuId: string
 }
