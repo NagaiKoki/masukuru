@@ -15,7 +15,7 @@ const TutorialUsageScreen = ({navigation, userName}) => {
         <Image source={ require('../../assets/tutorialUsagePic.jpg')} style={{width: '85%', height: 180, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
       </UsageImageWrapper>
       <UsageTextWrapper>
-        <UsageText>マスクルで友だちと一緒に理想の体型を目指そう！{"\n"}{"\n"}</UsageText>
+        <UsageText>マスクルで仲間と一緒に理想の体型を目指そう！{"\n"}{"\n"}</UsageText>
         <UsageText>これから、マスクルの使い方をかんたんに説明するよ！</UsageText>
       </UsageTextWrapper>
     </UsageWrapper1>
@@ -42,7 +42,7 @@ const TutorialUsageScreen = ({navigation, userName}) => {
 
         <UsageTextWrapper3>
           <UsageText>トレーニングリストに、先程入力したトレーニングが追加されます。</UsageText>
-          <UsageText>{"\n"}{"\n"}そのトレーニングをクリックして、その日の記録を残しましょう！</UsageText>
+          <UsageText>{"\n"}{"\n"}そのトレーニングをタップして、その日の記録を残しましょう！</UsageText>
           <UsageImageWrapper2>
             <Image source={ require('../../assets/tutorialUsageAddMenu.png')} resizeMode="cover" style={{width: '100%', height: 400, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
           </UsageImageWrapper2>
@@ -56,9 +56,10 @@ const TutorialUsageScreen = ({navigation, userName}) => {
         <UsageTitle2>グループで記録を共有</UsageTitle2>
 
         <UsageTextWrapper3>
-          <UsageText>その日の記録を追加すると、グループの中でシェアされます！</UsageText>
+          <UsageText>その日の記録を追加すると、グループの中でシェアされます。</UsageText>
+          <UsageText>{"\n"}{"\n"}部位ごとに、詳細な記録が表示されます。</UsageText>
           <UsageImageWrapper2>
-            <Image source={ require('../../assets/tutorialUsageHome.png')} resizeMode="cover" style={{width: '100%', height: 300, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
+            <Image source={ require('../../assets/tutorialUsageHome2.png')} resizeMode="cover" style={{width: '100%', height: 500, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
           </UsageImageWrapper2>
       </UsageTextWrapper3>
 
