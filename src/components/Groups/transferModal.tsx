@@ -32,6 +32,7 @@ type responseGroupType = {
   name: string
   imageUrl: string
   groupName: string
+  id: string
   ownerId: string
   users: Users[]
 }
@@ -113,14 +114,17 @@ const TranferModal = (props: TransferModalProps) => {
     } else {
       setDrawerIsLoading(true)
       setTimeout( async () => {
-        await createGroup()
-        navigation.navigate('main', { currentGroupId: currentUser.uid })
-        setCurrentGroupId(currentUser.uid)
+        const groupId = await createGroup()
+        console.log('hoge')
+        console.log(groupId)
+        navigation.navigate('main', { currentGroupId: groupId })
+        setCurrentGroupId(groupId)
         setGroups(state => 
           [...state, { name: currentUser.displayName, 
                        inviteCode: '',
                        imageUrl: '',
                        groupName: '',
+                       id: groupId,
                        ownerId: currentUser.uid, 
                        users: [{ imageUrl: currentUser.photoURL, name: currentUser.displayName, uid: currentUser.uid }]}])
         setIsloading(false)
@@ -133,8 +137,8 @@ const TranferModal = (props: TransferModalProps) => {
   // グループ作成モーダル表示
   const handleAddGroup = () => 
     Alert.alert(
-      "本当にグループを作成しますか？",
-      "※ 自身がホストのグループは\n1つまでしか作成できません。",
+      "グループを作成しますか？",
+      "※ 所属できるグループは5つまでです。",
       [
         {
           text: "キャンセル",
@@ -174,10 +178,10 @@ const TranferModal = (props: TransferModalProps) => {
           userImages.push(user.imageUrl)
         })
         return (
-          <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
+          <GroupNameWrapper key={group.id} onPress={() => handleTransfer(group.id)}>
             {renderGroupImage(group.imageUrl, userImages)}
             <GroupNameText>{group.groupName ? group.groupName : truncateText(userNames, 40)}</GroupNameText>
-            {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
+            {currentGroupId === group.id ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
           </GroupNameWrapper>
         )
       })
@@ -188,14 +192,13 @@ const TranferModal = (props: TransferModalProps) => {
 
   // 新規グループ作成ボタンを表示
   const renderCreateGroupBtn = (
-    !host ? <GroupCreateContainer onPress={() => handleAddGroup()}>
-              <FeatherIcon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW }}/>
-              <GroupCreateText>新しくグループを作成する</GroupCreateText>
-            </GroupCreateContainer>
-          : null
+    <GroupCreateContainer onPress={() => handleAddGroup()}>
+      <FeatherIcon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW }}/>
+      <GroupCreateText>新しくグループを作成する</GroupCreateText>
+    </GroupCreateContainer>
+          
   )
   
-
   return (
     <Modal isVisible={showTransferModal} swipeDirection='down' onSwipeComplete={handleCloseModal}>
       <Container>

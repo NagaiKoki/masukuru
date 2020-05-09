@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import { Alert } from 'react-native';
 import Modal from 'react-native-modal';
@@ -28,14 +29,18 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
     })
   }
 
-  React.useEffect(() => {
-    setIsLoading(false)
-    getUserName()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(false)
+      getUserName()
+    }, [])
+  )
 
   if (isLoading) {
     return <Loading size="small"/>
   }
+
+  console.log(userName)
 
   // 招待された場合の処理
   const InvitedGroupJoin = async () => {
