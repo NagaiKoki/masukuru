@@ -74,12 +74,16 @@ const HomeScreen = ({ navigation, route }) => {
         if (update.isAvailable) {
           await Updates.fetchUpdateAsync();
           await Updates.reloadAsync();
+        } else {
+          return;
         }
       } catch (e) {
         console.log(e)
       }
     }
-    updateModule()
+    if (!__DEV__) {
+      updateModule()
+    }
   }, [])
 
   const EventFlatListDisplay = (

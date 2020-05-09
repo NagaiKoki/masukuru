@@ -3,6 +3,7 @@ import Modal from 'react-native-modal';
 import { Alert, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import Analitycs from '../../../config/amplitude'
+import * as StoreReview from 'expo-store-review';
 import { COLORS } from '../../../constants/Styles';
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -111,7 +112,13 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           weight9: weight9,
           createdAt: ""
         }, ...state,])
-      }).then(() => {
+      }).then( async () => {
+        await db.collection('users').doc(user.uid).get().then( async snap => {
+          if (StoreReview.isAvailableAsync() && !snap.data().isReviewed) {
+            await StoreReview.requestReview();
+            await snap.ref.update({ isReviewed: true })
+          }
+        })
         Analitycs.track('add menu')
         setIsVisible(false)
       }).then(() => {
