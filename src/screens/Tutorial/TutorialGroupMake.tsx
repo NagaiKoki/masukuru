@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Alert } from 'react-native';
 import Modal from 'react-native-modal';
-import { factoryRandomCode } from '../../lib/randomTextFactory';
+import Analitycs from '../../config/amplitude'
 import Icon from 'react-native-vector-icons/AntDesign';
 // import constans
 import { COLORS } from '../../constants/Styles';
@@ -60,6 +60,7 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
             imageUrl: currentUser.photoURL,
             currentGroupId: snapshot.docs[0].data().ownerId
           }).then(function() {
+            Analitycs.track('join group')
             route.params.setIsChange(true)
             navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
             route.params.setIsChange(false)
