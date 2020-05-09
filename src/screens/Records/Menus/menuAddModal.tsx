@@ -2,6 +2,7 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import Modal from 'react-native-modal';
 import { Alert, ScrollView } from 'react-native';
 import styled from 'styled-components';
+import Analitycs from '../../../config/amplitude'
 import { COLORS } from '../../../constants/Styles';
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -111,6 +112,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           createdAt: ""
         }, ...state,])
       }).then(() => {
+        Analitycs.track('add menu')
         setIsVisible(false)
       }).then(() => {
         const lengthToString = String(currentUserMenuLength)

@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import firebase, { db } from '../config/firebase';
+import Analitycs from '../config/amplitude'
 // import constans
 import { INVITE_ERROR_MESSAGE } from '../constants/errorMessage'
 
@@ -52,6 +53,7 @@ export const joinInvitedGroup = async (invitedCode: string, currentGroupId: stri
           currentGroupId: groupId
         })
 
+        Analitycs.track('join group')
         return batch.commit()
       }
     }

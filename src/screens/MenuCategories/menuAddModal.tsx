@@ -3,6 +3,7 @@ import Modal from 'react-native-modal';
 import { Alert, ScrollView } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import Analitycs from '../../config/amplitude'
 import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 import Icon from 'react-native-vector-icons/AntDesign';
 import { factoryRandomCode } from '../../lib/randomTextFactory';
@@ -113,6 +114,7 @@ const MenuAddModal = (props: MenuAddModalProps) => {
           createdAt: ""
         }, ...state,])
       }).then(() => {
+        Analitycs.track('add menu')
         setIsVisible(false)
       }).then(() => {
         const lengthToString = String(currentUserMenuLength)
