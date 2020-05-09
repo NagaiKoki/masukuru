@@ -71,7 +71,6 @@ const HomeScreen = ({ navigation, route }) => {
     const updateModule = async () => {
       try {
         const update = await Updates.checkForUpdateAsync();
-        console.log(update.isAvailable)
         if (update.isAvailable) {
           await Updates.fetchUpdateAsync();
           await Updates.reloadAsync();
