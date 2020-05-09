@@ -3,6 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import {StyleSheet, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
+import * as Updates from 'expo-updates';
 // import icons
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -65,6 +66,22 @@ const HomeScreen = ({ navigation, route }) => {
     getHeaderNav()
     },[currentGroupId])
   );
+
+  React.useEffect(() => {
+    const updateModule = async () => {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+        console.log(update.isAvailable)
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+          await Updates.reloadAsync();
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    updateModule()
+  }, [])
 
   const EventFlatListDisplay = (
     <EventFlatList
