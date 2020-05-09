@@ -13,11 +13,13 @@ export const initialize = () => {
 }
 
 export const track = (event) => {
+  if (__DEV__) return;
   initialize()
   Amplitude.logEvent(event)
 }
 
 export const getUserId = (userId) => {
+  if (__DEV__) return;
   initialize()
   Amplitude.setUserId(userId)
 }
