@@ -115,8 +115,6 @@ const TranferModal = (props: TransferModalProps) => {
       setDrawerIsLoading(true)
       setTimeout( async () => {
         const groupId = await createGroup()
-        console.log('hoge')
-        console.log(groupId)
         navigation.navigate('main', { currentGroupId: groupId })
         setCurrentGroupId(groupId)
         setGroups(state => 

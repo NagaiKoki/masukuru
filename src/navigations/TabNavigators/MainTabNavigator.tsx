@@ -28,7 +28,7 @@ const MainTabNavigator = () => {
           focused
           ? color = `${COLORS.BASE_MUSCLEW}`
           : color = `${COLORS.SUB_BLACK}`
-          return <Icon name={iconName} size={20} color={color} />;
+          return <Icon name={iconName} size={23} color={color} />;
         }
       })}
       tabBarOptions={{
@@ -36,8 +36,8 @@ const MainTabNavigator = () => {
         inactiveTintColor: `${COLORS.SUB_BLACK}`,
         style: {
           height: '9%',
-          paddingTop: '2%',
-          paddingBottom: '2%'
+          paddingTop: '3%',
+          paddingBottom: -1
         }
       }}
     >
@@ -45,7 +45,7 @@ const MainTabNavigator = () => {
         name='ホーム' 
         component={MainNavigator}
         options={{
-          tabBarLabel: 'グループ' 
+          tabBarLabel: '' 
         }}
       />
 
@@ -53,7 +53,7 @@ const MainTabNavigator = () => {
         name='きろく' 
         component={RecordNavigator}
         options={{
-          tabBarLabel: 'きろく' 
+          tabBarLabel: '' 
         }}
       />
 
@@ -61,13 +61,16 @@ const MainTabNavigator = () => {
         name='おしらせ' 
         component={NotificationNavigator}
         options={{
-          tabBarLabel: 'おしらせ' 
+          tabBarLabel: '' 
         }}
       />
 
       <Tab.Screen 
         name='マイページ' 
         component={MyPageNavigator} 
+        options={{
+          tabBarLabel: '' 
+        }}
       />
     </Tab.Navigator>
   );

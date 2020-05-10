@@ -40,8 +40,6 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
     return <Loading size="small"/>
   }
 
-  console.log(userName)
-
   // 招待された場合の処理
   const InvitedGroupJoin = async () => {
     try {
