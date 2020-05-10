@@ -194,8 +194,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     alignItems: 'center',
-    // backgroundColor: COLORS.BASE_BACKGROUND,
-    // paddingTop: 10
   }
 })
 

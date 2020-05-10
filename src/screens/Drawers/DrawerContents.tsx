@@ -142,7 +142,7 @@ const DrawerContent = (props: DrawerProps) => {
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleInviteCodeOnClick}>
           <Icon name="plus" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-          <DrawerListItemText>友達をグループに招待する</DrawerListItemText>
+          <DrawerListItemText>グループに招待する</DrawerListItemText>
         </DrawerListItemBtn>
       </DrawerListItem>
     )
@@ -166,7 +166,7 @@ const DrawerContent = (props: DrawerProps) => {
       <DrawerListItem>
         <DrawerListItemBtn block onPress={handleInvitedCodeOnClick}>
           <Icon name="envelope-open" size={25} color={COLORS.BASE_BORDER_COLOR}/>
-          <DrawerListItemText>招待されたグループに参加する</DrawerListItemText>
+          <DrawerListItemText>グループに参加する</DrawerListItemText>
         </DrawerListItemBtn>
       </DrawerListItem>
     )
@@ -198,10 +198,15 @@ const DrawerContent = (props: DrawerProps) => {
   return (
     <DrawerContainer>
       <DrawerUserContainer>
-        <DrawerUserImage>
-          <UserImage user={user} width={100} height={100} borderRadius={60} />
-        </DrawerUserImage>
-        <DrawerUserName>{user.displayName}</DrawerUserName>
+        <UserWrapper>
+          <DrawerUserImage>
+            <UserImage user={user} width={60} height={60} borderRadius={60} />
+          </DrawerUserImage>
+          <DrawerUserName>{user.displayName}</DrawerUserName>
+        </UserWrapper>
+        <GroupBtnWrapper onPress={ () => setShowTransferModal(true) }>
+          <Icon name="options" size={20} style={{ marginLeft: 4, marginTop: 2, color: COLORS.BASE_MUSCLEW }} />
+        </GroupBtnWrapper>
       </DrawerUserContainer>
 
       <DrawerListContainer>
@@ -247,27 +252,44 @@ const DrawerContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
   height: 100%;
   width: 100%;
-  padding-top: 100px;
+  padding-top: 50px;
   padding-left: 30px;
 `
 
 const DrawerUserContainer = styled.View`
+  width: 95%;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 0 auto;
+`
+
+const UserWrapper = styled.View`
+`
+
+const GroupBtnWrapper = styled.TouchableOpacity`
+  margin-right: 10px;
+  border-width: 1px;
+  height: 30px;
+  width: 30px;
+  border-radius: 60px;
   flex-direction: row;
   align-items: center;
+  border-color: ${COLORS.BASE_MUSCLEW};
+
 `
 
 const DrawerUserName = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  padding-left: 10px;
+  margin-top: 10px;
 `
 
 const DrawerUserImage = styled.View`
 `
 
 const DrawerListContainer = styled.View`
-  padding: 20px 0;
+  padding-top: 40px;
 `
 
 const DrawerListItemBtn = styled.TouchableOpacity`
