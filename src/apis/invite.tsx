@@ -3,6 +3,8 @@ import firebase, { db } from '../config/firebase';
 import Analitycs from '../config/amplitude'
 // import constans
 import { INVITE_ERROR_MESSAGE } from '../constants/errorMessage'
+// import lib
+import { isDeveloper } from '../lib/checkDeveloper'
 
 // 現在１人で所属しているグループから、招待されたグループに移動する場合の処理
 export const joinInvitedGroup = async (invitedCode: string, currentGroupId: string) => {
@@ -11,7 +13,7 @@ export const joinInvitedGroup = async (invitedCode: string, currentGroupId: stri
   await db.collection('groups').where('inviteCode', '==', invitedCode).get().then( async snapshot => {
     if (snapshot.empty) {
       Alert.alert(INVITE_ERROR_MESSAGE.EMPTY_GROUP)
-    } else if (currentGroupId === snapshot.docs[0].data().ownerId) {
+    } else if (currentGroupId === snapshot.docs[0].ref.id) {
       Alert.alert(INVITE_ERROR_MESSAGE.SAME_GROUP_CODE)
     } else {
       const groupUsersRef = db.collectionGroup('groupUsers').where('uid', '==', currentUser.uid)
@@ -29,7 +31,7 @@ export const joinInvitedGroup = async (invitedCode: string, currentGroupId: stri
 
       if (groupUsersLength >= 5) {
         return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_USERS)
-      } else if (groupsLength >= 5) {
+      } else if (groupsLength >= 5 && !isDeveloper(currentUser.uid)) {
         return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
       } else {
         groupId =  snapshot.docs[0].id

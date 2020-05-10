@@ -12,6 +12,7 @@ import { UnSettingGroupImage, GroupImage } from '../Image/groupImage';
 import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
 import truncateText from '../../lib/truncateText'
+import { isDeveloper } from '../../lib/checkDeveloper'
 // import apis
 import { createGroup } from '../../apis/Groups/create'
 import firebase, { db } from '../../config/firebase';
@@ -109,7 +110,8 @@ const TranferModal = (props: TransferModalProps) => {
       groupsLength = snap.size
     })
 
-    if (groupsLength >= 5) {
+    
+    if (groupsLength >= 5 && !isDeveloper(currentUser.uid)) {
       return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
     } else {
       setDrawerIsLoading(true)
@@ -196,7 +198,7 @@ const TranferModal = (props: TransferModalProps) => {
     </GroupCreateContainer>
           
   )
-  
+
   return (
     <Modal isVisible={showTransferModal} swipeDirection='down' onSwipeComplete={handleCloseModal}>
       <Container>
@@ -221,7 +223,7 @@ const Container = styled.View`
   width: 110%;
   border-radius: 10px;
   padding: 5px 0px 30px 0;
-  max-height: 500px;
+  max-height: 900px;
   min-height: 400px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;

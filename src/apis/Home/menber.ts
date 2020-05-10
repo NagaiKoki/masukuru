@@ -5,7 +5,6 @@ import { GroupUserType } from '../../types/user'
 
 export const getMemberList = (groupId: string, setUserList: Dispatch<SetStateAction<GroupUserType[]>>) => {
   let list = []
-  console.log(groupId)
   db.collection('groups').doc(groupId).collection('groupUsers').get()
   .then(querySnapshot => {
     querySnapshot.forEach(doc => {
