@@ -40,6 +40,7 @@ const requestBelongGroup = async (groupIds: string[]) => {
         return;
       } else {
         let groupData = doc.data()
+        groupData.id = doc.ref.id
         const users = await requestGroupUsers(id)
         groupData.users = users
         groups.push(groupData)

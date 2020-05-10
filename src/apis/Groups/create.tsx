@@ -7,60 +7,75 @@ import { COMMON_ERROR_MESSSAGE, INVITE_ERROR_MESSAGE } from '../../constants/err
 
 //  １人のグループを作成
 export const createGroup = async (navigation?: any, route?: any, userName?: string) => {
-  
   try {
     const groupRef = db.collection('groups')
     const currentUser = firebase.auth().currentUser
     let name = userName ? userName : currentUser.displayName
-  
-    await groupRef.doc(currentUser.uid).set({
+    const TemporaryGroupId = factoryRandomCode(28)
+    let batch = db.batch()
+
+    await groupRef.doc(TemporaryGroupId).set({
       ownerId: currentUser.uid,
       name: name
-    }).then( async () => {
-      await currentUser.updateProfile({ displayName: name })
-    }).then(() => {
-      createGroupUser(currentUser)
-    }).then(() => {
-      saveInvideCode(currentUser)
-    }).then((snapshot) => {
-      if (!!route && !!route.params.setIsChange) {
-        route.params.setIsChange(true)
-        navigation.navigate('home', { currentGroupId: currentUser.uid })
-        route.params.setIsChange(false)
-      } else {
-        navigation.navigate('TutorialUsage', { currentGroupId: currentUser.uid })
-      }
     })
-    
+   
+    await currentUser.updateProfile({ displayName: name })
+    await createGroupUser(currentUser, TemporaryGroupId, batch)
+    await updateCurrentGroupId(TemporaryGroupId, currentUser.uid, batch)
+    await saveInvideCode(TemporaryGroupId, batch)
+
+  batch.commit().then(() => {
+    if (!!route && !!route.params.setIsChange) {
+      route.params.setIsChange(true)
+      navigation.navigate('home', { currentGroupId: TemporaryGroupId })
+      route.params.setIsChange(false)
+    };
+  })
+
+  return TemporaryGroupId;
+   
   } catch (error) {
     Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
   }
 }
 
 // グループ配下に自身のグループユーザーを作成
-const createGroupUser = (currentUser: firebase.User) => {
+const createGroupUser = async (currentUser: firebase.User, TemporaryGroupId: string, batch: any) => {
   const groupRef = db.collection('groups')
-  groupRef.doc(currentUser.uid).collection('groupUsers').doc(currentUser.uid).set({
+
+  await batch.set(groupRef.doc(TemporaryGroupId).collection('groupUsers').doc(currentUser.uid), {
     uid: currentUser.uid,
     name: currentUser.displayName,
     imageUrl: currentUser.photoURL,
-    currentGroupId: currentUser.uid
+    currentGroupId: TemporaryGroupId
   })
 }
 
+// 現在所属しているグループのcurrentGroupIdを更新する
+const updateCurrentGroupId = async (TemporaryGroupId: string, uid: string, batch: any) => {
+  const groupUsersRef = db.collectionGroup('groupUsers').where('uid', '==', uid)
+  await groupUsersRef.get().then(snap => {
+    snap.forEach(doc => {
+      batch.update(doc.ref, {
+        currentGroupId: TemporaryGroupId
+      })
+    })
+  })
+}
+ 
 // 招待コードを保存する
-const saveInvideCode = (currentUser: firebase.User) => {
+const saveInvideCode = async (TemporaryGroupId: string, batch: any) => {
   const groupRef = db.collection('groups')
   const inviteCode = factoryRandomCode(6);
-  groupRef.where('inviteCode', '==', inviteCode).get()
-  .then(snapshot => {
+  await groupRef.where('inviteCode', '==', inviteCode).get()
+  .then( async snapshot => {
     if (snapshot.empty) {
-      groupRef.doc(currentUser.uid).update({
+      await batch.update(groupRef.doc(TemporaryGroupId), {
         inviteCode: inviteCode
       })
     } else {
       // まずないが、ランダムな生成コードが他のグループと被った場合に、再帰処理をする
-      saveInvideCode(currentUser);
+      saveInvideCode(TemporaryGroupId, batch);
     };
   })
 };

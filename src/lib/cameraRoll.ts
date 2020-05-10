@@ -55,7 +55,6 @@ export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>,
     const IsCameraEnable = async () => {
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        console.log(status)
         if (status !== 'granted') {
           Alert.alert("カメラロールを許可してください。");
           return false;

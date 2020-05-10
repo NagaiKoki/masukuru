@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import {StyleSheet, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import styled from 'styled-components';
@@ -194,8 +194,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     alignItems: 'center',
-    // backgroundColor: COLORS.BASE_BACKGROUND,
-    // paddingTop: 10
   }
 })
 

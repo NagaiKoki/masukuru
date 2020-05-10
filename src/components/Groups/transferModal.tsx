@@ -12,6 +12,7 @@ import { UnSettingGroupImage, GroupImage } from '../Image/groupImage';
 import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
 import truncateText from '../../lib/truncateText'
+import { isDeveloper } from '../../lib/checkDeveloper'
 // import apis
 import { createGroup } from '../../apis/Groups/create'
 import firebase, { db } from '../../config/firebase';
@@ -32,6 +33,7 @@ type responseGroupType = {
   name: string
   imageUrl: string
   groupName: string
+  id: string
   ownerId: string
   users: Users[]
 }
@@ -108,19 +110,21 @@ const TranferModal = (props: TransferModalProps) => {
       groupsLength = snap.size
     })
 
-    if (groupsLength >= 5) {
+    
+    if (groupsLength >= 5 && !isDeveloper(currentUser.uid)) {
       return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
     } else {
       setDrawerIsLoading(true)
       setTimeout( async () => {
-        await createGroup()
-        navigation.navigate('main', { currentGroupId: currentUser.uid })
-        setCurrentGroupId(currentUser.uid)
+        const groupId = await createGroup()
+        navigation.navigate('main', { currentGroupId: groupId })
+        setCurrentGroupId(groupId)
         setGroups(state => 
           [...state, { name: currentUser.displayName, 
                        inviteCode: '',
                        imageUrl: '',
                        groupName: '',
+                       id: groupId,
                        ownerId: currentUser.uid, 
                        users: [{ imageUrl: currentUser.photoURL, name: currentUser.displayName, uid: currentUser.uid }]}])
         setIsloading(false)
@@ -133,8 +137,8 @@ const TranferModal = (props: TransferModalProps) => {
   // グループ作成モーダル表示
   const handleAddGroup = () => 
     Alert.alert(
-      "本当にグループを作成しますか？",
-      "※ 自身がホストのグループは\n1つまでしか作成できません。",
+      "グループを作成しますか？",
+      "※ 所属できるグループは5つまでです。",
       [
         {
           text: "キャンセル",
@@ -174,10 +178,10 @@ const TranferModal = (props: TransferModalProps) => {
           userImages.push(user.imageUrl)
         })
         return (
-          <GroupNameWrapper key={group.ownerId} onPress={() => handleTransfer(group.ownerId)}>
+          <GroupNameWrapper key={group.id} onPress={() => handleTransfer(group.id)}>
             {renderGroupImage(group.imageUrl, userImages)}
             <GroupNameText>{group.groupName ? group.groupName : truncateText(userNames, 40)}</GroupNameText>
-            {currentGroupId === group.ownerId ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
+            {currentGroupId === group.id ? <Icon name="check-circle" size={25}  style={{ color: '#32CD32' }}/> : null}
           </GroupNameWrapper>
         )
       })
@@ -188,13 +192,12 @@ const TranferModal = (props: TransferModalProps) => {
 
   // 新規グループ作成ボタンを表示
   const renderCreateGroupBtn = (
-    !host ? <GroupCreateContainer onPress={() => handleAddGroup()}>
-              <FeatherIcon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW }}/>
-              <GroupCreateText>新しくグループを作成する</GroupCreateText>
-            </GroupCreateContainer>
-          : null
+    <GroupCreateContainer onPress={() => handleAddGroup()}>
+      <FeatherIcon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW }}/>
+      <GroupCreateText>新しくグループを作成する</GroupCreateText>
+    </GroupCreateContainer>
+          
   )
-  
 
   return (
     <Modal isVisible={showTransferModal} swipeDirection='down' onSwipeComplete={handleCloseModal}>
@@ -220,7 +223,7 @@ const Container = styled.View`
   width: 110%;
   border-radius: 10px;
   padding: 5px 0px 30px 0;
-  max-height: 500px;
+  max-height: 900px;
   min-height: 400px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
