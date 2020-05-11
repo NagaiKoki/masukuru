@@ -41,7 +41,7 @@ const FeedbackModal = (props: FeedbackProps) => {
           </FeedbackBtn>
           <FeedbackBtn onPress={handleInquiryLink}>
             <Icon name='questioncircleo' size={25} />
-            <FeedbackText>お問い合わせ</FeedbackText>
+            <FeedbackText>お問い合わせする</FeedbackText>
           </FeedbackBtn>
         </FeedbackWrapper>
       </Container>

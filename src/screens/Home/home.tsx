@@ -296,7 +296,7 @@ const EventFlatList = styled.FlatList`
 `
 
 const EventFlatListButton = styled.TouchableOpacity`
-  margin-top: 20px;
+  margin-top: 15px;
   background-color: #FFF;
   border: 1px solid #e9e9e9;
   height: 75px;
