@@ -3,20 +3,14 @@ import { ScrollView } from 'react-native'
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
-// import components
-import Event from '../../components/Events'
-
 
 const RecordScreen = ({ navigation }) => {
-  const [eventModal, setEventModal] = useState(false);
   return (
     <RecordContainer>
       <ScrollView>
-      <EventView>
-        <Event navigation={navigation} eventModal={eventModal} setEventModal={setEventModal}/>
-      </EventView>
+        
       </ScrollView>
-      <EventAddBtn onPress={() => setEventModal(true)}>
+      <EventAddBtn onPress={() => navigation.navigate('recordModal') }>
         <Icon name="plus" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </EventAddBtn>
     </RecordContainer>
@@ -26,9 +20,6 @@ const RecordScreen = ({ navigation }) => {
 const RecordContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-`
-
-const EventView = styled.View`
 `
 
 const EventAddBtn = styled.TouchableOpacity`

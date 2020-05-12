@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainNavigator from '../MainNavigator';
-import RecordNavigator from './RecordNavigator'
+import RecordNavigator from './Records/RecordNavigator'
 import NotificationNavigator from './NotificationNavigator';
 import MyPageNavigator from './MyPageNavigator';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
