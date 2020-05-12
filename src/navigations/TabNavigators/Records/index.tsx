@@ -53,6 +53,7 @@ const HeaderBackBtn = styled.TouchableOpacity`
 `
 
 const HeaderBackTitle = styled.Text`
-  color: ${COLORS.BASE_WHITE};
   margin-left: 10px;
+  font-size: 16px;
+  color: ${COLORS.BASE_WHITE};
 `
