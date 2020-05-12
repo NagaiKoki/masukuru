@@ -13,6 +13,9 @@ const RecordModalNavigator = () => {
         name="recordModal"
         component={RecordModalScreen}
         options={{
+          headerTitle: 'fsfs',
+          headerBackTitle: 'ddfdsf',
+          headerTintColor: 'red',
           headerShown: false
         }}
       />

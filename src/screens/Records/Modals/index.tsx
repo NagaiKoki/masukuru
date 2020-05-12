@@ -18,13 +18,10 @@ export default RecordModalScreen;
 const RecordModalContainer = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-  padding-top: 100px;
 `
 
 const RecordModalAddItemBtn = styled.TouchableOpacity``
 
-const RecordModalAddItemText = styled.Text`
-`
+const RecordModalAddItemText = styled.Text``
 
-const RecordModalTitle = styled.Text`
-`
+const RecordModalTitle = styled.Text``

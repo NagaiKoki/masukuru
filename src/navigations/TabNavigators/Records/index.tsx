@@ -1,5 +1,7 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native'
+import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 // import navigators
 import RecordCardsNavigator from './Cards'
@@ -7,6 +9,7 @@ import RecordModalNavigator from './Modals/RecordModalNavigator'
 
 const RecordNavigator = () => {
   const RecordStack = createStackNavigator();
+  const navigation = useNavigation()
   
   return (
     <RecordStack.Navigator initialRouteName='きろく' mode="modal">
@@ -25,7 +28,18 @@ const RecordNavigator = () => {
         name="recordModal"
         component={RecordModalNavigator}
         options={{
-          headerShown: false
+          headerLeft: () => {
+            return (
+              <HeaderBackBtn onPress={ () => navigation.navigate('record') }>
+                <HeaderBackTitle>キャンセル</HeaderBackTitle>
+              </HeaderBackBtn>
+            )
+          },
+          headerTitle: '記録をのこす',
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE
         }}
       />
     </RecordStack.Navigator>
@@ -33,3 +47,12 @@ const RecordNavigator = () => {
 }
 
 export default RecordNavigator
+
+const HeaderBackBtn = styled.TouchableOpacity`
+
+`
+
+const HeaderBackTitle = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  margin-left: 10px;
+`
