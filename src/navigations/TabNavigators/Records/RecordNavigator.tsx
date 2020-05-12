@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MenuScreen from '../../../screens/Records/Menus'
 import RecordScreen from '../../../screens/Records'
+import AddRecordScreen from '../../../screens/Records/Modals/addRecord'
 import RecordModalNavigator from './RecordModalNavigator'
 import { COLORS } from '../../../constants/Styles'
 
@@ -13,7 +14,7 @@ const RecordNavigator = () => {
   }
 
   return (
-    <RecordStack.Navigator initialRouteName='きろく' mode="modal">
+    <RecordStack.Navigator initialRouteName='きろく'>
       <RecordStack.Screen
         name="record"
         component={RecordScreen}
@@ -27,6 +28,14 @@ const RecordNavigator = () => {
       <RecordStack.Screen 
         name="recordModal"
         component={RecordModalNavigator}
+        options={{
+          headerShown: false
+        }}
+      />
+
+      <RecordStack.Screen 
+        name="addRecordModal"
+        component={AddRecordScreen}
         options={{
           headerShown: false
         }}
