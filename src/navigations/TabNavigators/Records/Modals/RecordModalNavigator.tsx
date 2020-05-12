@@ -1,15 +1,25 @@
 import React from 'react'
-import RecordModalScreen from '../../../screens/Records/Modals'
 import { createStackNavigator } from '@react-navigation/stack'
+// import screens
+import RecordModalScreen from '../../../../screens/Records/Modals'
+import AddRecordScreen from '../../../../screens/Records/Modals/addRecord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
 
   return (
-    <RecordModalStack.Navigator mode="modal">
+    <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
         name="recordModal"
         component={RecordModalScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+
+      <RecordModalStack.Screen 
+        name="addRecordModal"
+        component={AddRecordScreen}
         options={{
           headerShown: false
         }}
