@@ -252,7 +252,7 @@ const DrawerContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
   height: 100%;
   width: 100%;
-  padding-top: 50px;
+  padding-top: 70px;
   padding-left: 30px;
 `
 
@@ -289,7 +289,7 @@ const DrawerUserImage = styled.View`
 `
 
 const DrawerListContainer = styled.View`
-  padding-top: 40px;
+  padding-top: 20px;
 `
 
 const DrawerListItemBtn = styled.TouchableOpacity`

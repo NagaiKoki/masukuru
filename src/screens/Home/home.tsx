@@ -63,11 +63,7 @@ const HomeScreen = ({ navigation, route }) => {
         headerTitle: groupName ? groupName : 'ホーム'
       });
     }
-    getHeaderNav()
-    },[currentGroupId])
-  );
 
-  React.useEffect(() => {
     const updateModule = async () => {
       try {
         const update = await Updates.checkForUpdateAsync();
@@ -81,10 +77,13 @@ const HomeScreen = ({ navigation, route }) => {
         console.log(e)
       }
     }
+
     if (!__DEV__) {
       updateModule()
     }
-  }, [])
+    getHeaderNav()
+    },[currentGroupId])
+  );
 
   const EventFlatListDisplay = (
     <EventFlatList
