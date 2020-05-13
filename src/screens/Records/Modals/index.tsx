@@ -4,11 +4,10 @@ import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const RecordModalScreen = ({ navigation }) => {
-
   return (
     <RecordModalContainer>
       <RecordModalTitle>トレーニングお疲れ様でした♪</RecordModalTitle>
-      <RecordModalAddItemBtnForm>
+      <RecordModalAddItemBtnForm onPress={ () => navigation.push('addRecordModal') }>
         <Icon name="pluscircleo" size={16} style={{ color: COLORS.SUB_BLACK }} />
         <RecordModalAddItemText>トレーニングを追加する</RecordModalAddItemText>
       </RecordModalAddItemBtnForm>

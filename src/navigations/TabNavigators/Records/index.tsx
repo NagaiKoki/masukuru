@@ -28,18 +28,7 @@ const RecordNavigator = () => {
         name="recordModal"
         component={RecordModalNavigator}
         options={{
-          headerLeft: () => {
-            return (
-              <HeaderBackBtn onPress={ () => navigation.navigate('record') }>
-                <HeaderBackTitle>キャンセル</HeaderBackTitle>
-              </HeaderBackBtn>
-            )
-          },
-          headerTitle: '記録をのこす',
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE
+          headerShown: false,
         }}
       />
     </RecordStack.Navigator>
@@ -47,13 +36,3 @@ const RecordNavigator = () => {
 }
 
 export default RecordNavigator
-
-const HeaderBackBtn = styled.TouchableOpacity`
-
-`
-
-const HeaderBackTitle = styled.Text`
-  margin-left: 10px;
-  font-size: 16px;
-  color: ${COLORS.BASE_WHITE};
-`
