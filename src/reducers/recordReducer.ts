@@ -4,7 +4,7 @@ import { ADD_RECORD, DELETE_RECORD } from '../actions/actionTypes'
 import { RecordState, RecordActionTypes } from '../types/Record/'
 
 const initialState: RecordState = {
-  records: []
+  recordItems: []
 }
 
 const recordReducer = (

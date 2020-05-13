@@ -4,6 +4,8 @@ import createSagaMiddleware from 'redux-saga'
 import { RecordState } from '../types/Record'
 // import reducers
 import recordReducer from './recordReducer'
+// import saga
+import rootSaga from '../sagas/'
 
 export interface RootState {
   records: RecordState
@@ -19,6 +21,6 @@ const store = createStore(
   middleware
 )
 
-sagaMiddleware.run(null)
+sagaMiddleware.run(rootSaga)
 
 export default store

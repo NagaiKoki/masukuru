@@ -19,7 +19,7 @@ const AddRecordScreen = ({ navigation }) => {
 
   return (
     <AddRecordContainer>
-
+      
     </AddRecordContainer>    
   )
 }

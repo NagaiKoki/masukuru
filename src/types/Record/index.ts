@@ -2,7 +2,14 @@
 import { ADD_RECORD, DELETE_RECORD } from '../../actions/actionTypes'
 
 export interface RecordState {
-  records: []
+  recordItems: RecordItemType[]
+}
+
+export type RecordItemType = {
+  name: string
+  set: number
+  amounsts: number[]
+  weights: number[]
 }
 
 // 記録の追加

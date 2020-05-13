@@ -11,7 +11,7 @@ import DrawerContent from '../screens/Drawers/DrawerContents';
 import firebase, { db } from '../config/firebase';
 import { COLORS } from '../constants/Styles';
 
-const Navigator = () => {
+const Navigator = (props: any) => {
   const [isLoading, setIsLoading] = useState(true)
   const [currentUser, setUser] = useState(null);
   const [isChange, setIsChange] = useState(false)

@@ -9,11 +9,10 @@ import RecordModalNavigator from './Modals/RecordModalNavigator'
 
 const RecordNavigator = () => {
   const RecordStack = createStackNavigator();
-  const navigation = useNavigation()
-  
-  return (
-    <RecordStack.Navigator initialRouteName='きろく' mode="modal">
 
+  return (
+    
+    <RecordStack.Navigator initialRouteName='きろく' mode="modal">
       <RecordStack.Screen
         name="record"
         component={RecordCardsNavigator}
@@ -32,6 +31,7 @@ const RecordNavigator = () => {
         }}
       />
     </RecordStack.Navigator>
+    
   )
 }
 
