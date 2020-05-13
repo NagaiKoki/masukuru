@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native'
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
-// import components
-import Event from '../../components/Events'
+// import types
+import { RecordProps } from '../../containers/record'
 
 
-const RecordScreen = ({ navigation }) => {
-  const [eventModal, setEventModal] = useState(false);
+const RecordScreen = (props: RecordProps) => {
+  console.log(props)
+  const { actions, records, navigation } = props
+
   return (
     <RecordContainer>
       <ScrollView>
-      <EventView>
-        <Event navigation={navigation} eventModal={eventModal} setEventModal={setEventModal}/>
-      </EventView>
       </ScrollView>
-      <EventAddBtn onPress={() => setEventModal(true)}>
+      <EventAddBtn onPress={() => navigation.navigate('recordModal') }>
         <Icon name="plus" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </EventAddBtn>
     </RecordContainer>
@@ -26,9 +25,6 @@ const RecordScreen = ({ navigation }) => {
 const RecordContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-`
-
-const EventView = styled.View`
 `
 
 const EventAddBtn = styled.TouchableOpacity`

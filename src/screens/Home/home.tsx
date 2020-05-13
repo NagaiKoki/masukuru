@@ -20,7 +20,7 @@ import { MenuType } from '../../types/menu';
 // import apis
 import { getMemberList } from '../../apis/Home/menber'
 import { eventCategoryList } from '../../lib/eventCategory'
-import { requestGroupMenuList } from '../../apis/Homes/groupMenuList'
+import { requestGroupMenuList } from '../../apis/Home/groupMenuList'
   
 const HomeScreen = ({ navigation, route }) => {
   const [MemberModal, setMemberModal] = useState(false);
