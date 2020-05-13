@@ -7,10 +7,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { RecordProps } from '../../containers/record'
 
 
-const RecordScreen = (props: RecordProps) => {
-  console.log(props)
-  const { actions, records, navigation } = props
-
+const RecordScreen = ({ navigation }) => {
   return (
     <RecordContainer>
       <ScrollView>

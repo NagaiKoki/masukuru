@@ -2,8 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
+// import types
+import { RecordProps } from '../../../containers/record'
 
-const RecordModalScreen = ({ navigation }) => {
+const RecordModalScreen = (props: RecordProps) => {
+  console.log(props)
+  const { actions, records, navigation } = props
+  const { recordItems } = records
+  const { addRecord } = actions
+
   return (
     <RecordModalContainer>
       <RecordModalTitle>トレーニングお疲れ様でした♪</RecordModalTitle>

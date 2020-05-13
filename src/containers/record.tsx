@@ -6,7 +6,7 @@ import { RecordItemType } from '../types/Record'
 // import actions
 import { addRecord } from '../actions/'
 // import screens
-import RecordScreen from '../screens/Records'
+import RecordModalScreen from '../screens/Records/Modals'
 
 export interface RecordProps {
   navigation: any
@@ -33,4 +33,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecordScreen)
+)(RecordModalScreen)

@@ -4,8 +4,9 @@ import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
 // import screens
-import RecordModalScreen from '../../../../screens/Records/Modals'
 import AddRecordScreen from '../../../../screens/Records/Modals/addRecord'
+// import containers
+import RecordContainer from '../../../../containers/record'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -15,7 +16,7 @@ const RecordModalNavigator = () => {
     <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
         name="recordModal"
-        component={RecordModalScreen}
+        component={RecordContainer}
         options={{
           headerLeft: () => {
             return (
