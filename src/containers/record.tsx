@@ -2,20 +2,23 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import types
 import { RootState } from '../reducers'
-import { RecordItemType } from '../types/Record'
+import { RecordState } from '../types/Record'
 // import actions
-import { addRecord, onChangeTrainingName} from '../actions/'
+import {
+  addRecord, 
+  onChangeTrainingName, 
+  onChangeSetCount
+} from '../actions/'
 // import screens
 import RecordModalScreen from '../screens/Records/Modals'
 
 export interface RecordProps {
   navigation: any
-  records: {
-    recordItems: RecordItemType[]
-  }
+  records: RecordState,
   actions: {
     addRecord: () => void
     onChangeTrainingName: (name: string) => void
+    onChangeSetCount: (payload: number) => void
   }
 }
 
@@ -27,7 +30,12 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    actions: bindActionCreators({ addRecord, onChangeTrainingName }, dispatch)
+    actions: bindActionCreators({
+      addRecord, 
+      onChangeTrainingName, 
+      onChangeSetCount 
+    }
+    , dispatch)
   }
 }
 

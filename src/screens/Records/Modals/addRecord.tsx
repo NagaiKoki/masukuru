@@ -1,13 +1,17 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components'
-import { StackScreenProps } from '@react-navigation/core';
 import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../../constants/Styles'
 // import components
 import AddRecordForm from '../../../components/Records/AddRecordForm'
 
 const AddRecordScreen = ({route,  navigation}) => {
-  const { onChangeTrainingName } = route.params.params
+  const {
+    temporaryName,
+    temporarySet,
+    onChangeTrainingName, 
+    onChangeSetCount 
+  } = route.params.params
 
   useFocusEffect(
     useCallback(() => {
@@ -24,8 +28,11 @@ const AddRecordScreen = ({route,  navigation}) => {
 
   return (
     <AddRecordContainer>
-      <AddRecordForm 
+      <AddRecordForm
+        temporaryName={temporaryName}
+        temporarySet={temporarySet}
         onChangeTrainingName={onChangeTrainingName}
+        onChangeSetCount={onChangeSetCount}
       />
     </AddRecordContainer>    
   )

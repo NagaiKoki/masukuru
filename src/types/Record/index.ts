@@ -1,15 +1,24 @@
 // import
-import { ADD_RECORD, DELETE_RECORD, ON_CHANGE_TRAINING_NAME } from '../../actions/actionTypes'
+import { 
+  ADD_RECORD, 
+  DELETE_RECORD, 
+  ON_CHANGE_TRAINING_NAME, 
+  ON_CHANG_SET_COUNT 
+} from '../../actions/actionTypes'
 
 export interface RecordState {
   recordItems: RecordItemType[]
-  trainingName: string
+  temporaryName: string
+  temporarySet: number
+  temporaryamounts: number[]
+  temporaryWeights: number[]
 }
 
 export type RecordItemType = {
+  id: number
   name: string
   set: number
-  amounsts: number[]
+  amounts: number[]
   weights: number[]
 }
 
@@ -29,8 +38,15 @@ export interface OnChangeTrainingName {
   name: string
 }
 
+// セット数の検知
+export interface OnChangeSetCount {
+  type: typeof ON_CHANG_SET_COUNT
+  payload: number
+}
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
-  OnChangeTrainingName
+  OnChangeTrainingName |
+  OnChangeSetCount
 
