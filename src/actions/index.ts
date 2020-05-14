@@ -1,5 +1,5 @@
 // import actionTypes
-import { ADD_RECORD, DELETE_RECORD } from './actionTypes'
+import { ADD_RECORD, DELETE_RECORD, ON_CHANGE_TRAINING_NAME } from './actionTypes'
 // import types
 import { RecordActionTypes } from '../types/Record'
 
@@ -14,5 +14,13 @@ export const addRecord = (): RecordActionTypes => {
 export const deleteRecord = (): RecordActionTypes => {
   return {
     type: DELETE_RECORD
+  }
+}
+
+// 種目の文字検知
+export const onChangeTrainingName = (name: string): RecordActionTypes => {
+  return {
+    type: ON_CHANGE_TRAINING_NAME,
+    name
   }
 }

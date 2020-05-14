@@ -1,8 +1,9 @@
 // import
-import { ADD_RECORD, DELETE_RECORD } from '../../actions/actionTypes'
+import { ADD_RECORD, DELETE_RECORD, ON_CHANGE_TRAINING_NAME } from '../../actions/actionTypes'
 
 export interface RecordState {
   recordItems: RecordItemType[]
+  trainingName: string
 }
 
 export type RecordItemType = {
@@ -22,7 +23,14 @@ export interface DeleteRecord {
   type: typeof DELETE_RECORD
 }
 
+// 種目名の検知
+export interface OnChangeTrainingName {
+  type: typeof ON_CHANGE_TRAINING_NAME
+  name: string
+}
+
 export type RecordActionTypes =
   AddRecord |
-  DeleteRecord
+  DeleteRecord |
+  OnChangeTrainingName
 

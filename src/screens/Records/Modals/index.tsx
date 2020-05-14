@@ -6,15 +6,18 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { RecordProps } from '../../../containers/record'
 
 const RecordModalScreen = (props: RecordProps) => {
-  console.log(props)
   const { actions, records, navigation } = props
   const { recordItems } = records
-  const { addRecord } = actions
+  const { addRecord, onChangeTrainingName } = actions
+
+  const params = {
+    onChangeTrainingName: onChangeTrainingName
+  }
 
   return (
     <RecordModalContainer>
       <RecordModalTitle>トレーニングお疲れ様でした♪</RecordModalTitle>
-      <RecordModalAddItemBtnForm onPress={ () => navigation.push('addRecordModal') }>
+      <RecordModalAddItemBtnForm onPress={ () => navigation.push('addRecordModal', { params: params } ) }>
         <Icon name="pluscircleo" size={16} style={{ color: COLORS.SUB_BLACK }} />
         <RecordModalAddItemText>トレーニングを追加する</RecordModalAddItemText>
       </RecordModalAddItemBtnForm>
