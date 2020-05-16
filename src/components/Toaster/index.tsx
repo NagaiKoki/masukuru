@@ -17,7 +17,7 @@ const Toast = (props: ToastProps) => {
     <Container>
       <Snackbar
         visible={!!String(message)}
-        duration={4000}
+        duration={3000}
         onDismiss={onDismiss}
         style={{ backgroundColor: type === "error" ? COLORS.ERROR_MESSAGE : COLORS.SUCCESS_MESSAGE }}
       >

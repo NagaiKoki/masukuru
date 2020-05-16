@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -17,33 +18,79 @@ const RecordModalScreen = (props: RecordProps) => {
   } = props
   const { recordItems } = records
   const { deleteRecord, onChangeTrainingName } = actions
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <HeaderNextBtn onPress={handleNavigationWord}>
+              <HeaderNextTitle>次へ</HeaderNextTitle>
+            </HeaderNextBtn>
+          )
+        }
+      })
+    }, [recordItems])
+  )
+
+  // 一言画面へ遷移
+  const handleNavigationWord = () => {
+    if (!recordItems.length) {
+      Alert.alert('記録を追加してください。')
+    } else {
+      
+    }
+  }
   
   // 記録フォームへ遷移
   const handleNavigateAddForm = () => {
     onChangeTrainingName('')
-    navigation.navigate('addRecordModal', { hoge: true })
+    navigation.navigate('addRecordModal', { temporary: true })
   }
 
   // 記録の削除
-  const handleDeleteRecordItem = (record: RecordItemType) => {
-    deleteRecord(record)
-  }
-
+  const handleDeleteRecordItem = (record: RecordItemType) => 
+    Alert.alert(
+      "このトレーニングを削除します。",
+      "本当によろしいですか？",
+      [
+        {
+          text: "Cansel",
+          style: "cancel"
+        },
+        {
+          text: "OK",
+          onPress: () => { deleteRecord(record) }
+        }
+      ],
+      { cancelable: false }
+    )
+  
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
     onChangeTrainingName(record.name)
-    navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true } )
+    navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true, isMuscle: record.isMuscle } )
   }
 
   const renderRecordItems = () => {
     const recordsComponent = recordItems.map((item: RecordItemType) => {
-      const renderAmountText = item.amounts.join('回, ') + '回, '
-      const renderWeightText = item.weights.join('kg, ') + 'kg '
-      const rednerText = item.name + ', ' + renderAmountText + renderWeightText
+      let renderAmountText: string
+      let renderWeightText: string
+      let renderText: string
+      if (item.isMuscle) {
+        renderAmountText = item.amounts.join('回, ') + '回, '
+        renderWeightText = item.weights.join('kg, ') + 'kg '
+        renderText = item.name + ', ' + renderAmountText + renderWeightText
+      } else if (item.isMuscle === false) {
+        const renderDistance = item.distance ? item.distance + 'km, ' : ''
+        const renderTime = item.time ? item.time + '分 ' : ''
+        renderText = item.name + ', ' + renderDistance + renderTime
+      }
+
       return (
         <React.Fragment key={item.id}>
           <RecordItemBtn onPress={ () => handleUpdateRecordItme(item) }>
-            <RecordItemText>{ rednerText.length >= 30 ? truncateText(rednerText, 30) + '...' : rednerText}</RecordItemText>
+            <RecordItemText>{ renderText.length >= 30 ? truncateText(renderText, 30) + '...' : renderText}</RecordItemText>
             <Icon name="edit" size={16} style={{ color: COLORS.BASE_BLACK }} />
           </RecordItemBtn>
           <RecordDeleteBtn onPress={ () => handleDeleteRecordItem(item)}>
@@ -85,6 +132,15 @@ const RecordModalContainer = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
   padding: 30px 10px;
+`
+
+const HeaderNextBtn = styled.TouchableOpacity`
+`
+
+const HeaderNextTitle = styled.Text`
+  margin-right: 15px;
+  font-size: 16px;
+  color: ${COLORS.BASE_WHITE};
 `
 
 const RecordModalTitle = styled.Text`

@@ -5,6 +5,8 @@ import {
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
   UPDATE_RECORD,
+  ON_CHANGE_DISTANCE,
+  ON_CHANGE_TIME,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -12,6 +14,8 @@ import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/
 const initialState: RecordState = {
   recordItems: [],
   temporaryName: '',
+  temporaryTime: 0,
+  temporaryDistance: 0,
   temporaryamounts: [],
   temporaryWeights: [],
   error: '',
@@ -31,7 +35,9 @@ const recordReducer = (
         recordItems: updateRecordItems,
         temporaryName: '',
         temporaryamounts: [],
-        temporaryWeights: []
+        temporaryWeights: [],
+        temporaryDistance: 0,
+        temporaryTime: 0
       }
     }
 
@@ -40,7 +46,7 @@ const recordReducer = (
       const { record } = action
       const { recordItems } = state
       const updateRecordItems = recordItems.filter((item: RecordItemType) => {
-        item.id !== record.id
+        return item.id !== record.id
       })
       return {
         ...state,
@@ -71,6 +77,24 @@ const recordReducer = (
         ...state,
         temporaryName: name
       }
+    }
+
+    // 距離検知
+    case ON_CHANGE_DISTANCE: {
+      const { payload } = action
+      return {
+        ...state,
+        temporaryDistance: payload
+      }
+    }
+
+    // 時間検知
+    case ON_CHANGE_TIME: {
+     const { payload } = action
+     return {
+       ...state,
+       temporaryTime: payload
+     }
     }
 
     // エラーのセット

@@ -174,7 +174,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
 const AddRecordWrapper = styled.View`
   margin: 0 auto;
   width: 90%;
-  padding: 20px 0;
+  padding: 20px 0 40px 0;
 `
 
 const AddRecordItem = styled.View`

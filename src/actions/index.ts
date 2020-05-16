@@ -5,6 +5,8 @@ import {
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
   UPDATE_RECORD,
+  ON_CHANGE_DISTANCE,
+  ON_CHANGE_TIME,
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType } from '../types/Record'
@@ -46,5 +48,21 @@ export const onChangeTrainingName = (name: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_TRAINING_NAME,
     name
+  }
+}
+
+// 距離の検知
+export const onChangeDistance = (payload: number): RecordActionTypes => {
+  return {
+    type: ON_CHANGE_DISTANCE,
+    payload
+  }
+}
+
+// 時間の検知
+export const onChangeTime = (payload: number): RecordActionTypes => {
+  return {
+    type: ON_CHANGE_TIME,
+    payload
   }
 }

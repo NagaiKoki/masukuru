@@ -49,6 +49,7 @@ export const INVITE_ERROR_MESSAGE = {
 }
 
 export const RECORD_ERROR_MESSAGE = {
-  EMPTY_NAME: 'トレーニング名を入力してください',
-  EMPTY_AMOUNT: '回数を入力してください'
+  EMPTY_NAME: 'トレーニング名を入力してください。',
+  EMPTY_AMOUNT: '回数を入力してください。',
+  EMPTY_TIME_OR_DISTANCE: '時間か距離のどちらかを入力してください。',
 }

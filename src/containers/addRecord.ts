@@ -9,6 +9,8 @@ import {
   updateRecord,
   setRecordError,
   onChangeTrainingName, 
+  onChangeDistance,
+  onChangeTime
 } from '../actions'
 // import screens
 import AddRecordScreen from '../screens/Records/Modals/addRecord'
@@ -22,6 +24,8 @@ export interface AddRecordProps {
     updateRecord: (record: RecordItemType) => void
     setRecordError: (error: string) => void
     onChangeTrainingName: (name: string) => void
+    onChangeDistance: (distance: number) => void
+    onChangeTime: (time: number) => void
   }
 }
 
@@ -38,6 +42,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       updateRecord,
       setRecordError,
       onChangeTrainingName, 
+      onChangeDistance,
+      onChangeTime
     }
     , dispatch)
   }
