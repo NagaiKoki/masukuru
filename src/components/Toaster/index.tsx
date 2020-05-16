@@ -29,6 +29,8 @@ const Toast = (props: ToastProps) => {
 
 const Container = styled.View`
   width: 100%;
+  position: absolute;
+  top: 7%;
 `
 
 const Message = styled.Text`

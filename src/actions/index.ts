@@ -3,22 +3,32 @@ import {
   ADD_RECORD, 
   DELETE_RECORD, 
   ON_CHANGE_TRAINING_NAME, 
-  ON_CHANG_SET_COUNT, 
+  SET_RECORD_ERROR,
 } from './actionTypes'
 // import types
-import { RecordActionTypes } from '../types/Record'
+import { RecordActionTypes, RecordItemType } from '../types/Record'
 
-// 記録の削除
-export const addRecord = (): RecordActionTypes => {
+// 記録の追加
+export const addRecord = (record: RecordItemType): RecordActionTypes => {
   return {
-    type: ADD_RECORD
+    type: ADD_RECORD,
+    record
   }
 }
 
 // 記録の削除
-export const deleteRecord = (): RecordActionTypes => {
+export const deleteRecord = (record: RecordItemType): RecordActionTypes => {
   return {
-    type: DELETE_RECORD
+    type: DELETE_RECORD,
+    record
+  }
+}
+
+// エラーのセット
+export const setRecordError = (error: string): RecordActionTypes => {
+  return {
+    type: SET_RECORD_ERROR,
+    error
   }
 }
 
@@ -27,13 +37,5 @@ export const onChangeTrainingName = (name: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_TRAINING_NAME,
     name
-  }
-}
-
-// セット数
-export const onChangeSetCount = (payload: number): RecordActionTypes => {
-  return {
-    type: ON_CHANG_SET_COUNT,
-    payload
   }
 }

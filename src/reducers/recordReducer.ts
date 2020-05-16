@@ -3,7 +3,7 @@ import {
   ADD_RECORD, 
   DELETE_RECORD, 
   ON_CHANGE_TRAINING_NAME, 
-  ON_CHANG_SET_COUNT, 
+  SET_RECORD_ERROR,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -11,9 +11,9 @@ import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/
 const initialState: RecordState = {
   recordItems: [],
   temporaryName: '',
-  temporarySet: 0,
   temporaryamounts: [],
-  temporaryWeights: []
+  temporaryWeights: [],
+  error: '',
 }
 
 const recordReducer = (
@@ -21,18 +21,33 @@ const recordReducer = (
   action: RecordActionTypes
 ): RecordState => {
   switch (action.type) {
+    // 記録の追加
     case ADD_RECORD: {
+      const { record } = action
+      const updateRecordItems = [...state.recordItems, record]
       return {
-        ...state
+        ...state,
+        recordItems: updateRecordItems,
+        temporaryName: '',
+        temporaryamounts: [],
+        temporaryWeights: []
       }
     }
 
+    // 記録の削除
     case DELETE_RECORD: {
+      const { record } = action
+      const { recordItems } = state
+      const updateRecordItems = recordItems.filter((item: RecordItemType) => {
+        item.id !== record.id
+      })
       return {
-        ...state
+        ...state,
+        recordItems: updateRecordItems
       }
     }
 
+    // トレーニング名検知
     case ON_CHANGE_TRAINING_NAME: {
       const { name } = action
       return {
@@ -41,11 +56,12 @@ const recordReducer = (
       }
     }
 
-    case ON_CHANG_SET_COUNT: {
-      const { payload } = action
+    // エラーのセット
+    case SET_RECORD_ERROR: {
+      const { error } = action
       return {
         ...state,
-        temporarySet: payload
+        error
       }
     }
 

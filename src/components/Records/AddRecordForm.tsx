@@ -1,50 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState , Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components'
 import { COLORS } from '../../constants/Styles'
 import Icon from 'react-native-vector-icons/AntDesign';
+import { KeyboardAvoidingView } from 'react-native';
 
 interface AddRecordFormProps {
   temporaryName: string,
-  temporarySet: number,
+  setAmount1: Dispatch<SetStateAction<number>>
+  setAmount2: Dispatch<SetStateAction<number>>
+  setAmount3: Dispatch<SetStateAction<number>>
+  setAmount4: Dispatch<SetStateAction<number>>
+  setAmount5: Dispatch<SetStateAction<number>>
+  setAmount6: Dispatch<SetStateAction<number>>
+  setAmount7: Dispatch<SetStateAction<number>>
+  setAmount8: Dispatch<SetStateAction<number>>
+  setAmount9: Dispatch<SetStateAction<number>>
+  setWeight1: Dispatch<SetStateAction<number>>
+  setWeight2: Dispatch<SetStateAction<number>>
+  setWeight3: Dispatch<SetStateAction<number>>
+  setWeight4: Dispatch<SetStateAction<number>>
+  setWeight5: Dispatch<SetStateAction<number>>
+  setWeight6: Dispatch<SetStateAction<number>>
+  setWeight7: Dispatch<SetStateAction<number>>
+  setWeight8: Dispatch<SetStateAction<number>>
+  setWeight9: Dispatch<SetStateAction<number>>
   onChangeTrainingName: (name: string) => void
-  onChangeSetCount: (payload: number) => void
 }
 
 const AddRecordForm = (props: AddRecordFormProps) => {
   const [count, setCount] = useState(3)
-  const [amount1, setAmount1] = useState(0)
-  const [amount2, setAmount2] = useState(0)
-  const [amount3, setAmount3] = useState(0)
-  const [weight1, setWeight1] = useState(0)
-  const [weight2, setWeight2] = useState(0)
-  const [weight3, setWeight3] = useState(0)
   const { 
     temporaryName,
-    temporarySet,
     onChangeTrainingName, 
-    onChangeSetCount 
+    setAmount1,
+    setAmount2,
+    setAmount3,
+    setAmount4,
+    setAmount5,
+    setAmount6,
+    setAmount7,
+    setAmount8,
+    setAmount9,
+    setWeight1,
+    setWeight2,
+    setWeight3,
+    setWeight4,
+    setWeight5,
+    setWeight6,
+    setWeight7,
+    setWeight8,
+    setWeight9
   } = props
 
+  // トレーニング名の編集検知
   const handleOnChangeName = (name: string) => {
     onChangeTrainingName(name)
   }
 
-  const handleOnChangeSet = (set: number) => {
-    onChangeSetCount(set)
-  }
-
+  // 回数のstate更新
   const handleSetAmount = (size: number, number: number) => {
     eval("setAmount" + size + `(${number})`)
   }
 
+  // 重さのstate更新
   const handleSetWeight = (size: number, number: number) => {
     eval("setWeight" + size + `(${number})`)
   }
 
-  const handleAddSet = () => [
+  // セット数の追加
+  const handleAddSet = () => {
+    if (count >= 9) return
     setCount( count + 1 )
-  ]
+  }
 
+  // セット数の削除
   const handleDeleteSet = () => {
     if (count <= 1) return
     setCount( count - 1 )
@@ -59,7 +88,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
             <AddUnitForm
               placeholder="0"
               autoCapitalize={'none'}
-              maxLength={1}
+              maxLength={3}
               keyboardType={'numeric'}
               autoCorrect={ false }
               onChangeText={ (text: number) => handleSetAmount(size, text) }
@@ -68,7 +97,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
             <AddUnitForm
               placeholder="0"
               autoCapitalize={'none'}
-              maxLength={1}
+              maxLength={3}
               keyboardType={'numeric'}
               autoCorrect={ false }
               onChangeText={ (text: number) => handleSetWeight(size, text) }
@@ -89,7 +118,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
           autoCapitalize={'none'}
           autoCorrect={ false }
           defaultValue={temporaryName}
-          onChangeText={ (text: string) => handleOnChangeName(text) }
+          onChangeText={ (text: string) => onChangeTrainingName(text) }
         />
       </AddRecordItem>
       {renderUnitForm()}
@@ -102,7 +131,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
           <Icon name="minus" size={20} style={{ color: COLORS.SUB_BLACK }} />
         </AddSetBtn>
       </AddSetWrapper>
-    </AddRecordWrapper>
+    </AddRecordWrapper> 
   )
 }
 
@@ -137,7 +166,7 @@ const AddUnitForm = styled.TextInput`
   align-self: center;
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
-  width: 15%;
+  width: 17%;
   margin: 10px 0;
   margin-right: 10px;
   padding: 15px;
@@ -149,10 +178,10 @@ const TrainingNameForm = styled.TextInput`
   align-self: center;
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
-  width: 65%;
+  width: 70%;
   margin: 8px 0;
   padding: 15px;
-  font-size: 16px;
+  font-size: 15px;
   color: ${COLORS.BASE_BLACK};
 `
 

@@ -47,3 +47,8 @@ export const INVITE_ERROR_MESSAGE = {
   SAME_GROUP_CODE: 'この招待コードは、現在所属するグループの招待コードです。',
   EMPTY_GROUP: '入力した招待コードは存在しません。今一度、招待コードをお確かめください。'
 }
+
+export const RECORD_ERROR_MESSAGE = {
+  EMPTY_NAME: 'トレーニング名を入力してください',
+  EMPTY_AMOUNT: '回数を入力してください'
+}

@@ -3,15 +3,15 @@ import {
   ADD_RECORD, 
   DELETE_RECORD, 
   ON_CHANGE_TRAINING_NAME, 
-  ON_CHANG_SET_COUNT 
+  SET_RECORD_ERROR,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
   recordItems: RecordItemType[]
   temporaryName: string
-  temporarySet: number
   temporaryamounts: number[]
   temporaryWeights: number[]
+  error: string
 }
 
 export type RecordItemType = {
@@ -25,11 +25,19 @@ export type RecordItemType = {
 // 記録の追加
 export interface AddRecord {
   type: typeof ADD_RECORD
+  record: RecordItemType
 }
 
 // 記録の削除
 export interface DeleteRecord {
   type: typeof DELETE_RECORD
+  record: RecordItemType
+}
+
+// エラーのセット
+export interface SetRecordError {
+  type: typeof SET_RECORD_ERROR
+  error: string
 }
 
 // 種目名の検知
@@ -38,15 +46,11 @@ export interface OnChangeTrainingName {
   name: string
 }
 
-// セット数の検知
-export interface OnChangeSetCount {
-  type: typeof ON_CHANG_SET_COUNT
-  payload: number
-}
-
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
   OnChangeTrainingName |
-  OnChangeSetCount
+  SetRecordError
+  
+
 

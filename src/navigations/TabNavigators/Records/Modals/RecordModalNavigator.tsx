@@ -7,6 +7,7 @@ import { COLORS } from '../../../../constants/Styles'
 import AddRecordScreen from '../../../../screens/Records/Modals/addRecord'
 // import containers
 import RecordContainer from '../../../../containers/record'
+import AddRecordContainer from '../../../../containers/addRecord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -35,7 +36,7 @@ const RecordModalNavigator = () => {
 
       <RecordModalStack.Screen 
         name="addRecordModal"
-        component={AddRecordScreen}
+        component={AddRecordContainer}
       />
     </RecordModalStack.Navigator>
   )
