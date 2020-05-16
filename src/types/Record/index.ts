@@ -4,6 +4,7 @@ import {
   DELETE_RECORD, 
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
+  UPDATE_RECORD,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -34,6 +35,12 @@ export interface DeleteRecord {
   record: RecordItemType
 }
 
+// 記録の追加
+export interface UpdateRecord {
+  type: typeof UPDATE_RECORD
+  record: RecordItemType
+}
+
 // エラーのセット
 export interface SetRecordError {
   type: typeof SET_RECORD_ERROR
@@ -49,6 +56,7 @@ export interface OnChangeTrainingName {
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
+  UpdateRecord |
   OnChangeTrainingName |
   SetRecordError
   

@@ -12,12 +12,14 @@ import { RECORD_ERROR_MESSAGE } from '../../../constants/errorMessage'
 
 const AddRecordScreen = (props: AddRecordProps) => {
   const { 
-    actions, 
+    actions,
     records,
-    navigation 
+    navigation,
+    route
   } = props
-  const { addRecord, setRecordError, onChangeTrainingName } = actions
+  const { addRecord, updateRecord, setRecordError, onChangeTrainingName } = actions
   const { recordItems, temporaryName, error } = records
+  const { recordItem, isUpdate } = route.params
 
   const [amount1, setAmount1] = useState(0)
   const [amount2, setAmount2] = useState(0)
@@ -48,11 +50,16 @@ const AddRecordScreen = (props: AddRecordProps) => {
         headerTintColor: COLORS.BASE_WHITE,
         headerBackTitleVisible: false,
         headerRight: () => {
-          return (
-            <HeaderSaveBtn onPress={ () => onSubmitRecord() }>
-              <HeaderSaveTitle>追加する</HeaderSaveTitle>
-            </HeaderSaveBtn>
-          )
+            { return (
+              isUpdate ?  
+              <HeaderSaveBtn onPress={ () => onSubmitRecord() }>
+                <HeaderSaveTitle>更新する</HeaderSaveTitle>
+              </HeaderSaveBtn> 
+            : <HeaderSaveBtn onPress={ () => onSubmitRecord() }>
+                <HeaderSaveTitle>追加する</HeaderSaveTitle>
+              </HeaderSaveBtn>
+            )  
+          }
         },
       })
     }, [
@@ -85,6 +92,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
     setRecordError('')
   }
 
+  // 重さと回数を配列にまとめる
   const convertToArry = () => {
     const amountArry = []
     const weightArry = []
@@ -98,6 +106,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
     return { amountArry, weightArry }
   }
 
+  // 記録の追加 or 更新
   const onSubmitRecord = () => {
     if (!temporaryName) {
       return setRecordError(RECORD_ERROR_MESSAGE.EMPTY_NAME)
@@ -106,14 +115,14 @@ const AddRecordScreen = (props: AddRecordProps) => {
       return setRecordError(RECORD_ERROR_MESSAGE.EMPTY_AMOUNT)
     }
     const { amountArry, weightArry } = convertToArry()
-    const records = {
-      id: recordItems.length + 1,
+    const record = {
+      id:  isUpdate ? recordItems.length : recordItems.length + 1,
       name: temporaryName,
       set: amountArry.length,
       amounts: amountArry,
       weights: weightArry, 
     }
-    addRecord(records)
+    isUpdate ? updateRecord(record) : addRecord(record)
     navigation.goBack()
   }
 

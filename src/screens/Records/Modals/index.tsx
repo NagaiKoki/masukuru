@@ -15,12 +15,13 @@ const RecordModalScreen = (props: RecordProps) => {
     records,
     navigation 
   } = props
-  const {  recordItems } = records
-  const { deleteRecord } = actions
+  const { recordItems } = records
+  const { deleteRecord, onChangeTrainingName } = actions
   
   // 記録フォームへ遷移
   const handleNavigateAddForm = () => {
-    navigation.navigate('addRecordModal')
+    onChangeTrainingName('')
+    navigation.navigate('addRecordModal', { hoge: true })
   }
 
   // 記録の削除
@@ -28,16 +29,21 @@ const RecordModalScreen = (props: RecordProps) => {
     deleteRecord(record)
   }
 
+  // 記録の編集フォームへ移動
+  const handleUpdateRecordItme = (record: RecordItemType) => {
+    onChangeTrainingName(record.name)
+    navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true } )
+  }
+
   const renderRecordItems = () => {
     const recordsComponent = recordItems.map((item: RecordItemType) => {
-      const renderAmountText = item.amounts.join('回, ')
-      const renderWeightText = item.weights.join('kg, ')
+      const renderAmountText = item.amounts.join('回, ') + '回, '
+      const renderWeightText = item.weights.join('kg, ') + 'kg '
       const rednerText = item.name + ', ' + renderAmountText + renderWeightText
-
       return (
         <React.Fragment key={item.id}>
-          <RecordItemBtn>
-            <RecordItemText>{truncateText(rednerText, 30)}...</RecordItemText>
+          <RecordItemBtn onPress={ () => handleUpdateRecordItme(item) }>
+            <RecordItemText>{ rednerText.length >= 30 ? truncateText(rednerText, 30) + '...' : rednerText}</RecordItemText>
             <Icon name="edit" size={16} style={{ color: COLORS.BASE_BLACK }} />
           </RecordItemBtn>
           <RecordDeleteBtn onPress={ () => handleDeleteRecordItem(item)}>
@@ -48,12 +54,11 @@ const RecordModalScreen = (props: RecordProps) => {
     })
     return recordsComponent
   }
-
-  console.log(recordItems)
-
+  
   return (
     <RecordModalContainer >
-      <RecordModalTitle>トレーニングお疲れ様でした♪</RecordModalTitle>
+      <RecordModalTitle>お疲れ様でした♪</RecordModalTitle>
+      <RecordItemTitle>本日のトレーニング</RecordItemTitle>
       { recordItems.length ? 
       <React.Fragment>
         {renderRecordItems()}
@@ -84,6 +89,14 @@ const RecordModalContainer = styled.ScrollView`
 
 const RecordModalTitle = styled.Text`
   text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 30px 0 20px 0;
+`
+
+const RecordItemTitle = styled.Text`
+  width: 90%;
+  align-self: center;
   font-weight: bold;
   font-size: 18px;
   margin: 30px 0 20px 0;

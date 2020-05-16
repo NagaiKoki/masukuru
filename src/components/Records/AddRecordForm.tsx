@@ -2,7 +2,7 @@ import React, { useState , Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components'
 import { COLORS } from '../../constants/Styles'
 import Icon from 'react-native-vector-icons/AntDesign';
-import { KeyboardAvoidingView } from 'react-native';
+import { TouchableHighlight } from 'react-native';
 
 interface AddRecordFormProps {
   temporaryName: string,
@@ -52,11 +52,6 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     setWeight9
   } = props
 
-  // トレーニング名の編集検知
-  const handleOnChangeName = (name: string) => {
-    onChangeTrainingName(name)
-  }
-
   // 回数のstate更新
   const handleSetAmount = (size: number, number: number) => {
     eval("setAmount" + size + `(${number})`)
@@ -89,6 +84,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
               placeholder="0"
               autoCapitalize={'none'}
               maxLength={3}
+              
               keyboardType={'numeric'}
               autoCorrect={ false }
               onChangeText={ (text: number) => handleSetAmount(size, text) }

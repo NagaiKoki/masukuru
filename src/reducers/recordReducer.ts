@@ -4,6 +4,7 @@ import {
   DELETE_RECORD, 
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
+  UPDATE_RECORD,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -40,6 +41,22 @@ const recordReducer = (
       const { recordItems } = state
       const updateRecordItems = recordItems.filter((item: RecordItemType) => {
         item.id !== record.id
+      })
+      return {
+        ...state,
+        recordItems: updateRecordItems
+      }
+    }
+
+    // 記録の更新
+    case UPDATE_RECORD: {
+      const { record } = action
+      const { recordItems } = state
+      const updateRecordItems = recordItems.map((item: RecordItemType, i: number) => {
+        if (item.id === record.id) {
+          return recordItems[i] = record
+        }
+        return item
       })
       return {
         ...state,

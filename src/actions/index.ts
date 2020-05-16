@@ -4,6 +4,7 @@ import {
   DELETE_RECORD, 
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
+  UPDATE_RECORD,
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType } from '../types/Record'
@@ -20,6 +21,14 @@ export const addRecord = (record: RecordItemType): RecordActionTypes => {
 export const deleteRecord = (record: RecordItemType): RecordActionTypes => {
   return {
     type: DELETE_RECORD,
+    record
+  }
+}
+
+// 記録の更新
+export const updateRecord = (record: RecordItemType): RecordActionTypes => {
+  return {
+    type: UPDATE_RECORD,
     record
   }
 }
