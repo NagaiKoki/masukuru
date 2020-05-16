@@ -6,6 +6,24 @@ import { TouchableHighlight } from 'react-native';
 
 interface AddRecordFormProps {
   temporaryName: string,
+  amount1: number
+  amount2: number
+  amount3: number
+  amount4: number
+  amount5: number
+  amount6: number
+  amount7: number
+  amount8: number
+  amount9: number
+  weight1: number
+  weight2: number
+  weight3: number
+  weight4: number
+  weight5: number
+  weight6: number
+  weight7: number
+  weight8: number
+  weight9: number
   setAmount1: Dispatch<SetStateAction<number>>
   setAmount2: Dispatch<SetStateAction<number>>
   setAmount3: Dispatch<SetStateAction<number>>
@@ -31,7 +49,25 @@ const AddRecordForm = (props: AddRecordFormProps) => {
   const [count, setCount] = useState(3)
   const { 
     temporaryName,
-    onChangeTrainingName, 
+    onChangeTrainingName,
+    amount1,
+    amount2,
+    amount3,
+    amount4,
+    amount5,
+    amount6,
+    amount7,
+    amount8,
+    amount9,
+    weight1,
+    weight2,
+    weight3,
+    weight4,
+    weight5,
+    weight6,
+    weight7,
+    weight8,
+    weight9,
     setAmount1,
     setAmount2,
     setAmount3,
@@ -54,11 +90,13 @@ const AddRecordForm = (props: AddRecordFormProps) => {
 
   // 回数のstate更新
   const handleSetAmount = (size: number, number: number) => {
+    if (!number) return
     eval("setAmount" + size + `(${number})`)
   }
 
   // 重さのstate更新
   const handleSetWeight = (size: number, number: number) => {
+    if (!number) return
     eval("setWeight" + size + `(${number})`)
   }
 
@@ -77,6 +115,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
   const renderUnitForm = () => {
     const components = []
     for(let size = 1; size <= count; size++) {
+      // console.log(eval('amount' + String(size)))
       components.push(
         <AddRecordItem key={size}>
           <AddRecordName>{`${size}セット目`}</AddRecordName>
@@ -84,7 +123,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
               placeholder="0"
               autoCapitalize={'none'}
               maxLength={3}
-              
+              defaultValue={String(eval('amount' + String(size)))}
               keyboardType={'numeric'}
               autoCorrect={ false }
               onChangeText={ (text: number) => handleSetAmount(size, text) }
@@ -94,6 +133,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
               placeholder="0"
               autoCapitalize={'none'}
               maxLength={3}
+              defaultValue={String(eval('weight' + String(size)))}
               keyboardType={'numeric'}
               autoCorrect={ false }
               onChangeText={ (text: number) => handleSetWeight(size, text) }

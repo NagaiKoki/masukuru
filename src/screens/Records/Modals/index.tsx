@@ -152,4 +152,8 @@ const RecordNewAddItemBtnText = styled.Text`
   color: ${COLORS.BASE_BLACK};
 `
 
-const RecordDeleteBtn = styled.TouchableOpacity``
+const RecordDeleteBtn = styled.TouchableOpacity`
+  width: 30px;
+  margin-left: auto;
+  margin-right: 25px;
+`

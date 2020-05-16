@@ -9,6 +9,7 @@ import Toast from '../../../components/Toaster'
 import { AddRecordProps } from '../../../containers/addRecord'
 // import constants
 import { RECORD_ERROR_MESSAGE } from '../../../constants/errorMessage'
+import record from '../../../containers/record';
 
 const AddRecordScreen = (props: AddRecordProps) => {
   const { 
@@ -87,6 +88,24 @@ const AddRecordScreen = (props: AddRecordProps) => {
     )
   )
 
+  useFocusEffect(
+    useCallback(() => {
+      reSetUnit()
+    }, [])
+  )
+
+  const reSetUnit = () => {
+    if (isUpdate) {
+      for(let size = 1; size <= recordItem.amounts.length; size++) {
+        eval('setAmount' + size + `(${recordItem.amounts[size - 1]})`)
+      }
+      for(let size = 1; size <= recordItem.weights.length; size++) {
+        const weight = recordItem.weights.length ? recordItem.weights[size - 1] : 0
+        return eval('setWeight' + size + `(${weight})`)
+      }
+    }
+  }
+
   // エラーの削除
   const handleErrorClear = () => {
     setRecordError('')
@@ -99,6 +118,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
     for(let size = 1; size <= 9; size++) {
       const amount: number = eval('amount' + size)
       const weight: number = eval('weight' + size)
+      console.log(amount)
       if (!amount || amount === 0) break
       amountArry.push(amount)
       weightArry.push(weight)
@@ -133,6 +153,24 @@ const AddRecordScreen = (props: AddRecordProps) => {
         onDismiss={handleErrorClear}
       />
       <AddRecordForm
+        amount1={amount1}
+        amount2={amount2}
+        amount3={amount3}
+        amount4={amount4}
+        amount5={amount5}
+        amount6={amount6}
+        amount7={amount7}
+        amount8={amount8}
+        amount9={amount9}
+        weight1={weight1}
+        weight2={weight2}
+        weight3={weight3}
+        weight4={weight4}
+        weight5={weight5}
+        weight6={weight6}
+        weight7={weight7}
+        weight8={weight8}
+        weight9={weight9}
         temporaryName={temporaryName}
         onChangeTrainingName={onChangeTrainingName}
         setAmount1={setAmount1}
