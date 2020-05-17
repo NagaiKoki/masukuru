@@ -26,8 +26,14 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
 // 記録取得
 export const requestFetchRecord = async (uid?: string, startAt?: any) => {
   const records = []
+  let ref;
   try {
-    await db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").limit(15).get().then(snap => {
+    if (uid && startAt) {
+      ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
+    } else if (uid && !startAt) {
+      ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").limit(5)
+    }
+    await ref.get().then(snap => {
       snap.forEach(doc => {
         records.push(doc.data())
       })

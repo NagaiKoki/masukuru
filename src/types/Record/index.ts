@@ -16,6 +16,9 @@ import {
   REQUEST_FETCH_RECORDS,
   SUCCESS_FETCH_RECORDS,
   FAILURE_FETCH_RECORDS,
+  REQUEST_NEXT_RECORDS,
+  SUCCESS_FETCH_NEXT_RECORDS,
+  FAILURE_FETCH_NEXT_RECORDS,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -127,7 +130,7 @@ export interface FailureSubmitRecords {
 // 記録の取得
 export interface RequestFetchRecords {
   type: typeof REQUEST_FETCH_RECORDS
-  uid: string
+  uid?: string
 }
 
 // 記録の成功
@@ -139,6 +142,25 @@ export interface SuccessFetchRecords {
 // 記録の失敗
 export interface FailureFetchRecords {
   type: typeof FAILURE_FETCH_RECORDS
+  error: string
+}
+
+// 記録の追加読み込み
+export interface RequestNextRecords {
+  type: typeof REQUEST_NEXT_RECORDS
+  uid?: string
+  lastRecord: ResponseRecordType
+}
+
+// 記録の追加読み込み成功
+export interface SuccessFetchNextRecords {
+  type: typeof SUCCESS_FETCH_NEXT_RECORDS
+  payload: ResponseRecordType[]
+}
+
+// 記録の追加読み込み失敗
+export interface FailureFetchNextRecords {
+  type: typeof FAILURE_FETCH_NEXT_RECORDS
   error: string
 }
 
@@ -156,4 +178,7 @@ export type RecordActionTypes =
   FailureSubmitRecords |
   RequestFetchRecords |
   SuccessFetchRecords |
-  FailureFetchRecords
+  FailureFetchRecords |
+  RequestNextRecords |
+  SuccessFetchNextRecords |
+  FailureFetchNextRecords

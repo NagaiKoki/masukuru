@@ -14,6 +14,9 @@ import {
   REQUEST_FETCH_RECORDS,
   SUCCESS_FETCH_RECORDS,
   FAILURE_FETCH_RECORDS,
+  REQUEST_NEXT_RECORDS,
+  SUCCESS_FETCH_NEXT_RECORDS,
+  FAILURE_FETCH_NEXT_RECORDS,
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../types/Record'
@@ -107,7 +110,7 @@ export const failureSubmitRecords = (error: string): RecordActionTypes => {
 }
 
 // 記録の取得
-export const requestFetchRecords = (uid: string): RecordActionTypes => {
+export const requestFetchRecords = (uid?: string): RecordActionTypes => {
   return {
     type: REQUEST_FETCH_RECORDS,
     uid
@@ -115,7 +118,7 @@ export const requestFetchRecords = (uid: string): RecordActionTypes => {
 }
 
 // 記録の取得成功
-export const SuccessFetchRecords = (payload: ResponseRecordType[]) => {
+export const SuccessFetchRecords = (payload: ResponseRecordType[]): RecordActionTypes => {
   return {
     type: SUCCESS_FETCH_RECORDS,
     payload
@@ -123,9 +126,34 @@ export const SuccessFetchRecords = (payload: ResponseRecordType[]) => {
 }
 
 // 記録の取得失敗
-export const failureFetchRecords = (error: string) => {
+export const failureFetchRecords = (error: string): RecordActionTypes => {
   return {
     type: FAILURE_FETCH_RECORDS,
+    error
+  }
+}
+
+// 記録の追加読み込みリクエスト
+export const requestNextRecords = (uid?: string, lastRecord?: ResponseRecordType): RecordActionTypes => {
+  return {
+    type: REQUEST_NEXT_RECORDS,
+    uid,
+    lastRecord
+  }
+}
+
+// 記録の追加読み込みリクエスト成功
+export const successFetchNextRecords = (payload: ResponseRecordType[]): RecordActionTypes => {
+  return {
+    type: SUCCESS_FETCH_NEXT_RECORDS,
+    payload
+  }
+}
+
+// 記録の追加読み込みリクエスト失敗
+export const failureFetchNextRecords = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_FETCH_NEXT_RECORDS,
     error
   }
 }

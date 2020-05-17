@@ -14,6 +14,9 @@ import {
   REQUEST_FETCH_RECORDS,
   SUCCESS_FETCH_RECORDS,
   FAILURE_FETCH_RECORDS,
+  REQUEST_NEXT_RECORDS,
+  SUCCESS_FETCH_NEXT_RECORDS,
+  FAILURE_FETCH_NEXT_RECORDS,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -182,6 +185,36 @@ const recordReducer = (
       return {
         ...state,
         error
+      }
+    }
+
+    // 記録の追加読み込み
+    case REQUEST_NEXT_RECORDS: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+
+    // 記録の追加読み込み成功
+    case SUCCESS_FETCH_NEXT_RECORDS: {
+      const { payload } = action
+      const { recordData } = state
+      const updateRecords = recordData.concat(payload)
+      return {
+        ...state,
+        recordData: updateRecords,
+        isLoading: false
+      }
+    }
+
+    // 記録の追加読み込み失敗
+    case FAILURE_FETCH_NEXT_RECORDS: {
+      const { error } = action
+      return {
+        ...state,
+        error: error,
+        isLoading: false
       }
     }
 

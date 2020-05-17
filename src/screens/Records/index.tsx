@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { ScrollView } from 'react-native'
+import { ScrollView, RefreshControl } from 'react-native'
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -14,14 +14,22 @@ import RecordList from '../../components/Records/recordList'
 const RecordScreen = (props: RecordProps) => {
   const { navigation, records, actions } = props
   const { recordData, isLoading } = records
-  const { requestFetchRecords } = actions
+  const { requestFetchRecords, requestNextRecords } = actions
   const currentUser = firebase.auth().currentUser
+  const lastRecord = recordData[recordData.length - 1]
+  const [isRefresh, setIsRefresh] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
       requestFetchRecords(currentUser.uid)
     }, [])
   )
+
+  const onRefresh = () => {
+    setIsRefresh(true)
+    requestFetchRecords(currentUser.uid)
+    setIsRefresh(false)
+  }
 
   const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
     const paddingToBottom = 20;
@@ -34,9 +42,16 @@ const RecordScreen = (props: RecordProps) => {
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
-            
+            requestNextRecords(currentUser.uid, lastRecord)
           }
         }}
+        scrollEventThrottle={400}
+        refreshControl={
+          <RefreshControl 
+            refreshing={isRefresh}
+            onRefresh={onRefresh}
+          />
+        }
       >
         <RecordList recordData={recordData} isLoading={isLoading} />
       </ScrollView>

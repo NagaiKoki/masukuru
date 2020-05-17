@@ -142,21 +142,24 @@ const RecordDataWrapper = styled.View`
 `
 
 const RecordDataName = styled.Text`
-  text-align: center;
   font-weight: bold;
   font-size: 15px;
 `
 
-const UnitDataWrapper = styled.View``
+const UnitDataWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 0;
+`
 
 const UnitDataItem = styled.View`
-
 `
 
 const UnitData = styled.Text`
   padding: 5px 0;
   color: ${COLORS.BASE_BLACK};
   font-size: 14px;
+  margin-right: 10px;
 `
 
 export default RecordItem
