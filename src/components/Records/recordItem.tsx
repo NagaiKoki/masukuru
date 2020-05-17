@@ -33,7 +33,7 @@ const RecordItem = (props: RecordItemProps) => {
     fetchUser()
   }, [])
 
-  if (!user) {
+  if (!user || !record) {
     return <RecordItemContainer></RecordItemContainer>
   }
 
@@ -84,7 +84,7 @@ const RecordItem = (props: RecordItemProps) => {
     <RecordItemContainer>
       <RecordItemUpper>
         {renderUser}
-        <RecordTimestampText>{convertTimestampToString(record.createdAt)}</RecordTimestampText>
+        <RecordTimestampText>{convertTimestampToString(createdAt)}</RecordTimestampText>
       </RecordItemUpper>
       <RecordWordText>{word}</RecordWordText>
       {renderRecordData}

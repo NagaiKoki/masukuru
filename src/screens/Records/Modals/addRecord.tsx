@@ -38,24 +38,24 @@ const AddRecordScreen = (props: AddRecordProps) => {
   } = records
   const { recordItem, isUpdate, isMuscle } = route.params
 
-  const [amount1, setAmount1] = useState(0)
-  const [amount2, setAmount2] = useState(0)
-  const [amount3, setAmount3] = useState(0)
-  const [amount4, setAmount4] = useState(0)
-  const [amount5, setAmount5] = useState(0)
-  const [amount6, setAmount6] = useState(0)
-  const [amount7, setAmount7] = useState(0)
-  const [amount8, setAmount8] = useState(0)
-  const [amount9, setAmount9] = useState(0)
-  const [weight1, setWeight1] = useState(0)
-  const [weight2, setWeight2] = useState(0)
-  const [weight3, setWeight3] = useState(0)
-  const [weight4, setWeight4] = useState(0)
-  const [weight5, setWeight5] = useState(0)
-  const [weight6, setWeight6] = useState(0)
-  const [weight7, setWeight7] = useState(0)
-  const [weight8, setWeight8] = useState(0)
-  const [weight9, setWeight9] = useState(0)
+  const [amount1, setAmount1] = useState<number | string>('')
+  const [amount2, setAmount2] = useState<number | string>('')
+  const [amount3, setAmount3] = useState<number | string>('')
+  const [amount4, setAmount4] = useState<number | string>('')
+  const [amount5, setAmount5] = useState<number | string>('')
+  const [amount6, setAmount6] = useState<number | string>('')
+  const [amount7, setAmount7] = useState<number | string>('')
+  const [amount8, setAmount8] = useState<number | string>('')
+  const [amount9, setAmount9] = useState<number | string>('')
+  const [weight1, setWeight1] = useState<number | string>('')
+  const [weight2, setWeight2] = useState<number | string>('')
+  const [weight3, setWeight3] = useState<number | string>('')
+  const [weight4, setWeight4] = useState<number | string>('')
+  const [weight5, setWeight5] = useState<number | string>('')
+  const [weight6, setWeight6] = useState<number | string>('')
+  const [weight7, setWeight7] = useState<number | string>('')
+  const [weight8, setWeight8] = useState<number | string>('')
+  const [weight9, setWeight9] = useState<number | string>('')
   const [isMuscleMenu, SetIsMuscleMenu] = useState(true)
   
   useFocusEffect(
@@ -123,7 +123,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
       }
       for(let size = 1; size <= recordItem.weights.length; size++) {
         const weight = recordItem.weights.length ? recordItem.weights[size - 1] : 0
-        return eval('setWeight' + size + `(${weight})`)
+        eval('setWeight' + size + `(${weight})`)
       }
     }
   }
@@ -157,7 +157,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
       return setRecordError(RECORD_ERROR_MESSAGE.EMPTY_AMOUNT)
     }
 
-    if (!isMuscleMenu && (!temporaryDistance || !temporaryTime)) {
+    if (!isMuscleMenu && (!temporaryDistance && !temporaryTime)) {
       return setRecordError(RECORD_ERROR_MESSAGE.EMPTY_TIME_OR_DISTANCE)
     }
     if (isMuscleMenu) {

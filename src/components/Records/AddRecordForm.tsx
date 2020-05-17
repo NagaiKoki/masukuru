@@ -6,42 +6,42 @@ import { TouchableHighlight } from 'react-native';
 
 interface AddRecordFormProps {
   temporaryName: string,
-  amount1: number
-  amount2: number
-  amount3: number
-  amount4: number
-  amount5: number
-  amount6: number
-  amount7: number
-  amount8: number
-  amount9: number
-  weight1: number
-  weight2: number
-  weight3: number
-  weight4: number
-  weight5: number
-  weight6: number
-  weight7: number
-  weight8: number
-  weight9: number
-  setAmount1: Dispatch<SetStateAction<number>>
-  setAmount2: Dispatch<SetStateAction<number>>
-  setAmount3: Dispatch<SetStateAction<number>>
-  setAmount4: Dispatch<SetStateAction<number>>
-  setAmount5: Dispatch<SetStateAction<number>>
-  setAmount6: Dispatch<SetStateAction<number>>
-  setAmount7: Dispatch<SetStateAction<number>>
-  setAmount8: Dispatch<SetStateAction<number>>
-  setAmount9: Dispatch<SetStateAction<number>>
-  setWeight1: Dispatch<SetStateAction<number>>
-  setWeight2: Dispatch<SetStateAction<number>>
-  setWeight3: Dispatch<SetStateAction<number>>
-  setWeight4: Dispatch<SetStateAction<number>>
-  setWeight5: Dispatch<SetStateAction<number>>
-  setWeight6: Dispatch<SetStateAction<number>>
-  setWeight7: Dispatch<SetStateAction<number>>
-  setWeight8: Dispatch<SetStateAction<number>>
-  setWeight9: Dispatch<SetStateAction<number>>
+  amount1: number | string
+  amount2: number | string
+  amount3: number | string
+  amount4: number | string
+  amount5: number | string
+  amount6: number | string
+  amount7: number | string
+  amount8: number | string
+  amount9: number | string
+  weight1: number | string
+  weight2: number | string
+  weight3: number | string
+  weight4: number | string
+  weight5: number | string
+  weight6: number | string
+  weight7: number | string
+  weight8: number | string
+  weight9: number | string
+  setAmount1: Dispatch<SetStateAction<number | string>>
+  setAmount2: Dispatch<SetStateAction<number | string>>
+  setAmount3: Dispatch<SetStateAction<number | string>>
+  setAmount4: Dispatch<SetStateAction<number | string>>
+  setAmount5: Dispatch<SetStateAction<number | string>>
+  setAmount6: Dispatch<SetStateAction<number | string>>
+  setAmount7: Dispatch<SetStateAction<number | string>>
+  setAmount8: Dispatch<SetStateAction<number | string>>
+  setAmount9: Dispatch<SetStateAction<number | string>>
+  setWeight1: Dispatch<SetStateAction<number | string>>
+  setWeight2: Dispatch<SetStateAction<number | string>>
+  setWeight3: Dispatch<SetStateAction<number | string>>
+  setWeight4: Dispatch<SetStateAction<number | string>>
+  setWeight5: Dispatch<SetStateAction<number | string>>
+  setWeight6: Dispatch<SetStateAction<number | string>>
+  setWeight7: Dispatch<SetStateAction<number | string>>
+  setWeight8: Dispatch<SetStateAction<number | string>>
+  setWeight9: Dispatch<SetStateAction<number | string>>
   onChangeTrainingName: (name: string) => void
 }
 

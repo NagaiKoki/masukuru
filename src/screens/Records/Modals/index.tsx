@@ -87,10 +87,12 @@ const RecordModalScreen = (props: RecordProps) => {
         renderText = item.name + ', ' + renderDistance + renderTime
       }
 
+      console.log(renderText.length)
+
       return (
         <React.Fragment key={item.id}>
           <RecordItemBtn onPress={ () => handleUpdateRecordItme(item) }>
-            <RecordItemText>{ renderText.length >= 30 ? truncateText(renderText, 30) + '...' : renderText}</RecordItemText>
+            <RecordItemText>{ renderText.length >= 17 ? truncateText(renderText, 17) + '...' : renderText}</RecordItemText>
             <Icon name="edit" size={16} style={{ color: COLORS.BASE_BLACK }} />
           </RecordItemBtn>
           <RecordDeleteBtn onPress={ () => handleDeleteRecordItem(item)}>
@@ -182,6 +184,7 @@ const RecordItemBtn = styled.TouchableOpacity`
 
 const RecordItemText = styled.Text`
   margin-left: 10px;
+  margin-right: 5px;
   color: ${COLORS.SUB_BLACK};
   font-size: 16px;
 `

@@ -34,7 +34,9 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
 
   const handleSubmitRecord = () => {
     requestSubmitRecords(recordItems, word)
-    navigation.navigate('record')    
+    setTimeout(() => {
+      navigation.navigate('record')
+    }, 2000)
   }
 
   if (isLoading) {
@@ -84,7 +86,7 @@ const AddWordForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
   width: 100%;
-  min-height: 300px;
+  min-height: 250px;
   color: ${COLORS.BASE_BLACK};
   padding: 15px;
   font-size: 16px;
