@@ -9,6 +9,8 @@ import {
   ON_CHANGE_TIME,
   ON_CHANGE_WORD,
   REQUEST_SUBMIT_RECORDS,
+  SUCCESS_SUBMIT_RECORDS,
+  FAILURE_SUBMIT_RECORDS,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -79,6 +81,22 @@ const recordReducer = (
       return {
         ...state,
         isLoading: true
+      }
+    }
+
+    // 記録の保存成功
+    case SUCCESS_SUBMIT_RECORDS: {
+      return {
+        ...state,
+        isLoading: false
+      }
+    }
+    // 記録の保存失敗
+    case FAILURE_SUBMIT_RECORDS: {
+      const { error } = action
+      return {
+        ...state,
+        isLoading: false
       }
     }
 

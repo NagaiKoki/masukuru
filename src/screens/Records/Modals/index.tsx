@@ -10,8 +10,6 @@ import { RecordItemType } from '../../../types/Record'
 // import lib
 import truncateText from '../../../lib/truncateText'
 
-import firebase, { db } from '../../../config/firebase'
-
 const RecordModalScreen = (props: RecordProps) => {
   const { 
     actions, 
@@ -20,17 +18,6 @@ const RecordModalScreen = (props: RecordProps) => {
   } = props
   const { recordItems } = records
   const { deleteRecord, onChangeTrainingName } = actions
-
-
-  React.useEffect(() => {
-    db.collection('users').doc('tTUrLNabUSgM3KGPteWxk7lV1VM2').collection('notifications').get().then(snap => {
-      snap.forEach(item => {
-        item.data().notification.get().then(snap => {
-          console.log(snap.data().contents)
-        })
-      })
-    })
-  }, [])
 
   useFocusEffect(
     useCallback(() => {

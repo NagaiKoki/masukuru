@@ -80,10 +80,10 @@ export const onChangeWord = (payload: string): RecordActionTypes => {
 }
 
 // レコードの保存リクエスト
-export const requestSubmitRecords = (payload: RecordItemType[], word: string): RecordActionTypes => {
+export const requestSubmitRecords = (records: RecordItemType[], word: string): RecordActionTypes => {
   return {
     type: REQUEST_SUBMIT_RECORDS,
-    payload,
+    records,
     word
   }
 }

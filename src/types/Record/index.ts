@@ -94,7 +94,7 @@ export interface OnChangeWord {
 // 記録の保存リクエスト
 export interface RequestSubmitRecords {
   type: typeof REQUEST_SUBMIT_RECORDS
-  payload: RecordItemType[]
+  records: RecordItemType[]
   word: string
 }
 

@@ -1,4 +1,4 @@
-import { fork, takeEvery } from 'redux-saga/effects'
+import { fork, takeEvery, call, put } from 'redux-saga/effects'
 // import actions
 import { 
   REQUEST_SUBMIT_RECORDS, 
@@ -7,10 +7,23 @@ import {
 } from '../actions/actionTypes'
 // import types
 import { RequestSubmitRecords } from '../types/Record'
+// import apis
+import { requestPostRecords } from '../apis/Records'
+import { successSubmitRecords, failureSubmitRecords } from '../actions'
 
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {
-  const { payload, word } = action
+  const { records, word } = action
+  const { payload, error }: { payload?: string, error?: string } = yield call(
+    requestPostRecords,
+    records,
+    word
+  )
 
+  if (payload && !error) {
+    yield put(successSubmitRecords())
+  } else {
+    yield put(failureSubmitRecords(error))
+  }
 }
 
 function* handleRequestSubmitRecords() {
