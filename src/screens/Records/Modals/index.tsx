@@ -155,7 +155,7 @@ const RecordItemTitle = styled.Text`
   align-self: center;
   font-weight: bold;
   font-size: 18px;
-  margin: 30px 0 20px 0;
+  margin: 30px 0 10px 0;
 `
 
 const RecordModalAddItemBtnForm = styled.TouchableOpacity`

@@ -2,12 +2,14 @@ import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles'
+// import components
+import Loading from '../../../components/Loading'
 // import types
 import { AddRecordWordProps } from '../../../containers/addRecordWord'
 
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props
-  const { word, recordItems } = records
+  const { word, recordItems, isLoading } = records
   const { onChangeWord, requestSubmitRecords } = actions
 
   useFocusEffect(
@@ -32,6 +34,13 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
 
   const handleSubmitRecord = () => {
     requestSubmitRecords(recordItems, word)
+    navigation.navigate('record')    
+  }
+
+  if (isLoading) {
+    return (
+      <Loading size="small" />
+    )
   }
 
   return (

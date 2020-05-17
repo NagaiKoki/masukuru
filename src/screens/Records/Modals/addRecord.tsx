@@ -272,7 +272,7 @@ export default AddRecordScreen
 
 const style = StyleSheet.create({
   container: {
-    marginTop: 30
+    marginTop: 20
   }
 })
 
@@ -294,7 +294,7 @@ const RecordSwitchWrapper = styled.View`
   flex-direction: row;
   align-self: center;
   align-items: center;
-  margin: 20px 0;
+  margin: 25px 0 20px 0;
 `
 
 const RecordMuscleBtn = styled.TouchableOpacity<{ isMuscle: boolean }>`

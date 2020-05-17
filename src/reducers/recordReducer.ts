@@ -88,6 +88,14 @@ const recordReducer = (
     case SUCCESS_SUBMIT_RECORDS: {
       return {
         ...state,
+        recordItems: [],
+        word: '',
+        temporaryName: '',
+        temporaryTime: 0,
+        temporaryDistance: 0,
+        temporaryamounts: [],
+        temporaryWeights: [],
+        error: '',
         isLoading: false
       }
     }
@@ -96,7 +104,8 @@ const recordReducer = (
       const { error } = action
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        error
       }
     }
 

@@ -1,3 +1,5 @@
+type FirestoreTimestamp = import("firebase").firestore.Timestamp;
+
 // import
 import { 
   ADD_RECORD, 
@@ -11,6 +13,9 @@ import {
   REQUEST_SUBMIT_RECORDS,
   SUCCESS_SUBMIT_RECORDS,
   FAILURE_SUBMIT_RECORDS,
+  REQUEST_FETCH_RECORDS,
+  SUCCESS_FETCH_RECORDS,
+  FAILURE_FETCH_RECORDS,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -42,6 +47,15 @@ export type RecordAeroItemType = {
   time: number
   distance: number
   isMuscle: false
+}
+
+export type ResponseRecordType = {
+  id: string
+  name: string
+  records: RecordItemType[]
+  uid: string
+  createdAt: FirestoreTimestamp
+  updatedAt: FirestoreTimestamp
 }
 
 // 記録の追加
@@ -109,6 +123,24 @@ export interface FailureSubmitRecords {
   error: string
 }
 
+// 記録の取得
+export interface RequestFetchRecords {
+  type: typeof REQUEST_FETCH_RECORDS
+  uid: string
+}
+
+// 記録の成功
+export interface SuccessFetchRecords {
+  type: typeof SUCCESS_FETCH_RECORDS
+  payload: ResponseRecordType[]
+}
+
+// 記録の失敗
+export interface FailureFetchRecords {
+  type: typeof FAILURE_FETCH_RECORDS
+  error: string
+}
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -120,4 +152,7 @@ export type RecordActionTypes =
   OnChangeWord |
   RequestSubmitRecords |
   SuccessSubmitRecords |
-  FailureSubmitRecords
+  FailureSubmitRecords |
+  RequestFetchRecords |
+  SuccessFetchRecords |
+  FailureFetchRecords

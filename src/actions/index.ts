@@ -11,9 +11,12 @@ import {
   REQUEST_SUBMIT_RECORDS,
   SUCCESS_SUBMIT_RECORDS,
   FAILURE_SUBMIT_RECORDS,
+  REQUEST_FETCH_RECORDS,
+  SUCCESS_FETCH_RECORDS,
+  FAILURE_FETCH_RECORDS,
 } from './actionTypes'
 // import types
-import { RecordActionTypes, RecordItemType } from '../types/Record'
+import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../types/Record'
 
 // 記録の追加
 export const addRecord = (record: RecordItemType): RecordActionTypes => {
@@ -99,6 +102,30 @@ export const successSubmitRecords = (): RecordActionTypes => {
 export const failureSubmitRecords = (error: string): RecordActionTypes => {
   return {
     type: FAILURE_SUBMIT_RECORDS,
+    error
+  }
+}
+
+// 記録の取得
+export const requestFetchRecords = (uid: string): RecordActionTypes => {
+  return {
+    type: REQUEST_FETCH_RECORDS,
+    uid
+  }
+}
+
+// 記録の取得成功
+export const SuccessFetchRecords = (payload: ResponseRecordType[]) => {
+  return {
+    type: SUCCESS_FETCH_RECORDS,
+    payload
+  }
+}
+
+// 記録の取得失敗
+export const failureFetchRecords = (error: string) => {
+  return {
+    type: FAILURE_FETCH_RECORDS,
     error
   }
 }

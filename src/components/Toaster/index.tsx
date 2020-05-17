@@ -31,6 +31,7 @@ const Container = styled.View`
   width: 100%;
   position: absolute;
   top: 7%;
+  z-index: 1000;
 `
 
 const Message = styled.Text`
