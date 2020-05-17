@@ -11,6 +11,9 @@ import {
   REQUEST_SUBMIT_RECORDS,
   SUCCESS_SUBMIT_RECORDS,
   FAILURE_SUBMIT_RECORDS,
+  REQUEST_FETCH_RECORDS,
+  SUCCESS_FETCH_RECORDS,
+  FAILURE_FETCH_RECORDS,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -24,7 +27,8 @@ const initialState: RecordState = {
   temporaryamounts: [],
   temporaryWeights: [],
   error: '',
-  isLoading: false
+  isLoading: false,
+  recordData: [],
 }
 
 const recordReducer = (
@@ -147,6 +151,33 @@ const recordReducer = (
 
     // エラーのセット
     case SET_RECORD_ERROR: {
+      const { error } = action
+      return {
+        ...state,
+        error
+      }
+    }
+
+    // 記録の取得
+    case REQUEST_FETCH_RECORDS: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+
+    // 記録の取得成功
+    case SUCCESS_FETCH_RECORDS: {
+      const { payload } = action
+      return {
+        ...state,
+        recordData: payload,
+        isLoading: false
+      }
+    }
+
+    // 記録の取得失敗
+    case FAILURE_FETCH_RECORDS: {
       const { error } = action
       return {
         ...state,

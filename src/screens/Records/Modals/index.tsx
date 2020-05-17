@@ -5,7 +5,7 @@ import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Alert } from 'react-native'
 // import types
-import { RecordProps } from '../../../containers/record'
+import { RecordProps } from '../../../containers/records/recordModal'
 import { RecordItemType } from '../../../types/Record'
 // import lib
 import truncateText from '../../../lib/truncateText'

@@ -1,8 +1,8 @@
 import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import types
-import { RootState } from '../reducers'
-import { RecordState, RecordItemType } from '../types/Record'
+import { RootState } from '../../reducers'
+import { RecordState, RecordItemType } from '../../types/Record'
 // import actions
 import {
   addRecord, 
@@ -11,9 +11,9 @@ import {
   onChangeTrainingName, 
   onChangeDistance,
   onChangeTime
-} from '../actions'
+} from '../../actions'
 // import screens
-import AddRecordScreen from '../screens/Records/Modals/addRecord'
+import AddRecordScreen from '../../screens/Records/Modals/addRecord'
 
 export interface AddRecordProps {
   navigation: any

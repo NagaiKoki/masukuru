@@ -1,22 +1,20 @@
 import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import types
-import { RootState } from '../reducers'
-import { RecordState, RecordItemType } from '../types/Record'
+import { RootState } from '../../reducers'
+import { RecordState } from '../../types/Record'
 // import actions
 import {
-  deleteRecord,
-  onChangeTrainingName
-} from '../actions'
+  requestFetchRecords
+} from '../../actions'
 // import screens
-import RecordModalScreen from '../screens/Records/Modals'
+import RecordScreen from '../../screens/Records'
 
 export interface RecordProps {
   navigation: any
-  records: RecordState,
+  records: RecordState
   actions: {
-    deleteRecord: (record: RecordItemType) => void 
-    onChangeTrainingName: (name: string) => void
+    requestFetchRecords: (uid: string) => void
   }
 }
 
@@ -29,8 +27,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
-      deleteRecord,
-      onChangeTrainingName
+      requestFetchRecords
     }
     , dispatch)
   }
@@ -39,4 +36,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecordModalScreen)
+)(RecordScreen)

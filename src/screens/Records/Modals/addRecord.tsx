@@ -9,7 +9,7 @@ import AddRecordForm from '../../../components/Records/AddRecordForm'
 import AddRecordAeroForm from '../../../components/Records/AddRecordAreroForm'
 import Toast from '../../../components/Toaster'
 // import types
-import { AddRecordProps } from '../../../containers/addRecord'
+import { AddRecordProps } from '../../../containers/records/addRecord'
 // import constants
 import { RECORD_ERROR_MESSAGE } from '../../../constants/errorMessage'
 import { RecordItemType } from '../../../types/Record';

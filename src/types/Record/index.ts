@@ -27,7 +27,8 @@ export interface RecordState {
   temporaryamounts: number[]
   temporaryWeights: number[]
   error: string,
-  isLoading: boolean
+  isLoading: boolean,
+  recordData: ResponseRecordType[]
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -51,8 +52,8 @@ export type RecordAeroItemType = {
 
 export type ResponseRecordType = {
   id: string
-  name: string
   records: RecordItemType[]
+  word: string
   uid: string
   createdAt: FirestoreTimestamp
   updatedAt: FirestoreTimestamp

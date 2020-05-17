@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import RecordScreen from '../../../../screens/Records/'
 // import constants
 import { COLORS } from '../../../../constants/Styles'
+// import containers
+import RecordContainer from '../../../../containers/records/record'
 
 
 const RecordCardsNavigator = () => {
@@ -12,7 +14,7 @@ const RecordCardsNavigator = () => {
     <CardStack.Navigator initialRouteName="record">
       <CardStack.Screen 
         name="record"
-        component={RecordScreen}
+        component={RecordContainer}
         options={{
           headerBackTitleVisible: false,
           headerShown: false,

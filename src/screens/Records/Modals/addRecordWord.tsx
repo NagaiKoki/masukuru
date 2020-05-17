@@ -5,7 +5,7 @@ import { COLORS } from '../../../constants/Styles'
 // import components
 import Loading from '../../../components/Loading'
 // import types
-import { AddRecordWordProps } from '../../../containers/addRecordWord'
+import { AddRecordWordProps } from '../../../containers/records/addRecordWord'
 
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props

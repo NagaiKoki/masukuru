@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
 // import containers
-import RecordContainer from '../../../../containers/record'
-import AddRecordContainer from '../../../../containers/addRecord'
-import AddRecordWordContainer from '../../../../containers/addRecordWord'
+import RecordContainer from '../../../../containers/records/recordModal'
+import AddRecordContainer from '../../../../containers/records/addRecord'
+import AddRecordWordContainer from '../../../../containers/records/addRecordWord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
