@@ -4,7 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import RecordScreen from '../../../../screens/Records/'
 // import constants
 import { COLORS } from '../../../../constants/Styles'
-import RecordContainer from '../../../../containers/record'
+// import containers
+import RecordContainer from '../../../../containers/records/record'
 
 
 const RecordCardsNavigator = () => {

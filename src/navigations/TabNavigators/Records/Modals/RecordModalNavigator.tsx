@@ -3,9 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
-// import screens
-import RecordModalScreen from '../../../../screens/Records/Modals'
-import AddRecordScreen from '../../../../screens/Records/Modals/addRecord'
+// import containers
+import RecordContainer from '../../../../containers/records/recordModal'
+import AddRecordContainer from '../../../../containers/records/addRecord'
+import AddRecordWordContainer from '../../../../containers/records/addRecordWord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -15,7 +16,7 @@ const RecordModalNavigator = () => {
     <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
         name="recordModal"
-        component={RecordModalScreen}
+        component={RecordContainer}
         options={{
           headerLeft: () => {
             return (
@@ -34,7 +35,12 @@ const RecordModalNavigator = () => {
 
       <RecordModalStack.Screen 
         name="addRecordModal"
-        component={AddRecordScreen}
+        component={AddRecordContainer}
+      />
+
+      <RecordModalStack.Screen 
+        name="addRecordWordModal"
+        component={AddRecordWordContainer}
       />
     </RecordModalStack.Navigator>
   )
