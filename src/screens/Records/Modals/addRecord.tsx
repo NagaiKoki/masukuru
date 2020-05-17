@@ -157,9 +157,6 @@ const AddRecordScreen = (props: AddRecordProps) => {
       return setRecordError(RECORD_ERROR_MESSAGE.EMPTY_AMOUNT)
     }
 
-    console.log(temporaryDistance)
-    console.log(temporaryTime)
-
     if (!isMuscleMenu && (!temporaryDistance || !temporaryTime)) {
       return setRecordError(RECORD_ERROR_MESSAGE.EMPTY_TIME_OR_DISTANCE)
     }
@@ -281,8 +278,7 @@ const style = StyleSheet.create({
 
 const AddRecordContainer = styled.ScrollView`
   flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND};
-  padding-top: 0px;
+  background-color: ${COLORS.BASE_BACKGROUND}; 
 `
 
 const HeaderSaveBtn = styled.TouchableOpacity`

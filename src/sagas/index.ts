@@ -1,5 +1,7 @@
-import { take } from 'redux-saga/effects'
+import { fork } from 'redux-saga/effects'
+// import sagas
+import recordSaga from './record'
 
 export default function* rootSaga() {
-  yield take('TEST')
+  yield fork(recordSaga)
 }

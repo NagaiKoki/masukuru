@@ -7,6 +7,10 @@ import {
   UPDATE_RECORD,
   ON_CHANGE_DISTANCE,
   ON_CHANGE_TIME,
+  ON_CHANGE_WORD,
+  REQUEST_SUBMIT_RECORDS,
+  SUCCESS_SUBMIT_RECORDS,
+  FAILURE_SUBMIT_RECORDS,
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType } from '../types/Record'
@@ -64,5 +68,37 @@ export const onChangeTime = (payload: number): RecordActionTypes => {
   return {
     type: ON_CHANGE_TIME,
     payload
+  }
+}
+
+// つぶやきの検知
+export const onChangeWord = (payload: string): RecordActionTypes => {
+  return {
+    type: ON_CHANGE_WORD,
+    payload
+  }
+}
+
+// レコードの保存リクエスト
+export const requestSubmitRecords = (payload: RecordItemType[], word: string): RecordActionTypes => {
+  return {
+    type: REQUEST_SUBMIT_RECORDS,
+    payload,
+    word
+  }
+}
+
+// レコードの保存成功
+export const successSubmitRecords = (): RecordActionTypes => {
+  return {
+    type: SUCCESS_SUBMIT_RECORDS
+  }
+}
+
+// レコードの保存失敗
+export const failureSubmitRecords = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_SUBMIT_RECORDS,
+    error
   }
 }

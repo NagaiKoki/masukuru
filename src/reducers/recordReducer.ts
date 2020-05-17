@@ -7,18 +7,22 @@ import {
   UPDATE_RECORD,
   ON_CHANGE_DISTANCE,
   ON_CHANGE_TIME,
+  ON_CHANGE_WORD,
+  REQUEST_SUBMIT_RECORDS,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
 
 const initialState: RecordState = {
   recordItems: [],
+  word: '',
   temporaryName: '',
   temporaryTime: 0,
   temporaryDistance: 0,
   temporaryamounts: [],
   temporaryWeights: [],
   error: '',
+  isLoading: false
 }
 
 const recordReducer = (
@@ -67,6 +71,23 @@ const recordReducer = (
       return {
         ...state,
         recordItems: updateRecordItems
+      }
+    }
+
+    // 記録の保存
+    case REQUEST_SUBMIT_RECORDS: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+
+    // 記録のひとこと
+    case ON_CHANGE_WORD: {
+      const { payload } = action
+      return {
+        ...state,
+        word: payload
       }
     }
 

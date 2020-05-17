@@ -3,11 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
-// import screens
-import AddRecordScreen from '../../../../screens/Records/Modals/addRecord'
 // import containers
 import RecordContainer from '../../../../containers/record'
 import AddRecordContainer from '../../../../containers/addRecord'
+import AddRecordWordContainer from '../../../../containers/addRecordWord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -37,6 +36,11 @@ const RecordModalNavigator = () => {
       <RecordModalStack.Screen 
         name="addRecordModal"
         component={AddRecordContainer}
+      />
+
+      <RecordModalStack.Screen 
+        name="addRecordWordModal"
+        component={AddRecordWordContainer}
       />
     </RecordModalStack.Navigator>
   )

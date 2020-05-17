@@ -7,16 +7,22 @@ import {
   UPDATE_RECORD,
   ON_CHANGE_DISTANCE,
   ON_CHANGE_TIME,
+  ON_CHANGE_WORD,
+  REQUEST_SUBMIT_RECORDS,
+  SUCCESS_SUBMIT_RECORDS,
+  FAILURE_SUBMIT_RECORDS,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
   recordItems: RecordItemType[]
+  word: string
   temporaryName: string
   temporaryTime: number
   temporaryDistance: number
   temporaryamounts: number[]
   temporaryWeights: number[]
-  error: string
+  error: string,
+  isLoading: boolean
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -79,6 +85,30 @@ export interface OnChangeTime {
   payload: number
 }
 
+// つぶやきの検知
+export interface OnChangeWord {
+  type: typeof ON_CHANGE_WORD
+  payload: string
+}
+
+// 記録の保存リクエスト
+export interface RequestSubmitRecords {
+  type: typeof REQUEST_SUBMIT_RECORDS
+  payload: RecordItemType[]
+  word: string
+}
+
+// 記録の保存成功
+export interface SuccessSubmitRecords {
+  type: typeof SUCCESS_SUBMIT_RECORDS
+}
+
+// 記録の保存失敗
+export interface FailureSubmitRecords {
+  type: typeof FAILURE_SUBMIT_RECORDS
+  error: string
+}
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -86,4 +116,8 @@ export type RecordActionTypes =
   OnChangeTrainingName |
   SetRecordError |
   OnChangeDistance |
-  OnChangeTime
+  OnChangeTime |
+  OnChangeWord |
+  RequestSubmitRecords |
+  SuccessSubmitRecords |
+  FailureSubmitRecords
