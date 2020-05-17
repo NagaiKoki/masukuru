@@ -13,7 +13,7 @@ import RecordList from '../../components/Records/recordList'
 
 const RecordScreen = (props: RecordProps) => {
   const { navigation, records, actions } = props
-  const { recordData } = records
+  const { recordData, isLoading } = records
   const { requestFetchRecords } = actions
   const currentUser = firebase.auth().currentUser
 
@@ -23,11 +23,22 @@ const RecordScreen = (props: RecordProps) => {
     }, [])
   )
 
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
 
   return (
     <RecordContainer>
-      <ScrollView>
-        <RecordList recordData={recordData} />
+      <ScrollView
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            
+          }
+        }}
+      >
+        <RecordList recordData={recordData} isLoading={isLoading} />
       </ScrollView>
       <EventAddBtn onPress={() => navigation.navigate('recordModal') }>
         <Icon name="plus" size={30} style={{ color: '#fff', marginTop: 4 }} />

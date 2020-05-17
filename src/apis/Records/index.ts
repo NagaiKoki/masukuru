@@ -27,13 +27,14 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
 export const requestFetchRecord = async (uid?: string, startAt?: any) => {
   const records = []
   try {
-    await db.collection('records').where('uid', '==', uid).limit(10).get().then(snap => {
+    await db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").limit(15).get().then(snap => {
       snap.forEach(doc => {
         records.push(doc.data())
       })
     })
     return { payload: records }
   } catch (error) {
+    console.log(error)
     return { error: error }
   }
 } 

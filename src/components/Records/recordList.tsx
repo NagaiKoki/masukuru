@@ -4,27 +4,35 @@ import styled from 'styled-components'
 import { ResponseRecordType } from '../../types/Record'
 // import components
 import RecordItem from './recordItem'
+import Loading from '../Loading'
+import { COLORS } from '../../constants/Styles'
 
 interface RecordListProps {
   recordData: ResponseRecordType[]
+  isLoading: boolean
 }
 
 const RecordList = (props: RecordListProps) => {
-  const { recordData } = props
+  const { recordData, isLoading } = props
 
-  const renderRecordList = recordData.map((record: ResponseRecordType) => {
-    return <RecordItem key={record.id} record={record} />
+  const renderRecordList = recordData.map((record: ResponseRecordType, i: number) => {
+    return <RecordItem key={i} record={record} />
   })
 
   return (
     <RecordListContainer>
-      {renderRecordList}
+      { !isLoading && !recordData.length ? (
+        <RecordEmptyState>まだ記録はありません。</RecordEmptyState>
+      ) : renderRecordList
+      }
+      { isLoading ? <Loading size="small" /> : null }
     </RecordListContainer>
   )
 }
 
 const RecordListContainer = styled.View`
-
 `
+
+const RecordEmptyState = styled.Text``
 
 export default RecordList
