@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
+import { ActivityIndicator } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import firebase, { db } from '../../config/firebase'
 import { COLORS } from '../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import components
+import Loading from '../../components/Loading'
 // import screen
 import HomeNavigator from './HomeNavigator'
 import MenuScreen from '../../screens/MenuCategories/index'
@@ -15,6 +17,36 @@ import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
+  const [currentGroupId, setCurrentGroupId] = useState('');
+  const [loading, setloading] = useState(true)
+
+  useFocusEffect(
+    useCallback(() => {
+      firebase.auth().onAuthStateChanged( async user => {
+        if (user) {
+          await db.collectionGroup("groupUsers").where('uid', '==', user.uid).get()
+          .then(function(querySnapshot) {
+            querySnapshot.forEach(doc => {
+              // TODO: currentGroupIdをcurrentGroupドキュメントに含めるにあたり、カラムない場合は所属するグループが一つしかないようにする
+              if (doc.data().currentGroupId) {
+                setCurrentGroupId(doc.data().currentGroupId);
+              } else {
+                setCurrentGroupId(doc.ref.parent.parent.id);
+              }
+            });
+          })
+          setloading(false);
+        }
+      })
+    }, [])
+  )
+
+  if (loading || currentGroupId === "") {
+    return (
+      <Loading size="large" />
+    )
+  }
+
   
   // ヘッダータイトル関数
   const getHeaderMenuTitle = (route) => {
@@ -30,6 +62,7 @@ const MainNavigator = () => {
       <MainStack.Screen 
         name="main" 
         component={HomeNavigator}
+        initialParams={{ currentGroupId: currentGroupId }}
         options={{
           headerShown: false
         }}

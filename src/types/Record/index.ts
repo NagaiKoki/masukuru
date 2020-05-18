@@ -25,13 +25,14 @@ export interface RecordState {
   recordItems: RecordItemType[]
   word: string
   temporaryName: string
-  temporaryTime: number | string
-  temporaryDistance: number | string
+  temporaryTime: string
+  temporaryDistance: string
   temporaryamounts: number[]
   temporaryWeights: number[]
   error: string,
   isLoading: boolean,
   recordData: ResponseRecordType[]
+  userRecords: ResponseRecordType[]
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -95,12 +96,12 @@ export interface OnChangeTrainingName {
 // 距離の検知
 export interface OnChangeDistance {
   type: typeof ON_CHANGE_DISTANCE
-  payload: number
+  payload: string
 }
 // 時間の検知
 export interface OnChangeTime {
   type: typeof ON_CHANGE_TIME
-  payload: number
+  payload: string
 }
 
 // つぶやきの検知
@@ -138,6 +139,8 @@ export interface RequestFetchRecords {
 export interface SuccessFetchRecords {
   type: typeof SUCCESS_FETCH_RECORDS
   payload: ResponseRecordType[]
+  uid?: string
+  groupId?: string
 }
 
 // 記録の失敗
@@ -158,6 +161,8 @@ export interface RequestNextRecords {
 export interface SuccessFetchNextRecords {
   type: typeof SUCCESS_FETCH_NEXT_RECORDS
   payload: ResponseRecordType[]
+  uid?: string
+  groupId?: string
 }
 
 // 記録の追加読み込み失敗

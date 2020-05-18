@@ -35,7 +35,7 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const handleSubmitRecord = () => {
     requestSubmitRecords(recordItems, word)
     setTimeout(() => {
-      navigation.navigate('main')
+      navigation.navigate('mainContainer')
     }, 2000)
   }
 

@@ -174,8 +174,8 @@ const AddRecordScreen = (props: AddRecordProps) => {
       record = {
         id: isUpdate ? recordItems.length : recordItems.length + 1,
         name: temporaryName,
-        time: temporaryTime,
-        distance: temporaryDistance,
+        time: Number(temporaryTime),
+        distance: Number(temporaryDistance),
         isMuscle: false
       }
     }

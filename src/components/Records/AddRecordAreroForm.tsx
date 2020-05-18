@@ -4,11 +4,11 @@ import { COLORS } from '../../constants/Styles'
 
 interface AddAeroProps {
   temporaryName: string
-  temporaryDistance: number
-  temporaryTime: number
+  temporaryDistance: string
+  temporaryTime: string
   onChangeTrainingName: (name: string) => void
-  onChangeDistance: (distance: number) => void
-  onChangeTime: (time: number) => void
+  onChangeDistance: (distance: string) => void
+  onChangeTime: (time: string) => void
 }
 
 const AddRecordAeroForm = (props: AddAeroProps) => {
@@ -35,7 +35,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           defaultValue={String(temporaryDistance)}
           keyboardType={'numeric'}
           autoCorrect={ false }
-          onChangeText={ (text: number) => onChangeDistance(text) }
+          onChangeText={ (text: string) => onChangeDistance(text) }
         />
         <AddRecordUnitName> km</AddRecordUnitName>
       </AddRecordItem>
@@ -48,7 +48,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           defaultValue={String(temporaryTime)}
           keyboardType={'numeric'}
           autoCorrect={ false }
-          onChangeText={ (text: number) => onChangeTime(text) }
+          onChangeText={ (text: string) => onChangeTime(text) }
         />
         <AddRecordUnitName> 分</AddRecordUnitName>
       </AddRecordItem>

@@ -32,6 +32,7 @@ const initialState: RecordState = {
   error: '',
   isLoading: false,
   recordData: [],
+  userRecords: []
 }
 
 const recordReducer = (
@@ -49,8 +50,8 @@ const recordReducer = (
         temporaryName: '',
         temporaryamounts: [],
         temporaryWeights: [],
-        temporaryDistance: 0,
-        temporaryTime: 0
+        temporaryDistance: '',
+        temporaryTime: ''
       }
     }
 
@@ -98,8 +99,8 @@ const recordReducer = (
         recordItems: [],
         word: '',
         temporaryName: '',
-        temporaryTime: 0,
-        temporaryDistance: 0,
+        temporaryTime: '',
+        temporaryDistance: '',
         temporaryamounts: [],
         temporaryWeights: [],
         error: '',
@@ -139,7 +140,7 @@ const recordReducer = (
       const { payload } = action
       return {
         ...state,
-        temporaryDistance: payload
+        temporaryDistance: String(payload)
       }
     }
 
@@ -148,7 +149,7 @@ const recordReducer = (
      const { payload } = action
      return {
        ...state,
-       temporaryTime: payload
+       temporaryTime: String(payload)
      }
     }
 
@@ -171,11 +172,21 @@ const recordReducer = (
 
     // 記録の取得成功
     case SUCCESS_FETCH_RECORDS: {
-      const { payload } = action
-      return {
-        ...state,
-        recordData: payload,
-        isLoading: false
+      const { payload, uid, groupId } = action
+      if (uid) {
+        return {
+          ...state,
+          userRecords: payload,
+          isLoading: false
+        }
+      } else if (groupId) {
+        return {
+          ...state,
+          recordData: payload,
+          isLoading: false
+        }
+      } else {
+        return state
       }
     }
 
@@ -198,13 +209,24 @@ const recordReducer = (
 
     // 記録の追加読み込み成功
     case SUCCESS_FETCH_NEXT_RECORDS: {
-      const { payload } = action
+      const { payload, uid, groupId } = action
       const { recordData } = state
       const updateRecords = recordData.concat(payload)
-      return {
-        ...state,
-        recordData: updateRecords,
-        isLoading: false
+
+      if (uid) {
+        return {
+          ...state,
+          userRecords: updateRecords,
+          isLoading: false
+        }
+      } else if (groupId) {
+        return {
+          ...state,
+          recordData: updateRecords,
+          isLoading: false
+        }
+      } else {
+        return state
       }
     }
 

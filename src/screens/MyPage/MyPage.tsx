@@ -1,25 +1,66 @@
-import React, { useState } from 'react'
-import { View, Text, Image } from 'react-native';
+import React, { useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
+import { RefreshControl, ScrollView } from 'react-native';
 import styled from 'styled-components';
-import firebase, { db } from '../../config/firebase';
+import firebase from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
+// import components
 import UserImage from '../../components/Image/userImage'
+import RecordList from '../../components/Records/recordList'
+// import types 
+import { UserProps } from '../../containers/users'
+// import lib
+import { isCloseToBottom } from '../../lib/scrollBottomEvent'
 
-const MyPageScreen = ({ navigation }) => {
-  const [isChanged, setIsChanged] = useState(false)
+const MyPageScreen = (props: UserProps) => {
+  const { navigation, route, records, actions } = props
+  const { userRecords, isLoading } = records
+  const lastRecord = userRecords[userRecords.length - 1]
+  const { requestFetchRecords, requestNextRecords } = actions
   const user = firebase.auth().currentUser
+
+  const [isRefresh, setIsRefresh] = useState(false)
+
+  useFocusEffect(
+    useCallback(() => {
+      requestFetchRecords(user.uid, undefined)
+    }, [])
+  )
+  
+  const onRefresh = () => {
+    setIsRefresh(true)
+    requestFetchRecords(user.uid, undefined)
+    setIsRefresh(false)
+  }
 
   return (
     <MypageContainer>
       <MypageUserWrapper>
         <MypageUserImage>
-          <UserImage user={user} width={100} height={100} borderRadius={5} />
+          <UserImage user={user} width={100} height={100} borderRadius={60} />
         </MypageUserImage>
         <MyPpageUserName>{user.displayName}</MyPpageUserName>
       </MypageUserWrapper>
-      <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user, setIsChanged: setIsChanged }) } }>
+      <ProfileChangeBtn onPress={ () => { navigation.navigate('プロフィール編集', { user: user }) } }>
         <ProfileChangeText>プロフィールを編集する</ProfileChangeText>
       </ProfileChangeBtn>
+
+      <ScrollView
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent) && userRecords.length >= 5) {
+            requestNextRecords(lastRecord, user.uid, undefined)
+          }
+        }}
+        scrollEventThrottle={400}
+        refreshControl={
+          <RefreshControl 
+            refreshing={isRefresh}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+      <RecordList recordData={userRecords} isLoading={isLoading}/>
+      </ScrollView>
     </MypageContainer>
   );
 };
@@ -47,7 +88,7 @@ const MyPpageUserName = styled.Text`
 `
 
 const ProfileChangeBtn = styled.TouchableOpacity`
-  padding-top: 30px;
+  padding: 30px;
 `
 
 const ProfileChangeText = styled.Text`

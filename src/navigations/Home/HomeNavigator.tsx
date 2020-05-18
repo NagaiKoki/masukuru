@@ -10,43 +10,14 @@ import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 // import containers
 import HomeContainer from '../../containers/home'
 
-const HomeNavigator = ({ navigation }) => { 
+const HomeNavigator = ({ navigation, route }) => { 
   const HomeStack = createStackNavigator()
-  const [currentGroupId, setCurrentGroupId] = useState('');
-  const [loading, setloading] = useState(true)
-
-  useFocusEffect(
-    useCallback(() => {
-      firebase.auth().onAuthStateChanged( async user => {
-        if (user) {
-          await db.collectionGroup("groupUsers").where('uid', '==', user.uid).get()
-          .then(function(querySnapshot) {
-            querySnapshot.forEach(doc => {
-              // TODO: currentGroupIdをcurrentGroupドキュメントに含めるにあたり、カラムない場合は所属するグループが一つしかないようにする
-              if (doc.data().currentGroupId) {
-                setCurrentGroupId(doc.data().currentGroupId);
-              } else {
-                setCurrentGroupId(doc.ref.parent.parent.id);
-              }
-            });
-          })
-          setloading(false);
-        }
-      })
-
-    }, [])
-  )
-
-  if (loading || currentGroupId === "") {
-    return (
-      <ActivityIndicator size="large" style={[styles.loading]} />
-    )
-  }
-
+  const { currentGroupId } = route.params
+  
   return (
     <HomeStack.Navigator initialRouteName="main" mode="modal">
       <HomeStack.Screen 
-        name="main" 
+        name="mainContainer" 
         component={HomeContainer}
         initialParams={{ currentGroupId: currentGroupId }}
         options={({route}) => ({

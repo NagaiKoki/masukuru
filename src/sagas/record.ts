@@ -56,7 +56,7 @@ function* runRequestFetchRecords(action: RequestFetchRecords) {
   )
 
   if (payload && !error) {
-    yield put(SuccessFetchRecords(payload))
+    yield put(SuccessFetchRecords(payload, uid, groupId))
   } else {
     yield put(failureFetchRecords(error))
   }
@@ -77,7 +77,7 @@ function* runRequestNextFetchRecords(action: RequestNextRecords) {
   )
 
   if (payload && !error) {
-    yield put(successFetchNextRecords(payload))
+    yield put(successFetchNextRecords(payload, uid, groupId))
   } else {
     yield put(failureFetchNextRecords(error))
   }

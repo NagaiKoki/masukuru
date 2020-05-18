@@ -62,7 +62,7 @@ export const onChangeTrainingName = (name: string): RecordActionTypes => {
 }
 
 // 距離の検知
-export const onChangeDistance = (payload: number): RecordActionTypes => {
+export const onChangeDistance = (payload: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_DISTANCE,
     payload
@@ -70,7 +70,7 @@ export const onChangeDistance = (payload: number): RecordActionTypes => {
 }
 
 // 時間の検知
-export const onChangeTime = (payload: number): RecordActionTypes => {
+export const onChangeTime = (payload: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_TIME,
     payload
@@ -119,10 +119,12 @@ export const requestFetchRecords = (uid?: string, groupId?: string): RecordActio
 }
 
 // 記録の取得成功
-export const SuccessFetchRecords = (payload: ResponseRecordType[]): RecordActionTypes => {
+export const SuccessFetchRecords = (payload: ResponseRecordType[], uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: SUCCESS_FETCH_RECORDS,
-    payload
+    payload,
+    uid,
+    groupId
   }
 }
 
@@ -145,10 +147,12 @@ export const requestNextRecords = (lastRecord: ResponseRecordType, uid?: string,
 }
 
 // 記録の追加読み込みリクエスト成功
-export const successFetchNextRecords = (payload: ResponseRecordType[]): RecordActionTypes => {
+export const successFetchNextRecords = (payload: ResponseRecordType[], uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: SUCCESS_FETCH_NEXT_RECORDS,
-    payload
+    payload,
+    uid,
+    groupId
   }
 }
 

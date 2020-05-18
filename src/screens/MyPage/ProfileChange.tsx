@@ -7,7 +7,7 @@ import { db } from '../../config/firebase';
 import { COLORS } from '../../constants/Styles';
 
 const ProfileChangeScreen = ({ route, navigation }) => {
-  const { user, setIsChanged } = route.params;
+  const { user } = route.params;
   const [progress, setProgress] = useState<string>('');
   const [uri, setUri] = useState<string>(user.photoURL);
   const [userName, setUserName] = useState<string>(user.displayName)
@@ -50,9 +50,7 @@ const ProfileChangeScreen = ({ route, navigation }) => {
           });
         })
       }).then(function() {
-        setIsChanged(true)
         navigation.goBack('マイページ', { user: user })
-        setIsChanged(false)
       }).catch(function(error) {
         alert(error);
       })

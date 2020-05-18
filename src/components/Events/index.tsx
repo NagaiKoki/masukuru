@@ -70,7 +70,7 @@ const Event = ({ navigation, eventModal, setEventModal  }) => {
   const EventFlatListDisplay = (
     eventList.length == 0 ?
     <NoneEventListText>
-       まずはトレーニングを追加しよう！
+       グラフ機能が追加されます。それまで、しばらくお待ち下さい。
     </NoneEventListText>
     :
     <EventFlatList

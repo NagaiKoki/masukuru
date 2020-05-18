@@ -34,7 +34,7 @@ const RecordItem = (props: RecordItemProps) => {
   }, [])
 
   if (!user || !record) {
-    return <RecordItemContainer></RecordItemContainer>
+    return <React.Fragment></React.Fragment>
   }
 
   // 記録の詳細
@@ -75,7 +75,7 @@ const RecordItem = (props: RecordItemProps) => {
   const renderUser = 
       <RecordUserWrapper>
         <RecordUserImage>
-          <UserImage user={user} width={40} height={40} borderRadius={60} />
+          <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
         </RecordUserImage>
         <RecordUserName>{user.name}</RecordUserName>
       </RecordUserWrapper>
@@ -93,7 +93,7 @@ const RecordItem = (props: RecordItemProps) => {
 }
 
 const RecordItemContainer = styled.View`
-  margin: 8px 0;
+  margin: 0px 0 8px 0;
   border-color: ${COLORS.BASE_BORDER_COLOR};
   padding: 15px 15px 0 15px;
   border-top-width: 0.5px;
@@ -123,7 +123,7 @@ const RecordUserName = styled.Text`
 `
 
 const RecordTimestampText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
+  color: ${COLORS.SUB_BLACK};
   font-size: 12px;
 `
 
@@ -136,7 +136,7 @@ const RecordWordText = styled.Text`
 
 const RecordDataWrapper = styled.View`
   border-color: ${COLORS.BASE_BORDER_COLOR};
-  border-top-width: 0.5px;
+  border-top-width: 0.3px;
   margin-left: 50px;
   padding: 15px 0;
 `
