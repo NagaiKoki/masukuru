@@ -22,7 +22,7 @@ const RecordList = (props: RecordListProps) => {
   return (
     <RecordListContainer>
       { !isLoading && !recordData.length ? (
-        <RecordEmptyState>まだ記録はありません。</RecordEmptyState>
+        <RecordEmptyState>トレーニングをして、記録を追加しよう！</RecordEmptyState>
       ) : renderRecordList
       }
       { isLoading ? <Loading size="small" /> : null }
@@ -33,6 +33,9 @@ const RecordList = (props: RecordListProps) => {
 const RecordListContainer = styled.View`
 `
 
-const RecordEmptyState = styled.Text``
+const RecordEmptyState = styled.Text`
+  padding: 40px 0;
+  text-align: center;
+`
 
 export default RecordList

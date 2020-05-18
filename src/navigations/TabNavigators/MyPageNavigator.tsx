@@ -14,7 +14,10 @@ const MyPageNavigator = () => {
         name="マイページ"
         component={MyPageScreen}
         options={{
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
 
@@ -23,7 +26,10 @@ const MyPageNavigator = () => {
         component={ProfileChangeScreen}
         options={{
           headerBackTitleVisible: false,
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
     </MyPageStack.Navigator>

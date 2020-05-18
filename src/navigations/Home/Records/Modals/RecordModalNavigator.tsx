@@ -20,7 +20,7 @@ const RecordModalNavigator = () => {
         options={{
           headerLeft: () => {
             return (
-              <HeaderBackBtn onPress={ () => navigation.navigate('record') }>
+              <HeaderBackBtn onPress={ () => navigation.navigate('main') }>
                 <HeaderBackTitle>キャンセル</HeaderBackTitle>
               </HeaderBackBtn>
             )

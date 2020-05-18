@@ -16,7 +16,10 @@ const NotificationNavigator = () => {
         options={{
           headerBackTitleVisible: false,
           headerTitle: 'おしらせ',
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
 
@@ -26,7 +29,10 @@ const NotificationNavigator = () => {
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: 'おしらせ',
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         })}
       />
     </NotificationStack.Navigator>

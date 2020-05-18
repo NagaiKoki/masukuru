@@ -25,8 +25,8 @@ export interface RecordState {
   recordItems: RecordItemType[]
   word: string
   temporaryName: string
-  temporaryTime: number
-  temporaryDistance: number
+  temporaryTime: number | string
+  temporaryDistance: number | string
   temporaryamounts: number[]
   temporaryWeights: number[]
   error: string,
@@ -131,6 +131,7 @@ export interface FailureSubmitRecords {
 export interface RequestFetchRecords {
   type: typeof REQUEST_FETCH_RECORDS
   uid?: string
+  groupId?: string
 }
 
 // 記録の成功
@@ -149,6 +150,7 @@ export interface FailureFetchRecords {
 export interface RequestNextRecords {
   type: typeof REQUEST_NEXT_RECORDS
   uid?: string
+  groupId?: string
   lastRecord: ResponseRecordType
 }
 

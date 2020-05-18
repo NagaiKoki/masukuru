@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 // import components
 import Loading from '../../../components/Loading'
@@ -35,7 +35,7 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const handleSubmitRecord = () => {
     requestSubmitRecords(recordItems, word)
     setTimeout(() => {
-      navigation.navigate('record')
+      navigation.navigate('main')
     }, 2000)
   }
 

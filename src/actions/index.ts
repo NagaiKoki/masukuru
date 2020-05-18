@@ -110,10 +110,11 @@ export const failureSubmitRecords = (error: string): RecordActionTypes => {
 }
 
 // 記録の取得
-export const requestFetchRecords = (uid?: string): RecordActionTypes => {
+export const requestFetchRecords = (uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: REQUEST_FETCH_RECORDS,
-    uid
+    uid,
+    groupId
   }
 }
 
@@ -134,11 +135,12 @@ export const failureFetchRecords = (error: string): RecordActionTypes => {
 }
 
 // 記録の追加読み込みリクエスト
-export const requestNextRecords = (uid?: string, lastRecord?: ResponseRecordType): RecordActionTypes => {
+export const requestNextRecords = (lastRecord: ResponseRecordType, uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: REQUEST_NEXT_RECORDS,
+    lastRecord,
     uid,
-    lastRecord
+    groupId
   }
 }
 

@@ -46,10 +46,13 @@ function* handleRequestSubmitRecords() {
 
 // 記録の取得
 function* runRequestFetchRecords(action: RequestFetchRecords) {
-  const { uid } = action
+  const { uid, groupId } = action
+  const startAt = null
   const { payload, error } : { payload?: ResponseRecordType[], error?: string } = yield call(
     requestFetchRecord,
-    uid
+    uid,
+    startAt,
+    groupId
   )
 
   if (payload && !error) {
@@ -65,11 +68,12 @@ function* handleRequestFetchRecords() {
 
 // 記録の追加読み込み
 function* runRequestNextFetchRecords(action: RequestNextRecords) {
-  const { uid, lastRecord } = action
+  const { uid, lastRecord, groupId } = action
   const { payload, error } : { payload?: ResponseRecordType[], error?: string } = yield call(
     requestFetchRecord,
     uid,
-    lastRecord
+    lastRecord, 
+    groupId
   )
 
   if (payload && !error) {
