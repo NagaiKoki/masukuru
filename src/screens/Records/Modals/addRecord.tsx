@@ -142,7 +142,9 @@ const AddRecordScreen = (props: AddRecordProps) => {
       const weight: number = eval('weight' + size)
       if (!amount || amount === 0) break
       amountArry.push(amount)
-      weightArry.push(weight)
+      if (weight) {
+        weightArry.push(weight)
+      }      
     }
     return { amountArry, weightArry }
   }

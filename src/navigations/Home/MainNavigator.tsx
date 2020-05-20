@@ -1,19 +1,20 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import firebase, { db } from '../../config/firebase'
 import { COLORS } from '../../constants/Styles'
-import Icon from 'react-native-vector-icons/FontAwesome';
 // import components
 import Loading from '../../components/Loading'
 // import screen
-import HomeNavigator from './HomeNavigator'
 import MenuScreen from '../../screens/MenuCategories/index'
 import MyPageScreen from '../../screens/UserPage'
 import GroupInfoScreen from '../../screens/Groups/GroupInfo'
 import GroupEditScreen from '../../screens/Groups/GroupEdit'
+// import navigator
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
+import HomeNavigator from './HomeNavigator'
+// import container
+import UserPageContainer from '../../containers/users/userPage'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
@@ -104,7 +105,7 @@ const MainNavigator = () => {
 
       <MainStack.Screen
         name="UserPage"
-        component={MyPageScreen}
+        component={UserPageContainer}
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderUserTitle(route),

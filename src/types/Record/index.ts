@@ -19,6 +19,8 @@ import {
   REQUEST_NEXT_RECORDS,
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
+  INITIALIZE_RECORDS,
+  DESTROY_RECORD,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -32,7 +34,9 @@ export interface RecordState {
   error: string,
   isLoading: boolean,
   recordData: ResponseRecordType[]
+  beforeRecordSize: number
   userRecords: ResponseRecordType[]
+  beforeUserRecordSize: number
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -69,10 +73,21 @@ export interface AddRecord {
   record: RecordItemType | RecordAeroItemType
 }
 
-// 記録の削除
+// 記録の削除(state)
 export interface DeleteRecord {
   type: typeof DELETE_RECORD
   record: RecordItemType | RecordAeroItemType
+}
+
+// 記録の削除(firestore)
+export interface DestroyRecord {
+  type: typeof DESTROY_RECORD
+  id: string
+}
+
+// 記録の初期化
+export interface InitializeRecord {
+  type: typeof INITIALIZE_RECORDS
 }
 
 // 記録の更新
@@ -174,6 +189,8 @@ export interface FailureFetchNextRecords {
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
+  DestroyRecord |
+  InitializeRecord |
   UpdateRecord |
   OnChangeTrainingName |
   SetRecordError |

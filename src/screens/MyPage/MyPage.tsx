@@ -7,30 +7,39 @@ import { COLORS } from '../../constants/Styles';
 // import components
 import UserImage from '../../components/Image/userImage'
 import RecordList from '../../components/Records/recordList'
+import Loading from '../../components/Loading'
 // import types 
-import { UserProps } from '../../containers/users'
+import { UserProps } from '../../containers/users/myPage'
 // import lib
 import { isCloseToBottom } from '../../lib/scrollBottomEvent'
 
 const MyPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props
-  const { userRecords, isLoading } = records
+  const { userRecords, isLoading, beforeUserRecordSize } = records
   const lastRecord = userRecords[userRecords.length - 1]
   const { requestFetchRecords, requestNextRecords } = actions
   const user = firebase.auth().currentUser
 
   const [isRefresh, setIsRefresh] = useState(false)
+  const [isPageLoading, setIsPageLoading] = useState(true)
 
   useFocusEffect(
     useCallback(() => {
       requestFetchRecords(user.uid, undefined)
+      setIsPageLoading(false)
     }, [])
   )
-  
+
   const onRefresh = () => {
     setIsRefresh(true)
     requestFetchRecords(user.uid, undefined)
     setIsRefresh(false)
+  }
+
+  if (isPageLoading) {
+    return (
+      <Loading size="small" />
+    )
   }
 
   return (
@@ -51,7 +60,7 @@ const MyPageScreen = (props: UserProps) => {
             requestNextRecords(lastRecord, user.uid, undefined)
           }
         }}
-        scrollEventThrottle={400}
+        scrollEventThrottle={200}
         refreshControl={
           <RefreshControl 
             refreshing={isRefresh}

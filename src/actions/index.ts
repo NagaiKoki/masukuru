@@ -2,6 +2,7 @@
 import { 
   ADD_RECORD, 
   DELETE_RECORD, 
+  INITIALIZE_RECORDS,
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
   UPDATE_RECORD,
@@ -17,6 +18,7 @@ import {
   REQUEST_NEXT_RECORDS,
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
+  DESTROY_RECORD,
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../types/Record'
@@ -29,11 +31,25 @@ export const addRecord = (record: RecordItemType): RecordActionTypes => {
   }
 }
 
-// 記録の削除
+// 記録のstate削除
 export const deleteRecord = (record: RecordItemType): RecordActionTypes => {
   return {
     type: DELETE_RECORD,
     record
+  }
+}
+
+export const destroyRecord = (id: string): RecordActionTypes => {
+  return {
+    type: DESTROY_RECORD,
+    id,
+  }
+}
+
+// 記録の初期化
+export const initializeRecords = (): RecordActionTypes => {
+  return {
+    type: INITIALIZE_RECORDS
   }
 }
 

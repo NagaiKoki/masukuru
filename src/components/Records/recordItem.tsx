@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
+import moment from '../../config/moment'
 import styled from 'styled-components'
+import { useFocusEffect } from '@react-navigation/native';
 // import types
 import { ResponseRecordType, RecordItemType } from '../../types/Record'
 // import apis
@@ -10,28 +12,33 @@ import UserImage from '../Image/userImage'
 import { convertTimestampToString } from '../../lib/timestamp'
 import { COLORS } from '../../constants/Styles';
 
+import { db } from '../../config/firebase'
+
 interface RecordItemProps {
   record: ResponseRecordType
+  navigation?: any
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record } = props
-  const { id, uid, records, word, createdAt } = record
+  const { record, navigation } = props
+  const { uid, records, word, createdAt } = record
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { user, error }: { user?: any, error?: string } = await requestFetchUser(uid)
-      if (user && !error) {
-        setUser(user)
-      } else {
-        setError(error)
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUser = async () => {
+        const { user, error }: { user?: any, error?: string } = await requestFetchUser(uid)
+        if (user && !error) {
+          setUser(user)
+        } else {
+          setError(error)
+        }
       }
-    }
-    fetchUser()
-  }, [])
+      fetchUser()
+    }, [uid])
+  )
 
   if (!user || !record) {
     return <React.Fragment></React.Fragment>
@@ -74,7 +81,7 @@ const RecordItem = (props: RecordItemProps) => {
   // ユーザーレンダー
   const renderUser = 
       <RecordUserWrapper>
-        <RecordUserImage>
+        <RecordUserImage onPress={ () => navigation ? navigation.navigate('UserPage', { user: user }) : {} }>
           <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
         </RecordUserImage>
         <RecordUserName>{user.name}</RecordUserName>
@@ -84,7 +91,7 @@ const RecordItem = (props: RecordItemProps) => {
     <RecordItemContainer>
       <RecordItemUpper>
         {renderUser}
-        <RecordTimestampText>{convertTimestampToString(createdAt)}</RecordTimestampText>
+        <RecordTimestampText>{moment(convertTimestampToString(createdAt)).fromNow()}</RecordTimestampText>
       </RecordItemUpper>
       <RecordWordText>{word}</RecordWordText>
       {renderRecordData}
@@ -94,10 +101,11 @@ const RecordItem = (props: RecordItemProps) => {
 
 const RecordItemContainer = styled.View`
   margin: 0px 0 8px 0;
-  border-color: ${COLORS.BASE_BORDER_COLOR};
+  box-shadow: 0 7px 30px rgba(150,170,180,0.5);
   padding: 15px 15px 0 15px;
-  border-top-width: 0.5px;
-  border-bottom-width: 0.5px;
+  width: 100%;
+  align-self: center;
+  border-radius: 5px;
   background-color: ${COLORS.BASE_WHITE}; 
 `
 
@@ -112,14 +120,14 @@ const RecordUserWrapper = styled.View`
   align-items: center;
 `
 
-const RecordUserImage = styled.View`
+const RecordUserImage = styled.TouchableOpacity`
 `
 
 const RecordUserName = styled.Text`
   margin-left: 13px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 16px;
+  font-size: 17px;
 `
 
 const RecordTimestampText = styled.Text`
@@ -130,7 +138,7 @@ const RecordTimestampText = styled.Text`
 const RecordWordText = styled.Text`
   padding: 15px 0;
   color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
+  font-size: 15px;
   margin-left: 50px;
 `
 
@@ -143,7 +151,7 @@ const RecordDataWrapper = styled.View`
 
 const RecordDataName = styled.Text`
   font-weight: bold;
-  font-size: 15px;
+  font-size: 17px;
 `
 
 const UnitDataWrapper = styled.View`
@@ -158,7 +166,7 @@ const UnitDataItem = styled.View`
 const UnitData = styled.Text`
   padding: 5px 0;
   color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 10px;
 `
 

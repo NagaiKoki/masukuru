@@ -63,7 +63,7 @@ function* runRequestFetchRecords(action: RequestFetchRecords) {
 }
 
 function* handleRequestFetchRecords() {
-  yield takeEvery(REQUEST_FETCH_RECORDS, runRequestFetchRecords)
+  yield takeLatest(REQUEST_FETCH_RECORDS, runRequestFetchRecords)
 }
 
 // 記録の追加読み込み

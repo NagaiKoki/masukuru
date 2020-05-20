@@ -17,6 +17,8 @@ import {
   REQUEST_NEXT_RECORDS,
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
+  INITIALIZE_RECORDS,
+  DESTROY_RECORD,
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -32,7 +34,9 @@ const initialState: RecordState = {
   error: '',
   isLoading: false,
   recordData: [],
-  userRecords: []
+  beforeRecordSize: 0,
+  userRecords: [],
+  beforeUserRecordSize: 0
 }
 
 const recordReducer = (
@@ -55,7 +59,7 @@ const recordReducer = (
       }
     }
 
-    // 記録の削除
+    // 記録の削除(state)
     case DELETE_RECORD: {
       const { record } = action
       const { recordItems } = state
@@ -65,6 +69,37 @@ const recordReducer = (
       return {
         ...state,
         recordItems: updateRecordItems
+      }
+    }
+
+    // 記録の削除(firestore)
+    case DESTROY_RECORD: {
+      const { id } = action
+      const filteredRecords = state.recordData.filter(data => data.id !== id)
+      const filteredUserRecords = state.userRecords.filter(data => data.id !== id)
+      return {
+        ...state,
+        recordData: filteredRecords,
+        userRecords: filteredUserRecords
+      }
+    }
+
+    // 記録の初期化
+    case INITIALIZE_RECORDS: {
+      return {
+        recordItems: [],
+        word: '',
+        temporaryName: '',
+        temporaryTime: '',
+        temporaryDistance: '',
+        temporaryamounts: [],
+        temporaryWeights: [],
+        error: '',
+        isLoading: false,
+        recordData: [],
+        beforeRecordSize: 0,
+        userRecords: [],
+        beforeUserRecordSize: 0
       }
     }
 
@@ -166,7 +201,7 @@ const recordReducer = (
     case REQUEST_FETCH_RECORDS: {
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
       }
     }
 
@@ -210,19 +245,22 @@ const recordReducer = (
     // 記録の追加読み込み成功
     case SUCCESS_FETCH_NEXT_RECORDS: {
       const { payload, uid, groupId } = action
-      const { recordData } = state
-      const updateRecords = recordData.concat(payload)
-
       if (uid) {
+        const { userRecords } = state
+        const updateRecords = userRecords.concat(payload)
         return {
           ...state,
           userRecords: updateRecords,
+          beforeRecordSize: state.userRecords.length,
           isLoading: false
         }
       } else if (groupId) {
+        const { recordData } = state
+        const updateRecords = recordData.concat(payload)
         return {
           ...state,
           recordData: updateRecords,
+          beforeUserRecordSize: state.recordData.length,
           isLoading: false
         }
       } else {

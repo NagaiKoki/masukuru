@@ -1,8 +1,6 @@
-import React, { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import firebase, { db } from '../../config/firebase'
 import { COLORS } from '../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen

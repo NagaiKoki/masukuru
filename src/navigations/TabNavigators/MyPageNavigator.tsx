@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import containers
-import UserContainer from '../../containers/users/'
+import UserContainer from '../../containers/users/myPage'
 // import screens
 import MyPageScreen from '../../screens/MyPage/MyPage'
 import ProfileChangeScreen from '../../screens/MyPage/ProfileChange';

@@ -6,7 +6,7 @@ import { COLORS } from '../../constants/Styles';
 import * as Updates from 'expo-updates';
 // import icons
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import configs
 import firebase, { db } from '../../config/firebase';
 import Analitycs from '../../config/amplitude'
@@ -135,10 +135,14 @@ const HomeScreen = (props: HomeProps) => {
           />
         }
       >
-      <RecordList recordData={recordData} isLoading={isLoading} />
+      <RecordList 
+        recordData={recordData} 
+        isLoading={isLoading} 
+        navigation={navigation}
+      />
      </ScrollView>
      <RecordAddBtn onPress={() => navigation.navigate('recordModal')}>
-        <Icon name="plus" size={30} style={{ color: '#fff', marginTop: 4 }} />
+        <Icon name="pencil" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </RecordAddBtn>
     </Container>
   );

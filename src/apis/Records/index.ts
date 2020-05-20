@@ -35,6 +35,7 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
 export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: string) => {
   const records = []
   let ref;
+  
   try {
     if (uid && startAt) {
       ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
@@ -47,7 +48,9 @@ export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: 
     }
     await ref.get().then(snap => {
       snap.forEach(doc => {
-        records.push(doc.data())
+        const data = doc.data()
+        data.id = String(doc.ref.id)
+        records.push(data)
       })
     })
     return { payload: records }
