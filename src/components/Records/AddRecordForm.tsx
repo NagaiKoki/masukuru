@@ -122,7 +122,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
             <AddUnitForm
               placeholder="0"
               autoCapitalize={'none'}
-              maxLength={3}
+              maxLength={5}
               defaultValue={String(eval('amount' + String(size)))}
               keyboardType={'numeric'}
               autoCorrect={ false }
@@ -132,7 +132,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
             <AddUnitForm
               placeholder="0"
               autoCapitalize={'none'}
-              maxLength={3}
+              maxLength={5}
               defaultValue={String(eval('weight' + String(size)))}
               keyboardType={'numeric'}
               autoCorrect={ false }

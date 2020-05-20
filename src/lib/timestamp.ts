@@ -7,5 +7,5 @@ export const convertTimestampToString = (date: Timestamp) => {
   const day = (`0${time.getDate()}`).slice(-2);
   const hour = (`0${time.getHours()}`).slice(-2);
   const min = (`0${time.getMinutes()}`).slice(-2);
-  return `${year}/${month}/${day} ${hour}:${min}`;
+  return `${year}-${month}-${day} ${hour}:${min}`;
 }

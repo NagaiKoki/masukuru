@@ -1,18 +1,21 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
-import firebase, { db } from '../config/firebase'
-import { COLORS } from '../constants/Styles'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { createStackNavigator } from '@react-navigation/stack';
+import firebase, { db } from '../../config/firebase'
+import { COLORS } from '../../constants/Styles'
+// import components
+import Loading from '../../components/Loading'
 // import screen
-import HomeScreen from '../screens/Home'
-import MenuScreen from '../screens/MenuCategories/index'
-import MyPageScreen from '../screens/UserPage'
-import GroupInfoScreen from '../screens/Groups/GroupInfo'
-import GroupEditScreen from '../screens/Groups/GroupEdit'
+import MenuScreen from '../../screens/MenuCategories/index'
+import GroupInfoScreen from '../../screens/Groups/GroupInfo'
+import GroupEditScreen from '../../screens/Groups/GroupEdit'
+// import navigator
+import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
+import HomeNavigator from './HomeNavigator'
+// import container
+import UserPageContainer from '../../containers/users/userPage'
 
-const MainNavigator = ({ navigation }) => { 
+const MainNavigator = () => { 
   const MainStack = createStackNavigator()
   const [currentGroupId, setCurrentGroupId] = useState('');
   const [loading, setloading] = useState(true)
@@ -35,16 +38,16 @@ const MainNavigator = ({ navigation }) => {
           setloading(false);
         }
       })
-
     }, [])
   )
 
   if (loading || currentGroupId === "") {
     return (
-      <ActivityIndicator size="large" style={[styles.loading]} />
+      <Loading size="large" />
     )
   }
 
+  
   // ヘッダータイトル関数
   const getHeaderMenuTitle = (route) => {
     return route.params.item.name + 'の記録'
@@ -58,20 +61,19 @@ const MainNavigator = ({ navigation }) => {
     <MainStack.Navigator initialRouteName="main">
       <MainStack.Screen 
         name="main" 
-        component={HomeScreen}
+        component={HomeNavigator}
         initialParams={{ currentGroupId: currentGroupId }}
-        options={({route}) => ({
-          headerLeft: () => (
-            <Icon name="bars" 
-                  size={24} 
-                  onPress={() => { navigation.openDrawer() }} 
-                  style={{ paddingLeft: 20, color: COLORS.SUB_BLACK }}
-            />
-          ),
-          gestureEnabled: false,
-          headerTintColor: COLORS.BASE_MUSCLEW,
-          
-        })}
+        options={{
+          headerShown: false
+        }}
+      />
+
+      <MainStack.Screen 
+        name="recordModal"
+        component={RecordModalNavigator}
+        options={{
+          headerShown: false,
+        }}
       />
 
       <MainStack.Screen
@@ -80,7 +82,10 @@ const MainNavigator = ({ navigation }) => {
         options={{
           headerBackTitleVisible: false,
           headerTitle: "グループ情報",
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
 
@@ -90,17 +95,23 @@ const MainNavigator = ({ navigation }) => {
         options={{
           headerBackTitleVisible: false,
           headerTitle: "グループを編集する",
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
 
       <MainStack.Screen
         name="UserPage"
-        component={MyPageScreen}
+        component={UserPageContainer}
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderUserTitle(route),
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         })}
       />
 
@@ -110,20 +121,15 @@ const MainNavigator = ({ navigation }) => {
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderMenuTitle(route),
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         })}
       />
 
    </MainStack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center'
-  }
-})
 
 export default MainNavigator;

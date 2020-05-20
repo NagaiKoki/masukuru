@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
+import { Alert } from 'react-native'
+import moment from '../../config/moment'
 import styled from 'styled-components'
+import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/AntDesign'
+// db
+import firebase from '../../config/firebase'
 // import types
 import { ResponseRecordType, RecordItemType } from '../../types/Record'
 // import apis
@@ -12,29 +18,53 @@ import { COLORS } from '../../constants/Styles';
 
 interface RecordItemProps {
   record: ResponseRecordType
+  navigation?: any
+  requestDestroyRecord: (id: string) => void
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record } = props
+  const { record, navigation, requestDestroyRecord } = props
   const { id, uid, records, word, createdAt } = record
+  const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { user, error }: { user?: any, error?: string } = await requestFetchUser(uid)
-      if (user && !error) {
-        setUser(user)
-      } else {
-        setError(error)
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUser = async () => {
+        const { user, error }: { user?: any, error?: string } = await requestFetchUser(uid)
+        if (user && !error) {
+          setUser(user)
+        } else {
+          setError(error)
+        }
       }
-    }
-    fetchUser()
-  }, [])
+      fetchUser()
+    }, [uid])
+  )
 
   if (!user || !record) {
-    return <RecordItemContainer></RecordItemContainer>
+    return <React.Fragment></React.Fragment>
+  }
+
+  // 記録の削除
+  const handleDestroyRecord = () => {
+    Alert.alert(
+      'この記録を削除します。',
+      "本当によろしいですか？", 
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => { requestDestroyRecord(id) }
+        }
+      ],
+      { cancelable: false }
+    )
   }
 
   // 記録の詳細
@@ -74,8 +104,8 @@ const RecordItem = (props: RecordItemProps) => {
   // ユーザーレンダー
   const renderUser = 
       <RecordUserWrapper>
-        <RecordUserImage>
-          <UserImage user={user} width={40} height={40} borderRadius={60} />
+        <RecordUserImage onPress={ () => navigation ? navigation.navigate('UserPage', { user: user }) : {} }>
+          <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
         </RecordUserImage>
         <RecordUserName>{user.name}</RecordUserName>
       </RecordUserWrapper>
@@ -84,7 +114,14 @@ const RecordItem = (props: RecordItemProps) => {
     <RecordItemContainer>
       <RecordItemUpper>
         {renderUser}
-        <RecordTimestampText>{convertTimestampToString(createdAt)}</RecordTimestampText>
+        <RecordRightUpper>
+          <RecordTimestampText>{moment(convertTimestampToString(createdAt)).fromNow()}</RecordTimestampText>
+          { currentUser.uid === uid ? 
+            <IconWrapper onPress={handleDestroyRecord}>
+              <Icon name='down' style={{ color: COLORS.BASE_BLACK }}/>
+            </IconWrapper> : null
+          }
+        </RecordRightUpper>
       </RecordItemUpper>
       <RecordWordText>{word}</RecordWordText>
       {renderRecordData}
@@ -93,11 +130,12 @@ const RecordItem = (props: RecordItemProps) => {
 }
 
 const RecordItemContainer = styled.View`
-  margin: 8px 0;
-  border-color: ${COLORS.BASE_BORDER_COLOR};
+  margin: 0px 0 8px 0;
+  box-shadow: 0 7px 30px rgba(150,170,180,0.5);
   padding: 15px 15px 0 15px;
-  border-top-width: 0.5px;
-  border-bottom-width: 0.5px;
+  width: 100%;
+  align-self: center;
+  border-radius: 5px;
   background-color: ${COLORS.BASE_WHITE}; 
 `
 
@@ -112,38 +150,47 @@ const RecordUserWrapper = styled.View`
   align-items: center;
 `
 
-const RecordUserImage = styled.View`
+const RecordUserImage = styled.TouchableOpacity`
 `
 
 const RecordUserName = styled.Text`
   margin-left: 13px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 16px;
+  font-size: 17px;
+`
+
+const RecordRightUpper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+const IconWrapper = styled.TouchableOpacity`
 `
 
 const RecordTimestampText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
+  color: ${COLORS.SUB_BLACK};
   font-size: 12px;
+  margin-right: 5px;
 `
 
 const RecordWordText = styled.Text`
   padding: 15px 0;
   color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
+  font-size: 15px;
   margin-left: 50px;
 `
 
 const RecordDataWrapper = styled.View`
   border-color: ${COLORS.BASE_BORDER_COLOR};
-  border-top-width: 0.5px;
+  border-top-width: 0.3px;
   margin-left: 50px;
   padding: 15px 0;
 `
 
 const RecordDataName = styled.Text`
   font-weight: bold;
-  font-size: 15px;
+  font-size: 17px;
 `
 
 const UnitDataWrapper = styled.View`
@@ -158,7 +205,7 @@ const UnitDataItem = styled.View`
 const UnitData = styled.Text`
   padding: 5px 0;
   color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
+  font-size: 15px;
   margin-right: 10px;
 `
 

@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { Snackbar } from 'react-native-paper';
-import { getStatusBarHeight } from "react-native-status-bar-height";
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { COLORS } from '../../constants/Styles';
 
 type ToastProps = {

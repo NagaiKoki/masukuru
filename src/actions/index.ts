@@ -2,6 +2,7 @@
 import { 
   ADD_RECORD, 
   DELETE_RECORD, 
+  INITIALIZE_RECORDS,
   ON_CHANGE_TRAINING_NAME, 
   SET_RECORD_ERROR,
   UPDATE_RECORD,
@@ -17,6 +18,9 @@ import {
   REQUEST_NEXT_RECORDS,
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
+  REQUEST_DESTORY_RECORD,
+  SUCCESS_DESTROY_RECORD,
+  FAILURE_DESTROY_RECORD
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../types/Record'
@@ -29,11 +33,42 @@ export const addRecord = (record: RecordItemType): RecordActionTypes => {
   }
 }
 
-// 記録の削除
+// 記録のstate削除
 export const deleteRecord = (record: RecordItemType): RecordActionTypes => {
   return {
     type: DELETE_RECORD,
     record
+  }
+}
+
+// 記録の削除（firestore）
+export const requestDestroyRecord = (id: string): RecordActionTypes => {
+  return {
+    type: REQUEST_DESTORY_RECORD,
+    id,
+  }
+}
+
+// 記録の削除成功（firestore）
+export const successDestroyRecord = (id: string): RecordActionTypes => {
+  return {
+    type: SUCCESS_DESTROY_RECORD,
+    id
+  }
+}
+
+// 記録の削除失敗（firestore）
+export const failureDestroyRecord = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_DESTROY_RECORD,
+    error
+  }
+}
+
+// 記録の初期化
+export const initializeRecords = (): RecordActionTypes => {
+  return {
+    type: INITIALIZE_RECORDS
   }
 }
 
@@ -62,7 +97,7 @@ export const onChangeTrainingName = (name: string): RecordActionTypes => {
 }
 
 // 距離の検知
-export const onChangeDistance = (payload: number): RecordActionTypes => {
+export const onChangeDistance = (payload: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_DISTANCE,
     payload
@@ -70,7 +105,7 @@ export const onChangeDistance = (payload: number): RecordActionTypes => {
 }
 
 // 時間の検知
-export const onChangeTime = (payload: number): RecordActionTypes => {
+export const onChangeTime = (payload: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_TIME,
     payload
@@ -110,18 +145,21 @@ export const failureSubmitRecords = (error: string): RecordActionTypes => {
 }
 
 // 記録の取得
-export const requestFetchRecords = (uid?: string): RecordActionTypes => {
+export const requestFetchRecords = (uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: REQUEST_FETCH_RECORDS,
-    uid
+    uid,
+    groupId
   }
 }
 
 // 記録の取得成功
-export const SuccessFetchRecords = (payload: ResponseRecordType[]): RecordActionTypes => {
+export const SuccessFetchRecords = (payload: ResponseRecordType[], uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: SUCCESS_FETCH_RECORDS,
-    payload
+    payload,
+    uid,
+    groupId
   }
 }
 
@@ -134,19 +172,22 @@ export const failureFetchRecords = (error: string): RecordActionTypes => {
 }
 
 // 記録の追加読み込みリクエスト
-export const requestNextRecords = (uid?: string, lastRecord?: ResponseRecordType): RecordActionTypes => {
+export const requestNextRecords = (lastRecord: ResponseRecordType, uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: REQUEST_NEXT_RECORDS,
+    lastRecord,
     uid,
-    lastRecord
+    groupId
   }
 }
 
 // 記録の追加読み込みリクエスト成功
-export const successFetchNextRecords = (payload: ResponseRecordType[]): RecordActionTypes => {
+export const successFetchNextRecords = (payload: ResponseRecordType[], uid?: string, groupId?: string): RecordActionTypes => {
   return {
     type: SUCCESS_FETCH_NEXT_RECORDS,
-    payload
+    payload,
+    uid,
+    groupId
   }
 }
 

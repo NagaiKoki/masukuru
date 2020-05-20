@@ -6,17 +6,20 @@ import { RecordState, ResponseRecordType } from '../../types/Record'
 // import actions
 import {
   requestFetchRecords,
-  requestNextRecords
+  requestNextRecords,
+  requestDestroyRecord
 } from '../../actions'
 // import screens
-import RecordScreen from '../../screens/Records'
+import HomeScreen from '../../screens/Home/'
 
-export interface RecordProps {
+export interface HomeProps {
   navigation: any
+  route: any
   records: RecordState
   actions: {
-    requestFetchRecords: (uid: string) => void
-    requestNextRecords: (lastRecord: ResponseRecordType, uid: string) => void
+    requestFetchRecords: (uid: string, groupId: string) => void
+    requestNextRecords: (lastRecord: ResponseRecordType, uid: string, groupId: string) => void
+    requestDestroyRecord: (id: string) => void
   }
 }
 
@@ -30,7 +33,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
       requestFetchRecords,
-      requestNextRecords
+      requestNextRecords,
+      requestDestroyRecord
     }
     , dispatch)
   }
@@ -39,4 +43,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecordScreen)
+)(HomeScreen)

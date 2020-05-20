@@ -9,11 +9,19 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
   const uid = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   const docId = factoryRandomCode(20)
+  const groupIds = []
   try {
+    await db.collectionGroup('groupUsers').where('uid', '==', uid).get().then(snap => {
+      snap.forEach(doc => {
+        groupIds.push(doc.ref.parent.parent.id)
+      })
+    })
+    
     await db.collection('records').doc(docId).set({
       records: records,
       uid: uid,
       word: word,
+      groupIds: groupIds,
       createdAt: currentTime,
       updatedAt: currentTime
     })
@@ -24,23 +32,40 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
 }
 
 // 記録取得
-export const requestFetchRecord = async (uid?: string, startAt?: any) => {
+export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: string) => {
   const records = []
   let ref;
+  
   try {
     if (uid && startAt) {
       ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
     } else if (uid && !startAt) {
       ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").limit(5)
+    } else if (groupId && startAt) {
+      ref = db.collection('records').where('groupIds', 'array-contains', groupId).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
+    } else if (groupId && !startAt) {
+      ref = db.collection('records').where('groupIds', 'array-contains', groupId).orderBy("createdAt", "desc").limit(5)
     }
     await ref.get().then(snap => {
       snap.forEach(doc => {
-        records.push(doc.data())
+        const data = doc.data()
+        data.id = String(doc.ref.id)
+        records.push(data)
       })
     })
     return { payload: records }
   } catch (error) {
-    console.log(error)
     return { error: error }
   }
-} 
+}
+
+// 記録の削除
+export const requestDestroyRecord = async (id: string) => {
+  try {
+    const ref = db.collection('records').doc(id)
+    await ref.delete()
+    return { payload: 'success' }
+  } catch (error) {
+    return { error: '削除に失敗しました。' }
+  }
+}

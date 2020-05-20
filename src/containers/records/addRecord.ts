@@ -24,8 +24,8 @@ export interface AddRecordProps {
     updateRecord: (record: RecordItemType) => void
     setRecordError: (error: string) => void
     onChangeTrainingName: (name: string) => void
-    onChangeDistance: (distance: number) => void
-    onChangeTime: (time: number) => void
+    onChangeDistance: (distance: string) => void
+    onChangeTime: (time: string) => void
   }
 }
 

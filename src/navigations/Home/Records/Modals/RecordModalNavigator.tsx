@@ -3,6 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
+// import store
+import store from '../../../../reducers'
+// import action
+import { initializeRecords } from '../../../../actions'
 // import containers
 import RecordContainer from '../../../../containers/records/recordModal'
 import AddRecordContainer from '../../../../containers/records/addRecord'
@@ -12,6 +16,11 @@ const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
   const navigation = useNavigation()
 
+  const handleCancelRecord = () => {
+    store.dispatch(initializeRecords())
+    navigation.navigate('mainContainer')
+  }
+
   return (
     <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
@@ -20,7 +29,7 @@ const RecordModalNavigator = () => {
         options={{
           headerLeft: () => {
             return (
-              <HeaderBackBtn onPress={ () => navigation.navigate('record') }>
+              <HeaderBackBtn onPress={handleCancelRecord}>
                 <HeaderBackTitle>キャンセル</HeaderBackTitle>
               </HeaderBackBtn>
             )

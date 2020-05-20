@@ -19,19 +19,26 @@ import {
   REQUEST_NEXT_RECORDS,
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
+  INITIALIZE_RECORDS,
+  REQUEST_DESTORY_RECORD,
+  SUCCESS_DESTROY_RECORD,
+  FAILURE_DESTROY_RECORD,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
   recordItems: RecordItemType[]
   word: string
   temporaryName: string
-  temporaryTime: number
-  temporaryDistance: number
+  temporaryTime: string
+  temporaryDistance: string
   temporaryamounts: number[]
   temporaryWeights: number[]
   error: string,
   isLoading: boolean,
   recordData: ResponseRecordType[]
+  beforeRecordSize: number
+  userRecords: ResponseRecordType[]
+  beforeUserRecordSize: number
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -68,10 +75,33 @@ export interface AddRecord {
   record: RecordItemType | RecordAeroItemType
 }
 
-// 記録の削除
+// 記録の削除(state)
 export interface DeleteRecord {
   type: typeof DELETE_RECORD
   record: RecordItemType | RecordAeroItemType
+}
+
+// 記録の削除(firestore)
+export interface RequestDestroyRecord {
+  type: typeof REQUEST_DESTORY_RECORD
+  id: string
+}
+
+// 記録の削除成功(firestore)
+export interface SuccessDestroyRecord {
+  type: typeof SUCCESS_DESTROY_RECORD
+  id: string
+}
+
+// 記録の削除失敗(firestore)
+export interface FailureDestroyRecord {
+  type: typeof FAILURE_DESTROY_RECORD,
+  error: string
+}
+
+// 記録の初期化
+export interface InitializeRecord {
+  type: typeof INITIALIZE_RECORDS
 }
 
 // 記録の更新
@@ -95,12 +125,12 @@ export interface OnChangeTrainingName {
 // 距離の検知
 export interface OnChangeDistance {
   type: typeof ON_CHANGE_DISTANCE
-  payload: number
+  payload: string
 }
 // 時間の検知
 export interface OnChangeTime {
   type: typeof ON_CHANGE_TIME
-  payload: number
+  payload: string
 }
 
 // つぶやきの検知
@@ -131,12 +161,15 @@ export interface FailureSubmitRecords {
 export interface RequestFetchRecords {
   type: typeof REQUEST_FETCH_RECORDS
   uid?: string
+  groupId?: string
 }
 
 // 記録の成功
 export interface SuccessFetchRecords {
   type: typeof SUCCESS_FETCH_RECORDS
   payload: ResponseRecordType[]
+  uid?: string
+  groupId?: string
 }
 
 // 記録の失敗
@@ -149,6 +182,7 @@ export interface FailureFetchRecords {
 export interface RequestNextRecords {
   type: typeof REQUEST_NEXT_RECORDS
   uid?: string
+  groupId?: string
   lastRecord: ResponseRecordType
 }
 
@@ -156,6 +190,8 @@ export interface RequestNextRecords {
 export interface SuccessFetchNextRecords {
   type: typeof SUCCESS_FETCH_NEXT_RECORDS
   payload: ResponseRecordType[]
+  uid?: string
+  groupId?: string
 }
 
 // 記録の追加読み込み失敗
@@ -167,6 +203,10 @@ export interface FailureFetchNextRecords {
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
+  RequestDestroyRecord |
+  SuccessDestroyRecord |
+  FailureDestroyRecord |
+  InitializeRecord |
   UpdateRecord |
   OnChangeTrainingName |
   SetRecordError |

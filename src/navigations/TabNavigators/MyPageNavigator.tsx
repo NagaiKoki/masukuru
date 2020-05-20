@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+// import containers
+import UserContainer from '../../containers/users/myPage'
+// import screens
 import MyPageScreen from '../../screens/MyPage/MyPage'
 import ProfileChangeScreen from '../../screens/MyPage/ProfileChange';
 import { COLORS } from '../../constants/Styles'
@@ -12,9 +15,12 @@ const MyPageNavigator = () => {
     <MyPageStack.Navigator initialRouteName='マイページ'>
        <MyPageStack.Screen
         name="マイページ"
-        component={MyPageScreen}
+        component={UserContainer}
         options={{
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
 
@@ -23,7 +29,10 @@ const MyPageNavigator = () => {
         component={ProfileChangeScreen}
         options={{
           headerBackTitleVisible: false,
-          headerTintColor: COLORS.BASE_MUSCLEW
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
         }}
       />
     </MyPageStack.Navigator>

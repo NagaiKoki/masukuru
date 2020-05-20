@@ -91,7 +91,7 @@ const TranferModal = (props: TransferModalProps) => {
       setDrawerIsLoading(true)
       setTimeout(() => {
         requestTransfer(groupId)
-        navigation.navigate('main', { currentGroupId: groupId })
+        navigation.navigate('mainContainer', { currentGroupId: groupId })
         setCurrentGroupId(groupId)
         setIsloading(false)
         setShowTransferModal(false)

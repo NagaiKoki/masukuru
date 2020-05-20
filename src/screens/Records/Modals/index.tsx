@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Alert } from 'react-native'
@@ -86,8 +86,6 @@ const RecordModalScreen = (props: RecordProps) => {
         const renderTime = item.time ? item.time + '分 ' : ''
         renderText = item.name + ', ' + renderDistance + renderTime
       }
-
-      console.log(renderText.length)
 
       return (
         <React.Fragment key={item.id}>
