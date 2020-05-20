@@ -57,4 +57,15 @@ export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: 
   } catch (error) {
     return { error: error }
   }
-} 
+}
+
+// 記録の削除
+export const requestDestroyRecord = async (id: string) => {
+  try {
+    const ref = db.collection('records').doc(id)
+    await ref.delete()
+    return { payload: 'success' }
+  } catch (error) {
+    return { error: '削除に失敗しました。' }
+  }
+}

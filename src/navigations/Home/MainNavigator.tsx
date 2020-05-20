@@ -7,7 +7,6 @@ import { COLORS } from '../../constants/Styles'
 import Loading from '../../components/Loading'
 // import screen
 import MenuScreen from '../../screens/MenuCategories/index'
-import MyPageScreen from '../../screens/UserPage'
 import GroupInfoScreen from '../../screens/Groups/GroupInfo'
 import GroupEditScreen from '../../screens/Groups/GroupEdit'
 // import navigator

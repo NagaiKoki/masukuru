@@ -17,7 +17,7 @@ const UserPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props
   const { userRecords, isLoading } = records
   const lastRecord = userRecords[userRecords.length - 1]
-  const { requestFetchRecords, requestNextRecords } = actions
+  const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
   const { user } = route.params
 
   const [isRefresh, setIsRefresh] = useState(false)
@@ -46,7 +46,7 @@ const UserPageScreen = (props: UserProps) => {
       <Loading size="small" />
     )
   }
-  
+
   return (
     <MypageContainer>
       <MypageUserWrapper>
@@ -69,7 +69,11 @@ const UserPageScreen = (props: UserProps) => {
           />
         }
       >
-      <RecordList recordData={userRecords} isLoading={isLoading}/>
+      <RecordList 
+        recordData={userRecords} 
+        isLoading={isLoading}
+        requestDestroyRecord={requestDestroyRecord}
+      />
       </ScrollView>
     </MypageContainer>
   );

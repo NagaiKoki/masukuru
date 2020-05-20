@@ -20,7 +20,9 @@ import {
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
   INITIALIZE_RECORDS,
-  DESTROY_RECORD,
+  REQUEST_DESTORY_RECORD,
+  SUCCESS_DESTROY_RECORD,
+  FAILURE_DESTROY_RECORD,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -80,9 +82,21 @@ export interface DeleteRecord {
 }
 
 // 記録の削除(firestore)
-export interface DestroyRecord {
-  type: typeof DESTROY_RECORD
+export interface RequestDestroyRecord {
+  type: typeof REQUEST_DESTORY_RECORD
   id: string
+}
+
+// 記録の削除成功(firestore)
+export interface SuccessDestroyRecord {
+  type: typeof SUCCESS_DESTROY_RECORD
+  id: string
+}
+
+// 記録の削除失敗(firestore)
+export interface FailureDestroyRecord {
+  type: typeof FAILURE_DESTROY_RECORD,
+  error: string
 }
 
 // 記録の初期化
@@ -189,7 +203,9 @@ export interface FailureFetchNextRecords {
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
-  DestroyRecord |
+  RequestDestroyRecord |
+  SuccessDestroyRecord |
+  FailureDestroyRecord |
   InitializeRecord |
   UpdateRecord |
   OnChangeTrainingName |

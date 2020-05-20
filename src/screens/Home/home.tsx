@@ -23,7 +23,7 @@ import Loading from '../../components/Loading';
   
 const HomeScreen = (props: HomeProps) => {
   const { navigation, route, records, actions } = props
-  const { requestFetchRecords, requestNextRecords } = actions
+  const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
   const { recordData, isLoading } = records
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
@@ -139,6 +139,7 @@ const HomeScreen = (props: HomeProps) => {
         recordData={recordData} 
         isLoading={isLoading} 
         navigation={navigation}
+        requestDestroyRecord={requestDestroyRecord}
       />
      </ScrollView>
      <RecordAddBtn onPress={() => navigation.navigate('recordModal')}>

@@ -7,7 +7,8 @@ import { RecordState, ResponseRecordType } from '../../types/Record'
 // import actions
 import {
   requestFetchRecords,
-  requestNextRecords
+  requestNextRecords,
+  requestDestroyRecord
 } from '../../actions'
 // import screens
 import UserScreen from '../../screens/UserPage'
@@ -19,6 +20,7 @@ export interface UserProps {
   actions: {
     requestFetchRecords: (uid?: string, groupId?: string) => void
     requestNextRecords: (lastRecord: ResponseRecordType, uid?: string, groupId?: string) => void
+    requestDestroyRecord: (id: string) => void
   }
 }
 
@@ -32,7 +34,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
       requestFetchRecords,
-      requestNextRecords
+      requestNextRecords,
+      requestDestroyRecord
     }
     , dispatch)
   }

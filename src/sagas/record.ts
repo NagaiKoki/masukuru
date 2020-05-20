@@ -3,24 +3,28 @@ import { fork, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effect
 import { 
   REQUEST_SUBMIT_RECORDS, 
   REQUEST_FETCH_RECORDS,
-  REQUEST_NEXT_RECORDS
+  REQUEST_NEXT_RECORDS,
+  REQUEST_DESTORY_RECORD
 } from '../actions/actionTypes'
 // import types
 import { 
   RequestSubmitRecords, 
   ResponseRecordType,
   RequestFetchRecords,
-  RequestNextRecords
+  RequestNextRecords,
+  RequestDestroyRecord
 } from '../types/Record'
 // import apis
-import { requestPostRecords, requestFetchRecord } from '../apis/Records'
+import { requestPostRecords, requestFetchRecord, requestDestroyRecord } from '../apis/Records'
 import { 
   successSubmitRecords, 
   failureSubmitRecords,
   SuccessFetchRecords,
   failureFetchRecords,
   successFetchNextRecords,
-  failureFetchNextRecords
+  failureFetchNextRecords,
+  successDestroyRecord,
+  failureDestroyRecord
 } from '../actions'
 
 // 記録の保存
@@ -88,8 +92,29 @@ function* handleRequestNextFetchRecords() {
   yield takeLatest(REQUEST_NEXT_RECORDS, runRequestNextFetchRecords)
 }
 
+// 記録の削除
+function* runRequestDestroyRecord(action: RequestDestroyRecord) {
+  const { id } = action
+  const { payload, error }: { payload?: string, error?: string } = yield call(
+    requestDestroyRecord,
+    id
+  )
+  if (payload && !error) {
+    yield put(successDestroyRecord(id))
+  } else {
+    yield put(failureDestroyRecord(error))
+  }
+}
+
+// 記録の削除ハンドラー
+function* handleRequestDestroyRecord() {
+  yield takeEvery(REQUEST_DESTORY_RECORD, runRequestDestroyRecord)
+}
+
+
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)
   yield fork(handleRequestNextFetchRecords)
+  yield fork(handleRequestDestroyRecord)
 }

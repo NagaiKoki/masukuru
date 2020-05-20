@@ -18,7 +18,9 @@ import {
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
   INITIALIZE_RECORDS,
-  DESTROY_RECORD,
+  REQUEST_DESTORY_RECORD,
+  SUCCESS_DESTROY_RECORD,
+  FAILURE_DESTROY_RECORD
 } from '../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
@@ -73,7 +75,14 @@ const recordReducer = (
     }
 
     // 記録の削除(firestore)
-    case DESTROY_RECORD: {
+    case REQUEST_DESTORY_RECORD: {
+      return {
+        ...state
+      }
+    }
+
+    // 記録の削除成功(firestore)
+    case SUCCESS_DESTROY_RECORD: {
       const { id } = action
       const filteredRecords = state.recordData.filter(data => data.id !== id)
       const filteredUserRecords = state.userRecords.filter(data => data.id !== id)
@@ -81,6 +90,15 @@ const recordReducer = (
         ...state,
         recordData: filteredRecords,
         userRecords: filteredUserRecords
+      }
+    }
+
+    // 記録の削除失敗
+    case FAILURE_DESTROY_RECORD: {
+      const { error } = action
+      return {
+        ...state,
+        error
       }
     }
 

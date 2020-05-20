@@ -11,13 +11,19 @@ interface RecordListProps {
   recordData: ResponseRecordType[]
   isLoading: boolean
   navigation?: any
+  requestDestroyRecord: (id: string) => void
 }
 
 const RecordList = (props: RecordListProps) => {
-  const { recordData, isLoading, navigation } = props
+  const { recordData, isLoading, navigation, requestDestroyRecord } = props
 
   const renderRecordList = recordData.map((record: ResponseRecordType, i: number) => {
-    return <RecordItem key={i} record={record} navigation={navigation} />
+    return <RecordItem 
+              key={i} 
+              record={record} 
+              navigation={navigation} 
+              requestDestroyRecord={requestDestroyRecord}
+            />
   })
 
   return (

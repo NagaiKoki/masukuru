@@ -17,7 +17,7 @@ const MyPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props
   const { userRecords, isLoading, beforeUserRecordSize } = records
   const lastRecord = userRecords[userRecords.length - 1]
-  const { requestFetchRecords, requestNextRecords } = actions
+  const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
   const user = firebase.auth().currentUser
 
   const [isRefresh, setIsRefresh] = useState(false)
@@ -68,7 +68,11 @@ const MyPageScreen = (props: UserProps) => {
           />
         }
       >
-      <RecordList recordData={userRecords} isLoading={isLoading}/>
+      <RecordList 
+        recordData={userRecords} 
+        isLoading={isLoading} 
+        requestDestroyRecord={requestDestroyRecord}
+      />
       </ScrollView>
     </MypageContainer>
   );

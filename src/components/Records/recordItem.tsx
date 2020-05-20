@@ -1,7 +1,11 @@
 import React, { useState, useCallback } from 'react';
+import { Alert } from 'react-native'
 import moment from '../../config/moment'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/AntDesign'
+// db
+import firebase from '../../config/firebase'
 // import types
 import { ResponseRecordType, RecordItemType } from '../../types/Record'
 // import apis
@@ -12,16 +16,16 @@ import UserImage from '../Image/userImage'
 import { convertTimestampToString } from '../../lib/timestamp'
 import { COLORS } from '../../constants/Styles';
 
-import { db } from '../../config/firebase'
-
 interface RecordItemProps {
   record: ResponseRecordType
   navigation?: any
+  requestDestroyRecord: (id: string) => void
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record, navigation } = props
-  const { uid, records, word, createdAt } = record
+  const { record, navigation, requestDestroyRecord } = props
+  const { id, uid, records, word, createdAt } = record
+  const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
@@ -42,6 +46,25 @@ const RecordItem = (props: RecordItemProps) => {
 
   if (!user || !record) {
     return <React.Fragment></React.Fragment>
+  }
+
+  // 記録の削除
+  const handleDestroyRecord = () => {
+    Alert.alert(
+      'この記録を削除します。',
+      "本当によろしいですか？", 
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => { requestDestroyRecord(id) }
+        }
+      ],
+      { cancelable: false }
+    )
   }
 
   // 記録の詳細
@@ -91,7 +114,14 @@ const RecordItem = (props: RecordItemProps) => {
     <RecordItemContainer>
       <RecordItemUpper>
         {renderUser}
-        <RecordTimestampText>{moment(convertTimestampToString(createdAt)).fromNow()}</RecordTimestampText>
+        <RecordRightUpper>
+          <RecordTimestampText>{moment(convertTimestampToString(createdAt)).fromNow()}</RecordTimestampText>
+          { currentUser.uid === uid ? 
+            <IconWrapper onPress={handleDestroyRecord}>
+              <Icon name='down' style={{ color: COLORS.BASE_BLACK }}/>
+            </IconWrapper> : null
+          }
+        </RecordRightUpper>
       </RecordItemUpper>
       <RecordWordText>{word}</RecordWordText>
       {renderRecordData}
@@ -130,9 +160,18 @@ const RecordUserName = styled.Text`
   font-size: 17px;
 `
 
+const RecordRightUpper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+const IconWrapper = styled.TouchableOpacity`
+`
+
 const RecordTimestampText = styled.Text`
   color: ${COLORS.SUB_BLACK};
   font-size: 12px;
+  margin-right: 5px;
 `
 
 const RecordWordText = styled.Text`

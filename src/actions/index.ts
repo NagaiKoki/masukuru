@@ -18,7 +18,9 @@ import {
   REQUEST_NEXT_RECORDS,
   SUCCESS_FETCH_NEXT_RECORDS,
   FAILURE_FETCH_NEXT_RECORDS,
-  DESTROY_RECORD,
+  REQUEST_DESTORY_RECORD,
+  SUCCESS_DESTROY_RECORD,
+  FAILURE_DESTROY_RECORD
 } from './actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../types/Record'
@@ -39,10 +41,27 @@ export const deleteRecord = (record: RecordItemType): RecordActionTypes => {
   }
 }
 
-export const destroyRecord = (id: string): RecordActionTypes => {
+// 記録の削除（firestore）
+export const requestDestroyRecord = (id: string): RecordActionTypes => {
   return {
-    type: DESTROY_RECORD,
+    type: REQUEST_DESTORY_RECORD,
     id,
+  }
+}
+
+// 記録の削除成功（firestore）
+export const successDestroyRecord = (id: string): RecordActionTypes => {
+  return {
+    type: SUCCESS_DESTROY_RECORD,
+    id
+  }
+}
+
+// 記録の削除失敗（firestore）
+export const failureDestroyRecord = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_DESTROY_RECORD,
+    error
   }
 }
 
