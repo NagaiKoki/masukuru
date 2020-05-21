@@ -4,7 +4,9 @@ export const requestNotifications = async () => {
   const notifications = [];
   await db.collection('notifications').get().then(snap => {
     snap.forEach(doc => {
-      notifications.push(doc.data())
+      const data = doc.data()
+      data.id = doc.ref.id
+      notifications.push(data)
     })
   })
   return notifications
