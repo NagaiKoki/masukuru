@@ -1,5 +1,6 @@
 export const COLORS = {
   BASE_BACKGROUND: '#FAF9F5',
+  BASE_BACKGROUND2: '#fff7ef',
   BASE_MUSCLEW: '#FFA000',
 
   BASE_BORDER_COLOR: '#a1a6ab',

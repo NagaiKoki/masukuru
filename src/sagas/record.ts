@@ -1,5 +1,5 @@
 import { fork, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
-// import actions
+// import action types
 import { 
   REQUEST_SUBMIT_RECORDS, 
   REQUEST_FETCH_RECORDS,
@@ -16,6 +16,7 @@ import {
 } from '../types/Record'
 // import apis
 import { requestPostRecords, requestFetchRecord, requestDestroyRecord } from '../apis/Records'
+// import actions
 import { 
   successSubmitRecords, 
   failureSubmitRecords,

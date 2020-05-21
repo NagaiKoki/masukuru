@@ -8,4 +8,5 @@ export type NotificationType = {
   from: string
   content: string
   createdAt: any
+  readUserIds: number[]
 }

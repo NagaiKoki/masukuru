@@ -1,21 +1,26 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import { COLORS } from '../../constants/Styles';
+// import containers
+import NotificationBatchIcon from '../../containers/notifications'
+// import navigators
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainNavigator from '../Home/MainNavigator';
 import RecordNavigator from './recordNavigator'
 import NotificationNavigator from './NotificationNavigator';
 import MyPageNavigator from './MyPageNavigator';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import { COLORS } from '../../constants/Styles';
-// import containers
-import NotificationBatchIcon from '../../containers/notifications'
+// import store
+import store from '../../reducers'
+// import actions
+import { requestFetchNotReadNotificationNumber } from '../../actions/notifications'
 
 const Tab = createBottomTabNavigator();
 
 const MainTabNavigator = () => {
-
   useFocusEffect(
     useCallback(() => {
+      store.dispatch(requestFetchNotReadNotificationNumber())
     }, [])
   )
 

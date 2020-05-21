@@ -24,7 +24,7 @@ export const requestUnReadNotificationSize = async (uid: string) => {
     })
     const unReadSize = maxNotificationSize - unReadIds.length
     if (unReadSize) {
-      return {  size: unReadSize }
+      return { size: unReadSize }
     } else {
       return { size: 0 }
     }

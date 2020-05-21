@@ -5,6 +5,8 @@ import { COLORS } from '../../constants/Styles';
 import { NotificationType } from '../../types'
 // import lib
 import { convertTimestampToString } from '../../lib/timestamp'
+// import config
+import firebase from '../../config/firebase'
 
 
 interface ItemProps {
@@ -14,25 +16,46 @@ interface ItemProps {
 
 const NotificationItem = (props: ItemProps) => {
   const { item, navigation } = props
-  const { title, createdAt } = item;
-
+  const { title, createdAt, readUserIds } = item;
   const time = convertTimestampToString(createdAt)
+  const currentUser = firebase.auth().currentUser
+
+  const isUnRead = () => {
+    const id = readUserIds.find(id => String(id) === currentUser.uid)
+    if (id) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   return (
-    <ItemContainer onPress={ () =>  navigation.navigate('NotificationContent', { item: item })} >
+    <ItemContainer onPress={ () =>  navigation.navigate('NotificationContent', { item: item })} isUnRead={isUnRead()} >
       <ItemWrapper>
         <ItemTime>{time}</ItemTime>
         <ItemTitle>{title}</ItemTitle>
       </ItemWrapper>
+      { isUnRead() ? <ItemBatch /> : null }
     </ItemContainer>
   )
 }
 
-const ItemContainer = styled.TouchableOpacity`
-  padding: 15px 10px;
+const ItemContainer = styled.TouchableOpacity<{ isUnRead: boolean }>`
+  padding: 15px 15px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   background-color: ${COLORS.BASE_WHITE};
   border-bottom-width: 0.5px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${props => props.isUnRead ? COLORS.BASE_BACKGROUND2 : COLORS.BASE_WHITE};
+`
+
+const ItemBatch = styled.View`
+  width: 10px;
+  height: 10px;
+  border-radius: 60px;
+  background-color: ${COLORS.BASE_MUSCLEW};
 `
 
 const ItemWrapper = styled.View`
