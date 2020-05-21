@@ -21,9 +21,9 @@ import {
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
   FAILURE_DESTROY_RECORD
-} from './actionTypes'
+} from '../actionTypes'
 // import types
-import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../types/Record'
+import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../../types/Record'
 
 // 記録の追加
 export const addRecord = (record: RecordItemType): RecordActionTypes => {

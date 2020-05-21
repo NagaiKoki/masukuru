@@ -25,7 +25,7 @@ import {
   failureFetchNextRecords,
   successDestroyRecord,
   failureDestroyRecord
-} from '../actions'
+} from '../actions/records'
 
 // 記録の保存
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {

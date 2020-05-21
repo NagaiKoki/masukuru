@@ -6,7 +6,7 @@ import { COLORS } from '../../../../constants/Styles'
 // import store
 import store from '../../../../reducers'
 // import action
-import { initializeRecords } from '../../../../actions'
+import { initializeRecords } from '../../../../actions/records'
 // import containers
 import RecordContainer from '../../../../containers/records/recordModal'
 import AddRecordContainer from '../../../../containers/records/addRecord'

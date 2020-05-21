@@ -9,7 +9,7 @@ import {
   requestFetchRecords,
   requestNextRecords,
   requestDestroyRecord
-} from '../../actions'
+} from '../../actions/records'
 // import screens
 import UserScreen from '../../screens/UserPage'
 

@@ -7,7 +7,7 @@ import { RecordState, RecordItemType } from '../../types/Record'
 import {
   deleteRecord,
   onChangeTrainingName
-} from '../../actions'
+} from '../../actions/records'
 // import screens
 import RecordModalScreen from '../../screens/Records/Modals'
 

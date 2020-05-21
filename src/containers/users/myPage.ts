@@ -8,7 +8,7 @@ import {
   requestFetchRecords,
   requestNextRecords,
   requestDestroyRecord
-} from '../../actions'
+} from '../../actions/records'
 // import screens
 import MyPageScreen from '../../screens/MyPage/MyPage'
 
