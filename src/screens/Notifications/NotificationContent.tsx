@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../constants/Styles';
 import styled from 'styled-components'
+// import types
+import { NotificationProps } from '../../containers/notifications'
 // import lib
 import { convertTimestampToString } from '../../lib/timestamp'
 
-const NotificationContentScreen = ({ navigation, route }) => {
-  const { title, createdAt, contents, from } = route.params.item
+const NotificationContentScreen = (props: NotificationProps) => {
+  const { navigation, route, notifications, actions } = props
+  const { requestReadNotification } = actions
+  const { id, title, createdAt, contents, from } = route.params.item
   const time = convertTimestampToString(createdAt)
+
+  useFocusEffect(
+    useCallback(() => {
+      requestReadNotification(id)
+    }, [])
+  )
+
   return (
     <ContentWrapper>
       <ContentTitle>{title}</ContentTitle>

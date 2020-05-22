@@ -4,6 +4,7 @@ export type RootTabParamList = {
 }
 
 export type NotificationType = {
+  id: string
   title: string
   from: string
   content: string

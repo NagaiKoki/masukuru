@@ -2,7 +2,10 @@
 import { 
   REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER,
   SUCCESS_FETCH_NOT_READ_NOTIFICATION_NUMBER,
-  FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER
+  FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER,
+  REQUEST_READ_NOTIFICATION,
+  SUCCESS_READ_NOTIFICATION,
+  FAILURE_READ_NOTIFICATION
  } from '../actions/actionTypes'
 // import types
 import {
@@ -43,6 +46,28 @@ const notificationReducer = (
       const { error } = action
       return {
         ...state 
+      }
+    }
+
+    // 既読リクエスト
+    case REQUEST_READ_NOTIFICATION: {
+      return {
+        ...state
+      }
+    }
+    
+    // 既読リクエスト成功
+    case SUCCESS_READ_NOTIFICATION: {
+      return {
+        ...state,
+        unReadSize: state.unReadSize - 1 
+      }
+    }
+
+    // 既読リクエスト失敗
+    case FAILURE_READ_NOTIFICATION: {
+      return {
+        ...state
       }
     }
     

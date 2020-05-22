@@ -8,7 +8,6 @@ import { convertTimestampToString } from '../../lib/timestamp'
 // import config
 import firebase from '../../config/firebase'
 
-
 interface ItemProps {
   item: NotificationType
   navigation: any
@@ -23,9 +22,9 @@ const NotificationItem = (props: ItemProps) => {
   const isUnRead = () => {
     const id = readUserIds.find(id => String(id) === currentUser.uid)
     if (id) {
-      return true
-    } else {
       return false
+    } else {
+      return true
     }
   }
 

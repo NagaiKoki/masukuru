@@ -4,6 +4,7 @@ import styled from 'styled-components'
 // import reducers
 import { RootState } from '../../reducers'
 import { NoticationState } from '../../types/Notification'
+import { COLORS } from '../../constants/Styles'
 
 interface NotificationProps {
   notifications: NoticationState
@@ -13,27 +14,34 @@ const NotificationBatchIcon = (props: NotificationProps) => {
   const { notifications } = props
   const { unReadSize } = notifications
 
+  if (!unReadSize || unReadSize === 0) {
+    return null
+  }
+
   return (
     <BatchCointainer>
       <BatchText>{unReadSize}</BatchText>
-    </BatchCointainer>
-    
+    </BatchCointainer> 
   )
 }
 
 const BatchCointainer = styled.View`
-  top: 1;
-  right: 1;
-  min-width: 13;
-  height: 13;
-  border-radius: 7;
+  position: absolute;
+  z-index: 1000;
+  top: -2px;
+  right: 28px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 60px;
   align-items: center;
   justify-content: center;
-  background-color: red;
+  background-color: ${COLORS.BATCH_COLOR};
 `
 
 const BatchText = styled.Text`
   text-align: center;
+  color: ${COLORS.BASE_WHITE};
+  font-weight: bold;
 `
 
 const mapStateToProps = (state: RootState) => {

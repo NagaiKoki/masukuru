@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { COLORS } from '../../constants/Styles';
 // import containers
-import NotificationBatchIcon from '../../containers/notifications'
+import NotificationBatchIcon from '../../containers/notifications/batch'
 // import navigators
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainNavigator from '../Home/MainNavigator';
