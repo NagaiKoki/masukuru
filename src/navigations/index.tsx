@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import AuthenticationNavigator from './AuthentificationNavigator';
-import TutorialNavigator from './TutorialNavigator'
-import MainTabNavigator from './TabNavigators/MainTabNavigator';
+import AuthenticationNavigator from './Public/AuthentificationNavigator';
+import TutorialNavigator from './Public/TutorialNavigator'
+import MainTabNavigator from './Private/TabNavigators/MainTabNavigator';
 import styled from 'styled-components';
 import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
-import DrawerContent from '../screens/Drawers/DrawerContents';
+import DrawerContent from '../screens/Private/Drawers/DrawerContents';
 import firebase, { db } from '../config/firebase';
 import { COLORS } from '../constants/Styles';
 
