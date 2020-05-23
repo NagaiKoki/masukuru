@@ -24,12 +24,11 @@ const TutorialUsageScreen = ({navigation, userName}) => {
   const renderSecondView =
     <ScrollView>
       <UsageWrapper2>
-      <UsageTitle2>きろくの付け方 ①</UsageTitle2>
+      <UsageTitle2>マスクルって？</UsageTitle2>
       <UsageTextWrapper3>
-        <UsageText>「きろく」タブをクリックします。</UsageText>
-        <UsageText>{"\n"}そこから、ベンチプレスなど、好きなトレーニングを追加します。</UsageText>
+        <UsageText>マスクルはトレーニングを仲間と一緒に共有できるアプリです！</UsageText>
         <UsageImageWrapper2>
-          <Image source={ require('../../../assets/tutorialUsageAddTraining.png')} style={{width: '100%', height: 400, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
+          <Image source={ require('../../../assets/tutorialScreen1.png')} style={{width: '100%', height: 550, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
         </UsageImageWrapper2>
       </UsageTextWrapper3>
     </UsageWrapper2>
@@ -38,13 +37,12 @@ const TutorialUsageScreen = ({navigation, userName}) => {
   const renderThirdView =
     <ScrollView>
       <UsageWrapper3>
-        <UsageTitle2>きろくの付け方 ②</UsageTitle2>
+        <UsageTitle2>きろくの付け方</UsageTitle2>
 
         <UsageTextWrapper3>
-          <UsageText>トレーニングリストに、先程入力したトレーニングが追加されます。</UsageText>
-          <UsageText>{"\n"}{"\n"}そのトレーニングをタップして、その日の記録を残しましょう！</UsageText>
+          <UsageText>{"\n"}{"\n"}ホームの右下にあるボタンをタップします。</UsageText>
           <UsageImageWrapper2>
-            <Image source={ require('../../../assets/tutorialUsageAddMenu.png')} resizeMode="cover" style={{width: '100%', height: 400, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
+            <Image source={ require('../../../assets/tutorialScreen2.png')} resizeMode="cover" style={{width: '100%', height: 400, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
           </UsageImageWrapper2>
        </UsageTextWrapper3>
       </UsageWrapper3>
@@ -53,13 +51,12 @@ const TutorialUsageScreen = ({navigation, userName}) => {
   const renderForthView =
     <ScrollView>
       <UsageWrapper3>
-        <UsageTitle2>グループで記録を共有</UsageTitle2>
+        <UsageTitle2>きろくの付け方</UsageTitle2>
 
         <UsageTextWrapper3>
-          <UsageText>その日の記録を追加すると、グループの中でシェアされます。</UsageText>
-          <UsageText>{"\n"}{"\n"}部位ごとに、詳細な記録が表示されます。</UsageText>
+          <UsageText>その中で、簡単に筋トレやランニングのきろくを付けられます♪</UsageText>
           <UsageImageWrapper2>
-            <Image source={ require('../../../assets/tutorialUsageHome2.png')} resizeMode="cover" style={{width: '100%', height: 500, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
+            <Image source={ require('../../../assets/tutorialScreen3.png')} resizeMode="cover" style={{width: '100%', height: 420, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
           </UsageImageWrapper2>
       </UsageTextWrapper3>
       </UsageWrapper3>
@@ -105,7 +102,6 @@ const UsageWrapper2 = styled.View`
 `
 
 const UsageWrapper3 = styled.View`
-
 `
 
 const UsageTitle = styled.Text`
@@ -160,7 +156,7 @@ const UsageNextBtn = styled.TouchableOpacity`
   align-self: center;
   margin-top: 50px;
   padding: 25px 0;
-  background-color: ${COLORS.BASE_MUSCLEW};
+  background-color: #00cc00;
 `
 
 const UsageNextText = styled.Text`

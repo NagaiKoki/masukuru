@@ -29,7 +29,7 @@ const RecordList = (props: RecordListProps) => {
   return (
     <RecordListContainer>
       { !isLoading && !recordData.length ? (
-        <RecordEmptyState>表示するトレーニングはまだありません。</RecordEmptyState>
+        <RecordEmptyState>表示するトレーニングはまだありません。{"\n"}{"\n"}右下のボタンからトレーニングの記録を共有しよう！</RecordEmptyState>
       ) : renderRecordList
       }
       { isLoading ? <Loading size="small" /> : null }
