@@ -2,15 +2,15 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
-import { COLORS } from '../../../../constants/Styles'
+import { COLORS } from '../../../../../constants/Styles'
 // import store
-import store from '../../../../reducers'
+import store from '../../../../../reducers'
 // import action
-import { initializeRecords } from '../../../../actions/records'
+import { initializeRecords } from '../../../../../actions/records'
 // import containers
-import RecordContainer from '../../../../containers/Private/records/recordModal'
-import AddRecordContainer from '../../../../containers/Private/records/addRecord'
-import AddRecordWordContainer from '../../../../containers/Private/records/addRecordWord'
+import RecordContainer from '../../../../../containers/Private/records/recordModal'
+import AddRecordContainer from '../../../../../containers/Private/records/addRecord'
+import AddRecordWordContainer from '../../../../../containers/Private/records/addRecordWord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()

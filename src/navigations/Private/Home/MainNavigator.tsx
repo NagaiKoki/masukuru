@@ -1,19 +1,19 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import firebase, { db } from '../../config/firebase'
-import { COLORS } from '../../constants/Styles'
+import firebase, { db } from '../../../config/firebase'
+import { COLORS } from '../../../constants/Styles'
 // import components
-import Loading from '../../components/Loading'
+import Loading from '../../../components/Loading'
 // import screen
-import MenuScreen from '../../screens/Private/MenuCategories/index'
-import GroupInfoScreen from '../../screens/Private/Groups/GroupInfo'
-import GroupEditScreen from '../../screens/Private/Groups/GroupEdit'
+import MenuScreen from '../../../screens/Private/MenuCategories/index'
+import GroupInfoScreen from '../../../screens/Private/Groups/GroupInfo'
+import GroupEditScreen from '../../../screens/Private/Groups/GroupEdit'
 // import navigator
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 import HomeNavigator from './HomeNavigator'
 // import container
-import UserPageContainer from '../../containers/Private/users/userPage'
+import UserPageContainer from '../../../containers/Private/users/userPage'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()

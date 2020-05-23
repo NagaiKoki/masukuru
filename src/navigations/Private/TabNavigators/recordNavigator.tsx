@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
-import { COLORS } from '../../constants/Styles'
+import { COLORS } from '../../../constants/Styles'
 // import navigators
 import RecordCardsNavigator from '../Home/Records/Cards'
 import RecordModalNavigator from '../Home/Records/Modals/RecordModalNavigator'

@@ -1,14 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-import { COLORS } from '../constants/Styles';
+import { COLORS } from '../../constants/Styles';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/Private/Home';
-import SignupScreen from '../screens/Public/SignUp';
-import SignupHomeScreen from '../screens/Public/SignUp/SignupHome';
-import SignupLoadingScreen from '../screens/Public/SignUp/SignupLoading';
-import LoginScreen from '../screens/Public/Login/Login';
-import LoginLoadingScreen from '../screens/Public/Login/LoginLoading';
-import ResetPasswordScreen from '../screens/Public/Login/ResetPassword';
+import HomeScreen from '../../screens/Private/Home';
+import SignupScreen from '../../screens/Public/SignUp';
+import SignupHomeScreen from '../../screens/Public/SignUp/SignupHome';
+import SignupLoadingScreen from '../../screens/Public/SignUp/SignupLoading';
+import LoginScreen from '../../screens/Public/Login/Login';
+import LoginLoadingScreen from '../../screens/Public/Login/LoginLoading';
+import ResetPasswordScreen from '../../screens/Public/Login/ResetPassword';
 
 const AuthentificationNavigator = ({ route }) => {
   const AuthenticateStack = createStackNavigator();

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { COLORS } from '../../constants/Styles'
+import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 // import containers
-import HomeContainer from '../../containers/Private/home'
+import HomeContainer from '../../../containers/Private/home'
 
 const HomeNavigator = ({ navigation, route }) => { 
   const HomeStack = createStackNavigator()
