@@ -6,14 +6,14 @@ import { COLORS } from '../../constants/Styles'
 // import components
 import Loading from '../../components/Loading'
 // import screen
-import MenuScreen from '../../screens/MenuCategories/index'
-import GroupInfoScreen from '../../screens/Groups/GroupInfo'
-import GroupEditScreen from '../../screens/Groups/GroupEdit'
+import MenuScreen from '../../screens/Private/MenuCategories/index'
+import GroupInfoScreen from '../../screens/Private/Groups/GroupInfo'
+import GroupEditScreen from '../../screens/Private/Groups/GroupEdit'
 // import navigator
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 import HomeNavigator from './HomeNavigator'
 // import container
-import UserPageContainer from '../../containers/users/userPage'
+import UserPageContainer from '../../containers/Private/users/userPage'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()

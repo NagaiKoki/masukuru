@@ -8,9 +8,9 @@ import store from '../../../../reducers'
 // import action
 import { initializeRecords } from '../../../../actions/records'
 // import containers
-import RecordContainer from '../../../../containers/records/recordModal'
-import AddRecordContainer from '../../../../containers/records/addRecord'
-import AddRecordWordContainer from '../../../../containers/records/addRecordWord'
+import RecordContainer from '../../../../containers/Private/records/recordModal'
+import AddRecordContainer from '../../../../containers/Private/records/addRecord'
+import AddRecordWordContainer from '../../../../containers/Private/records/addRecordWord'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()

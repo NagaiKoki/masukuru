@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native'
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
-import TutorialUserNameScreen from '../screens/Tutorial/TutorialUserName';
-import TutorialBodyInfoScreen from '../screens/Tutorial/TutorialBodyInfo';
-import TutorialUserImageScreen from '../screens/Tutorial/TutorialUserImage';
-import TutorialGroupMakeScreen from '../screens/Tutorial/TutorialGroupMake';
-import TutorialUsageScreen from '../screens/Tutorial/TutorialUsage';
-import HomeScreen from '../screens/Home';
+import TutorialUserNameScreen from '../screens/Public/Tutorial/TutorialUserName';
+import TutorialBodyInfoScreen from '../screens/Public/Tutorial/TutorialBodyInfo';
+import TutorialUserImageScreen from '../screens/Public/Tutorial/TutorialUserImage';
+import TutorialGroupMakeScreen from '../screens/Public/Tutorial/TutorialGroupMake';
+import TutorialUsageScreen from '../screens/Public/Tutorial/TutorialUsage';
+import HomeScreen from '../screens/Private/Home';
 import { COLORS } from '../constants/Styles';
 // import container
 

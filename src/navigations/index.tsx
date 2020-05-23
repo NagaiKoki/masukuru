@@ -7,7 +7,7 @@ import TutorialNavigator from './TutorialNavigator'
 import MainTabNavigator from './TabNavigators/MainTabNavigator';
 import styled from 'styled-components';
 import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
-import DrawerContent from '../screens/Drawers/DrawerContents';
+import DrawerContent from '../screens/Private/Drawers/DrawerContents';
 import firebase, { db } from '../config/firebase';
 import { COLORS } from '../constants/Styles';
 

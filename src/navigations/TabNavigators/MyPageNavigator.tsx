@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import containers
-import UserContainer from '../../containers/users/myPage'
+import UserContainer from '../../containers/Private/users/myPage'
 // import screens
-import MyPageScreen from '../../screens/MyPage/MyPage'
-import ProfileChangeScreen from '../../screens/MyPage/ProfileChange';
+import MyPageScreen from '../../screens/Private/MyPage/MyPage'
+import ProfileChangeScreen from '../../screens/Private/MyPage/ProfileChange';
 import { COLORS } from '../../constants/Styles'
 
 const MyPageNavigator = () => { 

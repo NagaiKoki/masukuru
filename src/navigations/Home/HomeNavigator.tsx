@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 // import containers
-import HomeContainer from '../../containers/home'
+import HomeContainer from '../../containers/Private/home'
 
 const HomeNavigator = ({ navigation, route }) => { 
   const HomeStack = createStackNavigator()

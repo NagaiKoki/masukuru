@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import NotificationScreen from '../../screens/Notifications'
+import NotificationScreen from '../../screens/Private/Notifications'
 import { COLORS } from '../../constants/Styles'
 // import container
-import NotificationContainer from '../../containers/notifications'
+import NotificationContainer from '../../containers/Private/notifications'
 
 
 const NotificationNavigator = () => {
