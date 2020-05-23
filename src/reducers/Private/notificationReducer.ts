@@ -7,12 +7,12 @@ import {
   SUCCESS_READ_NOTIFICATION,
   FAILURE_READ_NOTIFICATION,
   ALREADY_READ_NOTIFICATION
- } from '../actions/actionTypes'
+ } from '../../actions/actionTypes'
 // import types
 import {
   NoticationState,
   NotificationActionTypes,
-} from '../types/Notification'
+} from '../../types/Notification'
 
 const initialState: NoticationState = {
   unReadSize: 0

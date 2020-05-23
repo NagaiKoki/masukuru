@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 // import reducers
-import { RootState } from '../../reducers'
+import { RootState } from '../../reducers/Private'
 import { NoticationState } from '../../types/Notification'
 import { COLORS } from '../../constants/Styles'
 

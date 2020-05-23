@@ -21,9 +21,9 @@ import {
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
   FAILURE_DESTROY_RECORD
-} from '../actions/actionTypes'
+} from '../../actions/actionTypes'
 // import types
-import { RecordState, RecordItemType, RecordActionTypes } from '../types/Record/'
+import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Record'
 
 const initialState: RecordState = {
   recordItems: [],
