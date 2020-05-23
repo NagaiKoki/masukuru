@@ -150,7 +150,7 @@ const Event = ({ navigation, eventModal, setEventModal  }) => {
   return (
     <EventView>
       <EventPlus>
-        <EventTitle>マイトレーニングリスト</EventTitle>
+        { eventList.length == 0 ? null : <EventTitle>マイトレーニングリスト</EventTitle> }
         </EventPlus> 
         <EvetnListView>
           {EventFlatListDisplay}

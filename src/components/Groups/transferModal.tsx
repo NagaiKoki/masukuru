@@ -15,9 +15,11 @@ import truncateText from '../../lib/truncateText'
 import { isDeveloper } from '../../lib/checkDeveloper'
 // import apis
 import { createGroup } from '../../apis/Groups/create'
-import firebase, { db } from '../../config/firebase';
+import { requestUpdateRecordGroupIds } from '../../apis/Records'
 // import constanst
 import { INVITE_ERROR_MESSAGE } from '../../constants/errorMessage';
+// import config
+import firebase, { db } from '../../config/firebase';
 
 interface TransferModalProps {
   showTransferModal: boolean
@@ -117,7 +119,8 @@ const TranferModal = (props: TransferModalProps) => {
       setDrawerIsLoading(true)
       setTimeout( async () => {
         const groupId = await createGroup()
-        navigation.navigate('main', { currentGroupId: groupId })
+        requestUpdateRecordGroupIds(groupId)
+        navigation.navigate('mainContainer', { currentGroupId: groupId })
         setCurrentGroupId(groupId)
         setGroups(state => 
           [...state, { name: currentUser.displayName, 

@@ -110,7 +110,7 @@ const RecordModalScreen = (props: RecordProps) => {
       <React.Fragment>
         {renderRecordItems()}
         <RecordNewAddItemBtn onPress={handleNavigateAddForm}>
-          <Icon name="plus" size={25} style={{ color: COLORS.BASE_BLACK }} />
+          <Icon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW }} />
           <RecordNewAddItemBtnText>トレーニングの記録を追加する</RecordNewAddItemBtnText>
         </RecordNewAddItemBtn> 
       </React.Fragment>
@@ -206,11 +206,11 @@ const RecordNewAddItemBtn = styled.TouchableOpacity`
 const RecordNewAddItemBtnText = styled.Text`
   margin-left: 10px;
   font-size: 18px;
-  color: ${COLORS.BASE_BLACK};
+  color: ${COLORS.BASE_MUSCLEW};
 `
 
 const RecordDeleteBtn = styled.TouchableOpacity`
-  width: 30px;
+  width: 50px;
   margin-left: auto;
   margin-right: 25px;
 `
