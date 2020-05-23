@@ -10,8 +10,6 @@ import { factoryRandomCode } from '../lib/randomTextFactory'
 
 export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string) => {
     let ImageName: string;
-    console.log(user)
-    console.log(groupId)
     if (!!user) {
       ImageName = `profile_image_${factoryRandomCode(20)}`;
     } else if (groupId) {

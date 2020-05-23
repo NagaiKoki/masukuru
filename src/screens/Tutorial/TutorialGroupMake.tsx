@@ -61,11 +61,11 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
             uid: currentUser.uid,
             name: userName,
             imageUrl: currentUser.photoURL,
-            currentGroupId: snapshot.docs[0].data().ownerId
+            currentGroupId: snapshot.docs[0].id
           }).then(function() {
             Analitycs.track('join group')
             route.params.setIsChange(true)
-            navigation.replace('home', { currentGroupId: snapshot.docs[0].data().ownerId });
+            navigation.navigate('home', { currentGroupId: snapshot.docs[0].id });
             route.params.setIsChange(false)
           })
         }

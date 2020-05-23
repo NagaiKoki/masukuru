@@ -36,7 +36,7 @@ const RecordModalScreen = (props: RecordProps) => {
   // 一言画面へ遷移
   const handleNavigationWord = () => {
     if (!recordItems.length) {
-      Alert.alert('記録を追加してください。')
+      Alert.alert('トレーニングを追加してください。')
     } else {
       navigation.navigate('addRecordWordModal')
     }
