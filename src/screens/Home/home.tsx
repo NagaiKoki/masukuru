@@ -33,7 +33,7 @@ const HomeScreen = (props: HomeProps) => {
   const { currentGroupId } = params;
   const current_user = firebase.auth().currentUser;
   const currentUserId = current_user.uid
-  
+
   useFocusEffect(
     useCallback(() => {
       setIsHomeLoading(true)

@@ -8,6 +8,7 @@ import TutorialGroupMakeScreen from '../screens/Tutorial/TutorialGroupMake';
 import TutorialUsageScreen from '../screens/Tutorial/TutorialUsage';
 import HomeScreen from '../screens/Home';
 import { COLORS } from '../constants/Styles';
+// import container
 
 const TutorialNavigator = ({ route }) => {
   const TotorialStack = createStackNavigator();

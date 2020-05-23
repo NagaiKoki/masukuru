@@ -29,18 +29,24 @@ const SignUpModal = (props: SignUpModalProps) => {
       <Container>
         <CloseBar />
         <SignUpAppleBtn block onPress={() => AppleLogin(route)}>
-          <Icon name='apple1' size={20} style={{ color: '#fff' }}/>
+          <ButtonWrapper>
+            <Icon name='apple1' size={20} style={{ color: '#fff' }}/>
             <SignUpText>Appleで{displayText}する</SignUpText>
+          </ButtonWrapper>
         </SignUpAppleBtn>
 
         <SignUpGoogleBtn block onPress={() => GoogleLogin(route)}>
-          <Icon name='google' size={20} style={{ color: '#fff' }}/>
-          <SignUpText>Googleで{displayText}する</SignUpText>
+          <ButtonWrapper>
+            <Icon name='google' size={20} style={{ color: '#fff' }}/>
+            <SignUpText>Googleで{displayText}する</SignUpText>
+          </ButtonWrapper>
         </SignUpGoogleBtn>
 
         <SignUpEmailBtn block onPress={() => handleNavigation()}>
-          <Icon name='mail' size={20} style={{ color: '#fff' }}/>
-          <SignUpText>メールアドレスで{displayText}する</SignUpText>
+          <ButtonWrapper>
+            <Icon name='mail' size={20} style={{ color: '#fff' }}/>
+            <SignUpText>メールアドレスで{displayText}する</SignUpText>
+          </ButtonWrapper>
         </SignUpEmailBtn>
       </Container>
     </Modal>
@@ -69,16 +75,20 @@ const CloseBar = styled.View`
 `
 
 const SignUpAppleBtn = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  align-self: center;
   margin-top: 20px;
   width: 90%;
-  align-self: center;
-  padding: 15px 0;
+  height: 44px;
   border-radius: 5px;
   background-color: #000;
+`
+
+const ButtonWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  height: 44px;
+  width: 90%;
+  align-self: center;
 `
 
 const SignUpGoogleBtn = styled.TouchableOpacity`
@@ -89,7 +99,7 @@ const SignUpGoogleBtn = styled.TouchableOpacity`
   margin-top: 20px;
   width: 90%;
   align-self: center;
-  padding: 15px 0;
+  height: 44px;
   border-radius: 5px;
   background-color: #dd4b39;
 `
@@ -102,15 +112,15 @@ const SignUpEmailBtn = styled.TouchableOpacity`
   margin-top: 20px;
   width: 90%;
   align-self: center;
-  padding: 15px 0;
+  height: 44px;
   border-radius: 5px;
   background-color: ${COLORS.BASE_MUSCLEW};
 `
 
 const SignUpText = styled.Text`
   align-self: center;
-  margin-left: 10px;
-  font-size: 16px;
+  margin-left: 20px;
+  font-size: 19px;
   font-weight: bold;
   color: ${COLORS.BASE_WHITE};
 `
