@@ -49,9 +49,6 @@ function* runRequestReadNotification(action: RequestReadNotification) {
     id
   )
 
-  console.log(payload)
-  console.log(error)
-
   if (payload && !error && !readNotification) {
     yield put(successReadNotification())
   } else if (!payload && readNotification && !error) {
