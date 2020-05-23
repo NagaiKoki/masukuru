@@ -1,5 +1,6 @@
 export const COLORS = {
   BASE_BACKGROUND: '#FAF9F5',
+  BASE_BACKGROUND2: '#fff7ef',
   BASE_MUSCLEW: '#FFA000',
 
   BASE_BORDER_COLOR: '#a1a6ab',
@@ -10,6 +11,8 @@ export const COLORS = {
 
   ERROR_MESSAGE: '#ea5532',
   SUCCESS_MESSAGE: '#66ff33',
+
+  BATCH_COLOR: '#ff5b5b',
 
   CARD_SHADOW1: 'rgba(0, 0, 0, 0.1)',
 

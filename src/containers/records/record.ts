@@ -7,7 +7,7 @@ import { RecordState, ResponseRecordType } from '../../types/Record'
 import {
   requestFetchRecords,
   requestNextRecords
-} from '../../actions'
+} from '../../actions/records'
 // import screens
 import RecordScreen from '../../screens/Records'
 

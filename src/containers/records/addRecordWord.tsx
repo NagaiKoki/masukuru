@@ -10,7 +10,7 @@ import {
   onChangeWord, 
   requestSubmitRecords,
   setRecordError
-} from '../../actions'
+} from '../../actions/records'
 
 
 export interface AddRecordWordProps {

@@ -11,7 +11,7 @@ import {
   onChangeTrainingName, 
   onChangeDistance,
   onChangeTime
-} from '../../actions'
+} from '../../actions/records'
 // import screens
 import AddRecordScreen from '../../screens/Records/Modals/addRecord'
 

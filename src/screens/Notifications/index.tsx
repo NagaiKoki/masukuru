@@ -31,7 +31,6 @@ const NotificationScreen = ({ navigation }) => {
 
   const renderItem = notifications.map((item, index) => (<NotificationItem item={item} key={index} navigation={navigation} />))
 
-
   return (
     <NotificationConitainer>
       <NotificationListWrapper>

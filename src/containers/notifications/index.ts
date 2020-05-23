@@ -2,35 +2,33 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import types
 import { RootState } from '../../reducers'
-import { RecordState, RecordItemType } from '../../types/Record'
+import { NoticationState } from '../../types/Notification'
 // import actions
 import {
-  deleteRecord,
-  onChangeTrainingName
-} from '../../actions/records'
+  requestReadNotification
+} from '../../actions/notifications'
 // import screens
-import RecordModalScreen from '../../screens/Records/Modals'
+import NotificationContentScreen from '../../screens/Notifications/NotificationContent'
 
-export interface RecordProps {
+export interface NotificationProps {
   navigation: any
-  records: RecordState,
+  route: any
+  notifications: NoticationState
   actions: {
-    deleteRecord: (record: RecordItemType) => void 
-    onChangeTrainingName: (name: string) => void
+    requestReadNotification: (id: string) => void
   }
 }
 
 const mapStateToProps = (state: RootState) => {
   return {
-    records: state.records
+    notifications: state.notifications
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
-      deleteRecord,
-      onChangeTrainingName
+      requestReadNotification
     }
     , dispatch)
   }
@@ -39,4 +37,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecordModalScreen)
+)(NotificationContentScreen)
