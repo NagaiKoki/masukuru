@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/Styles';
 import { Alert } from 'react-native';
@@ -13,6 +12,7 @@ import FeedbackModal from '../../components/Feedback'
 import Loading from '../../components/Loading'
 // import apis
 import { joinInvitedGroup } from '../../apis/invite';
+import { requestUpdateRecordGroupIds } from '../../apis/Records'
 import { logout } from '../../apis/auth';
 import firebase, { db } from '../../config/firebase';
 
@@ -111,17 +111,22 @@ const DrawerContent = (props: DrawerProps) => {
 
   // 招待されたグループに移動する
   const replaceGroup = async () => {
-   const resGroupId = await joinInvitedGroup(codeText, currentGroupId)
-   if (!resGroupId) {
-     return
-   }
-   setIsLoading(true)
-   setTimeout(() => {
-    navigation.navigate("main", { currentGroupId: resGroupId })
-    setCurrentGroupId(resGroupId)
-    setIsLoading(false)
-   }, 2000)
-   return setShowInvitedCodeModal(false)
+    try {
+      const resGroupId = await joinInvitedGroup(codeText, currentGroupId)
+      if (!resGroupId) {
+        return
+      }
+      requestUpdateRecordGroupIds(resGroupId)
+      setIsLoading(true)
+      setTimeout(() => {
+       navigation.navigate("mainContainer", { currentGroupId: resGroupId })
+       setCurrentGroupId(resGroupId)
+       setIsLoading(false)
+      }, 2000)
+      return setShowInvitedCodeModal(false) 
+    } catch (error) {
+
+    }
   }
 
   // マイページ

@@ -69,3 +69,21 @@ export const requestDestroyRecord = async (id: string) => {
     return { error: '削除に失敗しました。' }
   }
 }
+
+// グループ切り替えの際に、最大20件の記録に遷移先のgroupIdを書き込む
+export const requestUpdateRecordGroupIds = async (groupId: string) => {
+  const currentUser = firebase.auth().currentUser
+  try {
+    const recordRef = db.collection('records').where('uid', '==', currentUser.uid).orderBy('createdAt', 'desc').limit(20)
+    await recordRef.get().then(snap => {
+      snap.forEach(doc => {
+        doc.ref.update({
+          groupIds: firebase.firestore.FieldValue.arrayUnion(groupId)
+        })
+      })
+    })
+    return { payload: 'success' }
+  } catch (error) {
+    return { error }
+  }
+}
