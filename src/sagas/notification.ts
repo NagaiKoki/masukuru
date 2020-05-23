@@ -1,4 +1,4 @@
-import { fork, takeEvery, put, call } from 'redux-saga/effects'
+import { fork, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
 // import action types
 import {
   REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER, REQUEST_READ_NOTIFICATION
@@ -15,6 +15,7 @@ import {
   successFetchNotReadNotificationNumber,
   failureFetchNotReadNotificationNumber, 
   successReadNotification,
+  alreadyReadNotification,
   failureReadNotification
 } from '../actions/notifications'
 // import config
@@ -37,22 +38,27 @@ function* runRequestUnReadNotificationSize() {
 
 // 未読数の取得ハンドラー
 function* handleRequestFetchNotReadNotificationNumber() {
-  yield takeEvery(REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER, runRequestUnReadNotificationSize)
+  yield takeLatest(REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER, runRequestUnReadNotificationSize)
 }
 
 // 既読リクエスト
 function* runRequestReadNotification(action: RequestReadNotification) {
   const { id } = action
-  const { payload, error }: { payload?: string, error?: string } = yield call(
+  const { payload, readNotification, error }: { payload?: string, readNotification?: string,  error?: string } = yield call(
     requestReadNotification,
     id
   )
 
-  if (payload && !error) {
+  console.log(payload)
+  console.log(error)
+
+  if (payload && !error && !readNotification) {
     yield put(successReadNotification())
-  } else [
+  } else if (!payload && readNotification && !error) {
+    yield put(alreadyReadNotification())
+  } else {
     yield put(failureReadNotification())
-  ]
+  }
 }
 
 // 既読リクエストハンドラー

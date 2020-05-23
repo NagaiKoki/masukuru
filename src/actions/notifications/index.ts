@@ -5,7 +5,8 @@ import {
    FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER,
    REQUEST_READ_NOTIFICATION,
    SUCCESS_READ_NOTIFICATION,
-   FAILURE_READ_NOTIFICATION
+   FAILURE_READ_NOTIFICATION,
+   ALREADY_READ_NOTIFICATION
 } from '../actionTypes'
 // import types
 import { NotificationActionTypes } from '../../types/Notification'
@@ -45,6 +46,13 @@ export const requestReadNotification = (id: string): NotificationActionTypes => 
 export const successReadNotification = (): NotificationActionTypes => {
   return {
     type: SUCCESS_READ_NOTIFICATION,
+  }
+}
+
+// すでに既読の場合
+export const alreadyReadNotification = (): NotificationActionTypes => {
+  return {
+    type: ALREADY_READ_NOTIFICATION
   }
 }
 

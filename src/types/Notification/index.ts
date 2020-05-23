@@ -4,7 +4,8 @@ import {
   FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER,
   REQUEST_READ_NOTIFICATION,
   SUCCESS_READ_NOTIFICATION,
-  FAILURE_READ_NOTIFICATION
+  FAILURE_READ_NOTIFICATION,
+  ALREADY_READ_NOTIFICATION
 } from '../../actions/actionTypes'
 
 export type NoticationState = {
@@ -39,6 +40,11 @@ export interface SuccessReadNotification {
   type: typeof SUCCESS_READ_NOTIFICATION
 }
 
+// すでに既読の場合
+export interface AlreadReadNotification {
+  type: typeof ALREADY_READ_NOTIFICATION
+}
+
 // 既読リクエスト失敗
 export interface FailureReadNotification {
   type: typeof FAILURE_READ_NOTIFICATION
@@ -50,4 +56,5 @@ export type NotificationActionTypes =
   | FailureFetchNotReadNotificationNumber
   | RequestReadNotification
   | SuccessReadNotification
+  | AlreadReadNotification
   | FailureReadNotification

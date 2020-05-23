@@ -5,15 +5,13 @@ import {
   FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER,
   REQUEST_READ_NOTIFICATION,
   SUCCESS_READ_NOTIFICATION,
-  FAILURE_READ_NOTIFICATION
+  FAILURE_READ_NOTIFICATION,
+  ALREADY_READ_NOTIFICATION
  } from '../actions/actionTypes'
 // import types
 import {
   NoticationState,
   NotificationActionTypes,
-  RequestFetchNotReadNotificationNumber,
-  SuccessFetchNotReadNotificationNumber,
-  FailureFetchNotReadNotificationNumber
 } from '../types/Notification'
 
 const initialState: NoticationState = {
@@ -43,7 +41,6 @@ const notificationReducer = (
 
     // 未読件数の取得失敗
     case FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER: {
-      const { error } = action
       return {
         ...state 
       }
@@ -61,6 +58,13 @@ const notificationReducer = (
       return {
         ...state,
         unReadSize: state.unReadSize - 1 
+      }
+    }
+
+    // すでに既読の場合
+    case ALREADY_READ_NOTIFICATION: {
+      return {
+        ...state
       }
     }
 

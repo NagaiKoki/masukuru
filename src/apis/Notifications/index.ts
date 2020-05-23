@@ -40,13 +40,23 @@ export const requestUnReadNotificationSize = async (uid: string) => {
 // 既読リクエスト
 export const requestReadNotification = async (id: string) => {
   const currentUser = firebase.auth().currentUser
+  let readNotification: boolean
+  let payload: string
   try {
-    await db.collection('notifications').doc(id).update({
-      readUserIds: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+    const refNotification = db.collection('notifications').doc(id)
+    await refNotification.get().then( async snap => {
+      if (!snap.exists) throw new Error('error')
+      if (snap.data().readUserIds.some(id => id === currentUser.uid)) {
+        readNotification = true
+      } else {
+        await db.collection('notifications').doc(id).update({
+          readUserIds: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+        })
+        payload = 'success'
+      }
     })
-    return { payload: 'success' }
+    return { payload: payload, readNotification: readNotification }
   } catch (error) {
-    console.log(error)
     return { error: error }
   }
 }
