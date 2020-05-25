@@ -31,7 +31,9 @@ const SignUpModal = (props: SignUpModalProps) => {
         <SignUpAppleBtn block onPress={() => AppleLogin(route)}>
           <ButtonWrapper>
             <Icon name='apple1' size={20} style={{ color: '#fff' }}/>
-            <SignUpText>Appleで{displayText}する</SignUpText>
+            {
+              isSignUp ? <SignUpText>Sign up with Apple</SignUpText> : <SignUpText>Sign in with Apple</SignUpText>
+            }
           </ButtonWrapper>
         </SignUpAppleBtn>
 
