@@ -63,9 +63,6 @@ const MunuScreen = ({ navigation, route }) => {
         <MenuTitle>{itemName}</MenuTitle> 
         <MenuTitleUpdate user={currentUser} currentGroupId={currentGroupId} item={item} itemName={itemName} setItemName={setItemName}/>
       </MenuTitleView>
-      <MenuAddButton block onPress={setIsVisible}>
-        <MenuAddText>記録を追加する</MenuAddText>
-      </MenuAddButton>
       {/* モーダル */}
       <MenuAddModal user={currentUser} item={item} currentUserMenuLength={currentUserMenuLength} setMessageVisible={setMessageVisible} setList={setList} isVisible={isVisible} setIsVisible={setIsVisible} />
       <CheerModal messageVisible={messageVisible} setMessageVisible={setMessageVisible} itemName={itemName} itemLength={currentUserMenuLength} />
