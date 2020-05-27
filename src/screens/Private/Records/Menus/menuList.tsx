@@ -63,7 +63,7 @@ const MenuList = (props: TrainingListProps) => {
           {TrainingMenuItem}
         </TrainingListContainer>
       </ScrollView>
-      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}まずは気軽なトレーニングから始めてみませんか？</MenuNoDataText>
+      : <MenuNoDataText>記録はありません。{"\n"}{"\n"}</MenuNoDataText>
     )
   )
 }
