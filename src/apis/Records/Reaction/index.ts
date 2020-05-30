@@ -15,6 +15,7 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
       createdAt: currentTime,
       updatedAt: currentTime
     })
+    return { payload: 'success' }
   } catch {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
