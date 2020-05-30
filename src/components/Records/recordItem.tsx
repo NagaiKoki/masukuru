@@ -111,7 +111,7 @@ const RecordItem = (props: RecordItemProps) => {
       </RecordUserWrapper>
 
   return (
-    <RecordItemContainer>
+    <RecordItemContainer onPress={() => navigation.navigate('recordShow', { record: record })}>
       <RecordItemUpper>
         {renderUser}
         <RecordRightUpper>
@@ -129,7 +129,7 @@ const RecordItem = (props: RecordItemProps) => {
   )
 }
 
-const RecordItemContainer = styled.View`
+const RecordItemContainer = styled.TouchableOpacity`
   margin: 0px 0 8px 0;
   box-shadow: 0 7px 30px rgba(150,170,180,0.5);
   padding: 15px 15px 0 15px;
