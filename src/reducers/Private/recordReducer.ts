@@ -20,7 +20,11 @@ import {
   INITIALIZE_RECORDS,
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
-  FAILURE_DESTROY_RECORD
+  FAILURE_DESTROY_RECORD,
+  CHANGE_RECORD_COMMENT_TEXT,
+  REQUEST_POST_RECORD_COMMENT,
+  SUCCESS_POST_RECORD_COMMENT,
+  FAILURE_POST_RECORD_COMMENT
 } from '../../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Record'
@@ -38,7 +42,9 @@ const initialState: RecordState = {
   recordData: [],
   beforeRecordSize: 0,
   userRecords: [],
-  beforeUserRecordSize: 0
+  beforeUserRecordSize: 0,
+  temporaryComment: '',
+  commentPostError: ''
 }
 
 const recordReducer = (
@@ -46,6 +52,8 @@ const recordReducer = (
   action: RecordActionTypes
 ): RecordState => {
   switch (action.type) {
+
+    // 記録の作成 ////////////////////////////////////////
     // 記録の追加
     case ADD_RECORD: {
       const { record } = action
@@ -117,7 +125,9 @@ const recordReducer = (
         recordData: [],
         beforeRecordSize: 0,
         userRecords: [],
-        beforeUserRecordSize: 0
+        beforeUserRecordSize: 0,
+        temporaryComment: '',
+        commentPostError: ''
       }
     }
 
@@ -215,6 +225,7 @@ const recordReducer = (
       }
     }
 
+    // 記録の読み込み ////////////////////////////////////////
     // 記録の取得
     case REQUEST_FETCH_RECORDS: {
       return {
@@ -293,6 +304,25 @@ const recordReducer = (
         ...state,
         error: error,
         isLoading: false
+      }
+    }
+
+    // 記録へのリアクション ////////////////////////////////////////
+    // 記録へのコメント入力検知
+    case CHANGE_RECORD_COMMENT_TEXT: {
+      const { text } = action
+      return {
+        ...state,
+        temporaryComment: text
+      }
+    }
+
+    // 記録へのコメント失敗
+    case FAILURE_POST_RECORD_COMMENT: {
+      const { error } = action
+      return {
+        ...state,
+        commentPostError: error
       }
     }
 

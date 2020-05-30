@@ -43,6 +43,8 @@ export interface RecordState {
   beforeRecordSize: number
   userRecords: ResponseRecordType[]
   beforeUserRecordSize: number
+  temporaryComment: string
+  commentPostError: string
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -227,8 +229,8 @@ export interface SuccessPostRecordComment {
 // コメントの送信失敗
 export interface FailurePostRecordComment {
   type: typeof FAILURE_POST_RECORD_COMMENT
+  error: string
 }
-
 
 export type RecordActionTypes =
   AddRecord |

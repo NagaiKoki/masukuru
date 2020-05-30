@@ -230,8 +230,9 @@ export const successPostRecordComment = (): RecordActionTypes => {
 }
 
 // コメントの送信失敗
-export const failurePostRecordComment = (): RecordActionTypes => {
+export const failurePostRecordComment = (error: string): RecordActionTypes => {
   return {
-    type: FAILURE_POST_RECORD_COMMENT
+    type: FAILURE_POST_RECORD_COMMENT,
+    error
   }
 }

@@ -1,10 +1,11 @@
-import { fork, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
+import { fork, select, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
 // import action types
 import { 
   REQUEST_SUBMIT_RECORDS, 
   REQUEST_FETCH_RECORDS,
   REQUEST_NEXT_RECORDS,
-  REQUEST_DESTORY_RECORD
+  REQUEST_DESTORY_RECORD,
+  REQUEST_POST_RECORD_COMMENT
 } from '../actions/actionTypes'
 // import types
 import { 
@@ -12,10 +13,17 @@ import {
   ResponseRecordType,
   RequestFetchRecords,
   RequestNextRecords,
-  RequestDestroyRecord
+  RequestDestroyRecord,
+  RequestPostRecordComment
 } from '../types/Record'
+import { RootState } from '../reducers'
 // import apis
-import { requestPostRecords, requestFetchRecord, requestDestroyRecord } from '../apis/Records'
+import { 
+  requestPostRecords, 
+  requestFetchRecord, 
+  requestDestroyRecord,
+} from '../apis/Records'
+import { requestPostRecordPost } from '../apis/Records/Reaction'
 // import actions
 import { 
   successSubmitRecords, 
@@ -25,7 +33,9 @@ import {
   successFetchNextRecords,
   failureFetchNextRecords,
   successDestroyRecord,
-  failureDestroyRecord
+  failureDestroyRecord,
+  successPostRecordComment,
+  failurePostRecordComment,
 } from '../actions/records'
 
 // 記録の保存
@@ -112,10 +122,32 @@ function* handleRequestDestroyRecord() {
   yield takeEvery(REQUEST_DESTORY_RECORD, runRequestDestroyRecord)
 }
 
+// 記録へのコメント送信リクエスト
+function* runRequestPostRecordComment(action: RequestPostRecordComment) {
+  const { recordId } = action
+  const { temporaryComment } = yield select((state: RootState) => state.records)
+  const { payload, error }: { payload?: string, error?: string } = yield call(
+    requestPostRecordPost,
+    recordId,
+    temporaryComment
+  )
+
+  if (payload && !error) {
+    yield put(successPostRecordComment())
+  } else if (error) {
+    yield put(failurePostRecordComment(error))
+  }
+}
+
+// 記録へのコメントリクエストハンドラー
+function* handleRequestPostRecordComment() {
+  yield takeEvery(REQUEST_POST_RECORD_COMMENT, runRequestPostRecordComment)
+}
 
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)
   yield fork(handleRequestNextFetchRecords)
   yield fork(handleRequestDestroyRecord)
+  yield fork(handleRequestPostRecordComment)
 }
