@@ -23,6 +23,10 @@ import {
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
   FAILURE_DESTROY_RECORD,
+  CHANGE_RECORD_COMMENT_TEXT,
+  REQUEST_POST_RECORD_COMMENT,
+  SUCCESS_POST_RECORD_COMMENT,
+  FAILURE_POST_RECORD_COMMENT,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -69,6 +73,7 @@ export type ResponseRecordType = {
   updatedAt: FirestoreTimestamp
 }
 
+// 記録の作成 ////////////////////////////////////////////////////////////
 // 記録の追加
 export interface AddRecord {
   type: typeof ADD_RECORD
@@ -157,6 +162,7 @@ export interface FailureSubmitRecords {
   error: string
 }
 
+// 記録の取得 ////////////////////////////////////////////////////////////
 // 記録の取得
 export interface RequestFetchRecords {
   type: typeof REQUEST_FETCH_RECORDS
@@ -200,6 +206,30 @@ export interface FailureFetchNextRecords {
   error: string
 }
 
+// 記録へのリアクション ////////////////////////////////////////////////////////////
+// コメント入力検知
+export interface ChangeRecordCommentText {
+  type: typeof CHANGE_RECORD_COMMENT_TEXT
+  text: string
+}
+
+// コメントの送信
+export interface RequestPostRecordComment {
+  type: typeof REQUEST_POST_RECORD_COMMENT
+  recordId: string
+}
+
+// コメントの送信成功
+export interface SuccessPostRecordComment {
+  type: typeof SUCCESS_POST_RECORD_COMMENT
+}
+
+// コメントの送信失敗
+export interface FailurePostRecordComment {
+  type: typeof FAILURE_POST_RECORD_COMMENT
+}
+
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -221,4 +251,8 @@ export type RecordActionTypes =
   FailureFetchRecords |
   RequestNextRecords |
   SuccessFetchNextRecords |
-  FailureFetchNextRecords
+  FailureFetchNextRecords |
+  ChangeRecordCommentText |
+  RequestPostRecordComment |
+  SuccessPostRecordComment |
+  FailurePostRecordComment

@@ -20,11 +20,16 @@ import {
   FAILURE_FETCH_NEXT_RECORDS,
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
-  FAILURE_DESTROY_RECORD
+  FAILURE_DESTROY_RECORD,
+  CHANGE_RECORD_COMMENT_TEXT,
+  REQUEST_POST_RECORD_COMMENT,
+  SUCCESS_POST_RECORD_COMMENT,
+  FAILURE_POST_RECORD_COMMENT
 } from '../actionTypes'
 // import types
 import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../../types/Record'
 
+// 記録の作成 ////////////////////////////////////////////////////////////
 // 記録の追加
 export const addRecord = (record: RecordItemType): RecordActionTypes => {
   return {
@@ -144,6 +149,7 @@ export const failureSubmitRecords = (error: string): RecordActionTypes => {
   }
 }
 
+// 記録の取得 ////////////////////////////////////////////////////////////
 // 記録の取得
 export const requestFetchRecords = (uid?: string, groupId?: string): RecordActionTypes => {
   return {
@@ -196,5 +202,36 @@ export const failureFetchNextRecords = (error: string): RecordActionTypes => {
   return {
     type: FAILURE_FETCH_NEXT_RECORDS,
     error
+  }
+}
+
+// 記録へのリアクション ////////////////////////////////////////////////////////////
+// コメントの検知
+export const changeRecordCommentText = (text: string): RecordActionTypes => {
+  return {
+    type: CHANGE_RECORD_COMMENT_TEXT,
+    text
+  }
+}
+
+// コメントの送信
+export const requestPostRecordComment = (recordId: string): RecordActionTypes => {
+  return {
+    type: REQUEST_POST_RECORD_COMMENT,
+    recordId
+  }
+}
+
+// コメントの送信成功
+export const successPostRecordComment = (): RecordActionTypes => {
+  return {
+    type: SUCCESS_POST_RECORD_COMMENT
+  }
+}
+
+// コメントの送信失敗
+export const failurePostRecordComment = (): RecordActionTypes => {
+  return {
+    type: FAILURE_POST_RECORD_COMMENT
   }
 }
