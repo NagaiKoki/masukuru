@@ -22,7 +22,6 @@ import {
   SUCCESS_DESTROY_RECORD,
   FAILURE_DESTROY_RECORD,
   CHANGE_RECORD_COMMENT_TEXT,
-  REQUEST_POST_RECORD_COMMENT,
   SUCCESS_POST_RECORD_COMMENT,
   FAILURE_POST_RECORD_COMMENT
 } from '../../actions/actionTypes'
@@ -44,7 +43,8 @@ const initialState: RecordState = {
   userRecords: [],
   beforeUserRecordSize: 0,
   temporaryComment: '',
-  commentPostError: ''
+  commentPostError: '',
+  comments: []
 }
 
 const recordReducer = (
@@ -127,7 +127,8 @@ const recordReducer = (
         userRecords: [],
         beforeUserRecordSize: 0,
         temporaryComment: '',
-        commentPostError: ''
+        commentPostError: '',
+        comments: []
       }
     }
 
@@ -314,6 +315,16 @@ const recordReducer = (
       return {
         ...state,
         temporaryComment: text
+      }
+    }
+
+    // 記録へのコメント成功
+    case SUCCESS_POST_RECORD_COMMENT: {
+      const { payload } = action
+      const comments = [...state.comments, payload]
+      return {
+        ...state,
+        comments
       }
     }
 

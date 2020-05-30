@@ -14,7 +14,8 @@ import {
   RequestFetchRecords,
   RequestNextRecords,
   RequestDestroyRecord,
-  RequestPostRecordComment
+  RequestPostRecordComment,
+  RecordCommentType,
 } from '../types/Record'
 import { RootState } from '../reducers'
 // import apis
@@ -123,17 +124,17 @@ function* handleRequestDestroyRecord() {
 }
 
 // 記録へのコメント送信リクエスト
-function* runRequestPostRecordComment(action: RequestPostRecordComment) {
+function* runRequestPostRecordComment(action: RequestPostRecordComment) {  
   const { recordId } = action
   const { temporaryComment } = yield select((state: RootState) => state.records)
-  const { payload, error }: { payload?: string, error?: string } = yield call(
+  const { payload, error }: { payload?: RecordCommentType, error?: string } = yield call(
     requestPostRecordPost,
     recordId,
     temporaryComment
   )
 
   if (payload && !error) {
-    yield put(successPostRecordComment())
+    yield put(successPostRecordComment(payload))
   } else if (error) {
     yield put(failurePostRecordComment(error))
   }

@@ -45,6 +45,7 @@ export interface RecordState {
   beforeUserRecordSize: number
   temporaryComment: string
   commentPostError: string
+  comments: RecordCommentType[]
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -71,6 +72,15 @@ export type ResponseRecordType = {
   records: RecordItemType[]
   word: string
   uid: string
+  createdAt: FirestoreTimestamp
+  updatedAt: FirestoreTimestamp
+}
+
+export type RecordCommentType = {
+  id: string
+  recordId: string
+  uid: string
+  content: string
   createdAt: FirestoreTimestamp
   updatedAt: FirestoreTimestamp
 }
@@ -224,6 +234,7 @@ export interface RequestPostRecordComment {
 // コメントの送信成功
 export interface SuccessPostRecordComment {
   type: typeof SUCCESS_POST_RECORD_COMMENT
+  payload: RecordCommentType
 }
 
 // コメントの送信失敗

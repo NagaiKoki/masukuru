@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { COLORS } from '../../constants/Styles'
+import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 interface RecordCommentProps {
@@ -19,6 +19,7 @@ const RecordComment = (props: RecordCommentProps) => {
   } = props
 
   const commentPresent = temporaryComment ? true : false
+  console.log(!commentPresent)
   
   const handleRequestPostComment = () => {
     if (!commentPresent) return
@@ -67,7 +68,7 @@ const CommentForm = styled.TextInput`
   color: ${COLORS.BASE_BLACK};
 `
 
-const SubmitBtnWrapper = styled.View<{ commentPresent: boolean }>`
+const SubmitBtnWrapper = styled.TouchableOpacity<{ commentPresent: boolean }>`
   width: 15%;
   opacity: ${props => props.commentPresent ? 1 : 0.5};
 `

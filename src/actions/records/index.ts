@@ -27,7 +27,12 @@ import {
   FAILURE_POST_RECORD_COMMENT
 } from '../actionTypes'
 // import types
-import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../../types/Record'
+import { 
+  RecordActionTypes, 
+  RecordItemType, 
+  ResponseRecordType,
+  RecordCommentType
+} from '../../types/Record'
 
 // 記録の作成 ////////////////////////////////////////////////////////////
 // 記録の追加
@@ -223,9 +228,10 @@ export const requestPostRecordComment = (recordId: string): RecordActionTypes =>
 }
 
 // コメントの送信成功
-export const successPostRecordComment = (): RecordActionTypes => {
+export const successPostRecordComment = (payload: RecordCommentType): RecordActionTypes => {
   return {
-    type: SUCCESS_POST_RECORD_COMMENT
+    type: SUCCESS_POST_RECORD_COMMENT,
+    payload
   }
 }
 
