@@ -31,7 +31,6 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
     }
     return { payload: commentPayload }
   } catch (error) {
-    console.log(error);
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
@@ -76,7 +75,7 @@ export const requestDeleteRecordComment = async (recordId: string, commnetId: st
     const commentRef = db.collection('records').doc(recordId).collection('comments').doc(commnetId)
     await commentRef.delete()
     return { payload: 'success' } 
-  } catch {
+  } catch (error){
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
