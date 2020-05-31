@@ -274,10 +274,11 @@ export const failureFetchRecordComments = (error: string): RecordActionTypes => 
 }
 
 // 記録のコメント削除リクエスト
-export const requestDeleteRecordComment = (id: string): RecordActionTypes => {
+export const requestDeleteRecordComment = (recordId: string, commentId: string): RecordActionTypes => {
   return {
     type: REQUEST_DELETE_RECORD_COMMENT,
-    id
+    recordId,
+    commentId
   }
 }
 

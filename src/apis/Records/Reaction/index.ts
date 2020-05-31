@@ -69,3 +69,14 @@ export const requestGetFetchRecordCommentsSize = async (recordId: string) => {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
+
+// 記録のコメント削除
+export const requestDeleteRecordComment = async (recordId: string, commnetId: string) => {
+  try {
+    const commentRef = db.collection('records').doc(recordId).collection('comments').doc(commnetId)
+    await commentRef.delete()
+    return { payload: 'success' } 
+  } catch {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
+}

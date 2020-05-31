@@ -270,7 +270,8 @@ export interface FailureFetchRecordComments {
 // コメントの削除リクエスト
 export interface RequestDeleteRecordComment {
   type: typeof REQUEST_DELETE_RECORD_COMMENT
-  id: string
+  recordId: string
+  commentId: string
 }
 
 // コメントの削除成功
