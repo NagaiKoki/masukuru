@@ -13,7 +13,8 @@ const RecordReaction = (props: RecordReactionProps) => {
   return (
     <RecordReactionWrapper>
       <RecordReactionUpper>
-        <Icon name="comment-o" size={20} style={{ color: COLORS.BASE_BLACK }} />
+        <Icon name="comment-o" size={18} style={{ color: COLORS.BASE_BLACK }} />
+        <RecordReactionTitle>コメント</RecordReactionTitle>
         <RecordReactionSizeText>{size}</RecordReactionSizeText>
       </RecordReactionUpper>
     </RecordReactionWrapper>
@@ -30,12 +31,19 @@ const RecordReactionWrapper = styled.View`
 const RecordReactionUpper = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+`
+
+const RecordReactionTitle = styled.Text`
+  margin: 0 7px;
+  color: ${COLORS.BASE_BLACK};
+  font-weight: bold;
+  font-size: 15px;
 `
 
 const RecordReactionSizeText = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
   color: ${COLORS.SUB_BLACK};
-  margin-left: 5px;
 `
 
 export default RecordReaction
