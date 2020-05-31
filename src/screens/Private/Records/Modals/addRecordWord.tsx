@@ -10,8 +10,8 @@ import { AddRecordWordProps } from '../../../../containers/Private/records/addRe
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props
   const { word, recordItems, isLoading } = records
-  const { onChangeWord, requestSubmitRecords } = actions
-
+  const { onChangeWord, requestSubmitRecords, initializeRecords } = actions
+  
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
@@ -23,19 +23,21 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
         headerBackTitleVisible: false,
         headerRight: () => {
           return (
-            <HeaderSaveBtn onPress={ () => handleSubmitRecord()}>
+            <HeaderSaveBtn onPress={ () => handleSubmitRecord()} disabled={isLoading} >
               <HeaderSaveTitle>送信する</HeaderSaveTitle>
             </HeaderSaveBtn>
           )
         }
       })
-    }, [word])
+    }, [word, isLoading])
   )
 
   const handleSubmitRecord = () => {
+    if (isLoading) return
     requestSubmitRecords(recordItems, word)
     setTimeout(() => {
       navigation.navigate('mainContainer')
+      initializeRecords()
     }, 2000)
   }
 

@@ -9,7 +9,8 @@ import { RecordState, RecordItemType } from '../../../types/Record'
 import { 
   onChangeWord, 
   requestSubmitRecords,
-  setRecordError
+  setRecordError,
+  initializeRecords
 } from '../../../actions/records'
 
 
@@ -21,6 +22,7 @@ export interface AddRecordWordProps {
     onChangeWord: (word: string) => void
     requestSubmitRecords: (records: RecordItemType[], word: string) => void
     setRecordError: (error: string) => void
+    initializeRecords: () => void
   }
 }
 
@@ -35,7 +37,8 @@ const mapDistanceToProps = (dispatch: Dispatch) => {
     actions: bindActionCreators({
       onChangeWord,
       requestSubmitRecords,
-      setRecordError
+      setRecordError,
+      initializeRecords
     }, dispatch
     )
   }

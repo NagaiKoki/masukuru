@@ -77,7 +77,6 @@ const HomeScreen = (props: HomeProps) => {
     if (!__DEV__) {
       updateModule()
     }
-
     requestFetchRecords(null, currentGroupId)
     getHeaderNav()
     setIsHomeLoading(false)

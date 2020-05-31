@@ -1,11 +1,8 @@
 import React from 'react';
-import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native'
-import styled from 'styled-components'
+import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../../constants/Styles'
 // import navigators
 import RecordCardsNavigator from '../Home/Records/Cards'
-import RecordModalNavigator from '../Home/Records/Modals/RecordModalNavigator'
 
 const RecordNavigator = () => {
   const RecordStack = createStackNavigator();
@@ -25,14 +22,6 @@ const RecordNavigator = () => {
           headerTintColor: COLORS.BASE_WHITE,
         }}
       />
-
-      {/* <RecordStack.Screen 
-        name="recordModal"
-        component={RecordModalNavigator}
-        options={{
-          headerShown: false,
-        }}
-      /> */}
     </RecordStack.Navigator>
     
   )

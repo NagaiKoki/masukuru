@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 // import containers
 import UserContainer from '../../../containers/Private/users/myPage'
@@ -51,13 +50,5 @@ const MyPageNavigator = () => {
     </MyPageStack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center'
-  }
-})
 
 export default MyPageNavigator;

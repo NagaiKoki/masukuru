@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { TouchableHighlight } from 'react-native'
 import { Alert } from 'react-native'
 import moment from '../../config/moment'
 import styled from 'styled-components'
-import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign'
 // db
 import firebase from '../../config/firebase'
@@ -15,6 +15,7 @@ import { requestGetFetchRecordCommentsSize } from '../../apis/Records/Reaction'
 // import components
 import UserImage from '../Image/userImage'
 import RecordReaction from './Reactions'
+import Loading from '../Loading'
 // import lib
 import { convertTimestampToString } from '../../lib/timestamp'
 import { COLORS } from '../../constants/Styles';
@@ -34,12 +35,14 @@ const RecordItem = (props: RecordItemProps) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
   const [commentSize, setCommentSize] = useState(0)
-
+  const [isUserLoading, setIsUserLoading] = useState(true)
+  const [isCommentLoading, setIsCommentLoading] = useState(true)
+  
   useFocusEffect(
     useCallback(() => {
       fetchUser()
       fetchCommentSize()
-    }, [uid])
+    }, [])
   )
 
   const fetchUser = async () => {
@@ -49,6 +52,7 @@ const RecordItem = (props: RecordItemProps) => {
     } else {
       setError(error)
     }
+    setIsUserLoading(false)
   }
 
   const fetchCommentSize = async () => {
@@ -58,10 +62,13 @@ const RecordItem = (props: RecordItemProps) => {
     } else {
       setError(error)
     }
+    setIsCommentLoading(false)
   }
 
-  if (!user || !record) {
-    return <React.Fragment></React.Fragment>
+  if (isUserLoading || isCommentLoading) {
+    return (
+      <React.Fragment/>
+    )
   }
 
   // 記録の削除
