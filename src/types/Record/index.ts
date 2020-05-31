@@ -30,9 +30,6 @@ import {
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
   FAILURE_FETCH_RECORD_COMMENTS,
-  REQUEST_FETCH_RECORD_COMMENTS_SIZE,
-  SUCCESS_FETCH_RECORD_COMMENTS_SIZE,
-  FAILURE_FETCH_RECORD_COMMENTS_SIZE,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -267,24 +264,6 @@ export interface FailureFetchRecordComments {
   error: string
 }
 
-// 記録のコメント数の取得
-export interface RequestFetchRecordCommentsSize {
-  type: typeof REQUEST_FETCH_RECORD_COMMENTS_SIZE
-  recordId: string
-}
-
-// 記録のコメント数の取得成功
-export interface SuccessFetchRecordCommentsSize {
-  type: typeof SUCCESS_FETCH_RECORD_COMMENTS_SIZE
-  size: number
-}
-
-// 記録のコメント数の取得失敗
-export interface FailureFetchRecordCommentsSize {
-  type: typeof FAILURE_FETCH_RECORD_COMMENTS_SIZE
-  error: string
-}
-
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -313,7 +292,4 @@ export type RecordActionTypes =
   FailurePostRecordComment |
   RequestFetchRecordComments |
   SuccessFetchRecordComments |
-  FailureFetchRecordComments |
-  RequestFetchRecordCommentsSize |
-  SuccessFetchRecordCommentsSize |
-  FailureFetchRecordCommentsSize
+  FailureFetchRecordComments

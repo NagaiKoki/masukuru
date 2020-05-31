@@ -26,7 +26,7 @@ import {
   FAILURE_POST_RECORD_COMMENT,
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
-  FAILURE_FETCH_RECORD_COMMENTS
+  FAILURE_FETCH_RECORD_COMMENTS,
 } from '../../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Record'
@@ -367,7 +367,7 @@ const recordReducer = (
         isLoading: false
       }
     }
-
+    
     default:
       return state
   }

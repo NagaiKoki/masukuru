@@ -37,7 +37,9 @@ const RecordShowScreen = (props: RecordShowProps) => {
         ref={scrollRef}
         onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true})}>
         <RecordItem 
-          record={record} 
+          record={record}
+          navigation={navigation}
+          isShowPage={true} 
           requestDestroyRecord={requestDestroyRecord} 
         /> 
         {renderCommentList}    

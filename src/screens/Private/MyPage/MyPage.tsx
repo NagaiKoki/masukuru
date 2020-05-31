@@ -71,6 +71,7 @@ const MyPageScreen = (props: UserProps) => {
       <RecordList 
         recordData={userRecords} 
         isLoading={isLoading} 
+        navigation={navigation}
         requestDestroyRecord={requestDestroyRecord}
       />
       </ScrollView>

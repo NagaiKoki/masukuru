@@ -20,6 +20,7 @@ const RecordComment = (props: RecordCommentProps) => {
     changeRecordCommentText, 
     requestPostRecordComment 
   } = props
+
   const [text, setText] = useState('')
   const currentUser = firebase.auth().currentUser
 
@@ -51,6 +52,7 @@ const RecordComment = (props: RecordCommentProps) => {
           autoCapitalize={'none'}
           maxLength={300}
           value={text}
+          autoFocus={true}
           autoCorrect={ false }
           onChangeText={ value => handleOnChangeText(value) }
         />

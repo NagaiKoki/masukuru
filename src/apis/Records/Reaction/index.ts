@@ -55,3 +55,17 @@ export const requestGetRecordComments = async (recordId: string) => {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
+
+// 記録のコメント数取得
+export const requestGetFetchRecordCommentsSize = async (recordId: string) => {
+  let size: number
+  try {
+    const commentRef = db.collection('records').doc(recordId).collection('comments')
+    await commentRef.get().then(snap => {
+      size = snap.size
+    })
+    return { payload: size }
+  } catch (error) {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
+}
