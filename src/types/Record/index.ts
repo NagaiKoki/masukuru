@@ -30,6 +30,9 @@ import {
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
   FAILURE_FETCH_RECORD_COMMENTS,
+  REQUEST_DELETE_RECORD_COMMENT,
+  SUCCESS_DELETE_RECORD_COMMENT,
+  FAILURE_DELETE_RECORD_COMMENT
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -264,6 +267,25 @@ export interface FailureFetchRecordComments {
   error: string
 }
 
+// コメントの削除リクエスト
+export interface RequestDeleteRecordComment {
+  type: typeof REQUEST_DELETE_RECORD_COMMENT
+  id: string
+}
+
+// コメントの削除成功
+export interface SuccessDeleteRecordComment {
+  type: typeof SUCCESS_DELETE_RECORD_COMMENT
+  id: string
+}
+
+// コメントの削除失敗
+export interface FailureDeleteRecordComment {
+  type: typeof FAILURE_DELETE_RECORD_COMMENT
+  error: string
+}
+
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -292,4 +314,7 @@ export type RecordActionTypes =
   FailurePostRecordComment |
   RequestFetchRecordComments |
   SuccessFetchRecordComments |
-  FailureFetchRecordComments
+  FailureFetchRecordComments |
+  RequestDeleteRecordComment |
+  SuccessDeleteRecordComment |
+  FailureDeleteRecordComment

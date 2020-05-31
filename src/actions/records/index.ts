@@ -27,7 +27,10 @@ import {
   FAILURE_POST_RECORD_COMMENT,
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
-  FAILURE_FETCH_RECORD_COMMENTS
+  FAILURE_FETCH_RECORD_COMMENTS,
+  REQUEST_DELETE_RECORD_COMMENT,
+  SUCCESS_DELETE_RECORD_COMMENT,
+  FAILURE_DELETE_RECORD_COMMENT
 } from '../actionTypes'
 // import types
 import { 
@@ -266,6 +269,30 @@ export const successFetchRecordComments = (payload: RecordCommentType[]): Record
 export const failureFetchRecordComments = (error: string): RecordActionTypes => {
   return {
     type: FAILURE_FETCH_RECORD_COMMENTS,
+    error
+  }
+}
+
+// 記録のコメント削除リクエスト
+export const requestDeleteRecordComment = (id: string): RecordActionTypes => {
+  return {
+    type: REQUEST_DELETE_RECORD_COMMENT,
+    id
+  }
+}
+
+// 記録のコメント削除成功
+export const successDeleteRecordComment = (id: string): RecordActionTypes => {
+  return {
+    type: SUCCESS_DELETE_RECORD_COMMENT,
+    id
+  }
+}
+
+// 記録のコメント削除失敗
+export const failureDeleteRecordComment = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_DELETE_RECORD_COMMENT,
     error
   }
 }
