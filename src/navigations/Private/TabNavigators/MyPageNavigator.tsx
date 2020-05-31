@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import containers
 import UserContainer from '../../../containers/Private/users/myPage'
+import RecordShowContainer from '../../../containers/Private/records/recordShow'
 // import screens
-import MyPageScreen from '../../../screens/Private/MyPage/MyPage'
 import ProfileChangeScreen from '../../../screens/Private/MyPage/ProfileChange';
 import { COLORS } from '../../../constants/Styles'
 
@@ -29,6 +29,19 @@ const MyPageNavigator = () => {
         component={ProfileChangeScreen}
         options={{
           headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
+        }}
+      />
+
+      <MyPageStack.Screen 
+        name="recordShow"
+        component={RecordShowContainer}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: "きろく",
           headerStyle: {
             backgroundColor: COLORS.BASE_MUSCLEW
           },
