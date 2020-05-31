@@ -24,7 +24,7 @@ const RecordComment = (props: RecordCommentProps) => {
   const [text, setText] = useState('')
   const currentUser = firebase.auth().currentUser
 
-  const commentPresent = temporaryComment ? true : false
+  const commentPresent = temporaryComment && text ? true : false
 
   const handleOnChangeText = (value: string) => {
     setText(value)
@@ -32,7 +32,7 @@ const RecordComment = (props: RecordCommentProps) => {
   }
   
   const handleRequestPostComment = () => {
-    if (!commentPresent) return
+    if (!commentPresent && !text) return
     requestPostRecordComment(recordId)
     setText('')
   }
