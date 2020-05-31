@@ -127,7 +127,7 @@ const RecordItem = (props: RecordItemProps) => {
   // ユーザーレンダー
   const renderUser = 
     <RecordUserWrapper>
-      <RecordUserImage onPress={ () => navigation ? navigation.navigate('UserPage', { user: user }) : {} }>
+      <RecordUserImage onPress={ () => navigation && currentUser.uid !== uid ? navigation.navigate('UserPage', { user: user }) : {} }>
         <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
       </RecordUserImage>
       <RecordUserName>{user.name}</RecordUserName>
