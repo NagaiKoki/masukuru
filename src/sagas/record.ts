@@ -5,7 +5,8 @@ import {
   REQUEST_FETCH_RECORDS,
   REQUEST_NEXT_RECORDS,
   REQUEST_DESTORY_RECORD,
-  REQUEST_POST_RECORD_COMMENT
+  REQUEST_POST_RECORD_COMMENT,
+  REQUEST_FETCH_RECORD_COMMENTS
 } from '../actions/actionTypes'
 // import types
 import { 
@@ -16,6 +17,7 @@ import {
   RequestDestroyRecord,
   RequestPostRecordComment,
   RecordCommentType,
+  RequestFetchRecordComments,
 } from '../types/Record'
 import { RootState } from '../reducers'
 // import apis
@@ -24,7 +26,7 @@ import {
   requestFetchRecord, 
   requestDestroyRecord,
 } from '../apis/Records'
-import { requestPostRecordPost } from '../apis/Records/Reaction'
+import { requestPostRecordPost, requestGetRecordComments } from '../apis/Records/Reaction'
 // import actions
 import { 
   successSubmitRecords, 
@@ -37,6 +39,8 @@ import {
   failureDestroyRecord,
   successPostRecordComment,
   failurePostRecordComment,
+  successFetchRecordComments,
+  failureFetchRecordComments
 } from '../actions/records'
 
 // 記録の保存
@@ -145,10 +149,31 @@ function* handleRequestPostRecordComment() {
   yield takeEvery(REQUEST_POST_RECORD_COMMENT, runRequestPostRecordComment)
 }
 
+// 記録のコメント取得リクエスト
+function* runRequestFetchRecordComments(action: RequestFetchRecordComments) {
+  const { recordId } = action
+  const { payload, error }: { payload?: RecordCommentType[], error?: string } = yield call(
+    requestGetRecordComments,
+    recordId
+  )
+
+  if (payload && !error) {
+    yield put(successFetchRecordComments(payload))
+  } else if (error) {
+    yield put(failureFetchRecordComments(error))
+  }
+ }
+
+// 記録のコメント取得リクエストハンドラー
+function* handleRequestFetchRecordComments() {
+  yield takeEvery(REQUEST_FETCH_RECORD_COMMENTS, runRequestFetchRecordComments)
+}
+
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)
   yield fork(handleRequestNextFetchRecords)
   yield fork(handleRequestDestroyRecord)
   yield fork(handleRequestPostRecordComment)
+  yield fork(handleRequestFetchRecordComments)
 }

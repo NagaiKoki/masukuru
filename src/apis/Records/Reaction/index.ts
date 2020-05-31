@@ -3,6 +3,7 @@ import firebase, { db } from '../../../config/firebase';
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 // import lib
 import { factoryRandomCode } from '../../../lib/randomTextFactory'
+import { RecordCommentType } from '../../../types/Record';
 
 // 記録へのコメント送信
 export const requestPostRecordPost = async (recordId: string, text: string) => {
@@ -31,6 +32,24 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
     return { payload: commentPayload }
   } catch (error) {
     console.log(error);
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
+}
+
+// 記録のコメント取得
+export const requestGetRecordComments = async (recordId: string) => {
+  let comments;
+
+  try {
+    const recordRef = db.collection('records').doc(recordId).collection('comments').orderBy('createdAt', 'asc').get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data()
+        data.id = String(doc.ref.id)
+        comments.push(data)
+      })
+    })
+    return { payload: comments }
+  } catch (error) {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
