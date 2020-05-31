@@ -38,11 +38,13 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
 
 // 記録のコメント取得
 export const requestGetRecordComments = async (recordId: string) => {
-  let comments;
-
+  let comments = []
   try {
-    const recordRef = db.collection('records').doc(recordId).collection('comments').orderBy('createdAt', 'asc').get().then(snap => {
+    await db.collection('records').doc(recordId).collection('comments').orderBy('createdAt', 'asc').get().then(snap => {
       snap.forEach(doc => {
+        if (!doc.exists) {
+          return { payload: [] }
+        }
         const data = doc.data()
         data.id = String(doc.ref.id)
         comments.push(data)

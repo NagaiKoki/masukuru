@@ -353,7 +353,8 @@ const recordReducer = (
       const { payload } = action
       return {
         ...state,
-        comments: payload
+        comments: payload,
+        isLoading: false
       }
     }
 
@@ -362,7 +363,8 @@ const recordReducer = (
       const { error } = action
       return {
         ...state,
-        error
+        error,
+        isLoading: false
       }
     }
 

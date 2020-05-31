@@ -166,6 +166,7 @@ function* runRequestFetchRecordComments(action: RequestFetchRecordComments) {
 
 // 記録のコメント取得リクエストハンドラー
 function* handleRequestFetchRecordComments() {
+  console.log('fasdf')
   yield takeEvery(REQUEST_FETCH_RECORD_COMMENTS, runRequestFetchRecordComments)
 }
 
