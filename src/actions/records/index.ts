@@ -27,7 +27,10 @@ import {
   FAILURE_POST_RECORD_COMMENT,
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
-  FAILURE_FETCH_RECORD_COMMENTS
+  FAILURE_FETCH_RECORD_COMMENTS,
+  REQUEST_FETCH_RECORD_COMMENTS_SIZE,
+  SUCCESS_FETCH_RECORD_COMMENTS_SIZE,
+  FAILURE_FETCH_RECORD_COMMENTS_SIZE
 } from '../actionTypes'
 // import types
 import { 
@@ -266,6 +269,30 @@ export const successFetchRecordComments = (payload: RecordCommentType[]): Record
 export const failureFetchRecordComments = (error: string): RecordActionTypes => {
   return {
     type: FAILURE_FETCH_RECORD_COMMENTS,
+    error
+  }
+}
+
+// 記録のコメント数を取得
+export const requestFetchRecordCommentsSize = (recordId: string): RecordActionTypes => {
+  return {
+    type: REQUEST_FETCH_RECORD_COMMENTS_SIZE,
+    recordId
+  }
+}
+
+// 記録のコメント数を取得成功
+export const successFetchRecordCommentsSize = (size: number): RecordActionTypes => {
+  return {
+    type: SUCCESS_FETCH_RECORD_COMMENTS_SIZE,
+    size
+  }
+}
+
+// 記録のコメント数を取得失敗
+export const failureFetchRecordCommentsSize = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_FETCH_RECORD_COMMENTS_SIZE,
     error
   }
 }
