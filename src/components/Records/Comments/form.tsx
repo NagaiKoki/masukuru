@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -17,13 +17,19 @@ const RecordComment = (props: RecordCommentProps) => {
     changeRecordCommentText, 
     requestPostRecordComment 
   } = props
+  const [text, setText] = useState('')
 
   const commentPresent = temporaryComment ? true : false
-  console.log(!commentPresent)
+
+  const handleOnChangeText = (value: string) => {
+    setText(value)
+    changeRecordCommentText(value)
+  }
   
   const handleRequestPostComment = () => {
     if (!commentPresent) return
     requestPostRecordComment(recordId)
+    setText('')
   }
 
   return (
@@ -33,8 +39,9 @@ const RecordComment = (props: RecordCommentProps) => {
           placeholder="コメントを入力..."
           autoCapitalize={'none'}
           maxLength={300}
+          value={text}
           autoCorrect={ false }
-          onChangeText={ (text: string) => changeRecordCommentText(text) }
+          onChangeText={ value => handleOnChangeText(value) }
         />
         <SubmitBtnWrapper 
           onPress={handleRequestPostComment}

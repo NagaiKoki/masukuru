@@ -115,7 +115,7 @@ const RecordItem = (props: RecordItemProps) => {
       <RecordItemUpper>
         {renderUser}
         <RecordRightUpper>
-          <RecordTimestampText>{moment(convertTimestampToString(createdAt)).fromNow()}</RecordTimestampText>
+          <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
           { currentUser.uid === uid ? 
             <IconWrapper onPress={handleDestroyRecord}>
               <Icon name='down' style={{ color: COLORS.BASE_BLACK }}/>
@@ -131,7 +131,6 @@ const RecordItem = (props: RecordItemProps) => {
 
 const RecordItemContainer = styled.TouchableOpacity`
   margin: 0px 0 8px 0;
-  box-shadow: 0 7px 30px rgba(150,170,180,0.5);
   padding: 15px 15px 0 15px;
   width: 100%;
   align-self: center;

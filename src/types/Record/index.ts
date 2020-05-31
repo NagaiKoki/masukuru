@@ -81,8 +81,8 @@ export type RecordCommentType = {
   recordId: string
   uid: string
   content: string
-  createdAt: FirestoreTimestamp
-  updatedAt: FirestoreTimestamp
+  createdAt: FirestoreTimestamp | Date
+  updatedAt: FirestoreTimestamp | Date
 }
 
 // 記録の作成 ////////////////////////////////////////////////////////////

@@ -16,13 +16,15 @@ const RecordShowScreen = (props: RecordShowProps) => {
 
   return (
     <RecordShowContainer>
-      <RecordItem 
-        record={record} 
-        requestDestroyRecord={requestDestroyRecord} 
-      />    
-      <RecordCommentList 
-        comments={comments}
-      />
+      <RecordShowWrapper>
+        <RecordItem 
+          record={record} 
+          requestDestroyRecord={requestDestroyRecord} 
+        />   
+        <RecordCommentList 
+          comments={comments}
+        />
+      </RecordShowWrapper>
       <RecordShowCommentFormWrapper 
         style={{ flex: 1 }} 
         behavior="padding" 
@@ -42,6 +44,10 @@ const RecordShowScreen = (props: RecordShowProps) => {
 const RecordShowContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
+`
+
+const RecordShowWrapper = styled.ScrollView`
+  margin-bottom: 40px;
 `
 
 const RecordShowCommentFormWrapper = styled.KeyboardAvoidingView`

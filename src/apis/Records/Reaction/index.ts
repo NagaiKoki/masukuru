@@ -7,7 +7,8 @@ import { factoryRandomCode } from '../../../lib/randomTextFactory'
 // 記録へのコメント送信
 export const requestPostRecordPost = async (recordId: string, text: string) => {
   const currentUser = firebase.auth().currentUser
-  const currentTime = firebase.firestore.FieldValue.serverTimestamp()
+  const currentFirestoreTime = firebase.firestore.FieldValue.serverTimestamp()
+  const currentDateTime = new Date
   const docId = factoryRandomCode(20)
   
   try {
@@ -16,16 +17,16 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
       uid: currentUser.uid,
       recordId: recordId,
       content: text,
-      createdAt: currentTime,
-      updatedAt: currentTime
+      createdAt: currentFirestoreTime,
+      updatedAt: currentFirestoreTime
     })
     const commentPayload = {
       id: docId,
       uid: currentUser.uid,
       recordId: recordId,
       content: text,
-      createdAt: currentTime,
-      updatedAt: currentTime
+      createdAt: currentDateTime,
+      updatedAt: currentDateTime
     }
     return { payload: commentPayload }
   } catch (error) {

@@ -29,7 +29,7 @@ const MenuItem = (props: Props) => {
 
   // record表示
   let listSet : number = list.set
-  let createdAt : string = list.createdAt !== '' ? convertTimestampToString(list.createdAt) : 'たった今'
+  let createdAt : string = list.createdAt !== '' ? convertTimestampToString(list.createdAt, undefined) : 'たった今'
   let amountArray = []
   let weightArray = []
   

@@ -11,7 +11,7 @@ const NotificationContentScreen = (props: NotificationProps) => {
   const { navigation, route, notifications, actions } = props
   const { requestReadNotification } = actions
   const { id, title, createdAt, contents, from } = route.params.item
-  const time = convertTimestampToString(createdAt)
+  const time = convertTimestampToString(createdAt, undefined)
 
   useFocusEffect(
     useCallback(() => {
