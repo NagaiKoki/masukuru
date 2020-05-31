@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Keyboard } from 'react-native'
 import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from '../../../config/firebase'
@@ -35,6 +36,7 @@ const RecordComment = (props: RecordCommentProps) => {
     if (!commentPresent && !text) return
     requestPostRecordComment(recordId)
     setText('')
+    Keyboard.dismiss()
   }
 
   const renderUserImage = (
@@ -52,7 +54,6 @@ const RecordComment = (props: RecordCommentProps) => {
           autoCapitalize={'none'}
           maxLength={300}
           value={text}
-          autoFocus={true}
           autoCorrect={ false }
           onChangeText={ value => handleOnChangeText(value) }
         />
