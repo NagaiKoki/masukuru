@@ -27,6 +27,9 @@ import {
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
   FAILURE_FETCH_RECORD_COMMENTS,
+  REQUEST_DELETE_RECORD_COMMENT,
+  SUCCESS_DELETE_RECORD_COMMENT,
+  FAILURE_DELETE_RECORD_COMMENT,
 } from '../../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Record'
@@ -365,6 +368,25 @@ const recordReducer = (
         ...state,
         error,
         isLoading: false
+      }
+    }
+
+    // 記録のコメント削除成功
+    case SUCCESS_DELETE_RECORD_COMMENT: {
+      const { id } = action
+      const comments = state.comments.filter(comment => comment.id !== id)
+      return {
+        ...state,
+        comments
+      }
+    }
+    
+    // 記録のコメント削除失敗
+    case FAILURE_DELETE_RECORD_COMMENT: {
+      const { error } = action
+      return {
+        ...state,
+        error
       }
     }
     
