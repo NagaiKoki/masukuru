@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Alert } from 'react-native'
 import styled from 'styled-components'
 import moment from '../../../config/moment'
 // import types
@@ -11,14 +12,17 @@ import { COLORS } from '../../../constants/Styles'
 import UserImage from '../../Image/userImage'
 // import lib
 import { convertTimestampToString } from '../../../lib/timestamp'
+import firebase from '../../../config/firebase'
 
 interface RecordCommentListProps {
   comment: RecordCommentType
+  requestDeleteRecordComment: (recordId: string, commentId: string) => void
 }
 
 const RecordCommentItem = (props: RecordCommentListProps) => {
-  const { comment } = props
-  const { uid, content, createdAt } = comment
+  const { comment, requestDeleteRecordComment } = props
+  const { id, uid, content, createdAt, recordId } = comment
+  const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
@@ -34,6 +38,24 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
     }
     fetchUser()
   }, [])
+
+  const handleDeleteComment = () => {
+    Alert.alert(
+      'このコメントを削除します。',
+      "本当によろしいですか？", 
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => { requestDeleteRecordComment(recordId, id) }
+        }
+      ],
+      { cancelable: false }
+    )
+  }
 
   const dateTime = () => {
     // コメントを送った直後のcreatedAtの型はfirestore.timeStamp型にならないため
@@ -64,7 +86,15 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
           <CommentItemContent>{content}</CommentItemContent>
          </CommentContentWrapper>
        </CommnetItemWrapper>
-      <CommentTimeStampText>{dateTime()}</CommentTimeStampText>
+       <CommentUnderWrapper>
+        <CommentTimeStampText>{dateTime()}</CommentTimeStampText>
+        { uid !== currentUser.uid ? 
+          null : 
+          <CommentDeleteBtn onPress={handleDeleteComment}>
+            <CommentDeleteText>削除</CommentDeleteText>
+          </CommentDeleteBtn>
+        }
+       </CommentUnderWrapper>
     </CommentItemContainer>
   )
 }
@@ -86,6 +116,7 @@ const CommentContentWrapper = styled.View`
   background-color: ${COLORS.COMMENT_BACKGROUND};
   padding: 10px 15px;
   border-radius: 10px;
+  max-width: 85%;
 `
 
 const CommentUserName = styled.Text`
@@ -100,9 +131,23 @@ const CommentItemContent = styled.Text`
   font-size: 14px;
 `
 
-const CommentTimeStampText = styled.Text`
+const CommentUnderWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
   margin-left: 50px;
   margin-top: 7px;
+`
+
+const CommentTimeStampText = styled.Text`
+  color: ${COLORS.SUB_BLACK};
+  font-size: 10px;
+`
+
+const CommentDeleteBtn = styled.TouchableOpacity`
+  margin-left: 12px;
+`
+
+const CommentDeleteText = styled.Text`
   color: ${COLORS.SUB_BLACK};
   font-size: 10px;
 `

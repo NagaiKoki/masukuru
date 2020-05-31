@@ -8,13 +8,18 @@ import { COLORS } from '../../../constants/Styles'
 
 interface RecordCommentListProps {
   comments: RecordCommentType[]
+  requestDeleteRecordComment: (recordId: string, commentId: string) => void
 }
 
 const RecordCommentList = (props: RecordCommentListProps) => {
-  const { comments } = props
+  const { comments, requestDeleteRecordComment } = props
 
   const commentList = comments.map(comment => (
-    <RecordCommentItem key={comment.id} comment={comment} />
+    <RecordCommentItem 
+      key={comment.id} 
+      comment={comment} 
+      requestDeleteRecordComment={requestDeleteRecordComment}
+    />
   ))
 
   return (

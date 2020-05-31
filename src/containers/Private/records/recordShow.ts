@@ -8,7 +8,8 @@ import {
   requestDestroyRecord,
   changeRecordCommentText,
   requestPostRecordComment,
-  requestFetchRecordComments
+  requestFetchRecordComments,
+  requestDeleteRecordComment
 } from '../../../actions/records'
 // import screen
 import RecordShowScreen from '../../../screens/Private/Records/Show'
@@ -22,6 +23,7 @@ export interface RecordShowProps {
     changeRecordCommentText: (text: string) => void
     requestPostRecordComment: (recordId: string) => void 
     requestFetchRecordComments: (recordId: string) => void
+    requestDeleteRecordComment: (recordId: string, commentId: string) => void
   }
 }
 
@@ -37,7 +39,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       requestDestroyRecord,
       changeRecordCommentText,
       requestPostRecordComment,
-      requestFetchRecordComments
+      requestFetchRecordComments,
+      requestDeleteRecordComment
     }
     , dispatch)
   }

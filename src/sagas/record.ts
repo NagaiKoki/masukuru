@@ -6,7 +6,8 @@ import {
   REQUEST_NEXT_RECORDS,
   REQUEST_DESTORY_RECORD,
   REQUEST_POST_RECORD_COMMENT,
-  REQUEST_FETCH_RECORD_COMMENTS
+  REQUEST_FETCH_RECORD_COMMENTS,
+  REQUEST_DELETE_RECORD_COMMENT
 } from '../actions/actionTypes'
 // import types
 import { 
@@ -18,6 +19,7 @@ import {
   RequestPostRecordComment,
   RecordCommentType,
   RequestFetchRecordComments,
+  RequestDeleteRecordComment,
 } from '../types/Record'
 import { RootState } from '../reducers'
 // import apis
@@ -26,7 +28,11 @@ import {
   requestFetchRecord, 
   requestDestroyRecord,
 } from '../apis/Records'
-import { requestPostRecordPost, requestGetRecordComments } from '../apis/Records/Reaction'
+import { 
+  requestPostRecordPost, 
+  requestGetRecordComments,
+  requestDeleteRecordComment
+ } from '../apis/Records/Reaction'
 // import actions
 import { 
   successSubmitRecords, 
@@ -40,7 +46,9 @@ import {
   successPostRecordComment,
   failurePostRecordComment,
   successFetchRecordComments,
-  failureFetchRecordComments
+  failureFetchRecordComments,
+  successDeleteRecordComment,
+  failureDeleteRecordComment
 } from '../actions/records'
 
 // 記録の保存
@@ -166,9 +174,30 @@ function* runRequestFetchRecordComments(action: RequestFetchRecordComments) {
 
 // 記録のコメント取得リクエストハンドラー
 function* handleRequestFetchRecordComments() {
-  console.log('fasdf')
   yield takeEvery(REQUEST_FETCH_RECORD_COMMENTS, runRequestFetchRecordComments)
 }
+
+// 記録のコメント削除リクエスト
+function* runRequestDeleteRecordComment(action: RequestDeleteRecordComment) {
+  const { recordId, commentId } = action
+  const { payload, error }: { payload?: string, error?: string } = yield call(
+    requestDeleteRecordComment,
+    recordId,
+    commentId
+  )
+
+  if (payload && !error) {
+    yield put(successDeleteRecordComment(commentId))
+  } else if (error) {
+    yield put(failureDeleteRecordComment(error))
+  }
+}
+
+// 記録のコメント削除リクエストハンドラー
+function* handleRequestDeleteRecordComment() {
+  yield takeEvery(REQUEST_DELETE_RECORD_COMMENT, runRequestDeleteRecordComment)
+}
+
 
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
@@ -177,4 +206,5 @@ export default function* recordSaga() {
   yield fork(handleRequestDestroyRecord)
   yield fork(handleRequestPostRecordComment)
   yield fork(handleRequestFetchRecordComments)
+  yield fork(handleRequestDeleteRecordComment)
 }

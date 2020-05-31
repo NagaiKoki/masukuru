@@ -16,7 +16,8 @@ const RecordShowScreen = (props: RecordShowProps) => {
      requestDestroyRecord, 
      changeRecordCommentText, 
      requestPostRecordComment,
-     requestFetchRecordComments
+     requestFetchRecordComments,
+     requestDeleteRecordComment
   } = actions
   const { temporaryComment, comments, isLoading } = records
   const { record } = route.params
@@ -29,7 +30,10 @@ const RecordShowScreen = (props: RecordShowProps) => {
   )
 
   const renderCommentList = isLoading ? <Loading size="small" /> 
-    : <RecordCommentList comments={comments} />
+    : <RecordCommentList 
+        comments={comments}
+        requestDeleteRecordComment={requestDeleteRecordComment} 
+      />
 
   return (
     <RecordShowContainer>
@@ -49,11 +53,11 @@ const RecordShowScreen = (props: RecordShowProps) => {
         behavior="padding" 
         keyboardVerticalOffset={90}
       >
-      <RecordComment
-        recordId={record.id}
-        temporaryComment={temporaryComment}
-        changeRecordCommentText={changeRecordCommentText}
-        requestPostRecordComment={requestPostRecordComment}
+        <RecordComment
+          recordId={record.id}
+          temporaryComment={temporaryComment}
+          changeRecordCommentText={changeRecordCommentText}
+          requestPostRecordComment={requestPostRecordComment}
       />
       </RecordShowCommentFormWrapper>
     </RecordShowContainer>
