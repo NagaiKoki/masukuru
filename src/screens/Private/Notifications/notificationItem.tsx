@@ -16,7 +16,7 @@ interface ItemProps {
 const NotificationItem = (props: ItemProps) => {
   const { item, navigation } = props
   const { title, createdAt, readUserIds } = item;
-  const time = convertTimestampToString(createdAt)
+  const time = convertTimestampToString(createdAt, undefined)
   const currentUser = firebase.auth().currentUser
 
   const isUnRead = () => {

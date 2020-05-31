@@ -14,7 +14,7 @@ const MenuItem = (props: Props) => {
   const { list, index} = props
   let listSet : number = list.set
   let listName : string = list.name
-  let createdAt : string = convertTimestampToString(list.createdAt)
+  let createdAt : string = convertTimestampToString(list.createdAt, undefined)
   let amountArray = []
   let weightArray = []
   

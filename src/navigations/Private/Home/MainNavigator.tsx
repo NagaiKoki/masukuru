@@ -14,6 +14,7 @@ import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 import HomeNavigator from './HomeNavigator'
 // import container
 import UserPageContainer from '../../../containers/Private/users/userPage'
+import RecordShowContainer from '../../../containers/Private/records/recordShow'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
@@ -95,6 +96,19 @@ const MainNavigator = () => {
         options={{
           headerBackTitleVisible: false,
           headerTitle: "グループを編集する",
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
+        }}
+      />
+
+      <MainStack.Screen 
+        name="recordShow"
+        component={RecordShowContainer}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: "きろく",
           headerStyle: {
             backgroundColor: COLORS.BASE_MUSCLEW
           },

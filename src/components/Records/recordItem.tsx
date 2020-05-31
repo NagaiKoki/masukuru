@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { TouchableHighlight } from 'react-native'
 import { Alert } from 'react-native'
 import moment from '../../config/moment'
 import styled from 'styled-components'
@@ -10,8 +11,10 @@ import firebase from '../../config/firebase'
 import { ResponseRecordType, RecordItemType } from '../../types/Record'
 // import apis
 import { requestFetchUser } from '../../apis/Users'
+import { requestGetFetchRecordCommentsSize } from '../../apis/Records/Reaction'
 // import components
 import UserImage from '../Image/userImage'
+import RecordReaction from './Reactions'
 // import lib
 import { convertTimestampToString } from '../../lib/timestamp'
 import { COLORS } from '../../constants/Styles';
@@ -19,30 +22,43 @@ import { COLORS } from '../../constants/Styles';
 interface RecordItemProps {
   record: ResponseRecordType
   navigation?: any
+  isShowPage?: boolean
   requestDestroyRecord: (id: string) => void
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record, navigation, requestDestroyRecord } = props
+  const { record, isShowPage, navigation, requestDestroyRecord } = props
   const { id, uid, records, word, createdAt } = record
   const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
+  const [commentSize, setCommentSize] = useState(0)
 
   useFocusEffect(
     useCallback(() => {
-      const fetchUser = async () => {
-        const { user, error }: { user?: any, error?: string } = await requestFetchUser(uid)
-        if (user && !error) {
-          setUser(user)
-        } else {
-          setError(error)
-        }
-      }
       fetchUser()
+      fetchCommentSize()
     }, [uid])
   )
+
+  const fetchUser = async () => {
+    const { user, error }: { user?: any, error?: string } = await requestFetchUser(uid)
+    if (user && !error) {
+      setUser(user)
+    } else {
+      setError(error)
+    }
+  }
+
+  const fetchCommentSize = async () => {
+    const { payload, error }: { payload?: number, error?: string } = await requestGetFetchRecordCommentsSize(id)
+    if (payload && !error) {
+      setCommentSize(payload)
+    } else {
+      setError(error)
+    }
+  }
 
   if (!user || !record) {
     return <React.Fragment></React.Fragment>
@@ -103,19 +119,24 @@ const RecordItem = (props: RecordItemProps) => {
 
   // ユーザーレンダー
   const renderUser = 
-      <RecordUserWrapper>
-        <RecordUserImage onPress={ () => navigation ? navigation.navigate('UserPage', { user: user }) : {} }>
-          <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
-        </RecordUserImage>
-        <RecordUserName>{user.name}</RecordUserName>
-      </RecordUserWrapper>
+    <RecordUserWrapper>
+      <RecordUserImage onPress={ () => navigation ? navigation.navigate('UserPage', { user: user }) : {} }>
+        <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
+      </RecordUserImage>
+      <RecordUserName>{user.name}</RecordUserName>
+    </RecordUserWrapper>
 
   return (
-    <RecordItemContainer>
+    <TouchableHighlight  
+      onPress={() => isShowPage ? {} : navigation.navigate('recordShow', { record: record })}
+      underlayColor={COLORS.BASE_BACKGROUND}
+      activeOpacity={ isShowPage ? 1 : 0.6}
+    >
+      <RecordItemContainer>
       <RecordItemUpper>
         {renderUser}
         <RecordRightUpper>
-          <RecordTimestampText>{moment(convertTimestampToString(createdAt)).fromNow()}</RecordTimestampText>
+          <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
           { currentUser.uid === uid ? 
             <IconWrapper onPress={handleDestroyRecord}>
               <Icon name='down' style={{ color: COLORS.BASE_BLACK }}/>
@@ -125,13 +146,16 @@ const RecordItem = (props: RecordItemProps) => {
       </RecordItemUpper>
       <RecordWordText>{word}</RecordWordText>
       {renderRecordData}
+      {
+        isShowPage ? null : <RecordReaction size={commentSize} />
+      }
     </RecordItemContainer>
+    </TouchableHighlight>
   )
 }
 
 const RecordItemContainer = styled.View`
   margin: 0px 0 8px 0;
-  box-shadow: 0 7px 30px rgba(150,170,180,0.5);
   padding: 15px 15px 0 15px;
   width: 100%;
   align-self: center;

@@ -20,11 +20,24 @@ import {
   FAILURE_FETCH_NEXT_RECORDS,
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
-  FAILURE_DESTROY_RECORD
+  FAILURE_DESTROY_RECORD,
+  CHANGE_RECORD_COMMENT_TEXT,
+  REQUEST_POST_RECORD_COMMENT,
+  SUCCESS_POST_RECORD_COMMENT,
+  FAILURE_POST_RECORD_COMMENT,
+  REQUEST_FETCH_RECORD_COMMENTS,
+  SUCCESS_FETCH_RECORD_COMMENTS,
+  FAILURE_FETCH_RECORD_COMMENTS
 } from '../actionTypes'
 // import types
-import { RecordActionTypes, RecordItemType, ResponseRecordType } from '../../types/Record'
+import { 
+  RecordActionTypes, 
+  RecordItemType, 
+  ResponseRecordType,
+  RecordCommentType
+} from '../../types/Record'
 
+// 記録の作成 ////////////////////////////////////////////////////////////
 // 記録の追加
 export const addRecord = (record: RecordItemType): RecordActionTypes => {
   return {
@@ -144,6 +157,7 @@ export const failureSubmitRecords = (error: string): RecordActionTypes => {
   }
 }
 
+// 記録の取得 ////////////////////////////////////////////////////////////
 // 記録の取得
 export const requestFetchRecords = (uid?: string, groupId?: string): RecordActionTypes => {
   return {
@@ -195,6 +209,63 @@ export const successFetchNextRecords = (payload: ResponseRecordType[], uid?: str
 export const failureFetchNextRecords = (error: string): RecordActionTypes => {
   return {
     type: FAILURE_FETCH_NEXT_RECORDS,
+    error
+  }
+}
+
+// 記録へのリアクション ////////////////////////////////////////////////////////////
+// コメントの検知
+export const changeRecordCommentText = (text: string): RecordActionTypes => {
+  return {
+    type: CHANGE_RECORD_COMMENT_TEXT,
+    text
+  }
+}
+
+// コメントの送信
+export const requestPostRecordComment = (recordId: string): RecordActionTypes => {
+  return {
+    type: REQUEST_POST_RECORD_COMMENT,
+    recordId
+  }
+}
+
+// コメントの送信成功
+export const successPostRecordComment = (payload: RecordCommentType): RecordActionTypes => {
+  return {
+    type: SUCCESS_POST_RECORD_COMMENT,
+    payload
+  }
+}
+
+// コメントの送信失敗
+export const failurePostRecordComment = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_POST_RECORD_COMMENT,
+    error
+  }
+}
+
+// 記録のコメント取得
+export const requestFetchRecordComments = (recordId: string): RecordActionTypes => {
+  return {
+    type: REQUEST_FETCH_RECORD_COMMENTS,
+    recordId
+  }
+}
+
+// 記録のコメント取得成功
+export const successFetchRecordComments = (payload: RecordCommentType[]): RecordActionTypes => {
+  return {
+    type: SUCCESS_FETCH_RECORD_COMMENTS,
+    payload
+  }
+}
+
+// 記録のコメント取得失敗
+export const failureFetchRecordComments = (error: string): RecordActionTypes => {
+  return {
+    type: FAILURE_FETCH_RECORD_COMMENTS,
     error
   }
 }

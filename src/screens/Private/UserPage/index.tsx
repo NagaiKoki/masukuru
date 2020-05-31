@@ -25,16 +25,11 @@ const UserPageScreen = (props: UserProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('callback')
       requestFetchRecords(user.uid, undefined)
       setIsPageLoading(false)
     }, [])
   )
 
-  React.useEffect(() => {
-    console.log('effect')
-  }, [])
-  
   const onRefresh = () => {
     setIsRefresh(true)
     requestFetchRecords(user.uid, undefined)
@@ -72,6 +67,7 @@ const UserPageScreen = (props: UserProps) => {
       <RecordList 
         recordData={userRecords} 
         isLoading={isLoading}
+        navigation={navigation}
         requestDestroyRecord={requestDestroyRecord}
       />
       </ScrollView>

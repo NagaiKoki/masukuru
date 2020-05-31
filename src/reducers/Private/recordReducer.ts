@@ -20,7 +20,13 @@ import {
   INITIALIZE_RECORDS,
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
-  FAILURE_DESTROY_RECORD
+  FAILURE_DESTROY_RECORD,
+  CHANGE_RECORD_COMMENT_TEXT,
+  SUCCESS_POST_RECORD_COMMENT,
+  FAILURE_POST_RECORD_COMMENT,
+  REQUEST_FETCH_RECORD_COMMENTS,
+  SUCCESS_FETCH_RECORD_COMMENTS,
+  FAILURE_FETCH_RECORD_COMMENTS,
 } from '../../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Record'
@@ -38,7 +44,10 @@ const initialState: RecordState = {
   recordData: [],
   beforeRecordSize: 0,
   userRecords: [],
-  beforeUserRecordSize: 0
+  beforeUserRecordSize: 0,
+  temporaryComment: '',
+  commentPostError: '',
+  comments: []
 }
 
 const recordReducer = (
@@ -46,6 +55,8 @@ const recordReducer = (
   action: RecordActionTypes
 ): RecordState => {
   switch (action.type) {
+
+    // 記録の作成 ////////////////////////////////////////
     // 記録の追加
     case ADD_RECORD: {
       const { record } = action
@@ -117,7 +128,10 @@ const recordReducer = (
         recordData: [],
         beforeRecordSize: 0,
         userRecords: [],
-        beforeUserRecordSize: 0
+        beforeUserRecordSize: 0,
+        temporaryComment: '',
+        commentPostError: '',
+        comments: []
       }
     }
 
@@ -215,6 +229,7 @@ const recordReducer = (
       }
     }
 
+    // 記録の読み込み ////////////////////////////////////////
     // 記録の取得
     case REQUEST_FETCH_RECORDS: {
       return {
@@ -296,6 +311,63 @@ const recordReducer = (
       }
     }
 
+    // 記録へのリアクション ////////////////////////////////////////
+    // 記録へのコメント入力検知
+    case CHANGE_RECORD_COMMENT_TEXT: {
+      const { text } = action
+      return {
+        ...state,
+        temporaryComment: text
+      }
+    }
+
+    // 記録へのコメント成功
+    case SUCCESS_POST_RECORD_COMMENT: {
+      const { payload } = action
+      const comments = [...state.comments, payload]
+      return {
+        ...state,
+        comments
+      }
+    }
+
+    // 記録へのコメント失敗
+    case FAILURE_POST_RECORD_COMMENT: {
+      const { error } = action
+      return {
+        ...state,
+        commentPostError: error
+      }
+    }
+
+    // 記録のコメント取得
+    case REQUEST_FETCH_RECORD_COMMENTS: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+
+    // 記録のコメント取得成功
+    case SUCCESS_FETCH_RECORD_COMMENTS: {
+      const { payload } = action
+      return {
+        ...state,
+        comments: payload,
+        isLoading: false
+      }
+    }
+
+    // 記録のコメント取得失敗
+    case FAILURE_FETCH_RECORD_COMMENTS: {
+      const { error } = action
+      return {
+        ...state,
+        error,
+        isLoading: false
+      }
+    }
+    
     default:
       return state
   }

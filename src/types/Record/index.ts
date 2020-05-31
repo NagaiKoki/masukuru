@@ -23,6 +23,13 @@ import {
   REQUEST_DESTORY_RECORD,
   SUCCESS_DESTROY_RECORD,
   FAILURE_DESTROY_RECORD,
+  CHANGE_RECORD_COMMENT_TEXT,
+  REQUEST_POST_RECORD_COMMENT,
+  SUCCESS_POST_RECORD_COMMENT,
+  FAILURE_POST_RECORD_COMMENT,
+  REQUEST_FETCH_RECORD_COMMENTS,
+  SUCCESS_FETCH_RECORD_COMMENTS,
+  FAILURE_FETCH_RECORD_COMMENTS,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -39,6 +46,9 @@ export interface RecordState {
   beforeRecordSize: number
   userRecords: ResponseRecordType[]
   beforeUserRecordSize: number
+  temporaryComment: string
+  commentPostError: string
+  comments: RecordCommentType[]
 }
 
 export type RecordItemType = RecordMuscleItemType | RecordAeroItemType
@@ -69,6 +79,16 @@ export type ResponseRecordType = {
   updatedAt: FirestoreTimestamp
 }
 
+export type RecordCommentType = {
+  id: string
+  recordId: string
+  uid: string
+  content: string
+  createdAt: FirestoreTimestamp | Date
+  updatedAt: FirestoreTimestamp | Date
+}
+
+// 記録の作成 ////////////////////////////////////////////////////////////
 // 記録の追加
 export interface AddRecord {
   type: typeof ADD_RECORD
@@ -157,6 +177,7 @@ export interface FailureSubmitRecords {
   error: string
 }
 
+// 記録の取得 ////////////////////////////////////////////////////////////
 // 記録の取得
 export interface RequestFetchRecords {
   type: typeof REQUEST_FETCH_RECORDS
@@ -200,6 +221,49 @@ export interface FailureFetchNextRecords {
   error: string
 }
 
+// 記録へのリアクション ////////////////////////////////////////////////////////////
+// コメント入力検知
+export interface ChangeRecordCommentText {
+  type: typeof CHANGE_RECORD_COMMENT_TEXT
+  text: string
+}
+
+// コメントの送信
+export interface RequestPostRecordComment {
+  type: typeof REQUEST_POST_RECORD_COMMENT
+  recordId: string
+}
+
+// コメントの送信成功
+export interface SuccessPostRecordComment {
+  type: typeof SUCCESS_POST_RECORD_COMMENT
+  payload: RecordCommentType
+}
+
+// コメントの送信失敗
+export interface FailurePostRecordComment {
+  type: typeof FAILURE_POST_RECORD_COMMENT
+  error: string
+}
+
+// 記録のコメント取得
+export interface RequestFetchRecordComments {
+  type: typeof REQUEST_FETCH_RECORD_COMMENTS
+  recordId: string
+}
+
+// 記録のコメント取得成功
+export interface SuccessFetchRecordComments {
+  type: typeof SUCCESS_FETCH_RECORD_COMMENTS
+  payload: RecordCommentType[]
+}
+
+// 記録のコメント取得失敗
+export interface FailureFetchRecordComments {
+  type: typeof FAILURE_FETCH_RECORD_COMMENTS
+  error: string
+}
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -221,4 +285,11 @@ export type RecordActionTypes =
   FailureFetchRecords |
   RequestNextRecords |
   SuccessFetchNextRecords |
-  FailureFetchNextRecords
+  FailureFetchNextRecords |
+  ChangeRecordCommentText |
+  RequestPostRecordComment |
+  SuccessPostRecordComment |
+  FailurePostRecordComment |
+  RequestFetchRecordComments |
+  SuccessFetchRecordComments |
+  FailureFetchRecordComments
