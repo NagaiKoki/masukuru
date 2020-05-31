@@ -27,6 +27,9 @@ import {
   REQUEST_POST_RECORD_COMMENT,
   SUCCESS_POST_RECORD_COMMENT,
   FAILURE_POST_RECORD_COMMENT,
+  REQUEST_FETCH_RECORD_COMMENTS,
+  SUCCESS_FETCH_RECORD_COMMENTS,
+  FAILURE_FETCH_RECORD_COMMENTS,
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -243,6 +246,24 @@ export interface FailurePostRecordComment {
   error: string
 }
 
+// 記録のコメント取得
+export interface RequestFetchRecordComments {
+  type: typeof REQUEST_FETCH_RECORD_COMMENTS
+  recordId: string
+}
+
+// 記録のコメント取得成功
+export interface SuccessFetchRecordComments {
+  type: typeof SUCCESS_FETCH_RECORD_COMMENTS
+  payload: RecordCommentType[]
+}
+
+// 記録のコメント取得失敗
+export interface FailureFetchRecordComments {
+  type: typeof FAILURE_FETCH_RECORD_COMMENTS
+  error: string
+}
+
 export type RecordActionTypes =
   AddRecord |
   DeleteRecord |
@@ -268,4 +289,7 @@ export type RecordActionTypes =
   ChangeRecordCommentText |
   RequestPostRecordComment |
   SuccessPostRecordComment |
-  FailurePostRecordComment
+  FailurePostRecordComment |
+  RequestFetchRecordComments |
+  SuccessFetchRecordComments |
+  FailureFetchRecordComments
