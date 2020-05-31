@@ -23,7 +23,10 @@ import {
   FAILURE_DESTROY_RECORD,
   CHANGE_RECORD_COMMENT_TEXT,
   SUCCESS_POST_RECORD_COMMENT,
-  FAILURE_POST_RECORD_COMMENT
+  FAILURE_POST_RECORD_COMMENT,
+  REQUEST_FETCH_RECORD_COMMENTS,
+  SUCCESS_FETCH_RECORD_COMMENTS,
+  FAILURE_FETCH_RECORD_COMMENTS
 } from '../../actions/actionTypes'
 // import types
 import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Record'
@@ -334,6 +337,32 @@ const recordReducer = (
       return {
         ...state,
         commentPostError: error
+      }
+    }
+
+    // 記録のコメント取得
+    case REQUEST_FETCH_RECORD_COMMENTS: {
+      return {
+        ...state,
+        isLoading: true
+      }
+    }
+
+    // 記録のコメント取得成功
+    case SUCCESS_FETCH_RECORD_COMMENTS: {
+      const { payload } = action
+      return {
+        ...state,
+        comments: payload
+      }
+    }
+
+    // 記録のコメント取得失敗
+    case FAILURE_FETCH_RECORD_COMMENTS: {
+      const { error } = action
+      return {
+        ...state,
+        error
       }
     }
 
