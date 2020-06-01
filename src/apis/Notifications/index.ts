@@ -3,7 +3,7 @@ import firebase, { db } from '../../config/firebase';
 // お知らせの取得
 export const requestNotifications = async () => {
   const notifications = [];
-  await db.collection('notifications').get().then(snap => {
+  await db.collection('notifications').orderBy('createdAt', 'desc').get().then(snap => {
     snap.forEach(doc => {
       const data = doc.data()
       data.id = doc.ref.id

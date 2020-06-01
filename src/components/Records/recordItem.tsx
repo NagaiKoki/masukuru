@@ -227,6 +227,7 @@ const RecordDataName = styled.Text`
 const UnitDataWrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
   padding: 5px 0;
 `
 
