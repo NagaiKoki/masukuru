@@ -122,7 +122,7 @@ const SignUpEmailBtn = styled.TouchableOpacity`
 const SignUpText = styled.Text`
   align-self: center;
   margin-left: 20px;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: bold;
   color: ${COLORS.BASE_WHITE};
 `

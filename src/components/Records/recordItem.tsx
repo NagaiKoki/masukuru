@@ -42,7 +42,7 @@ const RecordItem = (props: RecordItemProps) => {
     useCallback(() => {
       fetchUser()
       fetchCommentSize()
-    }, [id])
+    }, [id, isShowPage])
   )
 
   const fetchUser = async () => {

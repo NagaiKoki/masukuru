@@ -93,7 +93,7 @@ const HomeScreen = (props: HomeProps) => {
           extraData={UserList}
           keyExtractor={item => item.uid.toString()}
           renderItem={({item}) => 
-          <MemberFlatListView onPress={() => item.uid !== currentUserId ? navigation.navigate('UserPage', { user: item }) : navigation.navigate('マイページ')}>
+          <MemberFlatListView onPress={() => navigation.navigate('UserPage', { user: item })}>
             <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={60} />
             <MemberFlatListName>
               {item.name}
