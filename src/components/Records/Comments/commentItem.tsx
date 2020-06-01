@@ -140,7 +140,7 @@ const CommentUnderWrapper = styled.View`
 
 const CommentTimeStampText = styled.Text`
   color: ${COLORS.SUB_BLACK};
-  font-size: 10px;
+  font-size: 12px;
 `
 
 const CommentDeleteBtn = styled.TouchableOpacity`
@@ -149,7 +149,7 @@ const CommentDeleteBtn = styled.TouchableOpacity`
 
 const CommentDeleteText = styled.Text`
   color: ${COLORS.SUB_BLACK};
-  font-size: 10px;
+  font-size: 12px;
 `
 
 

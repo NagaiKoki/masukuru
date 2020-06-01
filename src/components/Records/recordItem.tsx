@@ -42,7 +42,7 @@ const RecordItem = (props: RecordItemProps) => {
     useCallback(() => {
       fetchUser()
       fetchCommentSize()
-    }, [])
+    }, [id])
   )
 
   const fetchUser = async () => {
@@ -144,7 +144,7 @@ const RecordItem = (props: RecordItemProps) => {
         {renderUser}
         <RecordRightUpper>
           <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
-          { currentUser.uid === uid ? 
+          { currentUser.uid === uid && !isShowPage ? 
             <IconWrapper onPress={handleDestroyRecord}>
               <Icon name='down' style={{ color: COLORS.BASE_BLACK }}/>
             </IconWrapper> : null
