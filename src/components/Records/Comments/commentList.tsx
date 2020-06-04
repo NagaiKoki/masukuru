@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+// import apis
+import { requestCurrentGroupId  } from '../../../apis/Groups/transfer'
 // import types
 import { RecordCommentType } from '../../../types/Record'
 // import components
 import RecordCommentItem from './commentItem'
+import Loading from '../../Loading'
 import { COLORS } from '../../../constants/Styles'
 
 interface RecordCommentListProps {
@@ -14,7 +17,24 @@ interface RecordCommentListProps {
 const RecordCommentList = (props: RecordCommentListProps) => {
   const { comments, requestDeleteRecordComment } = props
 
-  const commentList = comments.map(comment => (
+  const [currentGroupId, setCurrentGroupId] = useState('')
+
+  const fetchCurrentGroupId = async () => {
+    const groupId = await requestCurrentGroupId()
+    setCurrentGroupId(groupId)
+  }
+
+  useEffect(() => {
+    fetchCurrentGroupId()
+  }, [])
+
+  if (!currentGroupId) {
+    return <Loading size="small"/>
+  }
+
+  const visibleCommnets = comments.filter(comment => comment.groupId === currentGroupId)
+
+  const commentList = visibleCommnets.map(comment => ( 
     <RecordCommentItem 
       key={comment.id} 
       comment={comment} 
@@ -23,10 +43,10 @@ const RecordCommentList = (props: RecordCommentListProps) => {
   ))
 
   return (
-    <CommnetListWrapper commentPresent={comments.length}>
+    <CommnetListWrapper commentPresent={visibleCommnets.length}>
       {
-        comments.length ? 
-        <CommentListTitle>コメント {comments.length}件</CommentListTitle>
+        visibleCommnets.length ? 
+        <CommentListTitle>コメント {visibleCommnets.length}件</CommentListTitle>
         : null
       }
       {commentList}
