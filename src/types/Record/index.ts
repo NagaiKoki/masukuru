@@ -87,6 +87,7 @@ export type RecordCommentType = {
   recordId: string
   uid: string
   content: string
+  groupId: string
   createdAt: FirestoreTimestamp | Date
   updatedAt: FirestoreTimestamp | Date
 }

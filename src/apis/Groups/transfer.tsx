@@ -85,3 +85,16 @@ export const requestTransfer = async (groupId: string) => {
     Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
   }
 }
+
+// currentGroupIdを渡す
+export const requestCurrentGroupId = async () => {
+  let currentGroupId;
+  const currentUser = firebase.auth().currentUser
+  
+  await db.collectionGroup('groupUsers').where('uid', '==', currentUser.uid).get().then(snap => {
+    snap.forEach(doc => {
+      currentGroupId = doc.data().currentGroupId
+    })
+  })
+  return currentGroupId
+}
