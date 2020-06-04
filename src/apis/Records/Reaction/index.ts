@@ -3,11 +3,13 @@ import firebase, { db } from '../../../config/firebase';
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 // import lib
 import { factoryRandomCode } from '../../../lib/randomTextFactory'
-import { RecordCommentType } from '../../../types/Record';
+// import apis
+import { requestCurrentGroupId } from '../../Groups/transfer'
 
 // 記録へのコメント送信
 export const requestPostRecordPost = async (recordId: string, text: string) => {
   const currentUser = firebase.auth().currentUser
+  const currentGroupId = await requestCurrentGroupId()
   const currentFirestoreTime = firebase.firestore.FieldValue.serverTimestamp()
   const currentDateTime = new Date
   const docId = factoryRandomCode(20)
@@ -18,6 +20,7 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
       uid: currentUser.uid,
       recordId: recordId,
       content: text,
+      groupId: currentGroupId,
       createdAt: currentFirestoreTime,
       updatedAt: currentFirestoreTime
     })
@@ -26,6 +29,7 @@ export const requestPostRecordPost = async (recordId: string, text: string) => {
       uid: currentUser.uid,
       recordId: recordId,
       content: text,
+      groupId: currentGroupId,
       createdAt: currentDateTime,
       updatedAt: currentDateTime
     }
@@ -57,9 +61,10 @@ export const requestGetRecordComments = async (recordId: string) => {
 
 // 記録のコメント数取得
 export const requestGetFetchRecordCommentsSize = async (recordId: string) => {
+  const currentGroupId = await requestCurrentGroupId()
   let size: number
   try {
-    const commentRef = db.collection('records').doc(recordId).collection('comments')
+    const commentRef = db.collection('records').doc(recordId).collection('comments').where('groupId', '==', currentGroupId)
     await commentRef.get().then(snap => {
       size = snap.size
     })
