@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../../constants/Styles'
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // import store
 import store from '../../../../../reducers'
 // import action
@@ -29,9 +30,11 @@ const RecordModalNavigator = () => {
         options={{
           headerLeft: () => {
             return (
-              <HeaderBackBtn onPress={handleCancelRecord}>
-                <HeaderBackTitle>キャンセル</HeaderBackTitle>
-              </HeaderBackBtn>
+              <EvilIcons name="close" 
+                size={24} 
+                onPress={handleCancelRecord}
+                style={{ paddingLeft: 20, color: COLORS.BASE_WHITE }}
+              />
             )
           },
           headerTitle: '記録をのこす',
