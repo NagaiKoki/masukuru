@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.1.6",
+    "version": "1.1.7",
     "orientation": "portrait",
     "icon": "./src/assets/logo.png",
     "splash": {
@@ -36,6 +36,7 @@
       }
     },
     "android": {
+      "package": "jp.masukuru"
     },
     "extra": {
       "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
