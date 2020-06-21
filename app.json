@@ -36,7 +36,13 @@
       }
     },
     "android": {
-      "package": "jp.masukuru"
+      "package": "jp.masukuru",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyCKEcOxkSR43djmYtcNQ8yhdpKtXBFlkxA",
+          "certificateHash": "01EFAFF5C9F96CC845BE339E1EF855ABCD7BC01C"
+        }
+      }
     },
     "extra": {
       "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
