@@ -35,6 +35,8 @@
         }
       }
     },
+    "android": {
+    },
     "extra": {
       "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
       "inquiryUrl": "https://docs.google.com/forms/d/e/1FAIpQLScp6GbJc_vGXyfYqPNh9Dpbc8moSs5LXfCU0Epe2TUmgO-HTw/viewform",
@@ -54,7 +56,9 @@
       },
       "googleConfig": {
         "clientId": "1023959623519-a81fj37ghcvukorobpk5mncdppe0gk4o.apps.googleusercontent.com",
-        "strageClientId": "1023959623519-lrm0q0c294ptbvgj3knotjrk9ul0auir.apps.googleusercontent.com"
+        "strageClientId": "1023959623519-lrm0q0c294ptbvgj3knotjrk9ul0auir.apps.googleusercontent.com",
+        "androidClientId": "1023959623519-efiopv2ikqqd2t49bf912tf37q8dd6lg.apps.googleusercontent.com",
+        "androidStrageClientId": "1023959623519-oapg712vabbqo34d376olecuv3o5k36f.apps.googleusercontent.com"
       },
       "amplitude": {
         "apiKey": "6689a653193f8642ab2354f78bc7de4c"

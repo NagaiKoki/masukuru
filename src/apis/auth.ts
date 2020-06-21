@@ -94,6 +94,8 @@ export const GoogleLogin = (route) => {
       behavior: 'web',
       iosClientId: Constants.manifest.extra.googleConfig.clientId,
       iosStandaloneAppClientId: Constants.manifest.extra.googleConfig.strageClientId,
+      androidClientId: Constants.manifest.extra.googleConfig.androidClientId,
+      androidStandaloneAppClientId: Constants.manifest.extra.googleConfig.androidStrageClientId,
       scopes: ['profile', 'email']
     }).then((result) => {
       if (result.type === 'success') {
