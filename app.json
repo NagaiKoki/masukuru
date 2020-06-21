@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.1.7",
+    "version": "1.1.8",
     "orientation": "portrait",
     "icon": "./src/assets/logo.png",
     "splash": {
@@ -36,7 +36,13 @@
       }
     },
     "android": {
-      "package": "jp.masukuru"
+      "package": "jp.masukuru",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyCKEcOxkSR43djmYtcNQ8yhdpKtXBFlkxA",
+          "certificateHash": "01EFAFF5C9F96CC845BE339E1EF855ABCD7BC01C"
+        }
+      }
     },
     "extra": {
       "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
