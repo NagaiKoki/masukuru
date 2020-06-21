@@ -8,7 +8,7 @@ import UserImage from '../../../components/Image/userImage'
 import InviteCodeModal from '../../../components/InviteModal/invite'
 import InvitedCodeModal from '../../../components/InviteModal/invited'
 import TranferModal from '../../../components/Groups/transferModal'
-import FeedbackModal from '../../../components/Feedback'
+import FeedbackModal from '../../../components/Feedback/index'
 import Loading from '../../../components/Loading'
 // import apis
 import { joinInvitedGroup } from '../../../apis/invite';
