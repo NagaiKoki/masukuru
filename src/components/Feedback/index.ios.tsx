@@ -31,7 +31,7 @@ const FeedbackModal = (props: FeedbackProps) => {
       <Container>
         <FeedbackHeader>
           <FeedbackClose onPress={handleClose}>
-            <FeedbackCloseText>キャンセル</FeedbackCloseText>
+            <FeedbackCloseText>閉じる</FeedbackCloseText>
           </FeedbackClose>
         </FeedbackHeader>
         <FeedbackWrapper>
