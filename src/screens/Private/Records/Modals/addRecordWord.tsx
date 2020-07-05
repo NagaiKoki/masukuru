@@ -6,6 +6,8 @@ import { COLORS } from '../../../../constants/Styles'
 import Loading from '../../../../components/Loading'
 // import types
 import { AddRecordWordProps } from '../../../../containers/Private/records/addRecordWord'
+// import lib
+import { requestAppReview } from '../../../../lib/requestReview'
 
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props
@@ -32,9 +34,10 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
     }, [word, isLoading])
   )
 
-  const handleSubmitRecord = () => {
+  const handleSubmitRecord = async () => {
     if (isLoading) return
     requestSubmitRecords(recordItems, word)
+    await requestAppReview()
     setTimeout(() => {
       navigation.navigate('mainContainer')
       initializeRecords()
