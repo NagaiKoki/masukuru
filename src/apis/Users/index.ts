@@ -1,4 +1,4 @@
-import firebase, { db } from '../../config/firebase'
+import { db } from '../../config/firebase'
 
 export const requestFetchUser = async (uid: string) => {
   let user;
