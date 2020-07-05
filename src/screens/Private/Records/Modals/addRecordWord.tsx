@@ -1,11 +1,16 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
+import * as StoreReview from 'expo-store-review';
 import { COLORS } from '../../../../constants/Styles'
+// import apis
+import { requestFetchUser } from '../../../../apis/Users'
 // import components
 import Loading from '../../../../components/Loading'
 // import types
 import { AddRecordWordProps } from '../../../../containers/Private/records/addRecordWord'
+// import confing
+import firebase from '../../../../config/firebase'
 
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props
@@ -32,9 +37,14 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
     }, [word, isLoading])
   )
 
-  const handleSubmitRecord = () => {
+  const handleSubmitRecord = async () => {
     if (isLoading) return
     requestSubmitRecords(recordItems, word)
+    const { user, error }: { user?: any, error?: string }  = await requestFetchUser(firebase.auth().currentUser.uid)
+    if (StoreReview.isAvailableAsync() && !user.isReviewed) {
+      await StoreReview.requestReview();
+      await user.update({ isReviewed: true })
+    }
     setTimeout(() => {
       navigation.navigate('mainContainer')
       initializeRecords()
