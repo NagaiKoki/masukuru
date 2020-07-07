@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { ScrollView } from 'react-native';
 import { COLORS } from '../../../constants/Styles';
 import styled from 'styled-components'
 // import types
@@ -20,11 +21,13 @@ const NotificationContentScreen = (props: NotificationProps) => {
   )
 
   return (
-    <ContentWrapper>
-      <ContentTitle>{title}</ContentTitle>
-      <ContentTimestamp>{time}</ContentTimestamp>
-      <ContentMain>{contents.replace(/\s\s/g, '\n')}</ContentMain>
-    </ContentWrapper>
+    <ScrollView>
+      <ContentWrapper>
+        <ContentTitle>{title}</ContentTitle>
+        <ContentTimestamp>{time}</ContentTimestamp>
+        <ContentMain>{contents.replace(/\s\s/g, '\n')}</ContentMain>
+      </ContentWrapper>
+    </ScrollView>
   )
 }
 
