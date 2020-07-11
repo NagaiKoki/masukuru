@@ -25,6 +25,7 @@
     "expo-google-app-auth": "^8.1.0",
     "expo-image-picker": "~8.3.0",
     "expo-keep-awake": "^8.2.1",
+    "expo-notifications": "^0.4.0",
     "expo-permissions": "~9.0.1",
     "expo-store-review": "~2.1.2",
     "expo-updates": "~0.2.8",
