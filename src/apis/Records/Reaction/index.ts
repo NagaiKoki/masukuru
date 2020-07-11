@@ -2,7 +2,7 @@ import firebase, { db } from '../../../config/firebase';
 // import constants
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 // import lib
-import { factoryRandomCode } from '../../../lib/randomTextFactory'
+import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 // import apis
 import { requestCurrentGroupId } from '../../Groups/transfer'
 

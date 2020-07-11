@@ -6,7 +6,7 @@ import styled from 'styled-components'
 // import types
 import { NotificationProps } from '../../../containers/Private/notifications'
 // import lib
-import { convertTimestampToString } from '../../../lib/timestamp'
+import { convertTimestampToString } from '../../../utilities/timestamp'
 
 const NotificationContentScreen = (props: NotificationProps) => {
   const { navigation, route, notifications, actions } = props

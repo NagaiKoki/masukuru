@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 // import lib
-import { factoryRandomCode } from '../lib/randomTextFactory'
+import { factoryRandomCode } from './randomTextFactory'
 
 export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string) => {
     let ImageName: string;

@@ -18,7 +18,7 @@ import { HomeProps } from '../../../containers/Private/home'
 // import apis
 import { getMemberList } from '../../../apis/Home/menber'
 // import lib
-import { isCloseToBottom } from '../../../lib/scrollBottomEvent'
+import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 import Loading from '../../../components/Loading';
   
 const HomeScreen = (props: HomeProps) => {

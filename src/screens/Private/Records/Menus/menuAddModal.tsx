@@ -7,7 +7,7 @@ import * as StoreReview from 'expo-store-review';
 import { COLORS } from '../../../../constants/Styles';
 import { COMMON_ERROR_MESSSAGE } from '../../../../constants/errorMessage'
 import Icon from 'react-native-vector-icons/AntDesign';
-import { factoryRandomCode } from '../../../../lib/randomTextFactory';
+import { factoryRandomCode } from '../../../../utilities/randomTextFactory';
 import firebase, { db } from '../../../../config/firebase';
 import { MenuType } from '../../../../types/menu';
 import { KeyboardAvoidingView } from 'react-native';

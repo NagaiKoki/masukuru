@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { convertTimestampToString } from '../../../../lib/timestamp';
+import { convertTimestampToString } from '../../../../utilities/timestamp';
 import { COLORS } from '../../../../constants/Styles';
 import UserImage from '../../../../components/Image/userImage'
 import firebase, { db } from '../../../../config/firebase';

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { convertTimestampToString } from '../../lib/timestamp'
+import { convertTimestampToString } from '../../utilities/timestamp'
 import { COLORS } from '../../constants/Styles';
 // import type
 import { MenuType } from '../../types/menu';

@@ -11,7 +11,7 @@ import { COLORS } from '../../../constants/Styles'
 // import components
 import UserImage from '../../Image/userImage'
 // import lib
-import { convertTimestampToString } from '../../../lib/timestamp'
+import { convertTimestampToString } from '../../../utilities/timestamp'
 import firebase from '../../../config/firebase'
 
 interface RecordCommentListProps {

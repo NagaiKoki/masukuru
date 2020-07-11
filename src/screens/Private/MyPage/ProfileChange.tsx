@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Image } from 'react-native';
 import UserImage from '../../../components/Image/userImage';
-import { ImageUpload } from '../../../lib/cameraRoll';
+import { ImageUpload } from '../../../utilities/cameraRoll';
 import { db } from '../../../config/firebase';
 import { COLORS } from '../../../constants/Styles';
 

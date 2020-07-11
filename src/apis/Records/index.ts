@@ -2,7 +2,7 @@ import firebase, { db } from '../../config/firebase';
 // import types
 import { RecordItemType } from '../../types/Record'
 // import lib
-import { factoryRandomCode } from '../../lib/randomTextFactory'
+import { factoryRandomCode } from '../../utilities/randomTextFactory'
 
 // 記録のポスト
 export const requestPostRecords = async (records: RecordItemType[], word: string) => {

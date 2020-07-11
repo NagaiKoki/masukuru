@@ -8,7 +8,7 @@ import { Alert } from 'react-native'
 import { RecordProps } from '../../../../containers/Private/records/recordModal'
 import { RecordItemType } from '../../../../types/Record'
 // import lib
-import truncateText from '../../../../lib/truncateText'
+import truncateText from '../../../../utilities/truncateText'
 
 const RecordModalScreen = (props: RecordProps) => {
   const { 

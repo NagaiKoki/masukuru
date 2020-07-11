@@ -8,7 +8,7 @@ import Analitycs from '../../config/amplitude'
 import Icon from 'react-native-vector-icons/AntDesign';
 import Modal from "react-native-modal";
 import RNPickerSelect from 'react-native-picker-select';
-import { factoryRandomCode } from '../../lib/randomTextFactory';
+import { factoryRandomCode } from '../../utilities/randomTextFactory';
 
 const Event = ({ navigation, eventModal, setEventModal  }) => {
   const currentUser = firebase.auth().currentUser;

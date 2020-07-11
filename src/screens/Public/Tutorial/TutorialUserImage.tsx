@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import UserImage from '../../../components/Image/userImage'
-import { ImageUpload } from '../../../lib/cameraRoll';
+import { ImageUpload } from '../../../utilities/cameraRoll';
 import firebase, { db } from '../../../config/firebase';
 
 const TutorialUserImageScreen = ({ navigation, userName }) => {
