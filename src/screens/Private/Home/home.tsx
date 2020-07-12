@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device'
 import { useFocusEffect } from '@react-navigation/native';
-import { RefreshControl, ScrollView } from 'react-native';
+import { RefreshControl, ScrollView, Platform } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -14,12 +15,11 @@ import { getHeaderNav } from './headerNav'
 import { HomeProps } from '../../../containers/Private/home'
 // import apis
 import { getMemberList } from '../../../apis/Home/menber'
-import { isSetExpoNotificationToken } from '../../../apis/Push'
+import { isSetExpoNotificationToken, requestPutExpoNotificationToken } from '../../../apis/Push'
 // import utils
 import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 import { updateModule } from '../../../utilities/OtaUpdate'
 import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
-import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
 // import config
 import firebase from '../../../config/firebase'
   
@@ -62,7 +62,16 @@ const HomeScreen = (props: HomeProps) => {
     },[currentGroupId])
   );
 
-  console.log(currentUser)
+  useEffect(() => {
+    const putNotificationToken = async () => {
+      // ログインユーザーのプッシュ通知トークンが登録されていない場合に、firestoreを更新する
+      if (currentUser && Platform.OS === 'ios' && Device.isDevice && !currentUser.expoNotificationToken) {
+        const token = await registerForPushNotificationsAsync()
+        await requestPutExpoNotificationToken(token)
+      }
+    }
+    putNotificationToken()
+  }, [currentUser])
 
   // メンバーリスト
   const renderMemberList = 

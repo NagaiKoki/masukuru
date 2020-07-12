@@ -25,6 +25,7 @@ export type UserType = {
   height: string | null
   imageUrl: string | null
   weight: string | null
+  expoNotificationToken: ''
 }
 
 export interface RequestFetchUserData {
