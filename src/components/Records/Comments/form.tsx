@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications';
 import styled from 'styled-components'
-import { Keyboard } from 'react-native'
+import { Keyboard, Platform } from 'react-native'
 import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from '../../../config/firebase'
@@ -9,11 +10,13 @@ import firebase from '../../../config/firebase'
 import UserImage from '../../Image/userImage'
 // import types
 import { ResponseRecordType } from '../../../types/Record'
+import { UserType } from '../../../types/User'
 // import utils
 import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
 
 interface RecordCommentProps {
   record: ResponseRecordType
+  currentUser?: UserType
   temporaryComment: string
   changeRecordCommentText: (text: string) => void
   requestPostRecordComment: (recordId: string) => void
@@ -22,6 +25,7 @@ interface RecordCommentProps {
 const RecordComment = (props: RecordCommentProps) => {
   const { 
     record, 
+    currentUser,
     temporaryComment,
     changeRecordCommentText, 
     requestPostRecordComment 
@@ -50,9 +54,11 @@ const RecordComment = (props: RecordCommentProps) => {
   const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
     requestPostRecordComment(id)
-    await sendPushNotification(uid, 'コメントが届きました！', text);
     setText('')
     Keyboard.dismiss()
+    if (Platform.OS === 'ios' && Device.isDevice) {
+      await sendPushNotification(uid, `${currentUser.name}さんがあなたの投稿にコメントしました！`, text);
+    }
   }
 
   const renderUserImage = (
@@ -74,7 +80,7 @@ const RecordComment = (props: RecordCommentProps) => {
           onChangeText={ value => handleOnChangeText(value) }
         />
         <SubmitBtnWrapper 
-          onPress={handleRequestPostComment}
+          onPress={() => handleRequestPostComment()}
           commentPresent={commentPresent}
           disabled={!commentPresent}
         >
