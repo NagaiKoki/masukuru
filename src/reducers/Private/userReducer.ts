@@ -8,7 +8,6 @@ import {
 import { 
   UserActionTypes,
   UserState,
-  UserType,
 } from '../../types/User'
 
 const initialUserState: UserState = {
@@ -36,6 +35,9 @@ const userReducer = (
         error
       }
     }
+
+    default: 
+      return state
   }
 }
 

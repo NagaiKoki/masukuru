@@ -20,17 +20,26 @@ import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 import { updateModule } from '../../../utilities/OtaUpdate'
 import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
 import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
+// import config
+import firebase from '../../../config/firebase'
   
 const HomeScreen = (props: HomeProps) => {
-  const { navigation, route, records, actions } = props
-  const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
+  const { navigation, route, records, users, actions } = props
+  const { 
+    requestFetchRecords, 
+    requestNextRecords, 
+    requestDestroyRecord,
+    requestFetchUserData
+  } = actions
   const { recordData, isLoading } = records
+  const { currentUser } = users
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)
   const [isHomeLoading, setIsHomeLoading] = useState(false)
   const { params } = route;
   const { currentGroupId } = params;
+  const currentUserId = firebase.auth().currentUser.uid
   
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -46,11 +55,14 @@ const HomeScreen = (props: HomeProps) => {
       setIsHomeLoading(true)
       getMemberList(currentGroupId, setUserList)
       requestFetchRecords(null, currentGroupId)
+      requestFetchUserData(currentUserId)
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
       isSetExpoNotificationToken()
     },[currentGroupId])
   );
+
+  console.log(currentUser)
 
   // メンバーリスト
   const renderMemberList = 
