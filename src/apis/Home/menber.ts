@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 import { db } from '../../config/firebase';
 // import types
-import { GroupUserType } from '../../types/user'
+import { GroupUserType } from '../../types/User/'
 
 export const getMemberList = async (groupId: string, setUserList: Dispatch<SetStateAction<GroupUserType[]>>) => {
   let list = []

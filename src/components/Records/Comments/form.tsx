@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import * as Notifications from 'expo-notifications';
 import styled from 'styled-components'
 import { Keyboard } from 'react-native'
 import { COLORS } from '../../../constants/Styles'
@@ -6,6 +7,9 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from '../../../config/firebase'
 // import componets
 import UserImage from '../../Image/userImage'
+// import utils
+import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
+import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
 
 interface RecordCommentProps {
   recordId: string
@@ -23,8 +27,34 @@ const RecordComment = (props: RecordCommentProps) => {
   } = props
 
   const [text, setText] = useState('')
-  const currentUser = firebase.auth().currentUser
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [isNotification, setIsNotification] = useState<Notifications.Notification>()
 
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+  
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+
+    // Notifications.addNotificationReceivedListener(notification => {
+    //   setIsNotification(notification);
+    // });
+
+    // Notifications.addNotificationResponseReceivedListener(response => {
+    //   console.log(response);
+    // });
+
+    // return () => {
+    //   Notifications.removeAllNotificationListeners()
+    // }
+  }, [])
+
+  const currentUser = firebase.auth().currentUser
   const commentPresent = temporaryComment && text ? true : false
 
   const handleOnChangeText = (value: string) => {
@@ -32,9 +62,10 @@ const RecordComment = (props: RecordCommentProps) => {
     changeRecordCommentText(value)
   }
   
-  const handleRequestPostComment = () => {
+  const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
     requestPostRecordComment(recordId)
+    await sendPushNotification(expoPushToken, 'テストタイトル', 'テストのボディー');
     setText('')
     Keyboard.dismiss()
   }

@@ -8,7 +8,7 @@ import {
 // import types
 import { 
   GroupUserType
-} from '../user'
+} from '../User/'
 
 // state
 export interface GroupState {
