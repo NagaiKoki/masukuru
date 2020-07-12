@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import types
 import { RecordShowProps } from '../../../../containers/Private/records/recordShow'
+import { ResponseRecordType } from '../../../../types/Record'
 // import components
 import RecordItem from '../../../../components/Records/recordItem'
 import RecordComment from '../../../../components/Records/Comments/form'
@@ -20,7 +21,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
      requestDeleteRecordComment
   } = actions
   const { temporaryComment, comments, isLoading } = records
-  const { record } = route.params
+  const { record }: { record: ResponseRecordType } = route.params
   const scrollRef = useRef(null)
 
   useFocusEffect(
@@ -49,7 +50,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
         {renderCommentList}    
       </RecordShowWrapper>
       <RecordComment
-        recordId={record.id}
+        record={record}
         temporaryComment={temporaryComment}
         changeRecordCommentText={changeRecordCommentText}
         requestPostRecordComment={requestPostRecordComment}

@@ -7,12 +7,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from '../../../config/firebase'
 // import componets
 import UserImage from '../../Image/userImage'
+// import types
+import { ResponseRecordType } from '../../../types/Record'
 // import utils
-import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
 import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
 
 interface RecordCommentProps {
-  recordId: string
+  record: ResponseRecordType
   temporaryComment: string
   changeRecordCommentText: (text: string) => void
   requestPostRecordComment: (recordId: string) => void
@@ -20,15 +21,14 @@ interface RecordCommentProps {
 
 const RecordComment = (props: RecordCommentProps) => {
   const { 
-    recordId, 
+    record, 
     temporaryComment,
     changeRecordCommentText, 
     requestPostRecordComment 
   } = props
 
+  const { id, uid } = record
   const [text, setText] = useState('')
-  const [expoPushToken, setExpoPushToken] = useState('')
-  const [isNotification, setIsNotification] = useState<Notifications.Notification>()
 
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -38,23 +38,8 @@ const RecordComment = (props: RecordCommentProps) => {
     }),
   });
   
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
 
-    // Notifications.addNotificationReceivedListener(notification => {
-    //   setIsNotification(notification);
-    // });
-
-    // Notifications.addNotificationResponseReceivedListener(response => {
-    //   console.log(response);
-    // });
-
-    // return () => {
-    //   Notifications.removeAllNotificationListeners()
-    // }
-  }, [])
-
-  const currentUser = firebase.auth().currentUser
+  const loginFirebaseUser = firebase.auth().currentUser
   const commentPresent = temporaryComment && text ? true : false
 
   const handleOnChangeText = (value: string) => {
@@ -64,15 +49,15 @@ const RecordComment = (props: RecordCommentProps) => {
   
   const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
-    requestPostRecordComment(recordId)
-    await sendPushNotification(expoPushToken, 'テストタイトル', 'テストのボディー');
+    requestPostRecordComment(id)
+    await sendPushNotification(uid, 'コメントが届きました！', text);
     setText('')
     Keyboard.dismiss()
   }
 
   const renderUserImage = (
     <UserImageWrapper>
-      <UserImage uri={currentUser.photoURL} width={30} height={30} borderRadius={60}/>
+      <UserImage uri={loginFirebaseUser.photoURL} width={30} height={30} borderRadius={60}/>
     </UserImageWrapper>
   )
 

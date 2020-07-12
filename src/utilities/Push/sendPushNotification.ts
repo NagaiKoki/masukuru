@@ -1,11 +1,21 @@
-export const sendPushNotification = async (expoPushToken: string, title: string, body: string) => {
+// import apis
+import { requestFetchUser } from '../../apis/Users'
+// import types
+import { UserType } from '../../types/User'
+
+export const sendPushNotification = async (uid: string, title: string, body: string) => {
+  const { user }: { user?: UserType } = await requestFetchUser(uid)
+  if (!user || (user && !user.expoNotificationToken)) return
+
   const message = {
-    to: expoPushToken,
+    to: user.expoNotificationToken,
     sound: 'default',
     title: title,
     body: body,
     data: { data: 'test' }
   }
+
+  console.log(message)
 
   // expo serverに対して直接送信する
   await fetch("https://exp.host/--/api/v2/push/send", {
