@@ -24,6 +24,7 @@ export type UserType = {
 
 export interface RequestFetchUserData {
   type: typeof REQUEST_FETCH_USER_DATA
+  uid: string
 }
 
 export interface SuccessFetchUserData {
