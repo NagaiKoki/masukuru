@@ -5,6 +5,11 @@ import {
   FAILURE_FETCH_USER_DATA
 } from '../../actions/actionTypes'
 
+export interface UserState {
+  currentUser: UserType
+  error: string
+}
+
 export type GroupUserType = {
   currentGroupId: string
   imageUrl: string
