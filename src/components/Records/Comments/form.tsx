@@ -33,16 +33,7 @@ const RecordComment = (props: RecordCommentProps) => {
 
   const { id, uid } = record
   const [text, setText] = useState('')
-
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });
   
-
   const loginFirebaseUser = firebase.auth().currentUser
   const commentPresent = temporaryComment && text ? true : false
 
