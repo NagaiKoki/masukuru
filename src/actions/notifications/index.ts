@@ -11,7 +11,10 @@ import {
    ADD_NOTIFICATION_RETRY_COUNT,
 } from '../actionTypes'
 // import types
-import { NotificationActionTypes } from '../../types/Notification'
+import { 
+  NotificationActionTypes, 
+  NotificationEventType 
+} from '../../types/Notification'
 
 // 未読通知の数のリクエスト
 export const requestFetchNotReadNotificationNumber = (): NotificationActionTypes => {
@@ -66,10 +69,11 @@ export const failureReadNotification = (): NotificationActionTypes => {
 }
 
 // コメント通知リクエスト
-export const requestPostCommentNotification = (from: string): NotificationActionTypes => {
+export const requestPostCommentNotification = (recordUserId: string, notificationType: NotificationEventType): NotificationActionTypes => {
   return {
     type: REQUEST_POST_COMMENT_NOTIFICATION,
-    from
+    recordUserId,
+    notificationType
   }
 }
 

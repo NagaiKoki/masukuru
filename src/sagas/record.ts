@@ -7,7 +7,8 @@ import {
   REQUEST_DESTORY_RECORD,
   REQUEST_POST_RECORD_COMMENT,
   REQUEST_FETCH_RECORD_COMMENTS,
-  REQUEST_DELETE_RECORD_COMMENT
+  REQUEST_DELETE_RECORD_COMMENT,
+  REQUEST_POST_COMMENT_NOTIFICATION
 } from '../actions/actionTypes'
 // import types
 import { 
@@ -21,6 +22,7 @@ import {
   RequestFetchRecordComments,
   RequestDeleteRecordComment,
 } from '../types/Record'
+import { RequestPostCommentNotification } from '../types/Notification'
 import { RootState } from '../reducers'
 // import apis
 import { 
@@ -33,6 +35,7 @@ import {
   requestGetRecordComments,
   requestDeleteRecordComment
  } from '../apis/Records/Reaction'
+ import { requestPostCommentNotification as requestPostCommentNotf} from '../apis/Notifications'
 // import actions
 import { 
   successSubmitRecords, 
@@ -50,7 +53,10 @@ import {
   successDeleteRecordComment,
   failureDeleteRecordComment,
 } from '../actions/records'
-import { requestPostCommentNotification } from '../actions/notifications'
+import { 
+  requestPostCommentNotification,
+  addNotificationRetryCount
+} from '../actions/notifications'
 
 // 記録の保存
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {
@@ -136,6 +142,28 @@ function* handleRequestDestroyRecord() {
   yield takeEvery(REQUEST_DESTORY_RECORD, runRequestDestroyRecord)
 }
 
+// コメント通知リクエスト
+function* runRequestPostCommentNotification(action: RequestPostCommentNotification) {
+  const { recordUserId, notificationType } = action
+  const { retryCount } = yield select((state: RootState) => state.notifications )
+  const { error }: { success?: string, error?: string } = yield call(
+    requestPostCommentNotf,
+    recordUserId,
+    notificationType
+  )
+
+  // 失敗が10回達するまでリトライする
+  if (!!error && retryCount < 10) {
+    yield put(addNotificationRetryCount())
+    // yield put(requestPostCommentNotification(from, notificationType))
+  }
+}
+
+// コメント通知リクエストハンドラー
+function* handleRequestPostCommentNotification() {
+  yield takeEvery(REQUEST_POST_COMMENT_NOTIFICATION, runRequestPostCommentNotification)
+}
+
 // 記録へのコメント送信リクエスト
 function* runRequestPostRecordComment(action: RequestPostRecordComment) {  
   const { recordId, recordUserId } = action
@@ -148,7 +176,7 @@ function* runRequestPostRecordComment(action: RequestPostRecordComment) {
 
   if (payload && !error) {
     yield put(successPostRecordComment(payload))
-    yield put(requestPostCommentNotification(recordUserId))
+    yield put(requestPostCommentNotification(recordUserId, 0))
   } else if (error) {
     yield put(failurePostRecordComment(error))
   }
@@ -209,4 +237,5 @@ export default function* recordSaga() {
   yield fork(handleRequestPostRecordComment)
   yield fork(handleRequestFetchRecordComments)
   yield fork(handleRequestDeleteRecordComment)
+  yield fork(handleRequestPostCommentNotification)
 }

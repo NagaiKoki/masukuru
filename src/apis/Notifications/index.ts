@@ -1,4 +1,8 @@
 import firebase, { db } from '../../config/firebase';
+// import apis
+import { requestCurrentGroupId } from '../../apis/Groups/transfer'
+// import types
+import { NotificationEventType } from '../../types/Notification'
 
 // お知らせの取得
 export const requestNotifications = async () => {
@@ -58,5 +62,24 @@ export const requestReadNotification = async (id: string) => {
     return { payload: payload, readNotification: readNotification }
   } catch (error) {
     return { error: error }
+  }
+}
+
+// 記録の通知リクエスト
+export const requestPostCommentNotification = async (recordUserId: string, notificationEventType: NotificationEventType) => {
+  const  currentUserId = firebase.auth().currentUser.uid
+  try {
+    const currentGroupId = await requestCurrentGroupId()
+    const currentUserRef = db.collection('users').doc(recordUserId)
+    await currentUserRef.collection('notification').add({
+      type: notificationEventType,
+      uid: recordUserId,
+      from: currentUserId,
+      read: false,
+      groupId: currentGroupId
+    })
+    return { success: 'success' }
+  } catch {
+    return { error: "通知のポストに失敗しました。" }
   }
 }

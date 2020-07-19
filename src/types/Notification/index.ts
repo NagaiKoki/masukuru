@@ -16,11 +16,13 @@ export type NoticationState = {
 }
 
 export type NotificationType = {
-  type: number, // 0. comment
+  type: NotificationEventType, // 0. comment
   from: string, // uid
   groupId: string,
   read: boolean
 }
+
+export type NotificationEventType = 0 | 1 | 2 // 0: コメント, 1: somethig
 
 // 未読数の取得
 export interface RequestFetchNotReadNotificationNumber {
@@ -62,8 +64,9 @@ export interface FailureReadNotification {
 
 // コメントの通知リクエスト
 export interface RequestPostCommentNotification {
-  type: typeof REQUEST_POST_COMMENT_NOTIFICATION,
-  from: string
+  type: typeof REQUEST_POST_COMMENT_NOTIFICATION
+  recordUserId: string
+  notificationType: NotificationEventType
 }
 
 // リクエストのリトライ回数追加
