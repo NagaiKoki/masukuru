@@ -4,7 +4,7 @@ import Analitycs from '../config/amplitude'
 // import constans
 import { INVITE_ERROR_MESSAGE } from '../constants/errorMessage'
 // import lib
-import { isDeveloper } from '../lib/checkDeveloper'
+import { isDeveloper } from '../utilities/checkDeveloper'
 
 // 現在１人で所属しているグループから、招待されたグループに移動する場合の処理
 export const joinInvitedGroup = async (invitedCode: string, currentGroupId: string) => {

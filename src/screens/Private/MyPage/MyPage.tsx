@@ -11,7 +11,7 @@ import Loading from '../../../components/Loading'
 // import types 
 import { UserProps } from '../../../containers/Private/users/myPage'
 // import lib
-import { isCloseToBottom } from '../../../lib/scrollBottomEvent'
+import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 
 const MyPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props

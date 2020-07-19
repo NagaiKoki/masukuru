@@ -11,8 +11,8 @@ import { UnSettingGroupImage, GroupImage } from '../Image/groupImage';
 // import apis
 import { requestBelongGroups, requestTransfer } from '../../apis/Groups/transfer'
 // import lib
-import truncateText from '../../lib/truncateText'
-import { isDeveloper } from '../../lib/checkDeveloper'
+import truncateText from '../../utilities/truncateText'
+import { isDeveloper } from '../../utilities/checkDeveloper'
 // import apis
 import { createGroup } from '../../apis/Groups/create'
 import { requestUpdateRecordGroupIds } from '../../apis/Records'

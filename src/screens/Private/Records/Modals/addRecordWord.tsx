@@ -7,7 +7,7 @@ import Loading from '../../../../components/Loading'
 // import types
 import { AddRecordWordProps } from '../../../../containers/Private/records/addRecordWord'
 // import lib
-import { requestAppReview } from '../../../../lib/requestReview'
+import { requestAppReview } from '../../../../utilities/requestReview'
 
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props

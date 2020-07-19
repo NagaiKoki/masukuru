@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import firebase, { db } from '../../config/firebase';
 // import lib
-import { factoryRandomCode } from '../../lib/randomTextFactory';
+import { factoryRandomCode } from '../../utilities/randomTextFactory';
 // import constans
 import { COMMON_ERROR_MESSSAGE, INVITE_ERROR_MESSAGE } from '../../constants/errorMessage'
 

@@ -1,87 +1,77 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device'
 import { useFocusEffect } from '@react-navigation/native';
-import { RefreshControl, ScrollView } from 'react-native';
+import { RefreshControl, ScrollView, Platform } from 'react-native';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
-import * as Updates from 'expo-updates';
-// import icons
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import configs
-import firebase, { db } from '../../../config/firebase';
-import Analitycs from '../../../config/amplitude'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // import components
 import UserImage from '../../../components/Image/userImage'
 import RecordList from '../../../components/Records/recordList'
+import Loading from '../../../components/Loading';
+import { getHeaderNav } from './headerNav'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
 // import apis
 import { getMemberList } from '../../../apis/Home/menber'
-// import lib
-import { isCloseToBottom } from '../../../lib/scrollBottomEvent'
-import Loading from '../../../components/Loading';
+import { isSetExpoNotificationToken, requestPutExpoNotificationToken } from '../../../apis/Push'
+// import utils
+import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
+import { updateModule } from '../../../utilities/OtaUpdate'
+import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
+// import config
+import firebase from '../../../config/firebase'
   
 const HomeScreen = (props: HomeProps) => {
-  const { navigation, route, records, actions } = props
-  const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
+  const { navigation, route, records, users, actions } = props
+  const { 
+    requestFetchRecords, 
+    requestNextRecords, 
+    requestDestroyRecord,
+    requestFetchUserData
+  } = actions
   const { recordData, isLoading } = records
+  const { currentUser } = users
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)
   const [isHomeLoading, setIsHomeLoading] = useState(false)
   const { params } = route;
   const { currentGroupId } = params;
-  const current_user = firebase.auth().currentUser;
-  const currentUserId = current_user.uid
+  const currentUserId = firebase.auth().currentUser.uid
+  
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
 
   useFocusEffect(
     useCallback(() => {
+      updateModule()
       setIsHomeLoading(true)
       getMemberList(currentGroupId, setUserList)
-      Analitycs.getUserId(currentUserId)
-      const getHeaderNav= async () => {
-        let groupName;
-        await db.collection('groups').doc(currentGroupId).get().then(snap => {
-          if (snap.data() && snap.data().groupName) {
-            groupName = snap.data().groupName
-          } 
-        })
-
-      // グループ編集遷移
-      navigation.setOptions({
-        headerRight: () => (
-          <EvilIcons name="gear" 
-                     size={26} 
-                     onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} 
-                     style={{ paddingRight: 20, color: COLORS.BASE_WHITE }}
-          />
-        ),
-        headerTitle: groupName ? groupName : 'ホーム'
-      });
-    }
-
-    const updateModule = async () => {
-      try {
-        const update = await Updates.checkForUpdateAsync();
-        if (update.isAvailable) {
-          await Updates.fetchUpdateAsync();
-          await Updates.reloadAsync();
-        } else {
-          return;
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    if (!__DEV__) {
-      updateModule()
-    }
-    requestFetchRecords(null, currentGroupId)
-    getHeaderNav()
-    setIsHomeLoading(false)
+      requestFetchRecords(null, currentGroupId)
+      requestFetchUserData(currentUserId)
+      getHeaderNav(currentGroupId, navigation)
+      setIsHomeLoading(false)
+      isSetExpoNotificationToken()
     },[currentGroupId])
   );
+
+  useEffect(() => {
+    const putNotificationToken = async () => {
+      // ログインユーザーのプッシュ通知トークンが登録されていない場合に、firestoreを更新する
+      if (currentUser && Platform.OS === 'ios' && Device.isDevice && !currentUser.expoNotificationToken) {
+        const token = await registerForPushNotificationsAsync()
+        await requestPutExpoNotificationToken(token)
+      }
+    }
+    putNotificationToken()
+  }, [currentUser])
 
   // メンバーリスト
   const renderMemberList = 

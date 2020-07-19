@@ -1,3 +1,7 @@
+// ユーザー情報
+export const REQUEST_FETCH_USER_DATA = 'REQUEST_FETCH_USER_DATA'
+export const SUCCESS_FETCH_USER_DATA = 'SUCCESS_FETCH_USER_DATA'
+export const FAILURE_FETCH_USER_DATA = 'FAILURE_FETCH_USER_DATA'
 //// 記録
 // 記録の投稿
 export const ADD_RECORD = 'ADD_RECORD'

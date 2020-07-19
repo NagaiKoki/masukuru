@@ -6,7 +6,7 @@ import { requestEditGroup } from '../../../apis/Groups/edit'
 // import componnets
 import { GroupImage, UnSettingGroupImage } from '../../../components/Image/groupImage'
 // import lib
-import { ImageUpload } from '../../../lib/cameraRoll';
+import { ImageUpload } from '../../../utilities/cameraRoll';
 
 const GroupEditScreen = ({ navigation, route }) => {
   const groupInfo = route.params.groupInfo

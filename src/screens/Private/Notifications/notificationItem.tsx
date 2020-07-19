@@ -4,7 +4,7 @@ import { COLORS } from '../../../constants/Styles';
 // import types
 import { NotificationType } from '../../../types'
 // import lib
-import { convertTimestampToString } from '../../../lib/timestamp'
+import { convertTimestampToString } from '../../../utilities/timestamp'
 // import config
 import firebase from '../../../config/firebase'
 

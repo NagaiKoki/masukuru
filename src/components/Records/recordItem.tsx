@@ -17,7 +17,7 @@ import UserImage from '../Image/userImage'
 import RecordReaction from './Reactions'
 import Loading from '../Loading'
 // import lib
-import { convertTimestampToString } from '../../lib/timestamp'
+import { convertTimestampToString } from '../../utilities/timestamp'
 import { COLORS } from '../../constants/Styles';
 
 interface RecordItemProps {

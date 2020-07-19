@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // import types
 import { RootState } from '../../../reducers'
 import { RecordState } from '../../../types/Record'
+import { UserState } from '../../../types/User'
 // import actions
 import { 
   requestDestroyRecord,
@@ -18,6 +19,7 @@ export interface RecordShowProps {
   navigation: any
   route: any
   records: RecordState
+  users: UserState
   actions: {
     requestDestroyRecord: (id: string) => void
     changeRecordCommentText: (text: string) => void
@@ -29,7 +31,8 @@ export interface RecordShowProps {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    records: state.records
+    records: state.records,
+    users: state.users
   }
 }
 

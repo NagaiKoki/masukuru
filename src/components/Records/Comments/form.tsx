@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications';
 import styled from 'styled-components'
-import { Keyboard } from 'react-native'
+import { Keyboard, Platform } from 'react-native'
 import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import firebase from '../../../config/firebase'
 // import componets
 import UserImage from '../../Image/userImage'
+// import types
+import { ResponseRecordType } from '../../../types/Record'
+import { UserType } from '../../../types/User'
+// import utils
+import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
 
 interface RecordCommentProps {
-  recordId: string
+  record: ResponseRecordType
+  currentUser?: UserType
   temporaryComment: string
   changeRecordCommentText: (text: string) => void
   requestPostRecordComment: (recordId: string) => void
@@ -16,15 +24,26 @@ interface RecordCommentProps {
 
 const RecordComment = (props: RecordCommentProps) => {
   const { 
-    recordId, 
+    record, 
+    currentUser,
     temporaryComment,
     changeRecordCommentText, 
     requestPostRecordComment 
   } = props
 
+  const { id, uid } = record
   const [text, setText] = useState('')
-  const currentUser = firebase.auth().currentUser
 
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+  
+
+  const loginFirebaseUser = firebase.auth().currentUser
   const commentPresent = temporaryComment && text ? true : false
 
   const handleOnChangeText = (value: string) => {
@@ -32,16 +51,19 @@ const RecordComment = (props: RecordCommentProps) => {
     changeRecordCommentText(value)
   }
   
-  const handleRequestPostComment = () => {
+  const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
-    requestPostRecordComment(recordId)
+    requestPostRecordComment(id)
     setText('')
     Keyboard.dismiss()
+    if (Platform.OS === 'ios' && Device.isDevice) {
+      await sendPushNotification(uid, `${currentUser.name}さんがあなたの投稿にコメントしました！`, text);
+    }
   }
 
   const renderUserImage = (
     <UserImageWrapper>
-      <UserImage uri={currentUser.photoURL} width={30} height={30} borderRadius={60}/>
+      <UserImage uri={loginFirebaseUser.photoURL} width={30} height={30} borderRadius={60}/>
     </UserImageWrapper>
   )
 
@@ -58,7 +80,7 @@ const RecordComment = (props: RecordCommentProps) => {
           onChangeText={ value => handleOnChangeText(value) }
         />
         <SubmitBtnWrapper 
-          onPress={handleRequestPostComment}
+          onPress={() => handleRequestPostComment()}
           commentPresent={commentPresent}
           disabled={!commentPresent}
         >
