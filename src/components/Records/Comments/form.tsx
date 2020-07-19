@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import * as Device from 'expo-device'
-import * as Notifications from 'expo-notifications';
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
 import { COLORS } from '../../../constants/Styles'
@@ -10,9 +9,8 @@ import firebase from '../../../config/firebase'
 import UserImage from '../../Image/userImage'
 // import types
 import { ResponseRecordType } from '../../../types/Record'
+import { NotificationEventType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
-// import utils
-import { sendPushNotification } from '../../../utilities/Push/sendPushNotification'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -20,6 +18,7 @@ interface RecordCommentProps {
   temporaryComment: string
   changeRecordCommentText: (text: string) => void
   requestPostRecordComment: (recordId: string, recordUserId: string) => void
+  requestPostPushNotification?: (eventType: NotificationEventType, uid: string, title: string, content: string) => void
 }
 
 const RecordComment = (props: RecordCommentProps) => {
@@ -28,7 +27,8 @@ const RecordComment = (props: RecordCommentProps) => {
     currentUser,
     temporaryComment,
     changeRecordCommentText, 
-    requestPostRecordComment 
+    requestPostRecordComment,
+    requestPostPushNotification
   } = props
 
   const { id, uid } = record
@@ -47,8 +47,8 @@ const RecordComment = (props: RecordCommentProps) => {
     requestPostRecordComment(id, uid)
     setText('')
     Keyboard.dismiss()
-    if (Platform.OS === 'ios' && Device.isDevice) {
-      await sendPushNotification(uid, `${currentUser.name}さんがあなたの記録にコメントしました！`, text);
+    if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification) {
+      requestPostPushNotification(0, uid, `${currentUser.name}さんがあなたの記録にコメントしました！`, text);
     }
   }
 

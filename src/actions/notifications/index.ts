@@ -9,6 +9,7 @@ import {
    ALREADY_READ_NOTIFICATION,
    REQUEST_POST_COMMENT_NOTIFICATION,
    ADD_NOTIFICATION_RETRY_COUNT,
+   REQUEST_POST_PUSH_NOTIFICATION,
 } from '../actionTypes'
 // import types
 import { 
@@ -82,5 +83,17 @@ export const requestPostCommentNotification = (recordUserId: string, recordId: s
 export const addNotificationRetryCount = (): NotificationActionTypes => {
   return {
     type: ADD_NOTIFICATION_RETRY_COUNT
+  }
+}
+
+// プッシュ通知
+// プッシュ通知の送信リクエスト
+export const requestPostPushNotification = (eventType: NotificationEventType, uid: string, title: string, content: string): NotificationActionTypes => {
+  return {
+    type: REQUEST_POST_PUSH_NOTIFICATION,
+    eventType,
+    uid,
+    title,
+    content
   }
 }

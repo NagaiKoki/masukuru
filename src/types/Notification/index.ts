@@ -7,7 +7,8 @@ import {
   FAILURE_READ_NOTIFICATION,
   ALREADY_READ_NOTIFICATION,
   REQUEST_POST_COMMENT_NOTIFICATION,
-  ADD_NOTIFICATION_RETRY_COUNT
+  ADD_NOTIFICATION_RETRY_COUNT,
+  REQUEST_POST_PUSH_NOTIFICATION
 } from '../../actions/actionTypes'
 
 export type NoticationState = {
@@ -75,6 +76,16 @@ export interface AddNotificationRetryCount {
   type: typeof ADD_NOTIFICATION_RETRY_COUNT,
 }
 
+// プッシュ通知
+// プッシュ通知の送信リクエスト
+export interface RequestPoshPushNotification {
+  type: typeof REQUEST_POST_PUSH_NOTIFICATION
+  eventType: NotificationEventType
+  uid: string
+  title: string
+  content: string
+}
+
 export type NotificationActionTypes =
   | RequestFetchNotReadNotificationNumber
   | SuccessFetchNotReadNotificationNumber
@@ -85,3 +96,4 @@ export type NotificationActionTypes =
   | FailureReadNotification
   | RequestPostCommentNotification
   | AddNotificationRetryCount
+  | RequestPoshPushNotification

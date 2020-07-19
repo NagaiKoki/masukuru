@@ -229,7 +229,6 @@ function* handleRequestDeleteRecordComment() {
   yield takeEvery(REQUEST_DELETE_RECORD_COMMENT, runRequestDeleteRecordComment)
 }
 
-
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)

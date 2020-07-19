@@ -18,7 +18,8 @@ const RecordShowScreen = (props: RecordShowProps) => {
      changeRecordCommentText, 
      requestPostRecordComment,
      requestFetchRecordComments,
-     requestDeleteRecordComment
+     requestDeleteRecordComment,
+     requestPostPushNotification
   } = actions
   const { temporaryComment, comments, isLoading } = records
   const { currentUser } = users
@@ -61,6 +62,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
           temporaryComment={temporaryComment}
           changeRecordCommentText={changeRecordCommentText}
           requestPostRecordComment={requestPostRecordComment}
+          requestPostPushNotification={requestPostPushNotification}
       />
       </RecordShowCommentFormWrapper>
     </RecordShowContainer>
