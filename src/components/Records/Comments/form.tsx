@@ -19,7 +19,7 @@ interface RecordCommentProps {
   currentUser?: UserType
   temporaryComment: string
   changeRecordCommentText: (text: string) => void
-  requestPostRecordComment: (recordId: string) => void
+  requestPostRecordComment: (recordId: string, recordUserId: string) => void
 }
 
 const RecordComment = (props: RecordCommentProps) => {
@@ -44,11 +44,11 @@ const RecordComment = (props: RecordCommentProps) => {
   
   const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
-    requestPostRecordComment(id)
+    requestPostRecordComment(id, uid)
     setText('')
     Keyboard.dismiss()
     if (Platform.OS === 'ios' && Device.isDevice) {
-      await sendPushNotification(uid, `${currentUser.name}さんがあなたの投稿にコメントしました！`, text);
+      await sendPushNotification(uid, `${currentUser.name}さんがあなたの記録にコメントしました！`, text);
     }
   }
 

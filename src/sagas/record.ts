@@ -48,8 +48,9 @@ import {
   successFetchRecordComments,
   failureFetchRecordComments,
   successDeleteRecordComment,
-  failureDeleteRecordComment
+  failureDeleteRecordComment,
 } from '../actions/records'
+import { requestPostCommentNotification } from '../actions/notifications'
 
 // 記録の保存
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {
@@ -137,7 +138,7 @@ function* handleRequestDestroyRecord() {
 
 // 記録へのコメント送信リクエスト
 function* runRequestPostRecordComment(action: RequestPostRecordComment) {  
-  const { recordId } = action
+  const { recordId, recordUserId } = action
   const { temporaryComment } = yield select((state: RootState) => state.records)
   const { payload, error }: { payload?: RecordCommentType, error?: string } = yield call(
     requestPostRecordPost,
@@ -147,6 +148,7 @@ function* runRequestPostRecordComment(action: RequestPostRecordComment) {
 
   if (payload && !error) {
     yield put(successPostRecordComment(payload))
+    yield put(requestPostCommentNotification(recordUserId))
   } else if (error) {
     yield put(failurePostRecordComment(error))
   }

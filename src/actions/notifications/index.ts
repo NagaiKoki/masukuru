@@ -6,7 +6,9 @@ import {
    REQUEST_READ_NOTIFICATION,
    SUCCESS_READ_NOTIFICATION,
    FAILURE_READ_NOTIFICATION,
-   ALREADY_READ_NOTIFICATION
+   ALREADY_READ_NOTIFICATION,
+   REQUEST_POST_COMMENT_NOTIFICATION,
+   ADD_NOTIFICATION_RETRY_COUNT,
 } from '../actionTypes'
 // import types
 import { NotificationActionTypes } from '../../types/Notification'
@@ -60,5 +62,20 @@ export const alreadyReadNotification = (): NotificationActionTypes => {
 export const failureReadNotification = (): NotificationActionTypes => {
   return {
     type: FAILURE_READ_NOTIFICATION,
+  }
+}
+
+// コメント通知リクエスト
+export const requestPostCommentNotification = (from: string): NotificationActionTypes => {
+  return {
+    type: REQUEST_POST_COMMENT_NOTIFICATION,
+    from
+  }
+}
+
+// 通知のリトライ回数の追加
+export const addNotificationRetryCount = (): NotificationActionTypes => {
+  return {
+    type: ADD_NOTIFICATION_RETRY_COUNT
   }
 }

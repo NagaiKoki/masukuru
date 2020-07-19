@@ -5,11 +5,21 @@ import {
   REQUEST_READ_NOTIFICATION,
   SUCCESS_READ_NOTIFICATION,
   FAILURE_READ_NOTIFICATION,
-  ALREADY_READ_NOTIFICATION
+  ALREADY_READ_NOTIFICATION,
+  REQUEST_POST_COMMENT_NOTIFICATION,
+  ADD_NOTIFICATION_RETRY_COUNT
 } from '../../actions/actionTypes'
 
 export type NoticationState = {
-  unReadSize: number
+  unReadSize: number,
+  retryCount: number
+}
+
+export type NotificationType = {
+  type: number, // 0. comment
+  from: string, // uid
+  groupId: string,
+  read: boolean
 }
 
 // 未読数の取得
@@ -50,6 +60,17 @@ export interface FailureReadNotification {
   type: typeof FAILURE_READ_NOTIFICATION
 }
 
+// コメントの通知リクエスト
+export interface RequestPostCommentNotification {
+  type: typeof REQUEST_POST_COMMENT_NOTIFICATION,
+  from: string
+}
+
+// リクエストのリトライ回数追加
+export interface AddNotificationRetryCount {
+  type: typeof ADD_NOTIFICATION_RETRY_COUNT,
+}
+
 export type NotificationActionTypes =
   | RequestFetchNotReadNotificationNumber
   | SuccessFetchNotReadNotificationNumber
@@ -58,3 +79,5 @@ export type NotificationActionTypes =
   | SuccessReadNotification
   | AlreadReadNotification
   | FailureReadNotification
+  | RequestPostCommentNotification
+  | AddNotificationRetryCount
