@@ -66,6 +66,7 @@ export interface FailureReadNotification {
 export interface RequestPostCommentNotification {
   type: typeof REQUEST_POST_COMMENT_NOTIFICATION
   recordUserId: string
+  recordId: string
   notificationType: NotificationEventType
 }
 

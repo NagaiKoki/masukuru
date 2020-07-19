@@ -66,7 +66,7 @@ export const requestReadNotification = async (id: string) => {
 }
 
 // 記録の通知リクエスト
-export const requestPostCommentNotification = async (recordUserId: string, notificationEventType: NotificationEventType) => {
+export const requestPostCommentNotification = async (recordUserId: string, recordId: string, notificationEventType: NotificationEventType) => {
   const  currentUserId = firebase.auth().currentUser.uid
   try {
     const currentGroupId = await requestCurrentGroupId()
@@ -75,8 +75,9 @@ export const requestPostCommentNotification = async (recordUserId: string, notif
       type: notificationEventType,
       uid: recordUserId,
       from: currentUserId,
-      read: false,
-      groupId: currentGroupId
+      recordId: recordId,
+      groupId: currentGroupId,
+      read: false
     })
     return { success: 'success' }
   } catch {

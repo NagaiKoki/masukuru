@@ -144,18 +144,19 @@ function* handleRequestDestroyRecord() {
 
 // コメント通知リクエスト
 function* runRequestPostCommentNotification(action: RequestPostCommentNotification) {
-  const { recordUserId, notificationType } = action
+  const { recordUserId, recordId, notificationType } = action
   const { retryCount } = yield select((state: RootState) => state.notifications )
   const { error }: { success?: string, error?: string } = yield call(
     requestPostCommentNotf,
     recordUserId,
+    recordId,
     notificationType
   )
 
   // 失敗が10回達するまでリトライする
   if (!!error && retryCount < 10) {
     yield put(addNotificationRetryCount())
-    // yield put(requestPostCommentNotification(from, notificationType))
+    yield put(requestPostCommentNotification(recordUserId, recordId, notificationType))
   }
 }
 
@@ -176,7 +177,7 @@ function* runRequestPostRecordComment(action: RequestPostRecordComment) {
 
   if (payload && !error) {
     yield put(successPostRecordComment(payload))
-    yield put(requestPostCommentNotification(recordUserId, 0))
+    yield put(requestPostCommentNotification(recordUserId, recordId, 0))
   } else if (error) {
     yield put(failurePostRecordComment(error))
   }

@@ -69,10 +69,11 @@ export const failureReadNotification = (): NotificationActionTypes => {
 }
 
 // コメント通知リクエスト
-export const requestPostCommentNotification = (recordUserId: string, notificationType: NotificationEventType): NotificationActionTypes => {
+export const requestPostCommentNotification = (recordUserId: string, recordId: string, notificationType: NotificationEventType): NotificationActionTypes => {
   return {
     type: REQUEST_POST_COMMENT_NOTIFICATION,
     recordUserId,
+    recordId,
     notificationType
   }
 }
