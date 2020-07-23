@@ -28,6 +28,7 @@ export type NotificationType = {
   id: string
   type: NotificationEventType,
   from: string, // uid
+  recordId?: string,
   title?: string
   groupId?: string,
   read?: boolean,

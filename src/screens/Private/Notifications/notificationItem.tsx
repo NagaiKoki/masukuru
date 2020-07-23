@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 // import apis
 import { requestFetchUser } from '../../../apis/Users'
+import { requestFetchRecordItem } from '../../../apis/Records'
+import { requestCurrentGroupId } from '../../../apis/Groups/transfer'
 // import types
 import { NotificationType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
+import { ResponseRecordType } from '../../../types/Record'
 // import lib
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import config
@@ -26,11 +29,10 @@ export interface NotificationContenTypes {
 
 const NotificationItem = (props: ItemProps) => {
   const { item, navigation, requestReadNotification } = props
-  const { title, type, read, from, createdAt, readUserIds } = item;
+  const { title, type, read, from, groupId, recordId, createdAt, readUserIds } = item;
   const time = convertTimestampToString(createdAt, undefined)
   const currentUser = firebase.auth().currentUser
-  const [user, setUser] = useState<UserType>(null)
-  const [isError, setIsError] = useState(false)
+  const [user, setUser] = useState<UserType>(null)  
   const [isFetching, setIsFetching] = useState(true)
 
   const ContentProps: NotificationContenTypes = {
@@ -44,8 +46,6 @@ const NotificationItem = (props: ItemProps) => {
         const { user, error }: { user?: UserType, error?: string } = await requestFetchUser(from)
         if (user && !error) {
           setUser(user)
-        } else if (error) {
-          setIsError(true)
         }
       }
       setIsFetching(false)
@@ -62,12 +62,23 @@ const NotificationItem = (props: ItemProps) => {
     }
   }
 
-  const renderUser = () => {
+  const handleNavigateRecordShow = async () => {
+    const { payload }: { payload?: ResponseRecordType } = await requestFetchRecordItem(recordId)
+    navigation.navigate('recordShow', { record: payload })
+  }
+
+  const renderContent = () => {
     if (!isFetching) {
       return (
-      <UserWrapper>
-        <UserImage uri={user.imageUrl} width={30} height={30} borderRadius={60} />
-      </UserWrapper>
+        <React.Fragment>
+          <UserWrapper>
+            <UserImage uri={user.imageUrl} width={30} height={30} borderRadius={60} />
+          </UserWrapper>
+          <ItemWrapper>
+            <ItemTime>{time}</ItemTime>
+            <ItemTitle>{user.name}からあなたの投稿にコメントがありました。</ItemTitle>
+          </ItemWrapper>
+        </React.Fragment>
       )
     }
     return null
@@ -90,12 +101,8 @@ const NotificationItem = (props: ItemProps) => {
 
   const renderCommentItem = () => {
     return (
-      <ItemContainer>
-        {renderUser()}
-        <ItemWrapper>
-          <ItemTime>{time}</ItemTime>
-          <ItemTitle>{user.name}からあなたの投稿にコメントがありました。</ItemTitle>
-        </ItemWrapper>
+      <ItemContainer onPress={handleNavigateRecordShow}>
+        {renderContent()}
         { !read ? <ItemBatch /> : null }
       </ItemContainer>
     )

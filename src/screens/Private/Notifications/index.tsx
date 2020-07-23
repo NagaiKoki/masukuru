@@ -48,12 +48,15 @@ const NotificationScreen = (props: NotificationProps) => {
           />
         }
       >
-        { isLoading && !isRefresh ? <Loading size='small'/> : null}
+        { isLoading ? <Loading size="small"/>  : null }
         { error ? 
         <ErrorMessage>{error}</ErrorMessage>
-        : <NotificationListWrapper>
+         : null
+        }
+        { !isLoading && !!notificationItems.length ? 
+        <NotificationListWrapper>
           {renderItem}
-        </NotificationListWrapper> }
+        </NotificationListWrapper> : null}
       </ScrollView>
     </NotificationConitainer>
   )
