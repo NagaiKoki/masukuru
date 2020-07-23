@@ -177,7 +177,7 @@ function* runRequestPostRecordComment(action: RequestPostRecordComment) {
 
   if (payload && !error) {
     yield put(successPostRecordComment(payload))
-    yield put(requestPostCommentNotification(recordUserId, recordId, 0))
+    yield put(requestPostCommentNotification(recordUserId, recordId, 'comment'))
   } else if (error) {
     yield put(failurePostRecordComment(error))
   }

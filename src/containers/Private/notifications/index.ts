@@ -7,6 +7,7 @@ import { NoticationState } from '../../../types/Notification'
 import {
   requestReadNotification
 } from '../../../actions/notifications'
+import { requestFetchUserData } from '../../../actions/User'
 // import screens
 import NotificationContentScreen from '../../../screens/Private/Notifications/NotificationContent'
 
@@ -16,6 +17,7 @@ export interface NotificationProps {
   notifications: NoticationState
   actions: {
     requestReadNotification: (id: string) => void
+    requestFetchUserData: (uid: string) => void
   }
 }
 
@@ -28,7 +30,8 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
-      requestReadNotification
+      requestReadNotification,
+      requestFetchUserData
     }
     , dispatch)
   }

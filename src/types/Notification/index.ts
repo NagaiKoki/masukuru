@@ -1,3 +1,5 @@
+import { Timestamp } from '@firebase/firestore-types';
+
 import { 
   REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER,
   SUCCESS_FETCH_NOT_READ_NOTIFICATION_NUMBER,
@@ -8,22 +10,32 @@ import {
   ALREADY_READ_NOTIFICATION,
   REQUEST_POST_COMMENT_NOTIFICATION,
   ADD_NOTIFICATION_RETRY_COUNT,
-  REQUEST_POST_PUSH_NOTIFICATION
+  REQUEST_POST_PUSH_NOTIFICATION,
+  REQUEST_FETCH_NOTIFICATIONS
 } from '../../actions/actionTypes'
 
 export type NoticationState = {
+  notifications: NotificationType[]
   unReadSize: number,
   retryCount: number
 }
 
 export type NotificationType = {
-  type: NotificationEventType, // 0. comment
+  type: NotificationEventType,
   from: string, // uid
-  groupId: string,
-  read: boolean
+  title?: string
+  groupId?: string,
+  read?: boolean,
+  readUserIds?: string[],
+  createdAt?: Timestamp
 }
 
-export type NotificationEventType = 0 | 1 | 2 // 0: コメント, 1: somethig
+export type NotificationEventType =  'official' | 'comment'
+
+// お知らせの取得
+export interface RequestFetchNotifications {
+  type: typeof REQUEST_FETCH_NOTIFICATIONS
+}
 
 // 未読数の取得
 export interface RequestFetchNotReadNotificationNumber {
@@ -87,6 +99,7 @@ export interface RequestPoshPushNotification {
 }
 
 export type NotificationActionTypes =
+  | RequestFetchNotifications
   | RequestFetchNotReadNotificationNumber
   | SuccessFetchNotReadNotificationNumber
   | FailureFetchNotReadNotificationNumber

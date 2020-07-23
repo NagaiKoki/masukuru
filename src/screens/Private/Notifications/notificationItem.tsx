@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 // import types
-import { NotificationType } from '../../../types'
+import { NotificationType } from '../../../types/Notification'
 // import lib
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import config
@@ -15,11 +15,15 @@ interface ItemProps {
 
 const NotificationItem = (props: ItemProps) => {
   const { item, navigation } = props
-  const { title, createdAt, readUserIds } = item;
+  const { title, type, read, createdAt, readUserIds } = item;
   const time = convertTimestampToString(createdAt, undefined)
   const currentUser = firebase.auth().currentUser
 
-  const isUnRead = () => {
+  useEffect(() => {
+
+  }, [])
+
+  const isUnRead = () => { 
     const id = readUserIds.find(id => String(id) === currentUser.uid)
     if (id) {
       return false
@@ -28,14 +32,36 @@ const NotificationItem = (props: ItemProps) => {
     }
   }
 
+  const renderOfficialItem = () => {
+    return (
+      <ItemContainer onPress={ () =>  navigation.navigate('NotificationContent', { item: item })} isUnRead={isUnRead()} >
+        <ItemWrapper>
+          <ItemTime>{time}</ItemTime>
+          <ItemTitle>{title}</ItemTitle>
+        </ItemWrapper>
+        { isUnRead() ? <ItemBatch /> : null }
+      </ItemContainer>
+    )
+  }
+
+  const renderCommentItem = () => {
+    return (
+      <ItemContainer>
+        <ItemWrapper>
+          <ItemTime>{time}</ItemTime>
+          <ItemTitle>からあなたの投稿にコメントがありました。</ItemTitle>
+        </ItemWrapper>
+        { !read ? <ItemBatch /> : null }
+      </ItemContainer>
+    )
+  }
+
   return (
-    <ItemContainer onPress={ () =>  navigation.navigate('NotificationContent', { item: item })} isUnRead={isUnRead()} >
-      <ItemWrapper>
-        <ItemTime>{time}</ItemTime>
-        <ItemTitle>{title}</ItemTitle>
-      </ItemWrapper>
-      { isUnRead() ? <ItemBatch /> : null }
-    </ItemContainer>
+    <React.Fragment>
+      { type === 'official' ? (
+        renderOfficialItem()
+      ) : renderCommentItem() }
+    </React.Fragment>
   )
 }
 

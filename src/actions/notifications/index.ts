@@ -10,12 +10,20 @@ import {
    REQUEST_POST_COMMENT_NOTIFICATION,
    ADD_NOTIFICATION_RETRY_COUNT,
    REQUEST_POST_PUSH_NOTIFICATION,
+   REQUEST_FETCH_NOTIFICATIONS,
 } from '../actionTypes'
 // import types
 import { 
   NotificationActionTypes, 
   NotificationEventType 
 } from '../../types/Notification'
+
+// お知らせの取得
+export const requestFetchNotifications = (): NotificationActionTypes => {
+  return {
+    type: REQUEST_FETCH_NOTIFICATIONS
+  }
+}
 
 // 未読通知の数のリクエスト
 export const requestFetchNotReadNotificationNumber = (): NotificationActionTypes => {

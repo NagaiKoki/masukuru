@@ -6,6 +6,7 @@ import { NotificationEventType } from '../../types/Notification'
 
 // お知らせの取得
 export const requestNotifications = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
   const notifications = [];
   await db.collection('notifications').orderBy('createdAt', 'desc').get().then(snap => {
     snap.forEach(doc => {
@@ -14,6 +15,15 @@ export const requestNotifications = async () => {
       notifications.push(data)
     })
   })
+
+  await db.collection('users').doc(currentUserId).collection('notification').get().then(snap => {
+    snap.forEach(doc => {
+      const data = doc.data()
+      data.id = doc.ref.id
+      notifications.push(data)
+    })
+  })
+
   return notifications
 }
 

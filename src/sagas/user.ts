@@ -8,7 +8,7 @@ import { successFetchUserData, failureFetchUserData } from '../actions/User'
 // import apis
 import { requestFetchUser } from '../apis/Users'
 
-function* runRequestCurrentUser(action: RequestFetchUserData) {
+function* runRequestUserData(action: RequestFetchUserData) {
   const { uid } = action
   const { user, error }: { user?: UserType, error?: string } = yield call(
     requestFetchUser,
@@ -23,7 +23,7 @@ function* runRequestCurrentUser(action: RequestFetchUserData) {
 }
 
 function* handleRequestCurrentUser() {
-  yield takeEvery(REQUEST_FETCH_USER_DATA, runRequestCurrentUser)
+  yield takeEvery(REQUEST_FETCH_USER_DATA, runRequestUserData)
 }
 
 export default function* userSaga() {

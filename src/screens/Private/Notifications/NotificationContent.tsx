@@ -9,7 +9,7 @@ import { NotificationProps } from '../../../containers/Private/notifications'
 import { convertTimestampToString } from '../../../utilities/timestamp'
 
 const NotificationContentScreen = (props: NotificationProps) => {
-  const { navigation, route, notifications, actions } = props
+  const { route, actions } = props
   const { requestReadNotification } = actions
   const { id, title, createdAt, contents, from } = route.params.item
   const time = convertTimestampToString(createdAt, undefined)

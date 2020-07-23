@@ -2,14 +2,19 @@ import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import { useFocusEffect } from '@react-navigation/native';
+// import types
+import { NotificationType } from '../../../types/Notification'
+import { NotificationProps } from '../../../containers/Private/notifications'
 // import apis
 import { requestNotifications } from '../../../apis/Notifications'
 // import components
 import Loading from '../../../components/Loading'
 import NotificationItem from './notificationItem'
 
-const NotificationScreen = ({ navigation }) => {
-  const [notifications, setNotifications] = useState([])
+const NotificationScreen = (props: NotificationProps) => {
+  const { navigation, route } = props
+
+  const [notifications, setNotifications] = useState<NotificationType[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useFocusEffect(
