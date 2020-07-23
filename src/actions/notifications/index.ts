@@ -17,7 +17,8 @@ import {
 // import types
 import { 
   NotificationActionTypes, 
-  NotificationEventType 
+  NotificationEventType, 
+  NotificationType
 } from '../../types/Notification'
 
 // お知らせの取得
@@ -28,16 +29,18 @@ export const requestFetchNotifications = (): NotificationActionTypes => {
 }
 
 // お知らせの取得成功
-export const successFetchNotifications = (): NotificationActionTypes => {
+export const successFetchNotifications = (payload: NotificationType[]): NotificationActionTypes => {
   return {
-    type: SUCCESS_FETCH_NOTIFICATIONS
+    type: SUCCESS_FETCH_NOTIFICATIONS,
+    payload
   }
 }
 
 // お知らせの取得失敗
-export const failureFetchNotifications = (): NotificationActionTypes => {
+export const failureFetchNotifications = (error: string): NotificationActionTypes => {
   return {
-    type: FAILURE_FETCH_NOTIFICATIONS
+    type: FAILURE_FETCH_NOTIFICATIONS,
+    error
   }
 }
 

@@ -17,7 +17,9 @@ import {
 } from '../../actions/actionTypes'
 
 export type NoticationState = {
+  isLoading: boolean
   notifications: NotificationType[]
+  error: string
   unReadSize: number,
   retryCount: number
 }
@@ -112,6 +114,8 @@ export interface RequestPoshPushNotification {
 
 export type NotificationActionTypes =
   | RequestFetchNotifications
+  | SuccessFetchNotifications
+  | FailureFetchNotifications
   | RequestFetchNotReadNotificationNumber
   | SuccessFetchNotReadNotificationNumber
   | FailureFetchNotReadNotificationNumber
