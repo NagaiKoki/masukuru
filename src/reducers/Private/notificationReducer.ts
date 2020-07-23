@@ -20,7 +20,7 @@ import {
 
 const initialState: NoticationState = {
   isLoading: false,
-  notifications: [],
+  notificationItems: [],
   error: '',
   unReadSize: 0,
   retryCount: 0
@@ -46,7 +46,7 @@ const notificationReducer = (
       return {
         ...state,
         isLoading: false,
-        notifications: payload
+        notificationItems: payload
       }
     }
 

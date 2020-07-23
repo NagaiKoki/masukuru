@@ -5,19 +5,19 @@ import { RootState } from '../../../reducers'
 import { NoticationState } from '../../../types/Notification'
 // import actions
 import {
-  requestReadNotification
+  requestReadNotification,
+  requestFetchNotifications
 } from '../../../actions/notifications'
-import { requestFetchUserData } from '../../../actions/User'
 // import screens
-import NotificationContentScreen from '../../../screens/Private/Notifications/NotificationContent'
+import NotificationScreen from '../../../screens/Private/Notifications'
 
 export interface NotificationProps {
   navigation: any
   route: any
   notifications: NoticationState
   actions: {
+    requestFetchNotifications: () => void
     requestReadNotification: (id: string) => void
-    requestFetchUserData: (uid: string) => void
   }
 }
 
@@ -30,8 +30,8 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
+      requestFetchNotifications,
       requestReadNotification,
-      requestFetchUserData
     }
     , dispatch)
   }
@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NotificationContentScreen)
+)(NotificationScreen)

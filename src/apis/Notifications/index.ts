@@ -1,30 +1,43 @@
+import { Timestamp } from '@firebase/firestore-types';
 import firebase, { db } from '../../config/firebase';
 // import apis
 import { requestCurrentGroupId } from '../../apis/Groups/transfer'
 // import types
-import { NotificationEventType } from '../../types/Notification'
+import { NotificationEventType, NotificationType } from '../../types/Notification'
+// import constants
+import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 
 // お知らせの取得
 export const requestNotifications = async () => {
   const currentUserId = firebase.auth().currentUser.uid
   const notifications = [];
-  await db.collection('notifications').orderBy('createdAt', 'desc').get().then(snap => {
-    snap.forEach(doc => {
-      const data = doc.data()
-      data.id = doc.ref.id
-      notifications.push(data)
-    })
-  })
 
-  await db.collection('users').doc(currentUserId).collection('notification').get().then(snap => {
-    snap.forEach(doc => {
-      const data = doc.data()
-      data.id = doc.ref.id
-      notifications.push(data)
+  try {
+    await db.collection('notifications').orderBy('createdAt', 'desc').get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data()
+        data.id = doc.ref.id
+        notifications.push(data)
+      })
     })
-  })
+  
+    await db.collection('users').doc(currentUserId).collection('notification').get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data()
+        data.id = doc.ref.id
+        notifications.push(data)
+      })
+    })
 
-  return notifications
+    if (notifications.length) {
+      const orderedNotification = notifications.sort((a: NotificationType, b: NotificationType) => { return a.createdAt < b.createdAt ? 1 : -1 })
+      return { payload: orderedNotification }
+    } else {
+      return { payload: [] }
+    }
+  } catch {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
 }
 
 // 未読お知らせの取得

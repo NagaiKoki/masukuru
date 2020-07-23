@@ -18,18 +18,20 @@ import {
 
 export type NoticationState = {
   isLoading: boolean
-  notifications: NotificationType[]
+  notificationItems: NotificationType[]
   error: string
   unReadSize: number,
   retryCount: number
 }
 
 export type NotificationType = {
+  id: string
   type: NotificationEventType,
   from: string, // uid
   title?: string
   groupId?: string,
   read?: boolean,
+  contents?: string
   readUserIds?: string[],
   createdAt?: Timestamp
 }
