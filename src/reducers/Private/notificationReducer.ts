@@ -16,6 +16,7 @@ import {
 } from '../../types/Notification'
 
 const initialState: NoticationState = {
+  notifications: [],
   unReadSize: 0,
   retryCount: 0
 

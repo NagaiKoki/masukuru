@@ -11,7 +11,9 @@ import {
   REQUEST_POST_COMMENT_NOTIFICATION,
   ADD_NOTIFICATION_RETRY_COUNT,
   REQUEST_POST_PUSH_NOTIFICATION,
-  REQUEST_FETCH_NOTIFICATIONS
+  REQUEST_FETCH_NOTIFICATIONS,
+  SUCCESS_FETCH_NOTIFICATIONS,
+  FAILURE_FETCH_NOTIFICATIONS
 } from '../../actions/actionTypes'
 
 export type NoticationState = {
@@ -35,6 +37,16 @@ export type NotificationEventType =  'official' | 'comment'
 // お知らせの取得
 export interface RequestFetchNotifications {
   type: typeof REQUEST_FETCH_NOTIFICATIONS
+}
+
+export interface SuccessFetchNotifications {
+  type: typeof SUCCESS_FETCH_NOTIFICATIONS
+  payload: NotificationType[]
+}
+
+export interface FailureFetchNotifications {
+  type: typeof FAILURE_FETCH_NOTIFICATIONS
+  error: string
 }
 
 // 未読数の取得

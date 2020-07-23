@@ -11,6 +11,8 @@ import {
    ADD_NOTIFICATION_RETRY_COUNT,
    REQUEST_POST_PUSH_NOTIFICATION,
    REQUEST_FETCH_NOTIFICATIONS,
+   SUCCESS_FETCH_NOTIFICATIONS,
+   FAILURE_FETCH_NOTIFICATIONS,
 } from '../actionTypes'
 // import types
 import { 
@@ -22,6 +24,20 @@ import {
 export const requestFetchNotifications = (): NotificationActionTypes => {
   return {
     type: REQUEST_FETCH_NOTIFICATIONS
+  }
+}
+
+// お知らせの取得成功
+export const successFetchNotifications = (): NotificationActionTypes => {
+  return {
+    type: SUCCESS_FETCH_NOTIFICATIONS
+  }
+}
+
+// お知らせの取得失敗
+export const failureFetchNotifications = (): NotificationActionTypes => {
+  return {
+    type: FAILURE_FETCH_NOTIFICATIONS
   }
 }
 
