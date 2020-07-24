@@ -4,21 +4,22 @@ import { ScrollView } from 'react-native';
 import { COLORS } from '../../../constants/Styles';
 import styled from 'styled-components'
 // import types
-import { NotificationProps } from '../../../containers/Private/notifications'
+import { NotificationContenTypes } from './notificationItem'
+import { NotificationType } from '../../../types/Notification';
 // import lib
 import { convertTimestampToString } from '../../../utilities/timestamp'
 
-const NotificationContentScreen = (props: NotificationProps) => {
-  const { navigation, route, notifications, actions } = props
-  const { requestReadNotification } = actions
-  const { id, title, createdAt, contents, from } = route.params.item
-  const time = convertTimestampToString(createdAt, undefined)
+interface NotificationContentProps {
+  route: {
+    params: NotificationContenTypes
+  }
+}
 
-  useFocusEffect(
-    useCallback(() => {
-      requestReadNotification(id)
-    }, [])
-  )
+const NotificationContentScreen = (props: NotificationContentProps) => {
+  const { route } = props
+  const { item } = route.params
+  const { id, title, createdAt, contents } = item
+  const time = convertTimestampToString(createdAt, undefined)
 
   return (
     <ScrollView>

@@ -1,41 +1,63 @@
 import React, { useState, useCallback } from 'react';
+import { RefreshControl, ScrollView } from 'react-native'
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import { useFocusEffect } from '@react-navigation/native';
-// import apis
-import { requestNotifications } from '../../../apis/Notifications'
+// import types
+import { NotificationProps } from '../../../containers/Private/notifications'
 // import components
 import Loading from '../../../components/Loading'
 import NotificationItem from './notificationItem'
 
-const NotificationScreen = ({ navigation }) => {
-  const [notifications, setNotifications] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+const NotificationScreen = (props: NotificationProps) => {
+  const { navigation, notifications, actions } = props
+  const { isLoading, notificationItems, error } = notifications
+  const { requestFetchNotifications, requestReadNotification } = actions
+  const [isRefresh, setIsRefresh] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
-      const getNotifications = async () => {
-        const data = await requestNotifications()
-        setNotifications(data)
+      if (!notificationItems.length) {
+        requestFetchNotifications()
       }
-      getNotifications()
-      setIsLoading(false)
     }, [])
   )
 
-  if (isLoading) {
-    return (
-      <Loading size="small" />
-    )
+  const onRefresh = () => {
+    setIsRefresh(true)
+    requestFetchNotifications()
+    setIsRefresh(false)
   }
 
-  const renderItem = notifications.map((item, index) => (<NotificationItem item={item} key={index} navigation={navigation} />))
+  const renderItem = notificationItems.map((item, index) => (
+    <NotificationItem 
+      item={item} 
+      key={index} 
+      navigation={navigation}
+      requestReadNotification={requestReadNotification}
+    />
+  ))
 
   return (
     <NotificationConitainer>
-      <NotificationListWrapper>
-        {renderItem}
-      </NotificationListWrapper>
+      <ScrollView
+        refreshControl={
+          <RefreshControl 
+           refreshing={isRefresh}
+           onRefresh={onRefresh}
+          />
+        }
+      >
+        { isLoading ? <Loading size="small"/>  : null }
+        { error ? 
+        <ErrorMessage>{error}</ErrorMessage>
+         : null
+        }
+        { !isLoading && !!notificationItems.length ? 
+        <NotificationListWrapper>
+          {renderItem}
+        </NotificationListWrapper> : null}
+      </ScrollView>
     </NotificationConitainer>
   )
 }
@@ -45,6 +67,12 @@ export default NotificationScreen
 const NotificationConitainer =  styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
+`
+
+const ErrorMessage = styled.Text`
+  text-align: center;
+  font-size: 14px;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const NotificationListWrapper = styled.View`

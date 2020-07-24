@@ -3,6 +3,8 @@ import firebase, { db } from '../../config/firebase';
 import { RecordItemType } from '../../types/Record'
 // import lib
 import { factoryRandomCode } from '../../utilities/randomTextFactory'
+// import constants
+import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 
 // 記録のポスト
 export const requestPostRecords = async (records: RecordItemType[], word: string) => {
@@ -85,5 +87,24 @@ export const requestUpdateRecordGroupIds = async (groupId: string) => {
     return { payload: 'success' }
   } catch (error) {
     return { error }
+  }
+}
+
+export const requestFetchRecordItem = async (recordId: string) => {
+  const recordRef = db.collection('records').doc(recordId)
+  let record;
+
+  try {
+    await recordRef.get().then(snap => {
+      if (!snap.exists) {
+        throw new Error('no data')
+      } else {
+        record = snap.data()
+        record.id = String(snap.ref.id)
+      }
+    })
+    return { payload: record }
+  } catch {
+    return { erorr: COMMON_ERROR_MESSSAGE }
   }
 }

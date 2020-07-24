@@ -226,10 +226,11 @@ export const changeRecordCommentText = (text: string): RecordActionTypes => {
 }
 
 // コメントの送信
-export const requestPostRecordComment = (recordId: string): RecordActionTypes => {
+export const requestPostRecordComment = (recordId: string, recordUserId: string): RecordActionTypes => {
   return {
     type: REQUEST_POST_RECORD_COMMENT,
-    recordId
+    recordId,
+    recordUserId
   }
 }
 

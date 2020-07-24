@@ -1,16 +1,43 @@
+import { Timestamp } from '@firebase/firestore-types';
 import firebase, { db } from '../../config/firebase';
+// import apis
+import { requestCurrentGroupId } from '../../apis/Groups/transfer'
+// import types
+import { NotificationEventType, NotificationType } from '../../types/Notification'
+// import constants
+import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 
 // お知らせの取得
 export const requestNotifications = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
   const notifications = [];
-  await db.collection('notifications').orderBy('createdAt', 'desc').get().then(snap => {
-    snap.forEach(doc => {
-      const data = doc.data()
-      data.id = doc.ref.id
-      notifications.push(data)
+
+  try {
+    await db.collection('notifications').orderBy('createdAt', 'desc').get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data()
+        data.id = doc.ref.id
+        notifications.push(data)
+      })
     })
-  })
-  return notifications
+  
+    await db.collection('users').doc(currentUserId).collection('notification').get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data()
+        data.id = doc.ref.id
+        notifications.push(data)
+      })
+    })
+
+    if (notifications.length) {
+      const orderedNotification = notifications.sort((a: NotificationType, b: NotificationType) => { return a.createdAt < b.createdAt ? 1 : -1 })
+      return { payload: orderedNotification }
+    } else {
+      return { payload: [] }
+    }
+  } catch {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
 }
 
 // 未読お知らせの取得
@@ -58,5 +85,41 @@ export const requestReadNotification = async (id: string) => {
     return { payload: payload, readNotification: readNotification }
   } catch (error) {
     return { error: error }
+  }
+}
+
+// 記録の通知リクエスト
+export const requestPostCommentNotification = async (recordUserId: string, recordId: string, notificationEventType: NotificationEventType) => {
+  const  currentUserId = firebase.auth().currentUser.uid
+  const currentTime = firebase.firestore.FieldValue.serverTimestamp()
+  try {
+    const currentGroupId = await requestCurrentGroupId()
+    const currentUserRef = db.collection('users').doc(recordUserId)
+    await currentUserRef.collection('notification').add({
+      type: notificationEventType,
+      uid: recordUserId,
+      from: currentUserId,
+      recordId: recordId,
+      groupId: currentGroupId,
+      read: false,
+      createdAt: currentTime,
+      updatedAt: currentTime
+    })
+    return { success: 'success' }
+  } catch {
+    return { error: "通知のポストに失敗しました。" }
+  }
+}
+
+export const requestReadCommentNotification = async (id: string) => {
+  const  currentUserId = firebase.auth().currentUser.uid
+  const recordRef = db.collection('users').doc(currentUserId).collection('notification').doc(id)
+  try {
+    await recordRef.update({
+      read: true
+    })
+    return { success: 'success' }
+  } catch {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }

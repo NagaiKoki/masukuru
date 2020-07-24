@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import NotificationScreen from '../../../screens/Private/Notifications'
+import NotificationContainer from '../../../containers/Private/notifications'
 import { COLORS } from '../../../constants/Styles'
 // import container
-import NotificationContainer from '../../../containers/Private/notifications'
+import NotificationContentScreen from '../../../screens/Private/Notifications/NotificationContent'
 
 
 const NotificationNavigator = () => {
@@ -13,7 +13,7 @@ const NotificationNavigator = () => {
     <NotificationStack.Navigator initialRouteName='おしらせ'>
       <NotificationStack.Screen
         name="Notification"
-        component={NotificationScreen}
+        component={NotificationContainer}
         options={{
           headerBackTitleVisible: false,
           headerTitle: 'おしらせ',
@@ -26,7 +26,7 @@ const NotificationNavigator = () => {
 
       <NotificationStack.Screen
         name="NotificationContent"
-        component={NotificationContainer}
+        component={NotificationContentScreen}
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: 'おしらせ',
