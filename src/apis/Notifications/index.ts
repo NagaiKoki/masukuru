@@ -91,6 +91,7 @@ export const requestReadNotification = async (id: string) => {
 // 記録の通知リクエスト
 export const requestPostCommentNotification = async (recordUserId: string, recordId: string, notificationEventType: NotificationEventType) => {
   const  currentUserId = firebase.auth().currentUser.uid
+  const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   try {
     const currentGroupId = await requestCurrentGroupId()
     const currentUserRef = db.collection('users').doc(recordUserId)
@@ -100,10 +101,25 @@ export const requestPostCommentNotification = async (recordUserId: string, recor
       from: currentUserId,
       recordId: recordId,
       groupId: currentGroupId,
-      read: false
+      read: false,
+      createdAt: currentTime,
+      updatedAt: currentTime
     })
     return { success: 'success' }
   } catch {
     return { error: "通知のポストに失敗しました。" }
+  }
+}
+
+export const requestReadCommentNotification = async (id: string) => {
+  const  currentUserId = firebase.auth().currentUser.uid
+  const recordRef = db.collection('users').doc(currentUserId).collection('notification').doc(id)
+  try {
+    await recordRef.update({
+      read: true
+    })
+    return { success: 'success' }
+  } catch {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }

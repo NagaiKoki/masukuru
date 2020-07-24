@@ -100,6 +100,7 @@ export const requestFetchRecordItem = async (recordId: string) => {
         throw new Error('no data')
       } else {
         record = snap.data()
+        record.id = String(snap.ref.id)
       }
     })
     return { payload: record }

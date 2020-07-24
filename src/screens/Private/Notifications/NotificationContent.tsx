@@ -17,15 +17,9 @@ interface NotificationContentProps {
 
 const NotificationContentScreen = (props: NotificationContentProps) => {
   const { route } = props
-  const { item, requestReadNotification } = route.params
+  const { item } = route.params
   const { id, title, createdAt, contents } = item
   const time = convertTimestampToString(createdAt, undefined)
-
-  useFocusEffect(
-    useCallback(() => {
-      requestReadNotification(id)
-    }, [])
-  )
 
   return (
     <ScrollView>

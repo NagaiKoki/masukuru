@@ -4,7 +4,7 @@ import { COLORS } from '../../../constants/Styles';
 // import apis
 import { requestFetchUser } from '../../../apis/Users'
 import { requestFetchRecordItem } from '../../../apis/Records'
-import { requestCurrentGroupId } from '../../../apis/Groups/transfer'
+import { requestReadCommentNotification } from '../../../apis/Notifications'
 // import types
 import { NotificationType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
@@ -29,7 +29,7 @@ export interface NotificationContenTypes {
 
 const NotificationItem = (props: ItemProps) => {
   const { item, navigation, requestReadNotification } = props
-  const { title, type, read, from, groupId, recordId, createdAt, readUserIds } = item;
+  const { id, title, type, read, from, groupId, recordId, createdAt, readUserIds } = item;
   const time = convertTimestampToString(createdAt, undefined)
   const currentUser = firebase.auth().currentUser
   const [user, setUser] = useState<UserType>(null)  
@@ -53,22 +53,23 @@ const NotificationItem = (props: ItemProps) => {
     fetchUser()
   }, [])
 
-  const isUnRead = () => { 
-    const id = readUserIds.find(id => String(id) === currentUser.uid)
-    if (id) {
-      return false
-    } else {
-      return true
+  const isRead = () => { 
+    if (type === 'official') {
+      const id = readUserIds.find(id => String(id) === currentUser.uid)
+      return !!id 
+    } else if (type === 'comment') {
+      return !!read
     }
   }
 
   const handleNavigateRecordShow = async () => {
+    await requestReadCommentNotification(id)
     const { payload }: { payload?: ResponseRecordType } = await requestFetchRecordItem(recordId)
     navigation.navigate('recordShow', { record: payload })
   }
 
-  const renderContent = () => {
-    if (!isFetching) {
+  const renderCommentContent = () => {
+    if (!isFetching && user) {
       return (
         <React.Fragment>
           <UserWrapper>
@@ -84,26 +85,27 @@ const NotificationItem = (props: ItemProps) => {
     return null
   }
 
+  const renderCommentItem = () => {
+    return (
+      <ItemContainer 
+        onPress={handleNavigateRecordShow}
+        isRead={isRead()}
+      >
+        {renderCommentContent()}
+      </ItemContainer>
+    )
+  }
+
   const renderOfficialItem = () => {
     return (
       <ItemContainer 
         onPress={() => navigation.navigate('NotificationContent', ContentProps)} 
-        isUnRead={isUnRead()} 
+        isRead={isRead()} 
       >
         <ItemWrapper>
           <ItemTime>{time}</ItemTime>
           <ItemTitle>{title}</ItemTitle>
         </ItemWrapper>
-        { isUnRead() ? <ItemBatch /> : null }
-      </ItemContainer>
-    )
-  }
-
-  const renderCommentItem = () => {
-    return (
-      <ItemContainer onPress={handleNavigateRecordShow}>
-        {renderContent()}
-        { !read ? <ItemBatch /> : null }
       </ItemContainer>
     )
   }
@@ -124,7 +126,7 @@ const ItemContainer = styled.TouchableOpacity<{ isUnRead: boolean }>`
   border-bottom-width: 0.5px;
   flex-direction: row;
   align-items: center;
-  background-color: ${props => props.isUnRead ? COLORS.BASE_BACKGROUND2 : COLORS.BASE_WHITE};
+  background-color: ${props => props.isRead ? COLORS.BASE_WHITE : COLORS.BASE_BACKGROUND2};
 `
 
 const ItemBatch = styled.View`
