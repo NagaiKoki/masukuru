@@ -14,7 +14,7 @@ const NotificationBatchIcon = (props: NotificationProps) => {
   const { notifications } = props
   const { unReadSize } = notifications
 
-  if (!unReadSize || unReadSize === 0) {
+  if (!unReadSize) {
     return null
   }
 

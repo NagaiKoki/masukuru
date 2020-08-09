@@ -51,7 +51,7 @@ function* runRequestUnReadNotificationSize() {
     uid
   )
 
-  if (size && !error) {
+  if ((size || size === 0) && !error) {
     yield put(successFetchNotReadNotificationNumber(size))
   } else {
     yield put(failureFetchNotReadNotificationNumber(error))

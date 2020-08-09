@@ -60,13 +60,6 @@ const notificationReducer = (
       }
     }
 
-    // 未読件数の取得
-    case REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER: {
-      return {
-        ...state
-      }
-    }
-
     // 未読件数の取得成功
     case SUCCESS_FETCH_NOT_READ_NOTIFICATION_NUMBER: {
       const { size } = action

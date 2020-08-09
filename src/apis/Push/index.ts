@@ -33,7 +33,9 @@ export const isSetExpoNotificationToken = async () => {
 
 export const requestSendPushNotification = async (uid: string, title: string, body: string) => {
   const { user }: { user?: UserType } = await requestFetchUser(uid)
-  if (!user || (user && !user.expoNotificationToken)) return
+  if (!user || (user && !user.expoNotificationToken) || firebase.auth().currentUser.uid === uid) {
+    return new Error()
+  }
 
   const message = {
     to: user.expoNotificationToken,

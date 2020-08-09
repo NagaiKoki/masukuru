@@ -102,7 +102,9 @@ const UserImageWrapper = styled.View`
 const CommentForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   width: 75%;
+  height: 40px;
   align-self: center;
+  font-size: 17px;
   border-radius: 30px;
   padding: 10px 15px;
   margin: 10px 5px;

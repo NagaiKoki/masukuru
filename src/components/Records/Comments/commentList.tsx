@@ -8,14 +8,17 @@ import { RecordCommentType } from '../../../types/Record'
 import RecordCommentItem from './commentItem'
 import Loading from '../../Loading'
 import { COLORS } from '../../../constants/Styles'
+import store from '../../../reducers'
+import { requestFetchNotReadNotificationNumber } from '../../../actions/notifications'
 
 interface RecordCommentListProps {
   comments: RecordCommentType[]
+  notificationGroupId?: string
   requestDeleteRecordComment: (recordId: string, commentId: string) => void
 }
 
 const RecordCommentList = (props: RecordCommentListProps) => {
-  const { comments, requestDeleteRecordComment } = props
+  const { comments, notificationGroupId,requestDeleteRecordComment } = props
 
   const [currentGroupId, setCurrentGroupId] = useState('')
 
@@ -26,13 +29,14 @@ const RecordCommentList = (props: RecordCommentListProps) => {
 
   useEffect(() => {
     fetchCurrentGroupId()
+    store.dispatch(requestFetchNotReadNotificationNumber())
   }, [])
 
   if (!currentGroupId) {
     return <Loading size="small"/>
   }
 
-  const visibleCommnets = comments.filter(comment => comment.groupId === currentGroupId)
+  const visibleCommnets = notificationGroupId ? comments : comments.filter(comment => comment.groupId === currentGroupId)
 
   const commentList = visibleCommnets.map(comment => ( 
     <RecordCommentItem 
