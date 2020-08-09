@@ -12,11 +12,12 @@ import NotificationItem from './notificationItem'
 const NotificationScreen = (props: NotificationProps) => {
   const { navigation, notifications, actions } = props
   const { isLoading, notificationItems, error } = notifications
-  const { requestFetchNotifications, requestReadNotification } = actions
+  const { requestFetchNotifications, requestReadNotification, requestFetchNotReadNotificationNumber } = actions
   const [isRefresh, setIsRefresh] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
+      requestFetchNotReadNotificationNumber()
       if (!notificationItems.length) {
         requestFetchNotifications()
       }

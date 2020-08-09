@@ -8,6 +8,8 @@ import { RecordCommentType } from '../../../types/Record'
 import RecordCommentItem from './commentItem'
 import Loading from '../../Loading'
 import { COLORS } from '../../../constants/Styles'
+import store from '../../../reducers'
+import { requestFetchNotReadNotificationNumber } from '../../../actions/notifications'
 
 interface RecordCommentListProps {
   comments: RecordCommentType[]
@@ -26,6 +28,7 @@ const RecordCommentList = (props: RecordCommentListProps) => {
 
   useEffect(() => {
     fetchCurrentGroupId()
+    store.dispatch(requestFetchNotReadNotificationNumber())
   }, [])
 
   if (!currentGroupId) {

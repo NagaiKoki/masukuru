@@ -6,7 +6,8 @@ import { NoticationState } from '../../../types/Notification'
 // import actions
 import {
   requestReadNotification,
-  requestFetchNotifications
+  requestFetchNotifications,
+  requestFetchNotReadNotificationNumber
 } from '../../../actions/notifications'
 // import screens
 import NotificationScreen from '../../../screens/Private/Notifications'
@@ -18,6 +19,7 @@ export interface NotificationProps {
   actions: {
     requestFetchNotifications: () => void
     requestReadNotification: (id: string) => void
+    requestFetchNotReadNotificationNumber: () => void
   }
 }
 
@@ -32,6 +34,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     actions: bindActionCreators({
       requestFetchNotifications,
       requestReadNotification,
+      requestFetchNotReadNotificationNumber
     }
     , dispatch)
   }

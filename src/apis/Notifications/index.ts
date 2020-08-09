@@ -43,11 +43,10 @@ export const requestNotifications = async () => {
 // 未読お知らせの取得
 export const requestUnReadNotificationSize = async (uid: string) => {
   const officialNotificationRef = db.collection('notifications').get();
-  const commentNotificationRef = db.collection('users').doc(uid).collection('notification').get()
+  const commentUnReadSize = (await db.collection('users').doc(uid).collection('notification').where('read', '==', false).get()).size
+
   const officialReadIds = [];
-  const commentReadIds = [];
   let maxOfficialNotificationSize = 0
-  let maxCommnetNotificationSize = 0
   try {
     await officialNotificationRef.then(snap => {
       maxOfficialNotificationSize = snap.size
@@ -58,17 +57,9 @@ export const requestUnReadNotificationSize = async (uid: string) => {
       })
     })
 
-    await commentNotificationRef.then(snap => {
-      maxCommnetNotificationSize = snap.size
-      snap.forEach(doc => {
-        if (doc.data().read) {
-          commentReadIds.push(1)
-        }
-      })
-    })
+    const unReadSize = maxOfficialNotificationSize  - officialReadIds.length + commentUnReadSize
 
-    const unReadSize = maxOfficialNotificationSize + maxCommnetNotificationSize - officialReadIds.length - commentReadIds.length
-    if (unReadSize) {
+    if (!!unReadSize) {
       return { size: unReadSize }
     } else {
       return { size: 0 }
