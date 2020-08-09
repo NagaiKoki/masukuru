@@ -65,7 +65,7 @@ const NotificationItem = (props: ItemProps) => {
   const handleNavigateRecordShow = async () => {
     await requestReadCommentNotification(id)
     const { payload }: { payload?: ResponseRecordType } = await requestFetchRecordItem(recordId)
-    navigation.navigate('recordShow', { record: payload })
+    navigation.navigate('recordShow', { record: payload, notificationGroupId: groupId })
   }
 
   const renderCommentContent = () => {

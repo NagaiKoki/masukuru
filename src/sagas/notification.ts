@@ -52,10 +52,8 @@ function* runRequestUnReadNotificationSize() {
   )
 
   if ((size || size === 0) && !error) {
-    console.log({"successSaga": size})
     yield put(successFetchNotReadNotificationNumber(size))
   } else {
-    console.log({"failSaga": size})
     yield put(failureFetchNotReadNotificationNumber(error))
   }
 }

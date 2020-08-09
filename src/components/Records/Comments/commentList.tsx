@@ -13,11 +13,12 @@ import { requestFetchNotReadNotificationNumber } from '../../../actions/notifica
 
 interface RecordCommentListProps {
   comments: RecordCommentType[]
+  notificationGroupId?: string
   requestDeleteRecordComment: (recordId: string, commentId: string) => void
 }
 
 const RecordCommentList = (props: RecordCommentListProps) => {
-  const { comments, requestDeleteRecordComment } = props
+  const { comments, notificationGroupId,requestDeleteRecordComment } = props
 
   const [currentGroupId, setCurrentGroupId] = useState('')
 
@@ -35,7 +36,7 @@ const RecordCommentList = (props: RecordCommentListProps) => {
     return <Loading size="small"/>
   }
 
-  const visibleCommnets = comments.filter(comment => comment.groupId === currentGroupId)
+  const visibleCommnets = notificationGroupId ? comments : comments.filter(comment => comment.groupId === currentGroupId)
 
   const commentList = visibleCommnets.map(comment => ( 
     <RecordCommentItem 

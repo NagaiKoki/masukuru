@@ -23,7 +23,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
   } = actions
   const { temporaryComment, comments, isLoading } = records
   const { currentUser } = users
-  const { record }: { record: ResponseRecordType } = route.params
+  const { record, notificationGroupId }: { record: ResponseRecordType, notificationGroupId?: string } = route.params
   const scrollRef = useRef(null)
 
   useFocusEffect(
@@ -35,7 +35,8 @@ const RecordShowScreen = (props: RecordShowProps) => {
   const renderCommentList = isLoading ? <Loading size="small" /> 
     : <RecordCommentList 
         comments={comments}
-        requestDeleteRecordComment={requestDeleteRecordComment} 
+        requestDeleteRecordComment={requestDeleteRecordComment}
+        notificationGroupId={notificationGroupId}
       />
 
   return (
