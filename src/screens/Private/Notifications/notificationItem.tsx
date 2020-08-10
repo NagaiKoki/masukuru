@@ -4,7 +4,7 @@ import { COLORS } from '../../../constants/Styles';
 // import apis
 import { requestFetchUser } from '../../../apis/Users'
 import { requestFetchRecordItem } from '../../../apis/Records'
-import { requestReadCommentNotification } from '../../../apis/Notifications'
+import { requestReadCommentNotification, requestReadOfficialNotification } from '../../../apis/Notifications'
 // import types
 import { NotificationType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
@@ -68,6 +68,11 @@ const NotificationItem = (props: ItemProps) => {
     navigation.navigate('recordShow', { record: payload, notificationGroupId: groupId })
   }
 
+  const handleNavigateOffcialNotificationContent = async () => {
+    await requestReadOfficialNotification(id)
+    navigation.navigate('NotificationContent', ContentProps)
+  }
+
   const renderCommentContent = () => {
     if (!isFetching && user) {
       return (
@@ -99,7 +104,7 @@ const NotificationItem = (props: ItemProps) => {
   const renderOfficialItem = () => {
     return (
       <ItemContainer 
-        onPress={() => navigation.navigate('NotificationContent', ContentProps)} 
+        onPress={handleNavigateOffcialNotificationContent} 
         isRead={isRead()} 
       >
         <ItemWrapper>
