@@ -57,6 +57,8 @@ import {
   requestPostCommentNotification,
   addNotificationRetryCount
 } from '../actions/notifications'
+// import config
+import firebase from '../config/firebase'
 
 // 記録の保存
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {
@@ -167,17 +169,20 @@ function* handleRequestPostCommentNotification() {
 
 // 記録へのコメント送信リクエスト
 function* runRequestPostRecordComment(action: RequestPostRecordComment) {  
-  const { recordId, recordUserId } = action
+  const { recordId, recordUserId, notificationGroupId } = action
   const { temporaryComment } = yield select((state: RootState) => state.records)
   const { payload, error }: { payload?: RecordCommentType, error?: string } = yield call(
     requestPostRecordPost,
     recordId,
-    temporaryComment
+    temporaryComment,
+    notificationGroupId
   )
 
   if (payload && !error) {
     yield put(successPostRecordComment(payload))
-    yield put(requestPostCommentNotification(recordUserId, recordId, 'comment'))
+    if (recordUserId !== firebase.auth().currentUser.uid) {
+      yield put(requestPostCommentNotification(recordUserId, recordId, 'comment'))
+    }
   } else if (error) {
     yield put(failurePostRecordComment(error))
   }

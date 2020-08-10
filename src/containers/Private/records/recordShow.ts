@@ -25,7 +25,7 @@ export interface RecordShowProps {
   actions: {
     requestDestroyRecord: (id: string) => void
     changeRecordCommentText: (text: string) => void
-    requestPostRecordComment: (recordId: string, recordUserId: string) => void 
+    requestPostRecordComment: (recordId: string, recordUserId: string, notificationGroupId?: string) => void 
     requestFetchRecordComments: (recordId: string) => void
     requestDeleteRecordComment: (recordId: string, commentId: string) => void
     requestPostPushNotification: (eventType: NotificationEventType, uid: string, title: string, content: string) => void

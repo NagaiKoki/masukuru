@@ -16,16 +16,17 @@ interface RecordCommentProps {
   record: ResponseRecordType
   currentUser?: UserType
   temporaryComment: string
+  notificationGroupId?: string
   changeRecordCommentText: (text: string) => void
-  requestPostRecordComment: (recordId: string, recordUserId: string) => void
+  requestPostRecordComment: (recordId: string, recordUserId: string, notificationGroupId?: string) => void
   requestPostPushNotification?: (eventType: NotificationEventType, uid: string, title: string, content: string) => void
 }
 
 const RecordComment = (props: RecordCommentProps) => {
   const { 
     record, 
-    currentUser,
     temporaryComment,
+    notificationGroupId,
     changeRecordCommentText, 
     requestPostRecordComment,
     requestPostPushNotification
@@ -44,7 +45,7 @@ const RecordComment = (props: RecordCommentProps) => {
   
   const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
-    requestPostRecordComment(id, uid)
+    requestPostRecordComment(id, uid, notificationGroupId)
     setText('')
     Keyboard.dismiss()
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification) {
