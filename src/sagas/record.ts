@@ -169,12 +169,13 @@ function* handleRequestPostCommentNotification() {
 
 // 記録へのコメント送信リクエスト
 function* runRequestPostRecordComment(action: RequestPostRecordComment) {  
-  const { recordId, recordUserId } = action
+  const { recordId, recordUserId, notificationGroupId } = action
   const { temporaryComment } = yield select((state: RootState) => state.records)
   const { payload, error }: { payload?: RecordCommentType, error?: string } = yield call(
     requestPostRecordPost,
     recordId,
-    temporaryComment
+    temporaryComment,
+    notificationGroupId
   )
 
   if (payload && !error) {

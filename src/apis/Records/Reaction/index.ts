@@ -7,9 +7,9 @@ import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 import { requestCurrentGroupId } from '../../Groups/transfer'
 
 // 記録へのコメント送信
-export const requestPostRecordPost = async (recordId: string, text: string) => {
+export const requestPostRecordPost = async (recordId: string, text: string, notificationGroupId?: string) => {
   const currentUser = firebase.auth().currentUser
-  const currentGroupId = await requestCurrentGroupId()
+  const currentGroupId = notificationGroupId || await requestCurrentGroupId()
   const currentFirestoreTime = firebase.firestore.FieldValue.serverTimestamp()
   const currentDateTime = new Date
   const docId = factoryRandomCode(20)

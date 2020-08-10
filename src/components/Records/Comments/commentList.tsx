@@ -36,7 +36,9 @@ const RecordCommentList = (props: RecordCommentListProps) => {
     return <Loading size="small"/>
   }
 
-  const visibleCommnets = notificationGroupId ? comments : comments.filter(comment => comment.groupId === currentGroupId)
+  const groupId = notificationGroupId || currentGroupId
+
+  const visibleCommnets = comments.filter(comment => comment.groupId === groupId)
 
   const commentList = visibleCommnets.map(comment => ( 
     <RecordCommentItem 

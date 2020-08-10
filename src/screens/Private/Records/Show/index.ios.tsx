@@ -6,7 +6,7 @@ import { RecordShowProps } from '../../../../containers/Private/records/recordSh
 import { ResponseRecordType } from '../../../../types/Record'
 // import components
 import RecordItem from '../../../../components/Records/recordItem'
-import RecordComment from '../../../../components/Records/Comments/form'
+import RecordCommentForm from '../../../../components/Records/Comments/form'
 import RecordCommentList from '../../../../components/Records/Comments/commentList'
 import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
@@ -57,10 +57,11 @@ const RecordShowScreen = (props: RecordShowProps) => {
         behavior="padding" 
         keyboardVerticalOffset={90}
       >
-        <RecordComment
+        <RecordCommentForm
           record={record}
           currentUser={currentUser}
           temporaryComment={temporaryComment}
+          notificationGroupId={notificationGroupId}
           changeRecordCommentText={changeRecordCommentText}
           requestPostRecordComment={requestPostRecordComment}
           requestPostPushNotification={requestPostPushNotification}

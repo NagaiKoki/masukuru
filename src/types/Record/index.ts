@@ -237,6 +237,7 @@ export interface RequestPostRecordComment {
   type: typeof REQUEST_POST_RECORD_COMMENT
   recordId: string
   recordUserId: string 
+  notificationGroupId?: string
 }
 
 // コメントの送信成功
