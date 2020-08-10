@@ -5,7 +5,7 @@ import firebase, { db } from '../config/firebase'
 export const requestAppReview = async () => {
   await db.collection('users').doc(firebase.auth().currentUser.uid).get().then( async snap => {
     if (Platform.OS === 'ios' && StoreReview.isAvailableAsync() && !snap.data().isReviewed) {
-      await StoreReview.requestReview();
+      await StoreReview.requestReview()
       await snap.ref.update({ isReviewed: true })
     }
   })
