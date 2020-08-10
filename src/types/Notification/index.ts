@@ -37,6 +37,8 @@ export type NotificationType = {
   createdAt?: Timestamp
 }
 
+// type officialNotificationType = type: NotificationEventType, from: string, title: string, contents: string, readUserIds: string[], createdAt: TimeStamp
+
 export type NotificationEventType =  'official' | 'comment'
 
 // お知らせの取得
