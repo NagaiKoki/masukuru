@@ -17,6 +17,7 @@ const Form = (props: FormProps) => {
     <TextInput
       placeholder={placeholder}
       autoCapitalize={'none'}
+      autoCorrect={false}
       maxLength={maxLength}
       value={value}
       onChangeText={text => onChange(text)}
@@ -31,6 +32,7 @@ const TextInput = styled.TextInput`
   margin: 10px 0;
   border-radius: 5px;
   padding: 15px 15px;
+  font-size: 17px;
   background-color: ${COLORS.FORM_BACKGROUND};
   color: ${COLORS.BASE_BLACK};
 `

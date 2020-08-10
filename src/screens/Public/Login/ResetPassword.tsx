@@ -58,10 +58,12 @@ const Container = styled.View`
 
 const ResetForm = styled.TextInput`
   width: 90%;
+  height: 50px;
   align-self: center;
   padding: 15px;
   margin-top: 30px;
   border-radius: 5px;
+  font-size: 17px;
   background-color: ${COLORS.FORM_BACKGROUND};
   color: ${COLORS.BASE_BLACK};
 `

@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
+// components
+import Form from '../../../common/Form'
+// import constants
 import { COLORS } from '../../../constants/Styles';
+// import configs
 import firebase, { db } from '../../../config/firebase';
 
 const TutorialUserNameScreen = ({ navigation }) => {
@@ -40,12 +44,10 @@ const TutorialUserNameScreen = ({ navigation }) => {
       </TutorialTitle>
 
       <TutorialNameContainer>
-        <TutorialNameForm 
+        <Form
           placeholder='名前を入力する（3文字以上8文字以下）'
-          autoCapitalize={'none'}
-          autoCorrect={ false }
           maxLength={8}
-          onChangeText={ text => setUserName(text) }
+          onChange={setUserName}
         />
       </TutorialNameContainer>
 

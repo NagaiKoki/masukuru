@@ -89,9 +89,10 @@ const TrainingNameForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
   width: 70%;
+  height: 50px;
   margin: 8px 0;
   padding: 15px;
-  font-size: 15px;
+  font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
 
@@ -100,10 +101,11 @@ const AddUnitForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
   width: 17%;
+  height: 50px;
   margin: 10px 0;
   margin-right: 10px;
   padding: 15px;
-  font-size: 16px;
+  font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
 

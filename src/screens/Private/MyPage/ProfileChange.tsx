@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Image } from 'react-native';
+// import components
 import UserImage from '../../../components/Image/userImage';
+import Form from '../../../common/Form'
+// import utils
 import { ImageUpload } from '../../../utilities/cameraRoll';
+// import configs
 import { db } from '../../../config/firebase';
+// import constants
 import { COLORS } from '../../../constants/Styles';
 
 const ProfileChangeScreen = ({ route, navigation }) => {
@@ -67,7 +71,12 @@ const ProfileChangeScreen = ({ route, navigation }) => {
       </ProfileImageWrapper>
 
       <UserNameFormWrapper>
-        {renderUserNameForm}
+        <Form
+          placeholder='名前を入力する（3文字以上 8字以下）'
+          value={userName}
+          maxLength={8}
+          onChange={setUserName}
+        />
       </UserNameFormWrapper>
 
       <ProfileChangeSubmitBtn block onPress={ () => updateUserProfile() }>
