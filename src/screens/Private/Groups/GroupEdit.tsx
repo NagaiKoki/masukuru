@@ -5,6 +5,7 @@ import { COLORS } from '../../../constants/Styles';
 import { requestEditGroup } from '../../../apis/Groups/edit'
 // import componnets
 import { GroupImage, UnSettingGroupImage } from '../../../components/Image/groupImage'
+import Form from '../../../common/Form'
 // import lib
 import { ImageUpload } from '../../../utilities/cameraRoll';
 
@@ -44,14 +45,12 @@ const GroupEditScreen = ({ navigation, route }) => {
           <GroupImageText>グループ画像を変更する</GroupImageText>
         </GroupImageBtn>
         <GroupEditTitle>グループ名</GroupEditTitle>
-          <GroupEditForm
+          <Form
             placeholder='例）目指せスリム体型！（15文字まで）'
-            autoCapitalize={'none'}
             maxLength={15}
             value={name}
-            onChangeText={ text => setName(text) }
+            onChange={setName}
           />
-
         <GroupEditSubmitBtn onPress={() => handleSubmit()}>
           <GroupEditSubmitText>更新する</GroupEditSubmitText>
         </GroupEditSubmitBtn>
@@ -105,6 +104,7 @@ const GroupEditTitle = styled.Text`
 const GroupEditForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   width: 100%;
+  height: 50px;
   align-self: center;
   border-radius: 5px;
   padding: 15px 15px;

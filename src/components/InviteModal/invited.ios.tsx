@@ -1,6 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components';
 import Modal from 'react-native-modal'
+// import components
+import Form from '../../common/Form'
+// import constants
 import { COLORS } from '../../constants/Styles'
 
 interface InvitedCodeModalProps {
@@ -27,12 +30,10 @@ const InvitedCodeModal = (props: InvitedCodeModalProps) => {
         <InvitedModalTitle>6桁の招待コードを入力しよう！</InvitedModalTitle>
 
         <InvitedModalFormWrapper>
-          <InvitedModalForm 
+          <Form
             placeholder='6桁の招待コード'
-            autoCapitalize={'none'}
-            autoCorrect={ false }
-            onChangeText={ text => setCodeText(text) }
             maxLength={6}
+            onChange={setCodeText}
           />
         </InvitedModalFormWrapper>
         <InvitedSubText>※ 所属できるグループ数は5つまでです。</InvitedSubText>

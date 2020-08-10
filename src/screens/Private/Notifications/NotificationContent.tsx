@@ -18,7 +18,7 @@ interface NotificationContentProps {
 const NotificationContentScreen = (props: NotificationContentProps) => {
   const { route } = props
   const { item } = route.params
-  const { id, title, createdAt, contents } = item
+  const { title, createdAt, contents } = item
   const time = convertTimestampToString(createdAt, undefined)
 
   return (

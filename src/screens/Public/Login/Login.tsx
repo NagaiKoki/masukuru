@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
-import { COLORS } from '../../../constants/Styles';
-import { LoginUser } from "../../../apis/auth";
-import { emailValidator, passwordValidator } from '../../../validators/AuthValidator';
-import { GoogleLogin } from '../../../apis/auth'
+// import components
+import Form from '../../../common/Form'
 import Toast from '../../../components/Toaster';
+// import constants
+import { COLORS } from '../../../constants/Styles';
+// import apis
+import { LoginUser } from "../../../apis/auth";
+// import validators
+import { emailValidator, passwordValidator } from '../../../validators/AuthValidator';
 
 const LoginScreen = ({ route, navigation }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
@@ -125,10 +129,12 @@ const FormLable = styled.Text`
 const LoginTextForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   width: 100%;
+  height: 50px;
   align-self: center;
   border-radius: 5px;
   padding: 15px 15px;
   margin: 10px 0;
+  font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
 

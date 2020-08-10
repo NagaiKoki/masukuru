@@ -136,10 +136,12 @@ const FormSubText = styled.Text`
 const SignUpTextForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   width: 100%;
+  height: 50px;
   align-self: center;
   border-radius: 5px;
   padding: 15px 15px;
   margin: 10px 0;
+  font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
 const PrivacyWrapper = styled.Text`

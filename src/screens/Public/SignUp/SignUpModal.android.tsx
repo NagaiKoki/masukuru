@@ -1,8 +1,8 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
 import { COLORS } from '../../../constants/Styles';
-import { AppleLogin, GoogleLogin } from '../../../apis/auth'
+import { GoogleLogin } from '../../../apis/auth'
 import Icon from 'react-native-vector-icons/AntDesign';
 
 interface SignUpModalProps {
@@ -65,15 +65,6 @@ const CloseBar = styled.View`
   margin-bottom: 20px;
   border-radius: 60px;
   align-self: center;
-`
-
-const SignUpAppleBtn = styled.TouchableOpacity`
-  align-self: center;
-  margin-top: 20px;
-  width: 90%;
-  height: 44px;
-  border-radius: 5px;
-  background-color: #000;
 `
 
 const ButtonWrapper = styled.View`

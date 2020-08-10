@@ -21,7 +21,7 @@ export const requestNotifications = async () => {
       })
     })
   
-    await db.collection('users').doc(currentUserId).collection('notification').get().then(snap => {
+    await db.collection('users').doc(currentUserId).collection('notification').limit(20).get().then(snap => {
       snap.forEach(doc => {
         const data = doc.data()
         data.id = doc.ref.id
@@ -69,8 +69,8 @@ export const requestUnReadNotificationSize = async (uid: string) => {
   }
 }
 
-// 既読リクエスト
-export const requestReadNotification = async (id: string) => {
+// オフィシャル通知の既読リクエスト
+export const requestReadOfficialNotification = async (id: string) => {
   const currentUser = firebase.auth().currentUser
   let readNotification: boolean
   let payload: string
@@ -116,6 +116,7 @@ export const requestPostCommentNotification = async (recordUserId: string, recor
   }
 }
 
+// コメント通知のお知らせの既読リクエスト
 export const requestReadCommentNotification = async (id: string) => {
   const  currentUserId = firebase.auth().currentUser.uid
   const recordRef = db.collection('users').doc(currentUserId).collection('notification').doc(id)

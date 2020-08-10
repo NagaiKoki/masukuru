@@ -12,6 +12,8 @@ import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../../constants/
 import { createGroup } from '../../../apis/Groups/create';
 import firebase, { db } from '../../../config/firebase';
 import Loading from '../../../components/Loading'
+// import components
+import Form from '../../../common/Form'
 
 const TutorialGroupMakeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -112,11 +114,9 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
             <InvitedModalTitle>招待された6桁の文字を入力しよう！</InvitedModalTitle>
 
             <InvitedModalFormWrapper>
-              <InvitedModalForm 
+              <Form
                 placeholder='6桁の招待コード'
-                autoCapitalize={'none'}
-                autoCorrect={ false }
-                onChangeText={ text => setCodeText(text) }
+                onChange={setCodeText}
                 maxLength={6}
               />
             </InvitedModalFormWrapper>

@@ -37,11 +37,11 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const handleSubmitRecord = async () => {
     if (isLoading) return
     requestSubmitRecords(recordItems, word)
-    await requestAppReview()
     setTimeout(() => {
       navigation.navigate('mainContainer')
       initializeRecords()
     }, 2000)
+    await requestAppReview()
   }
 
   if (isLoading) {
