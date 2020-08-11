@@ -28,7 +28,7 @@ const NotificationBatchIcon = (props: NotificationProps) => {
 const BatchCointainer = styled.View`
   position: absolute;
   z-index: 1000;
-  top: -2px;
+  top: 3%;
   right: 28px;
   min-width: 22px;
   height: 22px;

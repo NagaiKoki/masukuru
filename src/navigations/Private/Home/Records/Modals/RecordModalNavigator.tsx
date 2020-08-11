@@ -4,10 +4,6 @@ import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components'
 import { COLORS } from '../../../../../constants/Styles'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-// import store
-import store from '../../../../../reducers'
-// import action
-import { initializeRecords } from '../../../../../actions/records'
 // import containers
 import RecordContainer from '../../../../../containers/Private/records/recordModal'
 import AddRecordContainer from '../../../../../containers/Private/records/addRecord'
@@ -18,7 +14,6 @@ const RecordModalNavigator = () => {
   const navigation = useNavigation()
 
   const handleCancelRecord = () => {
-    store.dispatch(initializeRecords())
     navigation.navigate('mainContainer')
   }
 
