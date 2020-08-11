@@ -6,3 +6,4 @@ export type SuggestRecordType = {
   createdAt: FirestoreTimestamp | Date
   updatedAt: FirestoreTimestamp | Date
 }
+
