@@ -6,7 +6,7 @@ import { SuggestRecordType } from '../../../types/Search/Record/suggest'
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 
 // サジェスト用にfirestoreに記録名と回数を保存する
-export const requestPutSuggestForRecordTimes = async (name: string) => {
+export const requestPutSuggestRecord = async (name: string) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentDateTime = new Date
   const suggestRef = db.collection('users').doc(currentUserId).collection('suggests').where('name', "==", name).get()
@@ -31,6 +31,30 @@ export const requestPutSuggestForRecordTimes = async (name: string) => {
     })
 
     return { success: 'success' }
+  } catch (error) {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
+}
+
+// サジェストで出す候補を取得する
+export const requestFetchSuggestRecord = async (name?: string) => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const suggestRefNoNmae = db.collection('users').doc(currentUserId).collection('suggests').orderBy("times", "desc").limit(5).get()
+  const suggestRefWithName = db.collection('users').doc(currentUserId).collection('suggests').where('name', "==", name).get()
+  const suggestRef = name ? suggestRefWithName : suggestRefNoNmae
+
+  let names: string[]
+
+  try {
+    await suggestRef.then(snap => {
+      snap.forEach(doc => {
+        const suggestData = doc.data() as SuggestRecordType
+        const name = suggestData.name
+        names.push(name)
+      })
+    })
+
+    return { payload: names }
   } catch (error) {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
