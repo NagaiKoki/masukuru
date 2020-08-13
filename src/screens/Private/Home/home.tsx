@@ -71,7 +71,7 @@ const HomeScreen = (props: HomeProps) => {
       }
     }
     putNotificationToken()
-  }, [currentUser])
+  }, [currentUser])    
 
   // メンバーリスト
   const renderMemberList = 

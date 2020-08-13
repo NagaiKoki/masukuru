@@ -9,7 +9,7 @@ import { RequestReadNotification, RequestPoshPushNotification, NotificationType 
 import {
   requestNotifications,
   requestUnReadNotificationSize,
-  requestReadNotification,
+  requestReadOfficialNotification,
 } from '../apis/Notifications'
 import { requestSendPushNotification } from '../apis/Push'
 // import actions
@@ -67,7 +67,7 @@ function* handleRequestFetchNotReadNotificationNumber() {
 function* runRequestReadNotification(action: RequestReadNotification) {
   const { id } = action
   const { payload, readNotification, error }: { payload?: string, readNotification?: string,  error?: string } = yield call(
-    requestReadNotification,
+    requestReadOfficialNotification,
     id
   )
 

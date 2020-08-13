@@ -45,6 +45,8 @@ export const requestFetchSuggestRecord = async (name?: string) => {
 
   let names: string[]
 
+  console.log('hoge')
+
   try {
     await suggestRef.then(snap => {
       snap.forEach(doc => {

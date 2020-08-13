@@ -7,7 +7,7 @@ import {
 
 type FirestoreTimestamp = import("firebase").firestore.Timestamp;
 
-export interface initialSuggestRecordState {
+export interface SuggestRecordState {
   isLoading: boolean
   recordNames: string[]
   error: string
@@ -32,5 +32,10 @@ export interface SuccessFetchSuggestRecords {
 
 export interface FailureFetchSuggestRecords {
   type: typeof FAILURE_FETCH_SUGGEST_RECORDS
-  payload: string
+  error: string
 }
+
+export type SuggestRecordActionTypes = 
+  | RequestFetchSuggestRecords
+  | SuccessFetchSuggestRecords
+  | FailureFetchSuggestRecords
