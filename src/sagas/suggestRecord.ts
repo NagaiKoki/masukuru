@@ -1,4 +1,4 @@
-import { fork, call, put, takeEvery } from 'redux-saga/effects'
+import { fork, call, put, takeLatest } from 'redux-saga/effects'
 // import apis
 import { requestFetchSuggestRecord } from '../apis/Search/Records/suggest'
 // import action types 
@@ -33,9 +33,9 @@ function* runRequestFetchSuggestRecords (action: RequestFetchSuggestRecords) {
 
 function* handleRequestFetchSuggestRecords () {
   const lazily = createLazily(400)
-  yield takeEvery(REQUEST_FETCH_SUGGEST_RECORDS, lazily, runRequestFetchSuggestRecords)
+  yield takeLatest(REQUEST_FETCH_SUGGEST_RECORDS, lazily, runRequestFetchSuggestRecords)
 }
 
 export default function* suggestRecord () {
-  fork(handleRequestFetchSuggestRecords)
+  yield fork(handleRequestFetchSuggestRecords)
 }

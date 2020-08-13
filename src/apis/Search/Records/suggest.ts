@@ -37,15 +37,12 @@ export const requestPutSuggestRecord = async (name: string) => {
 }
 
 // サジェストで出す候補を取得する
-export const requestFetchSuggestRecord = async (name?: string) => {
+export const requestFetchSuggestRecord = async (keyword?: string) => {
   const currentUserId = firebase.auth().currentUser.uid
   const suggestRefNoNmae = db.collection('users').doc(currentUserId).collection('suggests').orderBy("times", "desc").limit(5).get()
-  const suggestRefWithName = db.collection('users').doc(currentUserId).collection('suggests').where('name', "==", name).get()
-  const suggestRef = name ? suggestRefWithName : suggestRefNoNmae
-
-  let names: string[]
-
-  console.log('hoge')
+  const suggestRefWithName = db.collection('users').doc(currentUserId).collection('suggests').orderBy('name').startAt(keyword).endAt(keyword + '\uf8ff').get()
+  const suggestRef = keyword ? suggestRefWithName : suggestRefNoNmae
+  let names: string[] = []
 
   try {
     await suggestRef.then(snap => {
@@ -55,9 +52,10 @@ export const requestFetchSuggestRecord = async (name?: string) => {
         names.push(name)
       })
     })
-
+    console.log(names)
     return { payload: names }
   } catch (error) {
+    console.log(error)
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }

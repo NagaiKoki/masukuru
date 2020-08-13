@@ -41,7 +41,8 @@ const suggestRecordReducer = (
       const { error } = action
       return {
         ...state,
-        error
+        error,
+        isLoading: false
       }
     }
     default:

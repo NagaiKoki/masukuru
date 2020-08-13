@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { COLORS } from '../../constants/Styles'
 import Icon from 'react-native-vector-icons/AntDesign';
 // import types
-import { RootState } from '../../reducers/'
+import { selectSuggestRecordValue } from '../../selectors/Records/form'
 // import actions
 import { requestFetchSuggestRecords } from '../../actions/Search/suggestRecord'
+// import components
+import SearchSuggestList from '../../common/Search/Suggests/suggestList'
+import { RootState } from '../../reducers';
 
 interface AddRecordFormProps {
   temporaryName: string,
@@ -51,6 +54,7 @@ interface AddRecordFormProps {
 
 const AddRecordForm = (props: AddRecordFormProps) => {
   const dispatch = useDispatch()
+  const { isLoading, recordNames } = useSelector((state: RootState) => state.suggestRecords)
   const [count, setCount] = useState(3)
   const { 
     temporaryName,
@@ -118,10 +122,15 @@ const AddRecordForm = (props: AddRecordFormProps) => {
   }
 
   const handleOnFocus = () => {
-    dispatch(requestFetchSuggestRecords('hoge'))
+    dispatch(requestFetchSuggestRecords(''))
   }
 
-  console.log(useSelector((state: RootState) => state.suggestRecords.isLoading))
+  const handleOnChange = (text: string) => {
+    onChangeTrainingName(text)
+    dispatch(requestFetchSuggestRecords(text))
+  }
+
+  
 
   const renderUnitForm = () => {
     const components = []
@@ -155,6 +164,8 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     return components
   }
 
+  console.log(recordNames)
+
   return (
     <AddRecordWrapper>
       <AddRecordItem>
@@ -165,7 +176,11 @@ const AddRecordForm = (props: AddRecordFormProps) => {
           autoCorrect={ false }
           onFocus={handleOnFocus}
           defaultValue={temporaryName}
-          onChangeText={ (text: string) => onChangeTrainingName(text) }
+          onChangeText={ (text: string) => handleOnChange(text) }
+        />
+        <SearchSuggestList
+          names={recordNames}
+          isLoading={isLoading}
         />
       </AddRecordItem>
       {renderUnitForm()}
