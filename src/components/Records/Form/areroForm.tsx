@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { COLORS } from '../../constants/Styles'
+import { COLORS } from '../../../constants/Styles'
 
 interface AddAeroProps {
   temporaryName: string

@@ -1,15 +1,13 @@
 import React, { useState , Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components'
-import { useDispatch, useSelector } from 'react-redux'
-import { COLORS } from '../../constants/Styles'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/AntDesign';
-// import types
-import { selectSuggestRecordValue } from '../../selectors/Records/form'
 // import actions
-import { requestFetchSuggestRecords } from '../../actions/Search/suggestRecord'
+import { requestFetchSuggestRecords } from '../../../actions/Search/suggestRecord'
 // import components
-import SearchSuggestList from '../../common/Search/Suggests/suggestList'
-import { RootState } from '../../reducers';
+import SearchSuggestList from '../../../common/Search/Suggests/suggestList'
+import { RootState } from '../../../reducers';
 
 interface AddRecordFormProps {
   temporaryName: string,
@@ -54,7 +52,7 @@ interface AddRecordFormProps {
 
 const AddRecordForm = (props: AddRecordFormProps) => {
   const dispatch = useDispatch()
-  const { isLoading, recordNames } = useSelector((state: RootState) => state.suggestRecords)
+  const { isLoading, recordNames } = useSelector((state: RootState) => state.suggestRecords, shallowEqual)
   const [count, setCount] = useState(3)
   const { 
     temporaryName,
@@ -130,8 +128,6 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     dispatch(requestFetchSuggestRecords(text))
   }
 
-  
-
   const renderUnitForm = () => {
     const components = []
     for(let size = 1; size <= count; size++) {
@@ -163,8 +159,6 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     }
     return components
   }
-
-  console.log(recordNames)
 
   return (
     <AddRecordWrapper>
