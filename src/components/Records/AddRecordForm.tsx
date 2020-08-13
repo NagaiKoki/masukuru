@@ -1,8 +1,12 @@
 import React, { useState , Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
 import { COLORS } from '../../constants/Styles'
 import Icon from 'react-native-vector-icons/AntDesign';
-import { TouchableHighlight } from 'react-native';
+// import types
+import { RootState } from '../../reducers/'
+// import actions
+import { requestFetchSuggestRecords } from '../../actions/Search/suggestRecord'
 
 interface AddRecordFormProps {
   temporaryName: string,
@@ -46,6 +50,7 @@ interface AddRecordFormProps {
 }
 
 const AddRecordForm = (props: AddRecordFormProps) => {
+  const dispatch = useDispatch()
   const [count, setCount] = useState(3)
   const { 
     temporaryName,
@@ -112,6 +117,12 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     setCount( count - 1 )
   }
 
+  const handleOnFocus = () => {
+    dispatch(requestFetchSuggestRecords('hoge'))
+  }
+
+  console.log(useSelector((state: RootState) => state.suggestRecords.isLoading))
+
   const renderUnitForm = () => {
     const components = []
     for(let size = 1; size <= count; size++) {
@@ -152,6 +163,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
           placeholder="例）ベンチプレス"
           autoCapitalize={'none'}
           autoCorrect={ false }
+          onFocus={handleOnFocus}
           defaultValue={temporaryName}
           onChangeText={ (text: string) => onChangeTrainingName(text) }
         />

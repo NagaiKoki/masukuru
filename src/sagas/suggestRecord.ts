@@ -14,6 +14,8 @@ import {
   successFetchSuggestRecords,
   failureFetchSuggestRecords
 } from '../actions/Search/suggestRecord'
+// import lazy
+import { createLazily } from '.'
 
 function* runRequestFetchSuggestRecords (action: RequestFetchSuggestRecords) {
   const { name } = action
@@ -30,7 +32,8 @@ function* runRequestFetchSuggestRecords (action: RequestFetchSuggestRecords) {
 }
 
 function* handleRequestFetchSuggestRecords () {
-  yield takeEvery(REQUEST_FETCH_SUGGEST_RECORDS, runRequestFetchSuggestRecords)
+  const lazily = createLazily(400)
+  yield takeEvery(REQUEST_FETCH_SUGGEST_RECORDS, lazily, runRequestFetchSuggestRecords)
 }
 
 export default function* suggestRecord () {
