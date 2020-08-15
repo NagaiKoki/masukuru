@@ -20,9 +20,11 @@ const SuggestItem = (props: SuggestItemProps) => {
 export default SuggestItem
 
 const ItemWrapper = styled.View`
-
+  padding: 0px 10px;
+  margin: 5px 0;
 `
 
 const ItemName = styled.Text`
+
   color: ${COLORS.BASE_BLACK};
 `

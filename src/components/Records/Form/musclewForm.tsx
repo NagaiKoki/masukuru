@@ -1,13 +1,15 @@
 import React, { useState , Dispatch, SetStateAction} from 'react';
+import { ScrollView } from 'react-native'
 import styled from 'styled-components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { COLORS } from '../../../constants/Styles'
-import Icon from 'react-native-vector-icons/AntDesign';
+// import types
+import { RootState } from '../../../reducers';
 // import actions
 import { requestFetchSuggestRecords } from '../../../actions/Search/suggestRecord'
 // import components
 import SearchSuggestList from '../../../common/Search/Suggests/suggestList'
-import { RootState } from '../../../reducers';
+import MusclewSetBtn from './SetBtn'
 
 interface AddRecordFormProps {
   temporaryName: string,
@@ -54,6 +56,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
   const dispatch = useDispatch()
   const { isLoading, recordNames } = useSelector((state: RootState) => state.suggestRecords, shallowEqual)
   const [count, setCount] = useState(3)
+  const [visibleSuggest, setVisibleSuggest] = useState(false)
   const { 
     temporaryName,
     onChangeTrainingName,
@@ -120,7 +123,12 @@ const AddRecordForm = (props: AddRecordFormProps) => {
   }
 
   const handleOnFocus = () => {
+    setVisibleSuggest(true)
     dispatch(requestFetchSuggestRecords(''))
+  }
+
+  const handleOnBlur = () => {
+    setVisibleSuggest(false)
   }
 
   const handleOnChange = (text: string) => {
@@ -164,34 +172,40 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     <AddRecordWrapper>
       <AddRecordItem>
         <AddRecordName>種目</AddRecordName>
-        <TrainingNameForm
-          placeholder="例）ベンチプレス"
-          autoCapitalize={'none'}
-          autoCorrect={ false }
-          onFocus={handleOnFocus}
-          defaultValue={temporaryName}
-          onChangeText={ (text: string) => handleOnChange(text) }
-        />
+        <TrainingFormWrapper>
+          <TrainingNameForm
+            placeholder="例）ベンチプレス"
+            autoCapitalize={'none'}
+            autoCorrect={ false }
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+            defaultValue={temporaryName}
+            onChangeText={ (text: string) => handleOnChange(text) }
+          />
+        </TrainingFormWrapper>
+      </AddRecordItem>
+       {renderUnitForm()}
+      <MusclewSetBtn
+        handleAddSet={handleAddSet}
+        handleDeleteSet={handleDeleteSet}
+      />
+      <SuggestListWrapper
+        isShow={visibleSuggest}
+        style={{ flex: 1 }} 
+        behavior="padding" 
+        keyboardVerticalOffset={190}
+      >
         <SearchSuggestList
           names={recordNames}
           isLoading={isLoading}
         />
-      </AddRecordItem>
-      {renderUnitForm()}
-      <AddSetWrapper>
-        <AddSetText>セット数</AddSetText>
-        <AddSetBtn onPress={handleAddSet}>
-          <Icon name="plus" size={20} style={{ color: COLORS.SUB_BLACK, marginRight: 10 }} />
-        </AddSetBtn>
-        <AddSetBtn onPress={handleDeleteSet}>
-          <Icon name="minus" size={20} style={{ color: COLORS.SUB_BLACK }} />
-        </AddSetBtn>
-      </AddSetWrapper>
+      </SuggestListWrapper>
     </AddRecordWrapper> 
   )
 }
 
 const AddRecordWrapper = styled.View`
+  position: relative;
   margin: 0 auto;
   width: 90%;
   padding: 20px 0 40px 0;
@@ -231,11 +245,16 @@ const AddUnitForm = styled.TextInput`
   color: ${COLORS.BASE_BLACK};
 `
 
+const TrainingFormWrapper = styled.View`
+  width: 70%;
+  position: relative;
+`
+
 const TrainingNameForm = styled.TextInput`
   align-self: center;
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
-  width: 70%;
+  width: 100%;
   height: 50px;
   margin: 8px 0;
   padding: 15px;
@@ -256,7 +275,16 @@ const AddSetText = styled.Text`
   font-size: 14px;
 `
 
-const AddSetBtn = styled.TouchableOpacity`
+const AddSetBtn = styled.TouchableOpacity``
+
+const SuggestListWrapper = styled.KeyboardAvoidingView<{ isShow: boolean }>`
+  display: ${props => props.isShow ? 'flex' : 'none'};
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: ${COLORS.BASE_WHITE};
 `
 
 export default AddRecordForm
