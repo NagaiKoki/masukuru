@@ -136,6 +136,23 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     dispatch(requestFetchSuggestRecords(text))
   }
 
+  const renderTrainingNameForm =
+  <AddRecordItem>
+    <AddRecordName>種目</AddRecordName>
+    <TrainingFormWrapper>
+      <TrainingNameForm
+        placeholder="例）ベンチプレス"
+        autoCapitalize={'none'}
+        autoCorrect={ false }
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
+        defaultValue={temporaryName}
+        onChangeText={ (text: string) => handleOnChange(text) }
+      />
+    </TrainingFormWrapper>
+  </AddRecordItem>
+
+
   const renderUnitForm = () => {
     const components = []
     for(let size = 1; size <= count; size++) {
@@ -168,47 +185,42 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     return components
   }
 
+  const renderSuggestList = 
+    <SuggestListWrapper
+      isShow={visibleSuggest}
+      style={{ flex: 1 }} 
+      behavior="padding" 
+      keyboardVerticalOffset={165}
+    >
+      <SearchSuggestList
+        names={recordNames}
+        isLoading={isLoading}
+      />
+   </SuggestListWrapper>
+
   return (
-    <AddRecordWrapper>
-      <AddRecordItem>
-        <AddRecordName>種目</AddRecordName>
-        <TrainingFormWrapper>
-          <TrainingNameForm
-            placeholder="例）ベンチプレス"
-            autoCapitalize={'none'}
-            autoCorrect={ false }
-            onFocus={handleOnFocus}
-            onBlur={handleOnBlur}
-            defaultValue={temporaryName}
-            onChangeText={ (text: string) => handleOnChange(text) }
-          />
-        </TrainingFormWrapper>
-      </AddRecordItem>
+   <AddRecordContainer>
+      <AddRecordWrapper>
+      {renderTrainingNameForm}
        {renderUnitForm()}
       <MusclewSetBtn
         handleAddSet={handleAddSet}
         handleDeleteSet={handleDeleteSet}
       />
-      <SuggestListWrapper
-        isShow={visibleSuggest}
-        style={{ flex: 1 }} 
-        behavior="padding" 
-        keyboardVerticalOffset={190}
-      >
-        <SearchSuggestList
-          names={recordNames}
-          isLoading={isLoading}
-        />
-      </SuggestListWrapper>
     </AddRecordWrapper> 
+      {renderSuggestList}
+   </AddRecordContainer>
   )
 }
 
-const AddRecordWrapper = styled.View`
+const AddRecordContainer = styled.View`
   position: relative;
   margin: 0 auto;
   width: 90%;
   padding: 20px 0 40px 0;
+`
+
+const AddRecordWrapper = styled.View`
 `
 
 const AddRecordItem = styled.View`
@@ -261,21 +273,6 @@ const TrainingNameForm = styled.TextInput`
   font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
-
-const AddSetWrapper = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 20px;
-`
-
-const AddSetText = styled.Text`
-  margin-right: 10px;
-  color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
-`
-
-const AddSetBtn = styled.TouchableOpacity``
 
 const SuggestListWrapper = styled.KeyboardAvoidingView<{ isShow: boolean }>`
   display: ${props => props.isShow ? 'flex' : 'none'};

@@ -32,13 +32,8 @@ const SearchSuggestList = (props: SearchSuggestProps) => {
 
 const ListWrapper = styled.View`  
   background: ${COLORS.BASE_WHITE};
-  border-right-color: ${COLORS.BASE_BORDER_COLOR};
-  border-right-width: 1px;
-  border-left-color: ${COLORS.BASE_BORDER_COLOR};
-  border-left-width: 1px;
-  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
-  border-bottom-width: 1px;
-  width: 100%;
+  width: 120%;
+  align-self: center;
 `
 
 export default SearchSuggestList
