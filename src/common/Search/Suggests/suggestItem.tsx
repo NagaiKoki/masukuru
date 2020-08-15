@@ -31,7 +31,7 @@ const SuggestItem = (props: SuggestItemProps) => {
 export default SuggestItem
 
 const ItemWrapper = styled.View`
-  padding: 7px 25px;
+  padding: 8px 30px;
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 1px;
 `
@@ -41,6 +41,6 @@ const ItemNameWrapper = styled.TouchableOpacity`
 
 const ItemName = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
 `

@@ -24,6 +24,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           autoCorrect={ false }
           defaultValue={temporaryName}
           onChangeText={ (text: string) => onChangeTrainingName(text) }
+          returnKeyType="done"
         />
       </AddRecordItem>
       <AddRecordItem>
@@ -36,6 +37,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           keyboardType={'numeric'}
           autoCorrect={ false }
           onChangeText={ (text: string) => onChangeDistance(text) }
+          returnKeyType="done"
         />
         <AddRecordUnitName> km</AddRecordUnitName>
       </AddRecordItem>
@@ -49,6 +51,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           keyboardType={'numeric'}
           autoCorrect={ false }
           onChangeText={ (text: string) => onChangeTime(text) }
+          returnKeyType="done"
         />
         <AddRecordUnitName> 分</AddRecordUnitName>
       </AddRecordItem>

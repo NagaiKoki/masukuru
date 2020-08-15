@@ -167,6 +167,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
               defaultValue={String(eval('amount' + String(size)))}
               keyboardType={'numeric'}
               autoCorrect={ false }
+              returnKeyType="done"
               onChangeText={ (text: number) => handleSetAmount(size, text) }
           />
           <AddRecordUnitName>/ 回</AddRecordUnitName>
@@ -176,6 +177,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
               maxLength={5}
               defaultValue={String(eval('weight' + String(size)))}
               keyboardType={'numeric'}
+              returnKeyType="done"
               autoCorrect={ false }
               onChangeText={ (text: number) => handleSetWeight(size, text) }
           />
