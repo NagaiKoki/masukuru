@@ -1,18 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Keyboard } from 'react-native'
 // import constants
 import { COLORS } from '../../../constants/Styles'
 
 interface SuggestItemProps {
   name: string
+  handleOnChange: (keyword: string) => void
 }
 
 const SuggestItem = (props: SuggestItemProps) => {
-  const { name } = props
+  const { name, handleOnChange } = props
+
+  const handleOnClick = () => {
+    handleOnChange(name)
+    Keyboard.dismiss()
+  }
 
   return (
     <ItemWrapper>
-      <ItemName>{name}</ItemName>
+      <ItemNameWrapper onPress={handleOnClick}>
+        <ItemName>
+          {name}
+        </ItemName>
+      </ItemNameWrapper>
     </ItemWrapper>
   )
 }
@@ -25,8 +36,11 @@ const ItemWrapper = styled.View`
   border-top-width: 1px;
 `
 
+const ItemNameWrapper = styled.TouchableOpacity`
+`
+
 const ItemName = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
 `

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -195,12 +195,13 @@ const AddRecordScreen = (props: AddRecordProps) => {
   }
 
   return (
-    <AddRecordContainer>
+    <AddRecordContainer keyboardShouldPersistTaps="always">
       <KeyboardAwareScrollView 
         resetScrollToCoords={{ x: 0, y: 0 }}
         extraHeight={120}
         contentContainerStyle={style.container}
         scrollEnabled={false}
+        keyboardShouldPersistTaps="always"
       >
       <Toast
         message={error}

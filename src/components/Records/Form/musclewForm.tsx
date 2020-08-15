@@ -1,5 +1,4 @@
 import React, { useState , Dispatch, SetStateAction} from 'react';
-import { ScrollView } from 'react-native'
 import styled from 'styled-components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { COLORS } from '../../../constants/Styles'
@@ -124,6 +123,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
 
   const handleOnFocus = () => {
     setVisibleSuggest(true)
+    if (recordNames.length) return
     dispatch(requestFetchSuggestRecords(''))
   }
 
@@ -147,6 +147,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         defaultValue={temporaryName}
+        returnKeyType="done"
         onChangeText={ (text: string) => handleOnChange(text) }
       />
     </TrainingFormWrapper>
@@ -191,23 +192,25 @@ const AddRecordForm = (props: AddRecordFormProps) => {
       style={{ flex: 1 }} 
       behavior="padding" 
       keyboardVerticalOffset={165}
+      keyboardShouldPersistTaps="always"
     >
       <SearchSuggestList
         names={recordNames}
         isLoading={isLoading}
+        handleOnChange={handleOnChange}
       />
    </SuggestListWrapper>
 
   return (
    <AddRecordContainer>
       <AddRecordWrapper>
-      {renderTrainingNameForm}
-       {renderUnitForm()}
-      <MusclewSetBtn
-        handleAddSet={handleAddSet}
-        handleDeleteSet={handleDeleteSet}
-      />
-    </AddRecordWrapper> 
+        {renderTrainingNameForm}
+        {renderUnitForm()}
+        <MusclewSetBtn
+          handleAddSet={handleAddSet}
+          handleDeleteSet={handleDeleteSet}
+        />
+     </AddRecordWrapper>
       {renderSuggestList}
    </AddRecordContainer>
   )
