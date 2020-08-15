@@ -6,7 +6,7 @@ import { COLORS } from '../../../constants/Styles'
 // import components
 import SettingList from '../../../components/Setting/settingList'
 
-const SettingScreen = ({ navigation }: { navigation: StackNavigationProp<{}> }) => {
+const SettingScreen = ({ navigation }: { navigation: StackNavigationProp<{"settingPush"}> }) => {
   return (
     <SettingContainer>
       <SettingList 
@@ -19,5 +19,6 @@ const SettingScreen = ({ navigation }: { navigation: StackNavigationProp<{}> }) 
 export default SettingScreen
 
 const SettingContainer = styled.View`
+  flex: 1;
   background: ${COLORS.BASE_BACKGROUND};
 `

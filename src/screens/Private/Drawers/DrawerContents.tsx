@@ -188,6 +188,17 @@ const DrawerContent = (props: DrawerProps) => {
     )
   }
 
+  const renderSettingItem = () => {
+    return (
+      <DrawerListItem>
+        <DrawerListItemBtn block onPress={ () => navigation.navigate('setting') }>
+          <Icon name="settings" size={25} color={COLORS.BASE_BORDER_COLOR}/>
+          <DrawerListItemText>設定</DrawerListItemText>
+        </DrawerListItemBtn>
+      </DrawerListItem>
+    )
+  }
+
   // ログアウト
   const renderLogoutItem = () => {
     return (
@@ -220,6 +231,7 @@ const DrawerContent = (props: DrawerProps) => {
         {renderInvideItem()}
         {renderInvidedItem()}
         {renderFeedbackItem()}
+        {renderSettingItem()}
         {renderLogoutItem()}
         {/* グループを切り替えるモーダル */}
         <TranferModal 

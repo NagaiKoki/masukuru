@@ -9,6 +9,8 @@ import Loading from '../../../components/Loading'
 import MenuScreen from '../../../screens/Private/Records/Menus'
 import GroupInfoScreen from '../../../screens/Private/Groups/GroupInfo'
 import GroupEditScreen from '../../../screens/Private/Groups/GroupEdit'
+import SettingScreen from '../../../screens/Private/Setting'
+import SettingPushScreen from '../../../screens/Private/Setting/Push'
 // import navigator
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 import HomeNavigator from './HomeNavigator'
@@ -142,6 +144,31 @@ const MainNavigator = () => {
         })}
       />
 
+      <MainStack.Screen
+        name="setting"
+        component={SettingScreen}
+        options={({}) => ({
+          headerBackTitleVisible: false,
+          headerTitle: '設定',
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
+        })}
+      />
+
+      <MainStack.Screen
+        name="settingPush"
+        component={SettingPushScreen}
+        options={({}) => ({
+          headerBackTitleVisible: false,
+          headerTitle: '通知',
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
+        })}
+      />
    </MainStack.Navigator>
   );
 }

@@ -1,23 +1,37 @@
 import React from 'react'
 import styled from 'styled-components'
 import { StackNavigationProp } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome'
+// import constants
 import { COLORS } from '../../constants/Styles';
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
-// import types
+// import components
+import Item from '../../common/List/item'
 
 interface SettingListProps {
-  navigation: StackNavigationProp<{}>
+  navigation: StackNavigationProp<{'settingPush'}>
 }
 
 const SettingList = (props: SettingListProps) => {
   const { navigation } = props
 
+  const handleOnNavigate = () => {
+    navigation.navigate('settingPush')
+  }
+
+  const renderIcon =
+  <Icon 
+    name="angle-right" 
+    size={15}
+    style={{ color: COLORS.BASE_BLACK }}
+  /> 
+
   return (
     <SettingListContainer>
-      <SettingItemWrapper>
-        <SettingItemText>通知</SettingItemText>
-        <Icon name="arrow-right" size={25} />
-      </SettingItemWrapper>
+      <Item 
+        title="通知"
+        icon={renderIcon}
+        handleOnClick={handleOnNavigate}
+      />
     </SettingListContainer>
   )
 }
@@ -26,13 +40,7 @@ export default SettingList
 
 const SettingListContainer = styled.View`
   background: ${COLORS.BASE_WHITE};
-`
-
-const SettingItemWrapper = styled.View`
-  padding: 50px 0;
-`
-
-const SettingItemText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  font-size: 18px;
+  margin: 40px 0;
+  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  border-top-width: 1px;
 `
