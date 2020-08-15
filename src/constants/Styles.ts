@@ -5,6 +5,7 @@ export const COLORS = {
   BASE_MUSCLEW: '#FFA000',
 
   BASE_BORDER_COLOR: '#a1a6ab',
+  BORDER_COLOR_1: '#c7c7c7',
 
   BASE_WHITE: '#fff',
   BASE_BLACK: '#484848',

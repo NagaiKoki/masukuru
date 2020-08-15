@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Keyboard } from 'react-native'
 // import components
-import Loading from '../../../components/Loading'
 import SuggestItem from  './suggestItem'
 // import constants
 import { COLORS } from '../../../constants/Styles'
@@ -15,13 +14,7 @@ interface SearchSuggestProps {
 }
 
 const SearchSuggestList = (props: SearchSuggestProps) => {
-  const { names, isLoading, handleOnChange } = props
-
-  if (isLoading) {
-    return (
-      <Loading size='small' />
-    )
-  }
+  const { names, handleOnChange } = props
 
   const suggests = names.map((name: string, index: number) => (
     <SuggestItem key={index} name={name} handleOnChange={handleOnChange} />
@@ -46,8 +39,8 @@ const ListWrapper = styled.View`
 `
 
 const CloseItemWrapper = styled.View`
-  padding: 7px 30px;
-  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  padding: 10px 30px;
+  border-top-color: ${COLORS.BORDER_COLOR_1};
   border-top-width: 1px;
 `
 

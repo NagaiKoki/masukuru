@@ -1,4 +1,4 @@
-import React, { useState , Dispatch, SetStateAction} from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { COLORS } from '../../../constants/Styles'
@@ -97,6 +97,10 @@ const AddRecordForm = (props: AddRecordFormProps) => {
     setWeight9
   } = props
 
+  useEffect(() => {
+    dispatch(requestFetchSuggestRecords(''))
+  }, [])
+
   // 回数のstate更新
   const handleSetAmount = (size: number, number: number) => {
     if (!number) return
@@ -193,7 +197,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
       isShow={visibleSuggest}
       style={{ flex: 1 }} 
       behavior="padding" 
-      keyboardVerticalOffset={165}
+      keyboardVerticalOffset={190}
       keyboardShouldPersistTaps="always"
     >
       <SearchSuggestList
