@@ -19,7 +19,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
       <AddRecordItem>
         <AddRecordName>種目</AddRecordName>
         <TrainingNameForm
-          placeholder="例）ベンチプレス"
+          placeholder="例）ランニング"
           autoCapitalize={'none'}
           autoCorrect={ false }
           defaultValue={temporaryName}
