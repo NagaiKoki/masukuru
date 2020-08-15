@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { COLORS } from '../../constants/Styles'
+import { COLORS } from '../../../constants/Styles'
 
 interface AddAeroProps {
   temporaryName: string
@@ -19,11 +19,12 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
       <AddRecordItem>
         <AddRecordName>種目</AddRecordName>
         <TrainingNameForm
-          placeholder="例）ベンチプレス"
+          placeholder="例）ランニング"
           autoCapitalize={'none'}
           autoCorrect={ false }
           defaultValue={temporaryName}
           onChangeText={ (text: string) => onChangeTrainingName(text) }
+          returnKeyType="done"
         />
       </AddRecordItem>
       <AddRecordItem>
@@ -36,6 +37,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           keyboardType={'numeric'}
           autoCorrect={ false }
           onChangeText={ (text: string) => onChangeDistance(text) }
+          returnKeyType="done"
         />
         <AddRecordUnitName> km</AddRecordUnitName>
       </AddRecordItem>
@@ -49,6 +51,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           keyboardType={'numeric'}
           autoCorrect={ false }
           onChangeText={ (text: string) => onChangeTime(text) }
+          returnKeyType="done"
         />
         <AddRecordUnitName> 分</AddRecordUnitName>
       </AddRecordItem>

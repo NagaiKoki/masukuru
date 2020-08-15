@@ -26,7 +26,7 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
         headerRight: () => {
           return (
             <HeaderSaveBtn onPress={ () => handleSubmitRecord()} disabled={isLoading} >
-              <HeaderSaveTitle>送信する</HeaderSaveTitle>
+              <HeaderSaveTitle>{ !isLoading ? '送信する' : '送信中...' }</HeaderSaveTitle>
             </HeaderSaveBtn>
           )
         }
