@@ -12,14 +12,14 @@ export const requestPutSuggestRecord = async (name: string) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentDateTime = new Date
   const suggestRef = db.collection('users').doc(currentUserId).collection('suggests').where('name', "==", name).get()
-
+  
   try {
-    await suggestRef.then(snap => {
+    await suggestRef.then(async snap => {
       if (!snap.empty) {
-        snap.forEach(doc => {
+        snap.forEach(async doc => {
           const suggestData = doc.data() as SuggestRecordType
           const times: number = suggestData.times
-          doc.ref.update({ time: times + 1, updatedAt: currentDateTime })
+          await doc.ref.update({ times: times + 1, updatedAt: currentDateTime })
         })
       } else {
         const suggestObj: SuggestRecordType = {
@@ -28,12 +28,13 @@ export const requestPutSuggestRecord = async (name: string) => {
           createdAt: currentDateTime,
           updatedAt: currentDateTime
         }
-        db.collection('users').doc(currentUserId).collection('suggests').add(suggestObj)
+        await db.collection('users').doc(currentUserId).collection('suggests').add(suggestObj)
       }
     })
 
     return { success: 'success' }
   } catch (error) {
+     console.log(error)
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
