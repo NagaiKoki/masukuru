@@ -2,34 +2,51 @@
 import firebase, { db } from '../../config/firebase'
 // import types
 import { UserType } from '../../types/User'
+import { SettingPushNotificationType, ResponseSettingType } from '../../types/Setting'
 
 export const requestFetchSettings = async () => {
   const currentUserId = firebase.auth().currentUser.uid
   const userRef = db.collection('users').doc(currentUserId).get()
-  let userSettingObj;
+  let userSettingObj: ResponseSettingType
 
   try {
     await userRef.then(snap => {
       const data = snap.data() as UserType
-      userSettingObj = { isCommentPush: !!data.isCommentPush }
+      userSettingObj = { isCommentPush: data.isCommentPush, isRecordPostPush: data.isRecordPostPush }
     })
+    // firestoreの初期値は値がない場合undefiendになるので、マウント時にundefiendはtrueに変換する
+    if (userSettingObj.isCommentPush === undefined) {
+      await requestPutPushNotificationSetting('comment')
+      userSettingObj = { ...userSettingObj, isCommentPush: true }
+    }
+    if (userSettingObj.isRecordPostPush === undefined) {
+      await requestPutPushNotificationSetting('recordPost')
+      userSettingObj = { ...userSettingObj, isRecordPostPush: true }
+    }
     return { payload: userSettingObj }
   } catch (error) {
     return { error: "error" }
   }
 }
 
-export const requestPutCommentPushNotification = async () => {
+export const requestPutPushNotificationSetting = async (type: SettingPushNotificationType) => {
   const currentUserId = firebase.auth().currentUser.uid
   const userRef = db.collection('users').doc(currentUserId).get()
 
   try {
-    userRef.then(snap => {
+    await userRef.then(snap => {
       const data = snap.data() as UserType
-      snap.ref.update({ isCommentPush: !data.isCommentPush })
+      switch(type) {
+        case 'comment': {
+          snap.ref.update({ isCommentPush: !data.isCommentPush })
+        }
+        case 'recordPost': {
+          snap.ref.update({ isRecordPostPush: !data.isRecordPostPush })
+        }
+      }
     })
     return { payload: 'success' }
-  } catch(error) {
-    return { error: "error" }
+   } catch(error) {
+      return { error: "error" }
   }
 }

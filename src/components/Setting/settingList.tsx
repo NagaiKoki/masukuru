@@ -21,7 +21,7 @@ const SettingList = (props: SettingListProps) => {
   const renderIcon =
   <Icon 
     name="angle-right" 
-    size={15}
+    size={20}
     style={{ color: COLORS.BASE_BLACK }}
   /> 
 

@@ -27,7 +27,8 @@ export type UserType = {
   weight: string | null
   expoNotificationToken: '',
   isReviewed: boolean
-  isCommentPush: boolean
+  isCommentPush: boolean | undefined
+  isRecordPostPush: boolean | undefined
 }
 
 export interface RequestFetchUserData {

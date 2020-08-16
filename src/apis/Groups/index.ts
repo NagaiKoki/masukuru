@@ -40,6 +40,7 @@ export const getGroupInfo = async (currentGroupId) : Promise<GroupInfoResponse> 
   return responseInfo;
 }
 
+// 現在所属しているグループに所属しているユーザーのidを取得する
 export const requestFetchGroupUserIds = async () => {
   const currentUserId = firebase.auth().currentUser.uid
   const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId).get()
@@ -62,6 +63,7 @@ export const requestFetchGroupUserIds = async () => {
       })
     }))
 
+    // idが重複する場合があるので、重複を除去する
     const ids = Array.from(new Set(groupUserIds))
     return { payload: ids }
   

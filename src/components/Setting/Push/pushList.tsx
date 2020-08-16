@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import apis
 import { 
-  requestPutCommentPushNotification,
+  requestPutPushNotificationSetting,
   requestFetchSettings
 } from '../../../apis/Settings'
 // import components
@@ -12,10 +12,11 @@ import Item from '../../../common/List/item'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import types
-import { ResponseSettingType } from '../../../types/Setting'
+import { ResponseSettingType, SettingPushNotificationType } from '../../../types/Setting'
 
 const SettingPushList = () => {
   const [toggleComment, setToggleComment] = useState(true)
+  const [toggleRecordPost, setToggleRecordPost] = useState(true)
   const [isMounted, setIsMounted] = useState(false)
 
   useFocusEffect(
@@ -25,6 +26,7 @@ const SettingPushList = () => {
       
         if (payload && !error) {
           setToggleComment(!!payload.isCommentPush)
+          setToggleRecordPost(!!payload.isRecordPostPush)
         }
       }
       fetchPushSetting()
@@ -36,9 +38,17 @@ const SettingPushList = () => {
     return null
   }
 
-  const handleOnToggleComment = async () => {
-    setToggleComment(!toggleComment)
-    await requestPutCommentPushNotification()
+  const handleOnToggle = async (type: SettingPushNotificationType, toggle: boolean) => {
+    switch(type) {
+      case 'comment': {
+        setToggleComment(!toggle)
+        return await requestPutPushNotificationSetting(type)
+      }
+      case 'recordPost': {
+        setToggleRecordPost(!toggle)
+        return await requestPutPushNotificationSetting(type)
+      }
+    }
   }
 
   const renderToggleIcon = (toggle: boolean): JSX.Element => {
@@ -56,7 +66,13 @@ const SettingPushList = () => {
       <Item
         title="記録へのコメント"
         icon={renderToggleIcon(toggleComment)}
-        handleOnClick={handleOnToggleComment}
+        handleOnClick={ () => handleOnToggle('comment', toggleComment) }
+      />
+
+      <Item
+        title="グループメンバーの投稿通知"
+        icon={renderToggleIcon(toggleRecordPost)}
+        handleOnClick={ () => handleOnToggle('recordPost', toggleRecordPost) }
       />
     </PushListContainer>
   )
