@@ -68,8 +68,8 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
 export const requestSendRecordPostNotification = async () => {
   const { payload, error }: { payload?: string[], error?: string } = await requestFetchGroupUserIds()
   const currentUserName = firebase.auth().currentUser.displayName
-  const title = `⭐${currentUserName}さんの新しい投稿`
-  const body = `${currentUserName}さんが、トレーニングの記録を投稿しました！確認してみましょう！`
+  const title = `⭐ ${currentUserName}さんの新しい投稿`
+  const body = `${currentUserName}さんが、トレーニングを投稿しました！確認してみましょう！`
 
   if (payload && !error) {
     Promise.all(payload.map( async id => {
