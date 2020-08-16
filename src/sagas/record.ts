@@ -37,6 +37,7 @@ import {
  } from '../apis/Records/Reaction'
  import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
  import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
+ import { requestSendRecordPostNotification } from '../apis/Push'
 // import actions
 import { 
   successSubmitRecords, 
@@ -69,7 +70,6 @@ function* runRequestSubmitRecords(action: RequestSubmitRecords) {
     records,
     word
   )
-
   function* requestPostRecordNamesForSuggest () {
     records.forEach(async record => {
       await requestPutSuggestRecord(record.name)
@@ -79,6 +79,7 @@ function* runRequestSubmitRecords(action: RequestSubmitRecords) {
   if (payload && !error) {
     yield delay(2000)
     yield requestPostRecordNamesForSuggest()
+    yield call(requestSendRecordPostNotification)
     yield put(successSubmitRecords())
   } else {
     yield put(failureSubmitRecords(error))

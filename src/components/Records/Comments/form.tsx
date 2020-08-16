@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
 import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import firebase from '../../../config/firebase'
 // import componets
 import UserImage from '../../Image/userImage'
 // import types
@@ -14,7 +13,7 @@ import { UserType } from '../../../types/User'
 
 interface RecordCommentProps {
   record: ResponseRecordType
-  currentUser?: UserType
+  currentUser: UserType
   temporaryComment: string
   notificationGroupId?: string
   changeRecordCommentText: (text: string) => void
@@ -27,6 +26,7 @@ const RecordComment = (props: RecordCommentProps) => {
     record, 
     temporaryComment,
     notificationGroupId,
+    currentUser,
     changeRecordCommentText, 
     requestPostRecordComment,
     requestPostPushNotification
@@ -35,7 +35,6 @@ const RecordComment = (props: RecordCommentProps) => {
   const { id, uid } = record
   const [text, setText] = useState('')
   
-  const loginFirebaseUser = firebase.auth().currentUser
   const commentPresent = temporaryComment && text ? true : false
 
   const handleOnChangeText = (value: string) => {
@@ -48,14 +47,14 @@ const RecordComment = (props: RecordCommentProps) => {
     requestPostRecordComment(id, uid, notificationGroupId)
     setText('')
     Keyboard.dismiss()
-    if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification) {
-      requestPostPushNotification('comment', uid, `${loginFirebaseUser.displayName}さんがあなたの記録にコメントしました！`, text);
+    if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
+      requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text);
     }
   }
 
   const renderUserImage = (
     <UserImageWrapper>
-      <UserImage uri={loginFirebaseUser.photoURL} width={30} height={30} borderRadius={60}/>
+      <UserImage uri={currentUser.imageUrl} width={30} height={30} borderRadius={60}/>
     </UserImageWrapper>
   )
 

@@ -12,7 +12,7 @@ import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
 
 const RecordShowScreen = (props: RecordShowProps) => {
-  const { navigation, route, records, actions } = props
+  const { navigation, route, records, users, actions } = props
   const {
      requestDestroyRecord, 
      changeRecordCommentText, 
@@ -20,6 +20,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
      requestFetchRecordComments,
      requestDeleteRecordComment
   } = actions
+  const { currentUser } = users
   const { temporaryComment, comments, isLoading } = records
   const { record }: { record: ResponseRecordType } = route.params
   const scrollRef = useRef(null)
@@ -51,6 +52,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
       </RecordShowWrapper>
       <RecordComment
         record={record}
+        currentUser={currentUser}
         temporaryComment={temporaryComment}
         changeRecordCommentText={changeRecordCommentText}
         requestPostRecordComment={requestPostRecordComment}

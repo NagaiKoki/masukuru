@@ -14,6 +14,8 @@ export const COLORS = {
   ERROR_MESSAGE: '#ea5532',
   SUCCESS_MESSAGE: '#66ff33',
 
+  TOGGLE_ON_COLOR: '#33cc00',
+
   BATCH_COLOR: '#ff5b5b',
 
   CARD_SHADOW1: 'rgba(0, 0, 0, 0.1)',
