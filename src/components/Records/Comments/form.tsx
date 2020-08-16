@@ -48,7 +48,7 @@ const RecordComment = (props: RecordCommentProps) => {
     setText('')
     Keyboard.dismiss()
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
-      requestPostPushNotification('comment', uid, `${currentUser.name}さんがあなたの記録にコメントしました！`, text);
+      requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text);
     }
   }
 
