@@ -29,9 +29,9 @@ const BatchCointainer = styled.View`
   position: absolute;
   z-index: 1000;
   top: 3%;
-  right: 28px;
-  min-width: 22px;
-  height: 22px;
+  right: 30px;
+  min-width: 20px;
+  height: 20px;
   border-radius: 60px;
   align-items: center;
   justify-content: center;
