@@ -1,8 +1,4 @@
-import firebase, { db } from '../../config/firebase';
-// import constants
-import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
-// import types
-import { GroupUserType } from '../../types/User'
+import { db } from '../../config/firebase';
 
 export interface GroupInfoResponse {
   groupName: string
@@ -38,37 +34,4 @@ export const getGroupInfo = async (currentGroupId) : Promise<GroupInfoResponse> 
   })
 
   return responseInfo;
-}
-
-// 現在所属しているグループに所属しているユーザーのidを取得する
-export const requestFetchGroupUserIds = async () => {
-  const currentUserId = firebase.auth().currentUser.uid
-  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId).get()
-  let belongGroupIds = []
-  let groupUserIds = []
-  
-  try {
-    await groupUserRef.then(snap => {
-      snap.forEach(doc => {
-        belongGroupIds.push(doc.ref.parent.parent.id)
-      })
-    })
-
-    await Promise.all(belongGroupIds.map(async id => {
-      await db.collection('groups').doc(id).collection('groupUsers').get().then(snap => {
-        snap.forEach(doc => {
-          const groupUser = doc.data() as GroupUserType
-          groupUserIds.push(groupUser.uid)
-        })
-      })
-    }))
-
-    // idが重複する場合があるので、重複を除去する
-    const ids = Array.from(new Set(groupUserIds))
-    return { payload: ids }
-  
-  } catch(error) {
-    console.log(error)
-    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
-  }
 }

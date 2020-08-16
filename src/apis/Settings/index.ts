@@ -1,7 +1,7 @@
 // import config
 import firebase, { db } from '../../config/firebase'
 // import types
-import { UserType, GroupUserType } from '../../types/User'
+import { UserType } from '../../types/User'
 import { SettingPushNotificationType, ResponseSettingType } from '../../types/Setting'
 
 export const requestFetchSettings = async () => {
@@ -45,20 +45,6 @@ export const requestPutPushNotificationSetting = async (type: SettingPushNotific
           snap.ref.update({ isRecordPostPush: !data.isRecordPostPush })
         }
       }
-    })
-
-    await groupUserRef.then(snap => {
-      snap.forEach(doc => {
-        const data = doc.data() as GroupUserType
-        switch(type) {
-          case 'comment': {
-            return doc.ref.update({ isCommentPush: !data.isCommentPush })
-          }
-          case 'recordPost': {
-            return doc.ref.update({ isRecordPostPush: !data.isRecordPostPush })
-          }
-        }
-      })
     })
 
     return { payload: 'success' }

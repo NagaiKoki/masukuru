@@ -15,8 +15,6 @@ export type GroupUserType = {
   imageUrl: string
   name: string
   uid: string
-  isCommentPush: boolean | undefined
-  isRecordPostPush: boolean | undefined
 }
 
 export type UserType = {

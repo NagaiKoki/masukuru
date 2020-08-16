@@ -37,7 +37,6 @@ import {
  } from '../apis/Records/Reaction'
  import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
  import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
- import { requestFetchGroupUserIds } from '../apis/Groups'
  import { requestSendRecordPostNotification } from '../apis/Push'
 // import actions
 import { 
