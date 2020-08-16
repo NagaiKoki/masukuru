@@ -1,19 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { useDispatch } from 'react-redux'
-// import actions
-// import {  } from '../../../actions/'
+// import apis
+import { 
+  requestPutCommentPushNotification,
+  requestFetchSettings
+} from '../../../apis/Settings'
 // import components
 import Item from '../../../common/List/item'
 // import constants
 import { COLORS } from '../../../constants/Styles';
+// import types
+import { ResponseSettingType } from '../../../types/Setting'
 
 const SettingPushList = () => {
   const [toggleComment, setToggleComment] = useState(true)
+  const [isMounted, setIsMounted] = useState(false)
 
-  const handleOnToggleComment = () => {
+  useFocusEffect(
+    useCallback(() => {
+      const fetchPushSetting = async () => {
+        const { payload, error }: { payload?: ResponseSettingType, error?: string } = await requestFetchSettings()
+      
+        if (payload && !error) {
+          setToggleComment(!!payload.isCommentPush)
+        }
+      }
+      fetchPushSetting()
+      setIsMounted(true)
+    }, [])
+  )
+
+  if (!isMounted) {
+    return null
+  }
+
+  const handleOnToggleComment = async () => {
     setToggleComment(!toggleComment)
+    await requestPutCommentPushNotification()
   }
 
   const renderToggleIcon = (toggle: boolean): JSX.Element => {
@@ -42,6 +67,6 @@ export default SettingPushList
 const PushListContainer = styled.View`
   background: ${COLORS.BASE_WHITE};
   margin: 40px 0;
-  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  border-top-color: ${COLORS.BORDER_COLOR_1};
   border-top-width: 1px;
 `

@@ -2,6 +2,7 @@ import firebase, { db } from '../../config/firebase'
 // import types
 import { UserType } from '../../types/User'
 // import apis
+import { requestFetchGroupUserIds } from '../Groups'
 import { requestFetchUser } from '../../apis/Users'
 
 export const requestPutExpoNotificationToken = async (token: string) => {
@@ -33,7 +34,7 @@ export const isSetExpoNotificationToken = async () => {
 
 export const requestSendPushNotification = async (uid: string, title: string, body: string) => {
   const { user }: { user?: UserType } = await requestFetchUser(uid)
-  if (!user || (user && !user.expoNotificationToken) || firebase.auth().currentUser.uid === uid) {
+  if (!user || (user && !user.expoNotificationToken)) {
     return new Error()
   }
 
@@ -58,7 +59,21 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
     })
 
     return { success: 'success' }
-  } catch {
+  } catch(error) {
+    console.log(error)
     return { error: 'プッシュ通知の送信に失敗しました。' }
+  }
+}
+
+export const requestSendRecordPostNotification = async () => {
+  const { payload, error }: { payload?: string[], error?: string } = await requestFetchGroupUserIds()
+  const currentUserName = firebase.auth().currentUser.displayName
+  const title = `⭐${currentUserName}さんの新しい投稿`
+  const body = `${currentUserName}さんが、トレーニングの記録を投稿しました！確認してみましょう！`
+
+  if (payload && !error) {
+    Promise.all(payload.map( async id => {
+      await requestSendPushNotification(id, title, body)
+    }))
   }
 }

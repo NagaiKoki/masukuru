@@ -41,6 +41,6 @@ export default SettingList
 const SettingListContainer = styled.View`
   background: ${COLORS.BASE_WHITE};
   margin: 40px 0;
-  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  border-top-color: ${COLORS.BORDER_COLOR_1};
   border-top-width: 1px;
 `

@@ -8,7 +8,8 @@ import Loading from '../../../components/Loading'
 import UserImage from '../../../components/Image/userImage'
 import { GroupImage, UnSettingGroupImage } from '../../../components/Image/groupImage'
 // import apis
-import { getGroupInfo, GroupInfoResponse, requestGroupUserImage } from '../../../apis/Groups/edit'
+import { requestGroupUserImage } from '../../../apis/Groups/edit'
+import { getGroupInfo, GroupInfoResponse } from '../../../apis/Groups'
 
 const GroupInfoScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(true)

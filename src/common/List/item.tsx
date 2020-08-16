@@ -13,7 +13,7 @@ const Item = (props: ItemProps) => {
   const { title, icon, handleOnClick } = props
 
   return (
-    <ItemWrapper onPress={() => handleOnClick() }>
+    <ItemWrapper onPress={() => handleOnClick() } activeOpacity={1}>
       <ItemText>{title}</ItemText>
       {icon}
     </ItemWrapper>
@@ -24,7 +24,7 @@ const ItemWrapper = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
+  border-bottom-color: ${COLORS.BORDER_COLOR_1};
   border-bottom-width: 1px;
   padding: 8px 20px;
 `
