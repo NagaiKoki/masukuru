@@ -10,10 +10,13 @@ import RecordCommentForm from '../../../../components/Records/Comments/form'
 import RecordCommentList from '../../../../components/Records/Comments/commentList'
 import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
+// import config
+import firebase from '../../../../config/firebase'
 
 const RecordShowScreen = (props: RecordShowProps) => {
   const { navigation, route, records, users, actions } = props
   const {
+    requestFetchUserData,
      requestDestroyRecord, 
      changeRecordCommentText, 
      requestPostRecordComment,
@@ -29,8 +32,15 @@ const RecordShowScreen = (props: RecordShowProps) => {
   useFocusEffect(
     useCallback(() => {
       requestFetchRecordComments(record.id)
+      if (!currentUser) {
+        requestFetchUserData(firebase.auth().currentUser.uid)
+      }
     }, [])
   )
+
+  if (!currentUser) {
+    return <Loading size="small" />
+  }
 
   const renderCommentList = isLoading ? <Loading size="small" /> 
     : <RecordCommentList 

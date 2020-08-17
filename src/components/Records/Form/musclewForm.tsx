@@ -9,6 +9,8 @@ import { requestFetchSuggestRecords } from '../../../actions/Search/suggestRecor
 // import components
 import SearchSuggestList from '../../../common/Search/Suggests/suggestList'
 import MusclewSetBtn from './SetBtn'
+// import utils
+import { lessThanIphoneEightHeight } from '../../../utilities/Device'
 
 interface AddRecordFormProps {
   temporaryName: string,
@@ -56,6 +58,8 @@ const AddRecordForm = (props: AddRecordFormProps) => {
   const { isLoading, recordNames } = useSelector((state: RootState) => state.suggestRecords, shallowEqual)
   const [count, setCount] = useState(3)
   const [visibleSuggest, setVisibleSuggest] = useState(false)
+  const suggestSize = lessThanIphoneEightHeight() ? 165 : 190
+
   const { 
     temporaryName,
     onChangeTrainingName,
@@ -197,7 +201,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
       isShow={visibleSuggest}
       style={{ flex: 1 }} 
       behavior="padding" 
-      keyboardVerticalOffset={190}
+      keyboardVerticalOffset={suggestSize}
       keyboardShouldPersistTaps="always"
     >
       <SearchSuggestList
