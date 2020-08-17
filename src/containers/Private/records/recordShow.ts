@@ -13,6 +13,7 @@ import {
   requestFetchRecordComments,
   requestDeleteRecordComment
 } from '../../../actions/records'
+import { requestFetchUserData } from '../../../actions/User'
 import { requestPostPushNotification } from '../../../actions/notifications'
 // import screen
 import RecordShowScreen from '../../../screens/Private/Records/Show'
@@ -23,6 +24,7 @@ export interface RecordShowProps {
   records: RecordState
   users: UserState
   actions: {
+    requestFetchUserData: (uid: string) => void
     requestDestroyRecord: (id: string) => void
     changeRecordCommentText: (text: string) => void
     requestPostRecordComment: (recordId: string, recordUserId: string, notificationGroupId?: string) => void 
@@ -42,6 +44,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
+      requestFetchUserData,
       requestDestroyRecord,
       changeRecordCommentText,
       requestPostRecordComment,
