@@ -315,7 +315,7 @@ const DrawerListItemBtn = styled.TouchableOpacity`
 `
 
 const DrawerListItem = styled.View`
-  padding: 15px 0;
+  padding: 10px 0;
 `
 
 const DrawerListItemText = styled.Text`

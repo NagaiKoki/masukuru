@@ -6,6 +6,7 @@ import { SuggestRecordType } from '../../../types/Search/Record/suggest'
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 // import utils
 import { findSuggestRecordByKeyword } from '../../../utilities/Record/findSuggestRecord'
+import { lessThanIphoneEightHeight } from '../../../utilities/Device/'
 
 // サジェスト用にfirestoreに記録名と回数を保存する
 export const requestPutSuggestRecord = async (name: string) => {
@@ -41,9 +42,10 @@ export const requestPutSuggestRecord = async (name: string) => {
 
 // サジェストで出す候補を取得する
 export const requestFetchSuggestRecord = async (keyword?: string) => {
+  const limitSize = lessThanIphoneEightHeight() ? 4 : 5
   const currentUserId = firebase.auth().currentUser.uid
-  const suggestRefNoNmae = db.collection('users').doc(currentUserId).collection('suggests').orderBy("times", "desc").limit(5).get()
-  const suggestRefWithName = db.collection('users').doc(currentUserId).collection('suggests').orderBy('name').startAt(keyword).endAt(keyword + '\uf8ff').limit(5).get()
+  const suggestRefNoNmae = db.collection('users').doc(currentUserId).collection('suggests').orderBy("times", "desc").limit(limitSize).get()
+  const suggestRefWithName = db.collection('users').doc(currentUserId).collection('suggests').orderBy('name').startAt(keyword).endAt(keyword + '\uf8ff').limit(limitSize).get()
   const suggestRef = keyword ? suggestRefWithName : suggestRefNoNmae
   let names: string[] = []
 

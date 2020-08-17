@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as Device from 'expo-device'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
@@ -10,6 +10,8 @@ import UserImage from '../../Image/userImage'
 import { ResponseRecordType } from '../../../types/Record'
 import { NotificationEventType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
+// import lib
+import { requestAppReview } from '../../../utilities/requestReview'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -50,6 +52,7 @@ const RecordComment = (props: RecordCommentProps) => {
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
       requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text);
     }
+    await requestAppReview()
   }
 
   const renderUserImage = (
