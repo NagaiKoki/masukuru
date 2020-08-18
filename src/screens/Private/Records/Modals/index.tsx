@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles';
@@ -9,6 +9,8 @@ import { RecordProps } from '../../../../containers/Private/records/recordModal'
 import { RecordItemType } from '../../../../types/Record'
 // import lib
 import truncateText from '../../../../utilities/truncateText'
+// import components
+import DatePicker from '../../../../common/Date'
 
 const RecordModalScreen = (props: RecordProps) => {
   const { 
@@ -18,6 +20,7 @@ const RecordModalScreen = (props: RecordProps) => {
   } = props
   const { recordItems } = records
   const { deleteRecord, onChangeTrainingName } = actions
+  const [date, setDate] = useState(new Date)
 
   useFocusEffect(
     useCallback(() => {
@@ -106,6 +109,10 @@ const RecordModalScreen = (props: RecordProps) => {
     <RecordModalContainer >
       <RecordModalTitle>お疲れ様でした♪</RecordModalTitle>
       <RecordItemTitle>本日のトレーニング</RecordItemTitle>
+      <DatePicker 
+        date={date}
+        handleOnChange={setDate}
+      />
       { recordItems.length ? 
       <React.Fragment>
         {renderRecordItems()}
