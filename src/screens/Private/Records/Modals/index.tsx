@@ -91,7 +91,7 @@ const RecordModalScreen = (props: RecordProps) => {
       }
 
       return (
-        <React.Fragment key={item.id}>
+        <RecordItemWrapper key={item.id}>
           <RecordItemBtn onPress={ () => handleUpdateRecordItme(item) }>
             <RecordItemText>{ renderText.length >= 17 ? truncateText(renderText, 17) + '...' : renderText}</RecordItemText>
             <Icon name="edit" size={16} style={{ color: COLORS.BASE_BLACK }} />
@@ -99,7 +99,7 @@ const RecordModalScreen = (props: RecordProps) => {
           <RecordDeleteBtn onPress={ () => handleDeleteRecordItem(item)}>
             <RecordItemDelete>削除</RecordItemDelete>
           </RecordDeleteBtn>
-        </React.Fragment>
+        </RecordItemWrapper>
       )
     })
     return recordsComponent
@@ -107,20 +107,23 @@ const RecordModalScreen = (props: RecordProps) => {
   
   return (
     <RecordModalContainer >
-      <RecordModalTitle>お疲れ様でした♪</RecordModalTitle>
-      <RecordItemTitle>本日のトレーニング</RecordItemTitle>
-      <DatePicker 
-        date={date}
-        handleOnChange={setDate}
-      />
+      <RecordModalTitle>トレーニングお疲れ様でした♪</RecordModalTitle>
+      <DateWrapper>
+        <TitleLabel>トレーニング日</TitleLabel>
+        <DatePicker 
+          date={date}
+          handleOnChange={setDate}
+        />
+      </DateWrapper>
       { recordItems.length ? 
-      <React.Fragment>
+      <RecordListContainer>
+        <TitleLabel>追加したトレーニング</TitleLabel>
         {renderRecordItems()}
         <RecordNewAddItemBtn onPress={handleNavigateAddForm}>
           <Icon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW }} />
           <RecordNewAddItemBtnText>トレーニングの記録を追加する</RecordNewAddItemBtnText>
         </RecordNewAddItemBtn> 
-      </React.Fragment>
+      </RecordListContainer>
       :
       <React.Fragment>
         <RecordModalAddItemBtnForm onPress={handleNavigateAddForm}>
@@ -154,15 +157,7 @@ const RecordModalTitle = styled.Text`
   text-align: center;
   font-weight: bold;
   font-size: 18px;
-  margin: 30px 0 20px 0;
-`
-
-const RecordItemTitle = styled.Text`
-  width: 90%;
-  align-self: center;
-  font-weight: bold;
-  font-size: 18px;
-  margin: 30px 0 10px 0;
+  margin: 30px 0 40px 0;
 `
 
 const RecordModalAddItemBtnForm = styled.TouchableOpacity`
@@ -175,13 +170,22 @@ const RecordModalAddItemBtnForm = styled.TouchableOpacity`
   padding: 15px;
 `
 
+const RecordListContainer = styled.View`
+  align-self: center;
+  width: 90%;
+`
+
+const RecordItemWrapper = styled.View`
+  margin-bottom: 15px;
+`
+
 const RecordItemBtn = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   position: relative;
   background-color: ${COLORS.FORM_BACKGROUND};
-  width: 90%;
+  width: 100%;
   margin: 0px auto;
   border-radius: 5px;
   padding: 15px;
@@ -197,7 +201,7 @@ const RecordItemText = styled.Text`
 const RecordItemDelete = styled.Text`
   width: 90%;
   align-self: center;
-  margin: 10px 5px 15px 0;
+  margin: 10px 5px 0px 0;
   text-align: right;
   color: ${COLORS.SUB_BLACK};
   font-size: 14px;
@@ -206,8 +210,8 @@ const RecordItemDelete = styled.Text`
 const RecordNewAddItemBtn = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  width: 90%;
-  margin: 10px auto;
+  width: 100%;
+  margin: 20px auto;
 `
 
 const RecordNewAddItemBtnText = styled.Text`
@@ -219,5 +223,18 @@ const RecordNewAddItemBtnText = styled.Text`
 const RecordDeleteBtn = styled.TouchableOpacity`
   width: 50px;
   margin-left: auto;
-  margin-right: 25px;
+  margin-right: 5px;
+`
+
+const DateWrapper = styled.View`
+  align-self: center;
+  width: 85%;
+  margin: 0 25px 30px 0;
+`
+
+const TitleLabel = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  padding: 0 20px 10px 0;
+  font-size: 14px;
+  font-weight: bold;
 `
