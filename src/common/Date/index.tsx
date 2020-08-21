@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ReactDatePicker from 'react-native-datepicker'
+import Icon from 'react-native-vector-icons/FontAwesome'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
@@ -28,6 +29,17 @@ const DatePicker = (props: DatePickerProps) => {
       cancelBtnText="閉じる"
       showIcon={false}
       onDateChange={(dateStr: string, date: Date) => handleOnChange(date)}
+      customStyles={{
+        dateIcon: {
+          position: "absolute",
+          left: -100,
+        },
+        dateInput: {
+          borderColor: "transparent",
+          borderBottomColor: COLORS.BASE_BORDER_COLOR,
+          padding: 0,
+        }
+      }}
     />
   )
 }
@@ -35,8 +47,6 @@ const DatePicker = (props: DatePickerProps) => {
 export default DatePicker
 
 const DatePickerStyle = {
-  borderColor: COLORS.BASE_BLACK,
   borderRadius: 10,
-  width: "35%",
-  textAlign: 'left'
+  width: "30%",
 }
