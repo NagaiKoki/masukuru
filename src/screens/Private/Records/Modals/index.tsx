@@ -104,7 +104,7 @@ const RecordModalScreen = (props: RecordProps) => {
     })
     return recordsComponent
   }
-  
+
   return (
     <RecordModalContainer >
       <RecordModalTitle>トレーニングお疲れ様でした♪</RecordModalTitle>

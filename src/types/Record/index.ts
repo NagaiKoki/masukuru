@@ -32,7 +32,8 @@ import {
   FAILURE_FETCH_RECORD_COMMENTS,
   REQUEST_DELETE_RECORD_COMMENT,
   SUCCESS_DELETE_RECORD_COMMENT,
-  FAILURE_DELETE_RECORD_COMMENT
+  FAILURE_DELETE_RECORD_COMMENT,
+  ON_CHANGE_RECORD_DATE
 } from '../../actions/actionTypes'
 
 export interface RecordState {
@@ -161,6 +162,12 @@ export interface OnChangeTime {
 export interface OnChangeWord {
   type: typeof ON_CHANGE_WORD
   payload: string
+}
+
+// トレーニング日検知
+export interface OnChangeRecordDate {
+  type: typeof ON_CHANGE_RECORD_DATE
+  date: Date
 }
 
 // 記録の保存リクエスト
@@ -303,6 +310,7 @@ export type RecordActionTypes =
   OnChangeDistance |
   OnChangeTime |
   OnChangeWord |
+  OnChangeRecordDate |
   RequestSubmitRecords |
   SuccessSubmitRecords |
   FailureSubmitRecords |
