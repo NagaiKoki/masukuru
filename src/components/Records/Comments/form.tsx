@@ -69,6 +69,7 @@ const RecordComment = (props: RecordCommentProps) => {
           placeholder="コメントを入力..."
           autoCapitalize={'none'}
           maxLength={300}
+          multiline={true}
           value={text}
           autoCorrect={ false }
           onChangeText={ value => handleOnChangeText(value) }
@@ -105,7 +106,8 @@ const UserImageWrapper = styled.View`
 const CommentForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   width: 75%;
-  height: 40px;
+  min-height: 40px;
+  max-height: 150px;
   align-self: center;
   font-size: 17px;
   border-radius: 30px;
