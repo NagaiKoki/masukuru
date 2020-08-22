@@ -13,6 +13,7 @@ import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
+import { UserPropertyType } from '../../../types/Analytics/amplitude'
 // import apis
 import { getMemberList } from '../../../apis/Home/menber'
 import { isSetExpoNotificationToken, requestPutExpoNotificationToken } from '../../../apis/Push'
@@ -22,6 +23,7 @@ import { updateModule } from '../../../utilities/OtaUpdate'
 import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
 // import config
 import firebase from '../../../config/firebase'
+import Analytics from '../../../config/amplitude'
   
 const HomeScreen = (props: HomeProps) => {
   const { navigation, route, records, users, actions } = props
@@ -71,6 +73,16 @@ const HomeScreen = (props: HomeProps) => {
       }
     }
     putNotificationToken()
+    if (!!currentUser) {
+      const currentUserProperty: UserPropertyType = {
+        name: currentUser.name,
+        sex: currentUser.sex,
+        age: currentUser.age,
+        height: currentUser.height,
+        weight: currentUser.weight
+      }
+      Analytics.identify(currentUserId, currentUserProperty)
+    }
   }, [currentUser])    
 
   // メンバーリスト
