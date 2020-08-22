@@ -9,6 +9,7 @@ import InviteCodeModal from '../../../components/InviteModal/invite'
 import InvitedCodeModal from '../../../components/InviteModal/invited'
 import TranferModal from '../../../components/Groups/transferModal'
 import FeedbackModal from '../../../components/Feedback/index'
+import SnsInviteCodeShareModal from '../../../components/InviteModal/ShareModal'
 import Loading from '../../../components/Loading'
 // import apis
 import { joinInvitedGroup } from '../../../apis/invite';
@@ -26,6 +27,7 @@ const DrawerContent = (props: DrawerProps) => {
   const [showInviteCodeModal, setShowInviteCodeModal] = useState<boolean>(false)
   const [showTransferModal, setShowTransferModal] = useState<boolean>(false)
   const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false)
+  const [showSnsModal ,setShowSnsModal] = useState(false)
   const [currentGroupId, setCurrentGroupId] = useState('')
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
@@ -254,7 +256,13 @@ const DrawerContent = (props: DrawerProps) => {
         <InviteCodeModal 
           showInviteCodeModal={showInviteCodeModal} 
           setShowInviteCodeModal={setShowInviteCodeModal} 
+          setShowSnsModal={setShowSnsModal}
           ownCode={ownCode}
+        />
+        <SnsInviteCodeShareModal 
+          show={showSnsModal}
+          code={ownCode}
+          setShowSnsInviteModal={setShowSnsModal}
         />
         <FeedbackModal 
           showFeedbackModal={showFeedbackModal}
