@@ -15,7 +15,7 @@ export const initialize = () => {
 }
 
 export const track = (event: string, options?: any) => {
-  // if (__DEV__) return;
+  if (__DEV__) return;
   initialize()
   if (options) {
     Amplitude.logEventWithProperties(event, options)
@@ -31,7 +31,7 @@ export const getUserId = (userId) => {
 }
 
 export const identify = (uid: string, options?: UserPropertyType) => {
-
+  if (__DEV__) return;
   initialize()
   Amplitude.setUserId(uid)
   if (options) {
