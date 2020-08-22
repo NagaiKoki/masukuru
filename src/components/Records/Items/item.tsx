@@ -1,24 +1,26 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { TouchableHighlight } from 'react-native'
-import { Alert } from 'react-native'
-import moment from '../../config/moment'
+import moment from '../../../config/moment'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/AntDesign'
 // db
-import firebase from '../../config/firebase'
+import firebase from '../../../config/firebase'
 // import types
-import { ResponseRecordType, RecordItemType } from '../../types/Record'
+import { ResponseRecordType, RecordItemType } from '../../../types/Record'
 // import apis
-import { requestFetchUser } from '../../apis/Users'
-import { requestGetFetchRecordCommentsSize } from '../../apis/Records/Reaction'
+import { requestFetchUser } from '../../../apis/Users'
+import { requestGetFetchRecordCommentsSize } from '../../../apis/Records/Reaction'
 // import components
-import UserImage from '../Image/userImage'
-import RecordReaction from './Reactions'
-import Loading from '../Loading'
-// import lib
-import { convertTimestampToString } from '../../utilities/timestamp'
-import { COLORS } from '../../constants/Styles';
+import RecordReaction from '../Reactions'
+import RecordUser from './user'
+import RecordData from './data'
+import TrainingDate from './trainingDate'
+// import utils
+import { convertTimestampToString } from '../../../utilities/timestamp'
+import { reactAlert } from '../../../utilities/alert'
+// import constants
+import { COLORS } from '../../../constants/Styles';
 
 interface RecordItemProps {
   record: ResponseRecordType
@@ -65,51 +67,14 @@ const RecordItem = (props: RecordItemProps) => {
     setIsCommentLoading(false)
   }
 
+  const handleRequestDestroyRecord = () => {
+    requestDestroyRecord(id)
+  }
+
   if (isUserLoading || isCommentLoading) {
     return (
       <React.Fragment/>
     )
-  }
-
-  // 記録の削除
-  const handleDestroyRecord = () => {
-    Alert.alert(
-      'この記録を削除します。',
-      "本当によろしいですか？", 
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        },
-        {
-          text: 'OK',
-          onPress: () => { requestDestroyRecord(id) }
-        }
-      ],
-      { cancelable: false }
-    )
-  }
-
-  // 記録の詳細
-  const renderUnitData = (record: RecordItemType) => {
-    if (record.isMuscle) {
-      const amounts = record.amounts
-      const weights = record.weights
-      let components = []
-      for(let size = 1; size <= amounts.length; size++) {
-         components.push(<UnitData key={size}>{ amounts[size - 1] + '回' }{ weights[size - 1] ? '×' + weights[size - 1] + 'kg' : null}</UnitData>)
-      }
-      return components
-    } else if (record.isMuscle === false) {
-      const time = record.time
-      const distance = record.distance
-      return (
-        <UnitDataItem>
-          <UnitData>{time ? time + '分' : null}</UnitData>
-          <UnitData>{distance ? distance + 'km' : null}</UnitData>
-        </UnitDataItem>
-      )
-    }
   }
 
   // 記録
@@ -118,21 +83,12 @@ const RecordItem = (props: RecordItemProps) => {
       <RecordDataWrapper key={i}>
         <RecordDataName>{record.name}</RecordDataName>
         <UnitDataWrapper>
-          {renderUnitData(record)}
+          <RecordData record={record} />
         </UnitDataWrapper>
       </RecordDataWrapper>
     )
   })
-
-  // ユーザーレンダー
-  const renderUser = 
-    <RecordUserWrapper>
-      <RecordUserImage onPress={ () => navigation && currentUser.uid !== uid ? navigation.navigate('UserPage', { user: user }) : {} }>
-        <UserImage uri={user.imageUrl} width={40} height={40} borderRadius={60} />
-      </RecordUserImage>
-      <RecordUserName>{user.name}</RecordUserName>
-    </RecordUserWrapper>
-
+  
   return (
     <TouchableHighlight  
       onPress={() => isShowPage ? {} : navigation.navigate('recordShow', { record: record })}
@@ -141,21 +97,29 @@ const RecordItem = (props: RecordItemProps) => {
     >
       <RecordItemContainer>
       <RecordItemUpper>
-        {renderUser}
+        <RecordUser
+          currentUser={currentUser}
+          user={user}
+          uid={uid}
+          navigation={navigation}
+        />
         <RecordRightUpper>
-          <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
-          { currentUser.uid === uid && !isShowPage ? 
-            <IconWrapper onPress={handleDestroyRecord}>
-              <Icon name='down' style={{ color: COLORS.BASE_BLACK }}/>
+        { currentUser.uid === uid && !isShowPage ? 
+            <IconWrapper onPress={ () => reactAlert(handleRequestDestroyRecord) }>
+              <Icon name='ellipsis1' size={20} style={{ color: COLORS.BASE_BLACK, marginTop: -10, marginRight: 5 }}/>
             </IconWrapper> : null
           }
+          <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
         </RecordRightUpper>
       </RecordItemUpper>
-      <RecordWordText>{word}</RecordWordText>
+      { !!word ? <RecordWordText>{word}</RecordWordText> : null }
+      <TrainingDate 
+        date={record.trainingDate}
+        createdAt={record.createdAt}
+        hasWord={!!word}
+      />
       {renderRecordData}
-      {
-        isShowPage ? null : <RecordReaction size={commentSize} />
-      }
+      { isShowPage ? null : <RecordReaction size={commentSize} /> }
     </RecordItemContainer>
     </TouchableHighlight>
   )
@@ -176,27 +140,13 @@ const RecordItemUpper = styled.View`
   align-items: center;
 `
 
-const RecordUserWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-`
-
-const RecordUserImage = styled.TouchableOpacity`
-`
-
-const RecordUserName = styled.Text`
-  margin-left: 13px;
-  color: ${COLORS.BASE_BLACK};
-  font-weight: bold;
-  font-size: 17px;
-`
-
 const RecordRightUpper = styled.View`
-  flex-direction: row;
-  align-items: center;
+  justify-content: flex-end;
 `
 
 const IconWrapper = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: flex-end;
 `
 
 const RecordTimestampText = styled.Text`
@@ -220,25 +170,17 @@ const RecordDataWrapper = styled.View`
 `
 
 const RecordDataName = styled.Text`
+  color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 17px;
+  margin-bottom: 5px;
 `
 
 const UnitDataWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  padding: 5px 0;
-`
-
-const UnitDataItem = styled.View`
-`
-
-const UnitData = styled.Text`
-  padding: 5px 0;
-  color: ${COLORS.BASE_BLACK};
-  font-size: 15px;
-  margin-right: 10px;
+  padding-bottom: 5px;
 `
 
 export default RecordItem

@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React from 'react'
 import ReactDatePicker from 'react-native-datepicker'
-import Icon from 'react-native-vector-icons/FontAwesome'
 // import constants
 import { COLORS } from '../../constants/Styles'
 

@@ -1,4 +1,4 @@
-type FirestoreTimestamp = import("firebase").firestore.Timestamp;
+export type FirestoreTimestamp = import("firebase").firestore.Timestamp;
 
 // import
 import { 
@@ -79,6 +79,7 @@ export type ResponseRecordType = {
   id: string
   records: RecordItemType[]
   word: string
+  trainingDate: FirestoreTimestamp | null
   uid: string
   createdAt: FirestoreTimestamp
   updatedAt: FirestoreTimestamp
