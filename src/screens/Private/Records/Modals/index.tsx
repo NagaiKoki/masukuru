@@ -211,7 +211,7 @@ const RecordNewAddItemBtn = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin: 20px auto;
+  margin: 10px auto;
 `
 
 const RecordNewAddItemBtnText = styled.Text`
