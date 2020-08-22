@@ -16,6 +16,7 @@ const DatePicker = (props: DatePickerProps) => {
 
   return (
     <ReactDatePicker 
+      locale="ja"
       style={DatePickerStyle}
       date={date}
       mode="date"
