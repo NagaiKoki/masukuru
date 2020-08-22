@@ -37,7 +37,7 @@ const InviteCodeModal = (props: InviteCodeModalProps) => {
       <ShareButton>
         招待コードをSNSで共有する
       </ShareButton>
-      <Icon name="share" size={20} style={{ color: COLORS.BASE_WHITE, marginLeft: 10 }} />
+      <Icon name="share" size={20} style={{ color: COLORS.BASE_WHITE, marginLeft: 15 }} />
     </ShareWrapper>
 
   return (
@@ -92,7 +92,7 @@ const ShareWrapper = styled.TouchableOpacity`
 const ShareButton = styled.Text`
   text-align: center;
   color: ${COLORS.BASE_WHITE};
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
 `
 

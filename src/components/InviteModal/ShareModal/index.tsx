@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import FontistoIcon from 'react-native-vector-icons/Fontisto'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import utils
