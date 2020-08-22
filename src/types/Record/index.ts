@@ -39,6 +39,7 @@ import {
 export interface RecordState {
   recordItems: RecordItemType[]
   word: string
+  trainingDate: Date
   temporaryName: string
   temporaryTime: string
   temporaryDistance: string

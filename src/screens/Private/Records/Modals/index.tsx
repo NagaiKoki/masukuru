@@ -18,9 +18,8 @@ const RecordModalScreen = (props: RecordProps) => {
     records,
     navigation 
   } = props
-  const { recordItems } = records
-  const { deleteRecord, onChangeTrainingName } = actions
-  const [date, setDate] = useState(new Date)
+  const { recordItems, trainingDate } = records
+  const { deleteRecord, onChangeTrainingName, onChangeRecordDate } = actions
 
   useFocusEffect(
     useCallback(() => {
@@ -111,8 +110,8 @@ const RecordModalScreen = (props: RecordProps) => {
       <DateWrapper>
         <TitleLabel>トレーニング日</TitleLabel>
         <DatePicker 
-          date={date}
-          handleOnChange={setDate}
+          date={trainingDate}
+          handleOnChange={onChangeRecordDate}
         />
       </DateWrapper>
       { recordItems.length ? 
@@ -125,12 +124,13 @@ const RecordModalScreen = (props: RecordProps) => {
         </RecordNewAddItemBtn> 
       </RecordListContainer>
       :
-      <React.Fragment>
+      <RecordListContainer>
+        <TitleLabel>追加したトレーニング</TitleLabel>
         <RecordModalAddItemBtnForm onPress={handleNavigateAddForm}>
           <Icon name="pluscircleo" size={16} style={{ color: COLORS.SUB_BLACK }} />
           <RecordItemText>トレーニングを追加する</RecordItemText>
         </RecordModalAddItemBtnForm>
-      </React.Fragment>
+      </RecordListContainer>
       }
     </RecordModalContainer>
   )
@@ -149,7 +149,7 @@ const HeaderNextBtn = styled.TouchableOpacity`
 
 const HeaderNextTitle = styled.Text`
   margin-right: 15px;
-  font-size: 16px;
+  font-size: 18px;
   color: ${COLORS.BASE_WHITE};
 `
 
@@ -164,8 +164,8 @@ const RecordModalAddItemBtnForm = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   background-color: ${COLORS.FORM_BACKGROUND};
-  width: 90%;
-  margin: 20px auto;
+  width: 100%;
+  margin: 10px auto;
   border-radius: 5px;
   padding: 15px;
 `
@@ -234,7 +234,7 @@ const DateWrapper = styled.View`
 
 const TitleLabel = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  padding: 0 20px 10px 0;
+  padding: 0 20px 15px 0;
   font-size: 14px;
   font-weight: bold;
 `

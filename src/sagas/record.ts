@@ -64,11 +64,13 @@ import firebase from '../config/firebase'
 
 // 記録の保存
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {
+  const { trainingDate } = yield select((state: RootState) => state.records)
   const { records, word } = action
   const { payload, error }: { payload?: string, error?: string } = yield call(
     requestPostRecords,
     records,
-    word
+    word,
+    trainingDate
   )
   function* requestPostRecordNamesForSuggest () {
     records.forEach(async record => {
