@@ -2,7 +2,10 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import types
 import { RootState } from '../../../reducers'
-import { RecordState, ResponseRecordType } from '../../../types/Record'
+import { 
+  RecordState, 
+  ResponseRecordType,
+} from '../../../types/Record'
 // import actions
 import {
   requestFetchRecords,

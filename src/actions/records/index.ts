@@ -9,6 +9,7 @@ import {
   ON_CHANGE_DISTANCE,
   ON_CHANGE_TIME,
   ON_CHANGE_WORD,
+  ON_CHANGE_RECORD_DATE,
   REQUEST_SUBMIT_RECORDS,
   SUCCESS_SUBMIT_RECORDS,
   FAILURE_SUBMIT_RECORDS,
@@ -133,6 +134,14 @@ export const onChangeWord = (payload: string): RecordActionTypes => {
   return {
     type: ON_CHANGE_WORD,
     payload
+  }
+}
+
+// トレーニング日の検知
+export const onChangeRecordDate = (date: Date): RecordActionTypes => {
+  return {
+    type: ON_CHANGE_RECORD_DATE,
+    date
   }
 }
 

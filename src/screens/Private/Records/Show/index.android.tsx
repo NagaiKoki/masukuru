@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { RecordShowProps } from '../../../../containers/Private/records/recordShow'
 import { ResponseRecordType } from '../../../../types/Record'
 // import components
-import RecordItem from '../../../../components/Records/recordItem'
+import RecordItem from '../../../../components/Records/Items/item'
 import RecordComment from '../../../../components/Records/Comments/form'
 import RecordCommentList from '../../../../components/Records/Comments/commentList'
 import Loading from '../../../../components/Loading'

@@ -8,6 +8,7 @@ import {
   ON_CHANGE_DISTANCE,
   ON_CHANGE_TIME,
   ON_CHANGE_WORD,
+  ON_CHANGE_RECORD_DATE,
   REQUEST_SUBMIT_RECORDS,
   SUCCESS_SUBMIT_RECORDS,
   FAILURE_SUBMIT_RECORDS,
@@ -27,7 +28,6 @@ import {
   REQUEST_FETCH_RECORD_COMMENTS,
   SUCCESS_FETCH_RECORD_COMMENTS,
   FAILURE_FETCH_RECORD_COMMENTS,
-  REQUEST_DELETE_RECORD_COMMENT,
   SUCCESS_DELETE_RECORD_COMMENT,
   FAILURE_DELETE_RECORD_COMMENT,
 } from '../../actions/actionTypes'
@@ -37,6 +37,7 @@ import { RecordState, RecordItemType, RecordActionTypes } from '../../types/Reco
 const initialState: RecordState = {
   recordItems: [],
   word: '',
+  trainingDate: new Date(),
   temporaryName: '',
   temporaryTime: '',
   temporaryDistance: '',
@@ -121,6 +122,7 @@ const recordReducer = (
       return {
         recordItems: [],
         word: '',
+        trainingDate: new Date(),
         temporaryName: '',
         temporaryTime: '',
         temporaryDistance: '',
@@ -221,6 +223,15 @@ const recordReducer = (
        ...state,
        temporaryTime: String(payload)
      }
+    }
+
+    // トレーニング日の検知
+    case ON_CHANGE_RECORD_DATE: {
+      const { date } = action
+      return {
+        ...state,
+        trainingDate: date
+      }
     }
 
     // エラーのセット

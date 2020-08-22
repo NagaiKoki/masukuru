@@ -3,7 +3,7 @@ import styled from 'styled-components'
 // import types
 import { ResponseRecordType } from '../../types/Record'
 // import components
-import RecordItem from './recordItem'
+import RecordItem from './Items/item'
 import Loading from '../Loading'
 import { COLORS } from '../../constants/Styles'
 

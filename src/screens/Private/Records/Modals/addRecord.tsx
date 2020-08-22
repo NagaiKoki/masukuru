@@ -5,8 +5,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import components
-import AddRecordForm from '../../../../components/Records/Form/musclewForm'
-import AddRecordAeroForm from '../../../../components/Records/Form/areroForm'
+import AddRecordForm from '../../../../components/Records/AddForm/musclewForm'
+import AddRecordAeroForm from '../../../../components/Records/AddForm/areroForm'
 import Toast from '../../../../components/Toaster'
 // import types
 import { AddRecordProps } from '../../../../containers/Private/records/addRecord'

@@ -6,7 +6,8 @@ import { RecordState, RecordItemType } from '../../../types/Record'
 // import actions
 import {
   deleteRecord,
-  onChangeTrainingName
+  onChangeTrainingName,
+  onChangeRecordDate
 } from '../../../actions/records'
 // import screens
 import RecordModalScreen from '../../../screens/Private/Records/Modals'
@@ -17,6 +18,7 @@ export interface RecordProps {
   actions: {
     deleteRecord: (record: RecordItemType) => void 
     onChangeTrainingName: (name: string) => void
+    onChangeRecordDate: (date: Date) => void
   }
 }
 
@@ -30,7 +32,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
       deleteRecord,
-      onChangeTrainingName
+      onChangeTrainingName,
+      onChangeRecordDate
     }
     , dispatch)
   }

@@ -156,6 +156,7 @@ const AddRecordForm = (props: AddRecordFormProps) => {
         onBlur={handleOnBlur}
         defaultValue={temporaryName}
         returnKeyType="done"
+        clearButtonMode='always'
         onChangeText={ (text: string) => handleOnChange(text) }
       />
     </TrainingFormWrapper>

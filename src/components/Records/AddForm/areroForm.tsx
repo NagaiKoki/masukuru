@@ -25,6 +25,7 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           defaultValue={temporaryName}
           onChangeText={ (text: string) => onChangeTrainingName(text) }
           returnKeyType="done"
+          clearButtonMode='always'
         />
       </AddRecordItem>
       <AddRecordItem>
