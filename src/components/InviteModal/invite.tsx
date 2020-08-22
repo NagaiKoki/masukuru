@@ -1,22 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { Clipboard, Alert } from 'react-native'
 import styled from 'styled-components';
+// import constants
 import { COLORS } from '../../constants/Styles';
+// import utils
+import { openIviteCodeShareLinkWithSNS } from '../../utilities/Link/twitter'
+// import componets
+import SnsInviteCodeShareModal from './ShareModal'
 
 interface InviteCodeModalProps {
   showInviteCodeModal: boolean
   setShowInviteCodeModal: any
   ownCode: string
+  setShowSnsModal: Dispatch<SetStateAction<boolean>>
 }
 
 const InviteCodeModal = (props: InviteCodeModalProps) => {
-  const { showInviteCodeModal, setShowInviteCodeModal, ownCode } = props
+  const { showInviteCodeModal, setShowInviteCodeModal, ownCode, setShowSnsModal } = props
 
   const copyInviteCode = (code) => {
     Clipboard.setString(code)
     Alert.alert('コピーされました！')
   }
+
+  const handleShowShareModal = () => {
+    setShowInviteCodeModal(false)
+    setTimeout(() => {
+      setShowSnsModal(true)
+    }, 500)
+  }
+
+  const ShareButtons =
+    <ShareWrapper onPress={handleShowShareModal}>
+      <ShareButton>
+        招待コードをSNSで共有する
+      </ShareButton>
+      <Icon name="share" size={20} style={{ color: COLORS.BASE_WHITE, marginLeft: 10 }} />
+    </ShareWrapper>
 
   return (
     <Modal isVisible={showInviteCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInviteCodeModal(false)}>
@@ -26,10 +48,11 @@ const InviteCodeModal = (props: InviteCodeModalProps) => {
           <InviteCodeText>{ownCode}</InviteCodeText>
         </InviteCodeWrapper>
         <InviteSubText>タップするとコピーされます</InviteSubText>
+        {ShareButtons}
         <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
         <InviteSubText>※ グループに参加できる人数は最大で5人までです</InviteSubText>
-     </InviteModalView>
-    </Modal>
+      </InviteModalView>
+    </Modal> 
   )
 }
 
@@ -41,7 +64,7 @@ const InviteModalView = styled.View`
   width: 110%;
   border-radius: 10px;
   padding: 0 10px;
-  height: 320px;
+  height: 350px;
   background-color: ${COLORS.BASE_BACKGROUND};
   align-self: center;
 `
@@ -52,6 +75,25 @@ const InviteModalTitle = styled.Text`
   font-weight: bold;
   padding-top: 50px;
   text-align: center;
+`
+
+const ShareWrapper = styled.TouchableOpacity`
+  width: 90%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  margin-top: 30px;
+  background: ${COLORS.BASE_MUSCLEW};
+  padding: 15px;
+  border-radius: 5px;
+`
+
+const ShareButton = styled.Text`
+  text-align: center;
+  color: ${COLORS.BASE_WHITE};
+  font-size: 15px;
+  font-weight: bold;
 `
 
 const InviteCodeWrapper = styled.TouchableOpacity`
