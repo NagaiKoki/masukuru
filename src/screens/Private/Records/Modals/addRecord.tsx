@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
