@@ -5,10 +5,6 @@ import { Clipboard, Alert } from 'react-native'
 import styled from 'styled-components';
 // import constants
 import { COLORS } from '../../constants/Styles';
-// import utils
-import { openIviteCodeShareLinkWithSNS } from '../../utilities/Link/twitter'
-// import componets
-import SnsInviteCodeShareModal from './ShareModal'
 
 interface InviteCodeModalProps {
   showInviteCodeModal: boolean
