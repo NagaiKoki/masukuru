@@ -5,8 +5,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import components
-import AddRecordForm from '../../../../components/Records/AddForm/musclewForm'
+import AddRecordForm from '../../../../components/Records/AddForm/Musclew/musclewForm'
 import AddRecordAeroForm from '../../../../components/Records/AddForm/areroForm'
+import Sample from '../../../../components/Records/AddForm/Musclew/musclewForm2'
 import Toast from '../../../../components/Toaster'
 // import types
 import { AddRecordProps } from '../../../../containers/Private/records/addRecord'
@@ -217,46 +218,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
       </RecordSwitchWrapper>
 
       { isMuscleMenu ?
-        <AddRecordForm
-          amount1={amount1}
-          amount2={amount2}
-          amount3={amount3}
-          amount4={amount4}
-          amount5={amount5}
-          amount6={amount6}
-          amount7={amount7}
-          amount8={amount8}
-          amount9={amount9}
-          weight1={weight1}
-          weight2={weight2}
-          weight3={weight3}
-          weight4={weight4}
-          weight5={weight5}
-          weight6={weight6}
-          weight7={weight7}
-          weight8={weight8}
-          weight9={weight9}
-          temporaryName={temporaryName}
-          onChangeTrainingName={onChangeTrainingName}
-          setAmount1={setAmount1}
-          setAmount2={setAmount2}
-          setAmount3={setAmount3}
-          setAmount4={setAmount4}
-          setAmount5={setAmount5}
-          setAmount6={setAmount6}
-          setAmount7={setAmount7}
-          setAmount8={setAmount8}
-          setAmount9={setAmount9}
-          setWeight1={setWeight1}
-          setWeight2={setWeight2}
-          setWeight3={setWeight3}
-          setWeight4={setWeight4}
-          setWeight5={setWeight5}
-          setWeight6={setWeight6}
-          setWeight7={setWeight7}
-          setWeight8={setWeight8}
-          setWeight9={setWeight9}
-      /> : 
+        <Sample /> : 
         <AddRecordAeroForm
           temporaryName={temporaryName}
           temporaryDistance={temporaryDistance}

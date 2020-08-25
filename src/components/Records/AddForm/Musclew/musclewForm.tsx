@@ -1,16 +1,16 @@
 import React, { useState, useEffect, Dispatch, SetStateAction} from 'react';
 import styled from 'styled-components'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { COLORS } from '../../../constants/Styles'
+import { COLORS } from '../../../../constants/Styles'
 // import types
-import { RootState } from '../../../reducers';
+import { RootState } from '../../../../reducers';
 // import actions
-import { requestFetchSuggestRecords } from '../../../actions/Search/suggestRecord'
+import { requestFetchSuggestRecords } from '../../../../actions/Search/suggestRecord'
 // import components
-import SearchSuggestList from '../../../common/Search/Suggests/suggestList'
-import MusclewSetBtn from './SetBtn'
+import SearchSuggestList from '../../../../common/Search/Suggests/suggestList'
+import MusclewSetBtn from '../SetBtn'
 // import utils
-import { lessThanIphoneEightHeight } from '../../../utilities/Device'
+import { lessThanIphoneEightHeight } from '../../../../utilities/Device'
 
 interface AddRecordFormProps {
   temporaryName: string,

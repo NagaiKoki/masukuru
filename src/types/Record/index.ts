@@ -95,6 +95,10 @@ export type RecordCommentType = {
   updatedAt: FirestoreTimestamp | Date
 }
 
+export type WeightType = number | string
+
+export type AmountType = number | string
+
 // 記録の作成 ////////////////////////////////////////////////////////////
 // 記録の追加
 export interface AddRecord {
