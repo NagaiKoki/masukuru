@@ -1,5 +1,7 @@
 import { Linking } from 'expo'
 import Constants from 'expo-constants'
+// import analytics
+import Analytics from '../../config/amplitude'
 
 type SnsType = 'Twitter' | 'Line'
 
@@ -15,5 +17,6 @@ export const openIviteCodeShareLinkWithSNS = (code: string, type: SnsType) => {
     const lineText = text + appStoreUrl
     url = `https://line.me/R/msg/text/?${lineText}`
   }
+  Analytics.track('Analytics', { sns: type })
   return Linking.openURL(url)
 }
