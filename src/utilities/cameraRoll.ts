@@ -8,12 +8,14 @@ import * as Permissions from 'expo-permissions';
 // import lib
 import { factoryRandomCode } from './randomTextFactory'
 
-export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string) => {
+export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string, record?: number) => {
     let ImageName: string;
     if (!!user) {
       ImageName = `profile_image_${factoryRandomCode(20)}`;
     } else if (groupId) {
       ImageName = `group_image_${factoryRandomCode(20)}`;
+    } else if (record) {
+      ImageName = `record_image_${factoryRandomCode(20)}`;
     }
 
     if (IsCameraEnable) {

@@ -40,6 +40,7 @@ export interface RecordState {
   recordItems: RecordItemType[]
   word: string
   trainingDate: Date
+  imageUrl: string
   temporaryName: string
   temporaryTime: string
   temporaryDistance: string
@@ -81,6 +82,7 @@ export type ResponseRecordType = {
   word: string
   trainingDate: FirestoreTimestamp | null
   uid: string
+  imageUrl: string
   createdAt: FirestoreTimestamp
   updatedAt: FirestoreTimestamp
 }
@@ -177,6 +179,7 @@ export interface RequestSubmitRecords {
   type: typeof REQUEST_SUBMIT_RECORDS
   records: RecordItemType[]
   word: string
+  imageUrl: string
 }
 
 // 記録の保存成功

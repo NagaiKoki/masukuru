@@ -7,7 +7,7 @@ import { factoryRandomCode } from '../../utilities/randomTextFactory'
 import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 
 // 記録のポスト
-export const requestPostRecords = async (records: RecordItemType[], word: string, trainingDate: Date) => {
+export const requestPostRecords = async (records: RecordItemType[], word: string, trainingDate: Date, imageUrl: string) => {
   const uid = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   const docId = factoryRandomCode(20)
@@ -24,6 +24,7 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
       uid: uid,
       word: word,
       trainingDate: trainingDate,
+      imageUrl: imageUrl,
       groupIds: groupIds,
       createdAt: currentTime,
       updatedAt: currentTime
