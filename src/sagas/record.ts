@@ -70,6 +70,7 @@ import * as RecordAnalytics from '../utilities/Analytics/record'
 function* runRequestSubmitRecords(action: RequestSubmitRecords) {
   const { trainingDate } = yield select((state: RootState) => state.records)
   const { records, word, imageUrl } = action
+  console.log(action)
   const { payload, error }: { payload?: string, error?: string } = yield call(
     requestPostRecords,
     records,

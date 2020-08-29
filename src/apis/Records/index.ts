@@ -12,6 +12,7 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   const docId = factoryRandomCode(20)
   const groupIds = []
+  console.log(imageUrl)
   try {
     await db.collectionGroup('groupUsers').where('uid', '==', uid).get().then(snap => {
       snap.forEach(doc => {

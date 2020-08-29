@@ -8,7 +8,7 @@ import * as Permissions from 'expo-permissions';
 // import lib
 import { factoryRandomCode } from './randomTextFactory'
 
-export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string, record?: number) => {
+export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string, record?: string) => {
     let ImageName: string;
     if (!!user) {
       ImageName = `profile_image_${factoryRandomCode(20)}`;

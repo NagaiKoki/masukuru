@@ -18,7 +18,7 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { onChangeWord, requestSubmitRecords, initializeRecords } = actions
   const [progress, setProgress] = useState<string>('');
   const [temporaryUrl, setTemporaryUrl] = useState('');
-  const record = 1;
+  const record = 'record';
   
   useFocusEffect(
     useCallback(() => {
@@ -37,14 +37,12 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           )
         }
       })
-    }, [word, isLoading])
+    }, [word, temporaryUrl, isLoading])
   )
 
   const handleSubmitRecord = async () => {
     if (isLoading) return
     requestSubmitRecords(recordItems, word, temporaryUrl)
-    console.log(word)
-    console.log(temporaryUrl)
     setTimeout(() => {
       navigation.navigate('mainContainer')
       initializeRecords()
@@ -62,6 +60,22 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
     )
   }
 
+  const renderImage =
+    <UploadImageView>
+      { temporaryUrl ? <Image source={{ uri: temporaryUrl }} style={{ width: 100, height: 100, resizeMode: 'cover', borderRadius: 4 }} /> : null }
+      { progress ? <RecordImageProgress>{progress}</RecordImageProgress> : null }
+    </UploadImageView>
+
+
+  const renderImageForm =
+    <RecordImageUpload onPress={handleUpload}>
+      <Icon name="image" size={15} style={{ marginRight: 5, color: '#484848' }}/>
+      <RecordImageUploadText>
+        { !!temporaryUrl ? '画像を変更する' : '画像を追加する' }
+      </RecordImageUploadText>
+   </RecordImageUpload>
+    
+
   return (
     <AddWordContainer>
       <AddWordFormWrapper>
@@ -75,17 +89,9 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           autoCorrect={ false }
           onChangeText={ (text: string) => onChangeWord(text) }
         />
-        <UploadImageView>
-          { temporaryUrl ? <Image source={{ uri: temporaryUrl }} style={{ width: 100, height: 100, resizeMode: 'cover' }} /> : null }
-          { progress ? <RecordImageProgress>{progress}</RecordImageProgress> : null }
-        </UploadImageView>
+        {renderImage}
         <WordFormBottom>
-          <RecordImageUpload onPress = {handleUpload}>
-            <Icon name="image" size={15} style={{ marginRight: 5, color: '#484848' }}/>
-            <RecordImageUploadText>
-              画像を追加する
-            </RecordImageUploadText>
-          </RecordImageUpload>
+          {renderImageForm}
           <WordLengthText>{word.length} / 300</WordLengthText>
         </WordFormBottom>
       </AddWordFormWrapper>
