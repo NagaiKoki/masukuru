@@ -61,9 +61,7 @@ import {
 } from '../actions/notifications'
 // import config
 import firebase from '../config/firebase'
-import Analytics from '../config/amplitude'
 // import utils
-import { convertTimestampToString } from '../utilities/timestamp'
 import * as RecordAnalytics from '../utilities/Analytics/record'
 
 // 記録の保存
