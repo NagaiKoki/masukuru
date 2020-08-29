@@ -23,5 +23,7 @@ export const COLORS = {
   FORM_BACKGROUND: "#e6e6e6",
 
   LINE_COLOR: "#00B900",
-  TWITTER_COLOR: "#1DA1F2"
+  TWITTER_COLOR: "#1DA1F2",
+
+  IMAGE_BACKGROUND: "#d1d1cf"
 }

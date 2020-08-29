@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { TouchableHighlight } from 'react-native'
+import { TouchableHighlight, Image, StyleSheet, Dimensions } from 'react-native'
 import moment from '../../../config/moment'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -21,6 +21,7 @@ import { convertTimestampToString } from '../../../utilities/timestamp'
 import { reactAlert } from '../../../utilities/alert'
 // import constants
 import { COLORS } from '../../../constants/Styles';
+import { BottomNavigation } from 'react-native-paper';
 
 interface RecordItemProps {
   record: ResponseRecordType
@@ -31,7 +32,7 @@ interface RecordItemProps {
 
 const RecordItem = (props: RecordItemProps) => {
   const { record, isShowPage, navigation, requestDestroyRecord } = props
-  const { id, uid, records, word, createdAt } = record
+  const { id, uid, records, word, imageUrl, createdAt } = record
   const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
@@ -113,6 +114,9 @@ const RecordItem = (props: RecordItemProps) => {
         </RecordRightUpper>
       </RecordItemUpper>
       { !!word ? <RecordWordText>{word}</RecordWordText> : null }
+      <RecordImageWrapper>
+        { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
+      </RecordImageWrapper>
       <TrainingDate 
         date={record.trainingDate}
         createdAt={record.createdAt}
@@ -124,6 +128,17 @@ const RecordItem = (props: RecordItemProps) => {
     </TouchableHighlight>
   )
 }
+
+const win = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  image: {
+      height: 200,
+      width: 200,
+      borderRadius: 15,
+      backgroundColor: '#d1d1cf'
+  }
+});
 
 const RecordItemContainer = styled.View`
   margin: 0px 0 8px 0;
@@ -181,6 +196,11 @@ const UnitDataWrapper = styled.View`
   align-items: center;
   flex-wrap: wrap;
   padding-bottom: 5px;
+`
+
+const RecordImageWrapper = styled.View`
+  margin-left: 50px;
+  margin-bottom: 15px;
 `
 
 export default RecordItem

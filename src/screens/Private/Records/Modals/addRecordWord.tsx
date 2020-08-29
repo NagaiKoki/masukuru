@@ -1,18 +1,24 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { Image } from 'react-native';
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
+import Icon from 'react-native-vector-icons/FontAwesome'
 // import components
 import Loading from '../../../../components/Loading'
 // import types
 import { AddRecordWordProps } from '../../../../containers/Private/records/addRecordWord'
 // import lib
 import { requestAppReview } from '../../../../utilities/requestReview'
+import { ImageUpload } from '../../../../utilities/cameraRoll';
 
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props
   const { word, recordItems, isLoading } = records
   const { onChangeWord, requestSubmitRecords, initializeRecords } = actions
+  const [progress, setProgress] = useState<string>('');
+  const [temporaryUrl, setTemporaryUrl] = useState('');
+  const record = 'record';
   
   useFocusEffect(
     useCallback(() => {
@@ -31,12 +37,12 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           )
         }
       })
-    }, [word, isLoading])
+    }, [word, temporaryUrl, isLoading])
   )
 
   const handleSubmitRecord = async () => {
     if (isLoading) return
-    requestSubmitRecords(recordItems, word)
+    requestSubmitRecords(recordItems, word, temporaryUrl)
     setTimeout(() => {
       navigation.navigate('mainContainer')
       initializeRecords()
@@ -44,11 +50,31 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
     await requestAppReview()
   }
 
+  const handleUpload = () => {
+    ImageUpload(setProgress, setTemporaryUrl, undefined, undefined, record)
+  }
+
   if (isLoading) {
     return (
       <Loading size="small" />
     )
   }
+
+  const renderImage =
+    <UploadImageView>
+      { temporaryUrl ? <Image source={{ uri: temporaryUrl }} style={{ width: 100, height: 100, resizeMode: 'cover', borderRadius: 4 }} /> : null }
+      { progress ? <RecordImageProgress>{progress}</RecordImageProgress> : null }
+    </UploadImageView>
+
+
+  const renderImageForm =
+    <RecordImageUpload onPress={handleUpload}>
+      <Icon name="image" size={15} style={{ marginRight: 5, color: '#484848' }}/>
+      <RecordImageUploadText>
+        { !!temporaryUrl ? '画像を変更する' : '画像を追加する' }
+      </RecordImageUploadText>
+   </RecordImageUpload>
+    
 
   return (
     <AddWordContainer>
@@ -63,7 +89,11 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           autoCorrect={ false }
           onChangeText={ (text: string) => onChangeWord(text) }
         />
-        <WordLengthText>{word.length} / 300</WordLengthText>
+        {renderImage}
+        <WordFormBottom>
+          {renderImageForm}
+          <WordLengthText>{word.length} / 300</WordLengthText>
+        </WordFormBottom>
       </AddWordFormWrapper>
     </AddWordContainer>
   )
@@ -84,6 +114,7 @@ const HeaderSaveTitle = styled.Text`
 `
 
 const AddWordFormWrapper = styled.View`
+  background-color: ${COLORS.FORM_BACKGROUND};
 `
 
 const AddWordForm = styled.TextInput`
@@ -96,6 +127,33 @@ const AddWordForm = styled.TextInput`
   padding: 15px;
   font-size: 16px;
   color: ${COLORS.BASE_BLACK};
+`
+
+const UploadImageView = styled.View`
+  margin-left: 15px;
+`
+
+const RecordImageProgress = styled.Text`
+  color: ${COLORS.BASE_MUSCLEW};
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+`
+
+const WordFormBottom = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 15px;
+`
+
+const RecordImageUpload = styled.TouchableOpacity`
+  margin: 15px 0 0 10px;
+  flex-direction: row;
+`
+
+const RecordImageUploadText = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 14px;
 `
 
 const WordLengthText = styled.Text`
