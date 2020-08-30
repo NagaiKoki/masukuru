@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import * as Device from 'expo-device'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
@@ -10,8 +10,9 @@ import UserImage from '../../Image/userImage'
 import { ResponseRecordType } from '../../../types/Record'
 import { NotificationEventType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
-// import lib
+// import utils
 import { requestAppReview } from '../../../utilities/requestReview'
+import { hapticFeedBack } from '../../../utilities/Haptic'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -46,8 +47,9 @@ const RecordComment = (props: RecordCommentProps) => {
   
   const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
-    requestPostRecordComment(id, uid, notificationGroupId)
     setText('')
+    requestPostRecordComment(id, uid, notificationGroupId)
+    hapticFeedBack('medium')
     Keyboard.dismiss()
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
       requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text);
