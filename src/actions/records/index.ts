@@ -146,11 +146,12 @@ export const onChangeRecordDate = (date: Date): RecordActionTypes => {
 }
 
 // レコードの保存リクエスト
-export const requestSubmitRecords = (records: RecordItemType[], word: string): RecordActionTypes => {
+export const requestSubmitRecords = (records: RecordItemType[], word: string, imageUrl: string): RecordActionTypes => {
   return {
     type: REQUEST_SUBMIT_RECORDS,
     records,
-    word
+    word,
+    imageUrl
   }
 }
 

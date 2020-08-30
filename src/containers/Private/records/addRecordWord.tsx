@@ -20,7 +20,7 @@ export interface AddRecordWordProps {
   records: RecordState
   actions: {
     onChangeWord: (word: string) => void
-    requestSubmitRecords: (records: RecordItemType[], word: string) => void
+    requestSubmitRecords: (records: RecordItemType[], word: string, imageUrl: string) => void
     setRecordError: (error: string) => void
     initializeRecords: () => void
   }
