@@ -17,20 +17,24 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
   const { count, amounts, weights, setWeights, setAmounts } = props
 
   const handleAddWeight = (size: number, weight: number | string) => {
-    const addedWeights = [...weights, weight]
-    setWeights(addedWeights)
+    if (weights[size - 1] === undefined) {
+      const addedWeights = [...weights, weight]
+      return setWeights(addedWeights)
+    } else {
+      weights[size - 1] = weight
+      return setWeights(weights)
+    }
   }
 
   const handleAddAmount = (size: number, amount: number | string) => {
-    if (!!amounts[size -1]) {
-      amounts[size - 1]
+    if (!!amounts[size -1] === undefined) {
+      const addedAmounts = [...amounts, amount]
+      return setAmounts(addedAmounts)
+    } else {
+      amounts[size - 1] = amount
+      return setAmounts(amounts)
     }
-    const addedAmounts = [...amounts, amount]
-    setAmounts(addedAmounts)
   }
-
-  console.log(`amounts: ${amounts}`)
-  console.log(`weights: ${weights}`)
 
   const renderUnitForms = () => {
     const components: JSX.Element[] = []
@@ -57,7 +61,7 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
               keyboardType={'numeric'}
               returnKeyType="done"
               autoCorrect={ false }
-              onChangeText={ (text: number) => handleAddWeight(text) }
+              onChangeText={ (text: number) => handleAddWeight(size, text) }
           />
         <AddRecordUnitName>/ kg</AddRecordUnitName>
       </AddRecordItem>

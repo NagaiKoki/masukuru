@@ -57,6 +57,7 @@ export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: 
         records.push(data)
       })
     })
+    console.log(`records: ${records}`)
     return { payload: records }
   } catch (error) {
     return { error: error }

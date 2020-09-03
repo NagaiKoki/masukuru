@@ -1,3 +1,4 @@
+import { PayloadAction } from '@reduxjs/toolkit'
 import { fork, select, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
 // import action types
 import { 
@@ -10,17 +11,17 @@ import {
   REQUEST_DELETE_RECORD_COMMENT,
   REQUEST_POST_COMMENT_NOTIFICATION
 } from '../actions/actionTypes'
+// import slice
+import {  
+  requestFetchRecords,
+  successFetchRecords,
+  hoge
+} from '../slice/record'
 // import types
 import { 
-  RequestSubmitRecords, 
   ResponseRecordType,
-  RequestFetchRecords,
-  RequestNextRecords,
-  RequestDestroyRecord,
-  RequestPostRecordComment,
   RecordCommentType,
-  RequestFetchRecordComments,
-  RequestDeleteRecordComment,
+  RequestFetchRecordType
 } from '../types/Record'
 import { RequestPostCommentNotification } from '../types/Notification'
 import { RootState } from '../reducers'
@@ -42,7 +43,6 @@ import {
 import { 
   successSubmitRecords, 
   failureSubmitRecords,
-  SuccessFetchRecords,
   failureFetchRecords,
   successFetchNextRecords,
   failureFetchNextRecords,
@@ -99,8 +99,8 @@ function* handleRequestSubmitRecords() {
 }
 
 // 記録の取得
-function* runRequestFetchRecords(action: RequestFetchRecords) {
-  const { uid, groupId } = action
+function* runRequestFetchRecords(action: PayloadAction<RequestFetchRecordType>) {
+  const { uid, groupId } = action.payload
   const startAt = null
   const { payload, error } : { payload?: ResponseRecordType[], error?: string } = yield call(
     requestFetchRecord,
@@ -110,14 +110,14 @@ function* runRequestFetchRecords(action: RequestFetchRecords) {
   )
 
   if (payload && !error) {
-    yield put(SuccessFetchRecords(payload, uid, groupId))
+    yield put(successFetchRecords({ payload: payload, uid: uid, groupId: groupId}))
   } else {
     yield put(failureFetchRecords(error))
   }
 }
 
 function* handleRequestFetchRecords() {
-  yield takeLatest(REQUEST_FETCH_RECORDS, runRequestFetchRecords)
+  yield takeLatest(requestFetchRecords.type, runRequestFetchRecords)
 }
 
 // 記録の追加読み込み
