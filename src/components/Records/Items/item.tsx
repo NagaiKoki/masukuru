@@ -40,6 +40,7 @@ const RecordItem = (props: RecordItemProps) => {
   const [commentSize, setCommentSize] = useState(0)
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [isCommentLoading, setIsCommentLoading] = useState(true)
+  const DELETE_ALERT_TEXT = 'この記録を削除します。'
   
   useFocusEffect(
     useCallback(() => {
@@ -106,7 +107,7 @@ const RecordItem = (props: RecordItemProps) => {
         />
         <RecordRightUpper>
         { currentUser.uid === uid && !isShowPage ? 
-            <IconWrapper onPress={ () => reactAlert(handleRequestDestroyRecord) }>
+            <IconWrapper onPress={ () => reactAlert(DELETE_ALERT_TEXT, handleRequestDestroyRecord) }>
               <Icon name='ellipsis1' size={20} style={{ color: COLORS.BASE_BLACK, marginTop: -10, marginRight: 5 }}/>
             </IconWrapper> : null
           }

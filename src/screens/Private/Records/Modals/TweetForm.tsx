@@ -17,7 +17,8 @@ import recordSelector from '../../../../selectors/record'
 
 const AddRecordWordScreen = ({ navigation }) => {
   const dispatch = useDispatch()
-  const { word, recordItems, isLoading } = recordSelector()
+  const { recordItems, isLoading } = recordSelector()
+  const [text, setText] = useState('')
   const [progress, setProgress] = useState<string>('');
   const [temporaryUrl, setTemporaryUrl] = useState('');
   const record = 'record';
@@ -39,12 +40,12 @@ const AddRecordWordScreen = ({ navigation }) => {
           )
         }
       })
-    }, [word, temporaryUrl, isLoading])
+    }, [text, temporaryUrl, isLoading])
   )
 
   const handleSubmitRecord = async () => {
     if (isLoading) return
-    dispatch(requestSubmitRecords({ records: recordItems, word, imageUrl: temporaryUrl }))
+    dispatch(requestSubmitRecords({ records: recordItems, word: text, imageUrl: temporaryUrl }))
     setTimeout(() => {
       navigation.navigate('mainContainer')
       dispatch(initializeRecords())
@@ -87,14 +88,14 @@ const AddRecordWordScreen = ({ navigation }) => {
           multiline = {true}
           numberOfLines = {4}
           maxLength={300}
-          defaultValue={word}
+          defaultValue={text}
           autoCorrect={ false }
-          onChangeText={ (text: string) => {} }
+          onChangeText={ (text: string) => setText(text) }
         />
         {renderImage}
         <WordFormBottom>
           {renderImageForm}
-          <WordLengthText>{word.length} / 300</WordLengthText>
+          <WordLengthText>{text.length} / 300</WordLengthText>
         </WordFormBottom>
       </AddWordFormWrapper>
     </AddWordContainer>

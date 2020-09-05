@@ -40,8 +40,7 @@ const AddRecordScreen = ({ navigation, route }) => {
   }, [])
 
   const takeOverRecord = () => {
-    const { name, set, weights, amounts, distance, time, recordType } = recordItem
-    const isMuscle =  recordType === 'muscle' ? true : false
+    const { name, set, weights, amounts, distance, time, isMuscle } = recordItem
     setCount(isMuscle ? set : 3)
     setIsMuscleMenu(isMuscle)
     setWeights(isMuscle ? weights : ['', '', ''])
@@ -102,7 +101,7 @@ const AddRecordScreen = ({ navigation, route }) => {
       weights: !!weights.length ? weights : [],
       time: Number(time),
       distance: Number(distance),
-      recordType: isMuscleMenu ? 'muscle' : 'aerobic'
+      isMuscle: isMuscleMenu
     }
     isUpdate ? dispatch(updateRecord(recordItemObj)) : dispatch(addRecord(recordItemObj))
     navigation.goBack()

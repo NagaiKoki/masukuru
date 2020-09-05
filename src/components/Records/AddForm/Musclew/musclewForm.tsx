@@ -42,6 +42,10 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
   const [visibleSuggest, setVisibleSuggest] = useState(false)
   const { isLoading, recordNames } = suggestRecordSelector()
   const suggestSize = lessThanIphoneEightHeight() ? 165 : 190
+
+  React.useEffect(() => {
+    dispatch(requestFetchSuggestRecords(''))
+  }, [])
  
   const handleOnChange = (title: string) => {
     setMuscleName(title)

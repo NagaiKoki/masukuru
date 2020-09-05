@@ -57,7 +57,7 @@ const RecordModalScreen = ({ navigation }) => {
     }
     navigation.navigate('trainingRecordModal', routeProps)
   }
-
+  
   // 記録の削除
   const handleDeleteRecordItem = (record: RecordItemType) => 
     Alert.alert(

@@ -23,7 +23,7 @@ export type RecordItemType = {
   weights?: string[]
   time?: number
   distance?: number
-  recordType: 'muscle' | 'aerobic'
+  isMuscle: boolean
 }
 
 export type ResponseRecordType = {

@@ -234,7 +234,7 @@ const recordSlice = createSlice({
         ...state,
         trainingDate: action.payload
       }
-    }
+    },
   }
 })
 

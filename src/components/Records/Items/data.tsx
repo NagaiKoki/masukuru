@@ -18,7 +18,7 @@ const RecordData = (props: RecordDataProps) => {
       const weights = record.weights
       let components = []
       for(let size = 1; size <= amounts.length; size++) {
-         components.push(<UnitData key={size}>{ amounts[size - 1] + '回' }{ weights[size - 1] ? '×' + weights[size - 1] + 'kg' : null}</UnitData>)
+         components.push(<UnitData key={size}>{ amounts[size - 1] ? amounts[size - 1] + '回' : null }{ weights[size - 1] ? '×' + weights[size - 1] + 'kg' : null}</UnitData>)
       }
       return components
     } else if (record.isMuscle === false) {
