@@ -7,6 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import RecordModalScreen from '../../../../../screens/Private/Records/Modals'
 import RecordFormScreen from '../../../../../screens/Private/Records/Modals/TrainingForm'
 import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/TweetForm'
+import RecordEditScreen from '../../../../../screens/Private/Records/Modals/edit'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -47,6 +48,27 @@ const RecordModalNavigator = () => {
       <RecordModalStack.Screen 
         name="tweetRecordModal"
         component={RecordTweetScreen}
+      />
+
+      <RecordModalStack.Screen 
+        name="editRecordModal"
+        component={RecordEditScreen}
+        options={{
+          headerLeft: () => {
+            return (
+              <EvilIcons name="close" 
+                size={24} 
+                onPress={handleCancelRecord}
+                style={{ paddingLeft: 20, color: COLORS.BASE_WHITE }}
+              />
+            )
+          },
+          headerTitle: '記録をのこす',
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE
+        }}
       />
     </RecordModalStack.Navigator>
   )

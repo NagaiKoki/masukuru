@@ -3,17 +3,17 @@ import { useDispatch } from 'react-redux'
 import * as Device from 'expo-device'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
-import { COLORS } from '../../../constants/Styles'
+import { COLORS } from '../../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import componets
-import UserImage from '../../Image/userImage'
+import UserImage from '../../../Image/userImage'
 // import types
-import { ResponseRecordType, RequestPostRecordComment } from '../../../types/Record'
-import { NotificationEventType } from '../../../types/Notification'
-import { UserType } from '../../../types/User'
+import { ResponseRecordType, RequestPostRecordComment } from '../../../../types/Record'
+import { NotificationEventType } from '../../../../types/Notification'
+import { UserType } from '../../../../types/User'
 // import utils
-import { requestAppReview } from '../../../utilities/requestReview'
-import { hapticFeedBack } from '../../../utilities/Haptic'
+import { requestAppReview } from '../../../../utilities/requestReview'
+import { hapticFeedBack } from '../../../../utilities/Haptic'
 
 interface RecordCommentProps {
   record: ResponseRecordType

@@ -17,6 +17,7 @@ import RecordReaction from '../Reactions'
 import RecordUser from './user'
 import RecordData from './data'
 import TrainingDate from './trainingDate'
+import SettingModal from '../SettingModal/list'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import constants
@@ -40,6 +41,7 @@ const RecordItem = (props: RecordItemProps) => {
   const [commentSize, setCommentSize] = useState(0)
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [isCommentLoading, setIsCommentLoading] = useState(true)
+  const [visibleModal, setVisibleModal] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
@@ -68,7 +70,7 @@ const RecordItem = (props: RecordItemProps) => {
     setIsCommentLoading(false)
   }
 
-  const reactAlert = () => {
+  const deleteRecordWithAlert = () => {
     Alert.alert(
       'この記録を削除します。',
       "本当によろしいですか？", 
@@ -124,7 +126,7 @@ const RecordItem = (props: RecordItemProps) => {
         />
         <RecordRightUpper>
         { currentUser.uid === uid && !isShowPage ? 
-            <IconWrapper onPress={ () => reactAlert() }>
+            <IconWrapper onPress={ () => setVisibleModal(true) }>
               <Icon name='ellipsis1' size={20} style={{ color: COLORS.BASE_BLACK, marginTop: -10, marginRight: 5 }}/>
             </IconWrapper> : null
           }
@@ -142,6 +144,13 @@ const RecordItem = (props: RecordItemProps) => {
       />
       {renderRecordData}
       { isShowPage ? null : <RecordReaction size={commentSize} /> }
+      <SettingModal 
+        recordId={record.id}
+        visibleModal={visibleModal}
+        navigation={navigation}
+        setVisibleModal={setVisibleModal}
+        deleteRecordWithAlert={deleteRecordWithAlert}
+      />
     </RecordItemContainer>
     </TouchableHighlight>
   )

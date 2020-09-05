@@ -74,15 +74,6 @@ const InvitedModalFormWrapper = styled.View`
   width: 80%;
 `
 
-const InvitedModalForm = styled.TextInput`
-  border: 1px solid ${COLORS.BASE_BORDER_COLOR};
-  margin-bottom: 20px;
-  padding: 15px;
-  border-radius: 5px;
-  background-color: ${COLORS.BASE_WHITE};
-  color: ${COLORS.BASE_BLACK};
-`
-
 const InvitedModalSubmitBtn = styled.TouchableOpacity<{disableSubmit: boolean }>`
   width: 80%;
   align-self: center;

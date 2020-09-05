@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Alert } from 'react-native'
 import styled from 'styled-components'
-import moment from '../../../config/moment'
+import moment from '../../../../config/moment'
 // import types
-import { RecordCommentType, RequestDeleteComment } from '../../../types/Record'
+import { RecordCommentType, RequestDeleteComment } from '../../../../types/Record'
 // import apis
-import { requestFetchUser } from '../../../apis/Users'
+import { requestFetchUser } from '../../../../apis/Users'
 // import constants
-import { COLORS } from '../../../constants/Styles'
+import { COLORS } from '../../../../constants/Styles'
 // import components
-import UserImage from '../../Image/userImage'
+import UserImage from '../../../Image/userImage'
 // import lib
-import { convertTimestampToString } from '../../../utilities/timestamp'
-import firebase from '../../../config/firebase'
+import { convertTimestampToString } from '../../../../utilities/timestamp'
+import firebase from '../../../../config/firebase'
 
 interface RecordCommentListProps {
   comment: RecordCommentType

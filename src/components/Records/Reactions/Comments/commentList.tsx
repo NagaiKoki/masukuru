@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 // import apis
-import { requestCurrentGroupId  } from '../../../apis/Groups/transfer'
+import { requestCurrentGroupId  } from '../../../../apis/Groups/transfer'
 // import types
-import { RecordCommentType, RequestDeleteComment } from '../../../types/Record'
+import { RecordCommentType, RequestDeleteComment } from '../../../../types/Record'
 // import components
 import RecordCommentItem from './commentItem'
-import Loading from '../../Loading'
-import { COLORS } from '../../../constants/Styles'
-import store from '../../../reducers'
-import { requestFetchNotReadNotificationNumber } from '../../../actions/notifications'
+import Loading from '../../../Loading'
+import { COLORS } from '../../../../constants/Styles'
+import store from '../../../../reducers'
+import { requestFetchNotReadNotificationNumber } from '../../../../actions/notifications'
 
 interface RecordCommentListProps {
   comments: RecordCommentType[]
