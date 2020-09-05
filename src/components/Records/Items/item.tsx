@@ -83,7 +83,10 @@ const RecordItem = (props: RecordItemProps) => {
   const renderRecordData = records.map((record: RecordItemType, i: number) => {
     return (
       <RecordDataWrapper key={i}>
-        <RecordDataName>{record.name}</RecordDataName>
+        <RecordNameWrapper>
+          <RecordIconBlcok />
+          <RecordDataName>{record.name}</RecordDataName>
+        </RecordNameWrapper>
         <UnitDataWrapper>
           <RecordData record={record} />
         </UnitDataWrapper>
@@ -185,18 +188,30 @@ const RecordDataWrapper = styled.View`
   padding: 15px 0;
 `
 
+const RecordNameWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+const RecordIconBlcok = styled.View`
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: ${COLORS.BASE_MUSCLEW};
+`
+
 const RecordDataName = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 17px;
-  margin-bottom: 5px;
+  margin: 5px 0 3px 12px;
 `
 
 const UnitDataWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  padding-bottom: 5px;
+  padding: 5px 0 5px 0;
 `
 
 const RecordImageWrapper = styled.View`
