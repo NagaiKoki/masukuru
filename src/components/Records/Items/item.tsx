@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
-import { TouchableHighlight, Image, StyleSheet, Dimensions } from 'react-native'
+import { TouchableHighlight, Image, StyleSheet, Dimensions, Alert } from 'react-native'
 import moment from '../../../config/moment'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -18,29 +19,28 @@ import RecordData from './data'
 import TrainingDate from './trainingDate'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
-import { reactAlert } from '../../../utilities/alert'
 // import constants
 import { COLORS } from '../../../constants/Styles';
-import { BottomNavigation } from 'react-native-paper';
+import { requestDestroyRecord } from '../../../slice/record'
 
 interface RecordItemProps {
   record: ResponseRecordType
   navigation?: any
   isShowPage?: boolean
-  requestDestroyRecord: (id: string) => void
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record, isShowPage, navigation, requestDestroyRecord } = props
+  const { record, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
   const currentUser = firebase.auth().currentUser
+  const dispatch = useDispatch()
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
   const [commentSize, setCommentSize] = useState(0)
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [isCommentLoading, setIsCommentLoading] = useState(true)
-  
+
   useFocusEffect(
     useCallback(() => {
       fetchUser()
@@ -68,9 +68,24 @@ const RecordItem = (props: RecordItemProps) => {
     setIsCommentLoading(false)
   }
 
-  const handleRequestDestroyRecord = () => {
-    requestDestroyRecord(id)
+  const reactAlert = () => {
+    Alert.alert(
+      'この記録を削除します。',
+      "本当によろしいですか？", 
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => {dispatch(requestDestroyRecord(id))}
+        }
+      ],
+      { cancelable: false }
+    )
   }
+
 
   if (isUserLoading || isCommentLoading) {
     return (
@@ -82,7 +97,10 @@ const RecordItem = (props: RecordItemProps) => {
   const renderRecordData = records.map((record: RecordItemType, i: number) => {
     return (
       <RecordDataWrapper key={i}>
-        <RecordDataName>{record.name}</RecordDataName>
+        <RecordNameWrapper>
+          <RecordIconBlcok />
+          <RecordDataName>{record.name}</RecordDataName>
+        </RecordNameWrapper>
         <UnitDataWrapper>
           <RecordData record={record} />
         </UnitDataWrapper>
@@ -106,7 +124,7 @@ const RecordItem = (props: RecordItemProps) => {
         />
         <RecordRightUpper>
         { currentUser.uid === uid && !isShowPage ? 
-            <IconWrapper onPress={ () => reactAlert(handleRequestDestroyRecord) }>
+            <IconWrapper onPress={ () => reactAlert() }>
               <Icon name='ellipsis1' size={20} style={{ color: COLORS.BASE_BLACK, marginTop: -10, marginRight: 5 }}/>
             </IconWrapper> : null
           }
@@ -184,18 +202,30 @@ const RecordDataWrapper = styled.View`
   padding: 15px 0;
 `
 
+const RecordNameWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+const RecordIconBlcok = styled.View`
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: ${COLORS.BASE_MUSCLEW};
+`
+
 const RecordDataName = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 17px;
-  margin-bottom: 5px;
+  margin: 5px 0 3px 12px;
 `
 
 const UnitDataWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  padding-bottom: 5px;
+  padding: 5px 0 5px 0;
 `
 
 const RecordImageWrapper = styled.View`

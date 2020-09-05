@@ -1,18 +1,30 @@
-import React from 'react'
+import React, { SetStateAction, Dispatch } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 
 interface AddAeroProps {
-  temporaryName: string
-  temporaryDistance: string
-  temporaryTime: string
-  onChangeTrainingName: (name: string) => void
-  onChangeDistance: (distance: string) => void
-  onChangeTime: (time: string) => void
+  aeroName: string
+  time: string
+  distance: string
+  setAeroName: Dispatch<SetStateAction<string>>
+  setDistance: Dispatch<SetStateAction<string>>
+  setTime: Dispatch<SetStateAction<string>>
 }
 
 const AddRecordAeroForm = (props: AddAeroProps) => {
-  const { temporaryName, temporaryDistance, temporaryTime, onChangeTime, onChangeDistance, onChangeTrainingName } = props
+  const { aeroName, time, distance, setAeroName, setDistance, setTime } = props
+
+  const handleOnChangeName = (name: string) => {
+    setAeroName(name)
+  }
+  
+  const handleOnChangeDistance = (distance: number) => {
+    setDistance(String(distance))
+  }
+
+  const handleOnChangeTime = (time: number) => {
+    setTime(String(time))
+  }
 
   return (
     <AddAeroWrapper>
@@ -22,8 +34,8 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           placeholder="例）ランニング"
           autoCapitalize={'none'}
           autoCorrect={ false }
-          defaultValue={temporaryName}
-          onChangeText={ (text: string) => onChangeTrainingName(text) }
+          value={aeroName}
+          onChangeText={handleOnChangeName}
           returnKeyType="done"
           clearButtonMode='always'
         />
@@ -34,10 +46,10 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           placeholder="0"
           autoCapitalize={'none'}
           maxLength={3}
-          defaultValue={String(temporaryDistance)}
+          defaultValue={distance}
           keyboardType={'numeric'}
           autoCorrect={ false }
-          onChangeText={ (text: string) => onChangeDistance(text) }
+          onChangeText={handleOnChangeDistance}
           returnKeyType="done"
         />
         <AddRecordUnitName> km</AddRecordUnitName>
@@ -48,10 +60,10 @@ const AddRecordAeroForm = (props: AddAeroProps) => {
           placeholder="0"
           autoCapitalize={'none'}
           maxLength={3}
-          defaultValue={String(temporaryTime)}
+          defaultValue={time}
           keyboardType={'numeric'}
           autoCorrect={ false }
-          onChangeText={ (text: string) => onChangeTime(text) }
+          onChangeText={handleOnChangeTime}
           returnKeyType="done"
         />
         <AddRecordUnitName> 分</AddRecordUnitName>

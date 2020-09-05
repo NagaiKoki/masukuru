@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import types
@@ -6,33 +7,38 @@ import { RecordShowProps } from '../../../../containers/Private/records/recordSh
 import { ResponseRecordType } from '../../../../types/Record'
 // import components
 import RecordItem from '../../../../components/Records/Items/item'
-import RecordComment from '../../../../components/Records/Comments/form'
+import RecordCommentForm from '../../../../components/Records/Comments/form'
 import RecordCommentList from '../../../../components/Records/Comments/commentList'
 import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
 // import config
 import firebase from '../../../../config/firebase'
+// import selectors
+import userSelector from '../../../../selectors/user'
+import recordSelector from '../../../../selectors/record'
+// import slice
+import {
+  requestDestroyRecord,
+  requestPostRecordComment,
+  requestFetchRecordComments,
+  requestDeleteRecordComment,
+} from '../../../../slice/record'
+// import actions
+import { requestFetchUserData } from '../../../../actions/User'
 
 const RecordShowScreen = (props: RecordShowProps) => {
-  const { navigation, route, records, users, actions } = props
-  const {
-    requestFetchUserData,
-     requestDestroyRecord, 
-     changeRecordCommentText, 
-     requestPostRecordComment,
-     requestFetchRecordComments,
-     requestDeleteRecordComment
-  } = actions
-  const { currentUser } = users
-  const { temporaryComment, comments, isLoading } = records
-  const { record }: { record: ResponseRecordType } = route.params
+  const { navigation, route } = props
+  const dispatch = useDispatch()
+  const { comments, isLoading } = recordSelector()
+  const { currentUser } = userSelector()
+  const { record }: { record: ResponseRecordType, notificationGroupId?: string } = route.params
   const scrollRef = useRef(null)
 
   useFocusEffect(
     useCallback(() => {
-      requestFetchRecordComments(record.id)
+      dispatch(requestFetchRecordComments(record.id))
       if (!currentUser) {
-        requestFetchUserData(firebase.auth().currentUser.uid)
+        dispatch(requestFetchUserData(firebase.auth().currentUser.uid))
       }
     }, [])
   )
@@ -60,11 +66,9 @@ const RecordShowScreen = (props: RecordShowProps) => {
         /> 
         {renderCommentList}    
       </RecordShowWrapper>
-      <RecordComment
+      <RecordCommentForm
         record={record}
         currentUser={currentUser}
-        temporaryComment={temporaryComment}
-        changeRecordCommentText={changeRecordCommentText}
         requestPostRecordComment={requestPostRecordComment}
       />
     </RecordShowContainer>

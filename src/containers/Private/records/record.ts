@@ -5,12 +5,13 @@ import { RootState } from '../../../reducers'
 import { 
   RecordState, 
   ResponseRecordType,
+  RequestNextRecords
 } from '../../../types/Record'
 // import actions
 import {
   requestFetchRecords,
   requestNextRecords
-} from '../../../actions/records'
+} from '../../../slice/record'
 // import screens
 import RecordScreen from '../../../screens/Private/Records'
 
@@ -19,7 +20,7 @@ export interface RecordProps {
   records: RecordState
   actions: {
     requestFetchRecords: (uid: string) => void
-    requestNextRecords: (lastRecord: ResponseRecordType, uid: string) => void
+    requestNextRecords: (arg: RequestNextRecords) => void
   }
 }
 

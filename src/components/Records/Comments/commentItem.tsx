@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Alert } from 'react-native'
 import styled from 'styled-components'
 import moment from '../../../config/moment'
 // import types
-import { RecordCommentType } from '../../../types/Record'
+import { RecordCommentType, RequestDeleteComment } from '../../../types/Record'
 // import apis
 import { requestFetchUser } from '../../../apis/Users'
 // import constants
@@ -16,11 +17,12 @@ import firebase from '../../../config/firebase'
 
 interface RecordCommentListProps {
   comment: RecordCommentType
-  requestDeleteRecordComment: (recordId: string, commentId: string) => void
+  requestDeleteRecordComment: (arg: RequestDeleteComment) => void
 }
 
 const RecordCommentItem = (props: RecordCommentListProps) => {
   const { comment, requestDeleteRecordComment } = props
+  const dispatch = useDispatch()
   const { id, uid, content, createdAt, recordId } = comment
   const currentUser = firebase.auth().currentUser
 
@@ -50,7 +52,7 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
         },
         {
           text: 'OK',
-          onPress: () => { requestDeleteRecordComment(recordId, id) }
+          onPress: () => { dispatch(requestDeleteRecordComment({ recordId, commentId: id })) }
         }
       ],
       { cancelable: false }

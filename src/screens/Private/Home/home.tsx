@@ -56,7 +56,7 @@ const HomeScreen = (props: HomeProps) => {
       updateModule()
       setIsHomeLoading(true)
       getMemberList(currentGroupId, setUserList)
-      requestFetchRecords(null, currentGroupId)
+      requestFetchRecords({ uid: null, groupId: currentGroupId})
       requestFetchUserData(currentUserId)
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
@@ -109,7 +109,7 @@ const HomeScreen = (props: HomeProps) => {
   const onRefresh = async () => {
     setIsRefresh(true)
     await getMemberList(currentGroupId, setUserList)
-    requestFetchRecords(null, currentGroupId)
+    requestFetchRecords({ uid: null, groupId: currentGroupId})
     setIsRefresh(false)
   }
 
@@ -125,7 +125,7 @@ const HomeScreen = (props: HomeProps) => {
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
-            requestNextRecords(lastRecord, null, currentGroupId)
+            requestNextRecords({ lastRecord: lastRecord, uid: null, groupId: currentGroupId })
           }
         }}
         scrollEventThrottle={400}

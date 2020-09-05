@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import types
@@ -12,28 +13,32 @@ import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
 // import config
 import firebase from '../../../../config/firebase'
+// import selectors
+import userSelector from '../../../../selectors/user'
+import recordSelector from '../../../../selectors/record'
+// import slice
+import {
+  requestPostRecordComment,
+  requestFetchRecordComments,
+  requestDeleteRecordComment,
+} from '../../../../slice/record'
+// import actions
+import { requestFetchUserData } from '../../../../actions/User'
+import { requestPostPushNotification } from '../../../../actions/notifications'
 
 const RecordShowScreen = (props: RecordShowProps) => {
-  const { navigation, route, records, users, actions } = props
-  const {
-    requestFetchUserData,
-     requestDestroyRecord, 
-     changeRecordCommentText, 
-     requestPostRecordComment,
-     requestFetchRecordComments,
-     requestDeleteRecordComment,
-     requestPostPushNotification
-  } = actions
-  const { temporaryComment, comments, isLoading } = records
-  const { currentUser } = users
+  const { navigation, route } = props
+  const dispatch = useDispatch()
+  const { comments, isLoading } = recordSelector()
+  const { currentUser } = userSelector()
   const { record, notificationGroupId }: { record: ResponseRecordType, notificationGroupId?: string } = route.params
   const scrollRef = useRef(null)
-
+  
   useFocusEffect(
     useCallback(() => {
-      requestFetchRecordComments(record.id)
+      dispatch(requestFetchRecordComments(record.id))
       if (!currentUser) {
-        requestFetchUserData(firebase.auth().currentUser.uid)
+        dispatch(requestFetchUserData(firebase.auth().currentUser.uid))
       }
     }, [])
   )
@@ -42,12 +47,13 @@ const RecordShowScreen = (props: RecordShowProps) => {
     return <Loading size="small" />
   }
 
-  const renderCommentList = isLoading ? <Loading size="small" /> 
-    : <RecordCommentList 
-        comments={comments}
-        requestDeleteRecordComment={requestDeleteRecordComment}
-        notificationGroupId={notificationGroupId}
-      />
+  const renderCommentList = isLoading ? 
+    <Loading size="small" /> : 
+    <RecordCommentList 
+      comments={comments}
+      notificationGroupId={notificationGroupId}
+      requestDeleteRecordComment={requestDeleteRecordComment}
+    />
 
   return (
     <RecordShowContainer>
@@ -58,7 +64,6 @@ const RecordShowScreen = (props: RecordShowProps) => {
           record={record}
           navigation={navigation}
           isShowPage={true} 
-          requestDestroyRecord={requestDestroyRecord} 
         /> 
         {renderCommentList}    
       </RecordShowWrapper>
@@ -70,9 +75,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
         <RecordCommentForm
           record={record}
           currentUser={currentUser}
-          temporaryComment={temporaryComment}
           notificationGroupId={notificationGroupId}
-          changeRecordCommentText={changeRecordCommentText}
           requestPostRecordComment={requestPostRecordComment}
           requestPostPushNotification={requestPostPushNotification}
       />

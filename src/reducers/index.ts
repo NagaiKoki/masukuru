@@ -7,11 +7,12 @@ import { GroupState } from '../types/Group'
 import { UserState } from '../types/User'
 import { SuggestRecordState } from '../types/Search/Record/suggest'
 // import reducers
-import recordReducer from './Private/recordReducer'
 import notificationReducer from './Private/notificationReducer'
 import groupReducer from './Private/groupReducer'
 import userReducer from './Private/userReducer'
 import suggestRecordReducer from '../reducers/Private/Search/suggestRecord'
+// import slice
+import recordSlice from '../slice/record'
 // import saga
 import rootSaga from '../sagas/'
 
@@ -28,7 +29,7 @@ const middleware = applyMiddleware(sagaMiddleware)
 
 const store = createStore(
   combineReducers({
-    records: recordReducer,
+    records: recordSlice.reducer,
     notifications: notificationReducer,
     groups: groupReducer,
     users: userReducer,

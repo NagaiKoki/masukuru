@@ -25,14 +25,14 @@ const MyPageScreen = (props: UserProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      requestFetchRecords(user.uid, undefined)
+      requestFetchRecords({ uid: user.uid, groupId: undefined })
       setIsPageLoading(false)
     }, [])
   )
 
   const onRefresh = () => {
     setIsRefresh(true)
-    requestFetchRecords(user.uid, undefined)
+    requestFetchRecords({ uid: user.uid, groupId: undefined })
     setIsRefresh(false)
   }
 
@@ -57,7 +57,7 @@ const MyPageScreen = (props: UserProps) => {
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && userRecords.length >= 5) {
-            requestNextRecords(lastRecord, user.uid, undefined)
+            requestNextRecords({ lastRecord, uid: user.uid, groupId: undefined })
           }
         }}
         scrollEventThrottle={200}

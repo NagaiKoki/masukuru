@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Icon from 'react-native-vector-icons/AntDesign'
 // import constants
 import { COLORS } from '../../../constants/Styles'
 // import types
@@ -19,7 +20,10 @@ const TrainingDate = (props: TrainingDateProps) => {
 
   return (
     <TrainingDateWrapper hasWord={hasWord}>
-      <DateTitle>トレーニング日</DateTitle>
+      <DateTitleWrapper>
+        <Icon name="calendar" size={18} style={{ color: COLORS.BASE_BLACK }} />
+        <DateTitle>トレーニング日</DateTitle>
+      </DateTitleWrapper>
       <DateText>{convertTimeStampToStringOnlyDate(trainingDate)}</DateText>
     </TrainingDateWrapper>
   )
@@ -32,16 +36,22 @@ const TrainingDateWrapper = styled.View<{ hasWord?: boolean }>`
   margin-left: 50px;
 `
 
+const DateTitleWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
 const DateTitle = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   font-size: 17px;
-  margin-bottom: 10px;
+  margin: 7px 0 8px 10px;
 `
 
 const DateText = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 15px;
+  margin-top: 5px;
 `
 
 export default TrainingDate

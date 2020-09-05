@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from 'react-native';
 import styled from 'styled-components'
@@ -6,16 +7,18 @@ import { COLORS } from '../../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import components
 import Loading from '../../../../components/Loading'
-// import types
-import { AddRecordWordProps } from '../../../../containers/Private/records/addRecordWord'
 // import lib
 import { requestAppReview } from '../../../../utilities/requestReview'
 import { ImageUpload } from '../../../../utilities/cameraRoll';
+// import slices
+import { requestSubmitRecords, initializeRecords } from '../../../../slice/record'
+// import selectors
+import recordSelector from '../../../../selectors/record' 
 
-const AddRecordWordScreen = (props: AddRecordWordProps) => {
-  const { navigation, records, actions } = props
-  const { word, recordItems, isLoading } = records
-  const { onChangeWord, requestSubmitRecords, initializeRecords } = actions
+const AddRecordWordScreen = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { recordItems, isLoading } = recordSelector()
+  const [text, setText] = useState('')
   const [progress, setProgress] = useState<string>('');
   const [temporaryUrl, setTemporaryUrl] = useState('');
   const record = 'record';
@@ -37,15 +40,15 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           )
         }
       })
-    }, [word, temporaryUrl, isLoading])
+    }, [text, temporaryUrl, isLoading])
   )
 
   const handleSubmitRecord = async () => {
     if (isLoading) return
-    requestSubmitRecords(recordItems, word, temporaryUrl)
+    dispatch(requestSubmitRecords({ records: recordItems, word: text, imageUrl: temporaryUrl }))
     setTimeout(() => {
       navigation.navigate('mainContainer')
-      initializeRecords()
+      dispatch(initializeRecords())
     }, 2000)
     await requestAppReview()
   }
@@ -85,14 +88,14 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           multiline = {true}
           numberOfLines = {4}
           maxLength={300}
-          defaultValue={word}
+          defaultValue={text}
           autoCorrect={ false }
-          onChangeText={ (text: string) => onChangeWord(text) }
+          onChangeText={ (text: string) => setText(text) }
         />
         {renderImage}
         <WordFormBottom>
           {renderImageForm}
-          <WordLengthText>{word.length} / 300</WordLengthText>
+          <WordLengthText>{text.length} / 300</WordLengthText>
         </WordFormBottom>
       </AddWordFormWrapper>
     </AddWordContainer>

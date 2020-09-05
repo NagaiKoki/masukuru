@@ -1,26 +1,20 @@
+import { PayloadAction } from '@reduxjs/toolkit'
 import { fork, select, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
-// import action types
-import { 
-  REQUEST_SUBMIT_RECORDS, 
-  REQUEST_FETCH_RECORDS,
-  REQUEST_NEXT_RECORDS,
-  REQUEST_DESTORY_RECORD,
-  REQUEST_POST_RECORD_COMMENT,
-  REQUEST_FETCH_RECORD_COMMENTS,
-  REQUEST_DELETE_RECORD_COMMENT,
-  REQUEST_POST_COMMENT_NOTIFICATION
-} from '../actions/actionTypes'
+// import slice
+import {  
+  requestFetchRecords,
+  successFetchRecords,
+} from '../slice/record'
 // import types
+import { REQUEST_POST_COMMENT_NOTIFICATION } from '../actions/actionTypes'
 import { 
-  RequestSubmitRecords, 
   ResponseRecordType,
-  RequestFetchRecords,
-  RequestNextRecords,
-  RequestDestroyRecord,
-  RequestPostRecordComment,
   RecordCommentType,
-  RequestFetchRecordComments,
-  RequestDeleteRecordComment,
+  RequestFetchRecordType,
+  RequestSubmitRecords,
+  RequestNextRecords,
+  RequestPostRecordComment,
+  RequestDeleteComment
 } from '../types/Record'
 import { RequestPostCommentNotification } from '../types/Notification'
 import { RootState } from '../reducers'
@@ -28,36 +22,41 @@ import { RootState } from '../reducers'
 import { 
   requestPostRecords, 
   requestFetchRecord, 
-  requestDestroyRecord,
+  requestFetchDestroyRecord,
 } from '../apis/Records'
 import { 
   requestPostRecordPost, 
   requestGetRecordComments,
-  requestDeleteRecordComment
+  requestFetchDeleteRecordComment
  } from '../apis/Records/Reaction'
  import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
  import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
  import { requestSendRecordPostNotification } from '../apis/Push'
 // import actions
-import { 
+import {
+  requestSubmitRecords,
   successSubmitRecords, 
   failureSubmitRecords,
-  SuccessFetchRecords,
   failureFetchRecords,
+  requestNextRecords,
   successFetchNextRecords,
   failureFetchNextRecords,
+  requestDestroyRecord,
   successDestroyRecord,
   failureDestroyRecord,
+  requestPostRecordComment,
   successPostRecordComment,
   failurePostRecordComment,
   successFetchRecordComments,
   failureFetchRecordComments,
+  requestFetchRecordComments,
+  requestDeleteRecordComment,
   successDeleteRecordComment,
   failureDeleteRecordComment,
-} from '../actions/records'
+} from '../slice/record'
 import { 
   requestPostCommentNotification,
-  addNotificationRetryCount
+  addNotificationRetryCount,
 } from '../actions/notifications'
 // import config
 import firebase from '../config/firebase'
@@ -65,9 +64,9 @@ import firebase from '../config/firebase'
 import * as RecordAnalytics from '../utilities/Analytics/record'
 
 // 記録の保存
-function* runRequestSubmitRecords(action: RequestSubmitRecords) {
+function* runRequestSubmitRecords(action: PayloadAction<RequestSubmitRecords>) {
   const { trainingDate } = yield select((state: RootState) => state.records)
-  const { records, word, imageUrl } = action
+  const { records, word, imageUrl } = action.payload
   const { payload, error }: { payload?: string, error?: string } = yield call(
     requestPostRecords,
     records,
@@ -95,12 +94,12 @@ function* runRequestSubmitRecords(action: RequestSubmitRecords) {
 }
 
 function* handleRequestSubmitRecords() {
-  yield takeEvery(REQUEST_SUBMIT_RECORDS, runRequestSubmitRecords)
+  yield takeEvery(requestSubmitRecords.type, runRequestSubmitRecords)
 }
 
 // 記録の取得
-function* runRequestFetchRecords(action: RequestFetchRecords) {
-  const { uid, groupId } = action
+function* runRequestFetchRecords(action: PayloadAction<RequestFetchRecordType>) {
+  const { uid, groupId } = action.payload
   const startAt = null
   const { payload, error } : { payload?: ResponseRecordType[], error?: string } = yield call(
     requestFetchRecord,
@@ -110,19 +109,19 @@ function* runRequestFetchRecords(action: RequestFetchRecords) {
   )
 
   if (payload && !error) {
-    yield put(SuccessFetchRecords(payload, uid, groupId))
+    yield put(successFetchRecords({ payload: payload, uid: uid, groupId: groupId}))
   } else {
     yield put(failureFetchRecords(error))
   }
 }
 
 function* handleRequestFetchRecords() {
-  yield takeLatest(REQUEST_FETCH_RECORDS, runRequestFetchRecords)
+  yield takeLatest(requestFetchRecords.type, runRequestFetchRecords)
 }
 
 // 記録の追加読み込み
-function* runRequestNextFetchRecords(action: RequestNextRecords) {
-  const { uid, lastRecord, groupId } = action
+function* runRequestNextFetchRecords(action: PayloadAction<RequestNextRecords>) {
+  const { uid, lastRecord, groupId } = action.payload
   const { payload, error } : { payload?: ResponseRecordType[], error?: string } = yield call(
     requestFetchRecord,
     uid,
@@ -131,7 +130,7 @@ function* runRequestNextFetchRecords(action: RequestNextRecords) {
   )
 
   if (payload && !error) {
-    yield put(successFetchNextRecords(payload, uid, groupId))
+    yield put(successFetchNextRecords({ payload: payload, uid: uid, groupId: groupId }))
   } else {
     yield put(failureFetchNextRecords(error))
   }
@@ -139,14 +138,14 @@ function* runRequestNextFetchRecords(action: RequestNextRecords) {
 
 // 記録追加ハンドラー
 function* handleRequestNextFetchRecords() {
-  yield takeLatest(REQUEST_NEXT_RECORDS, runRequestNextFetchRecords)
+  yield takeLatest(requestNextRecords.type, runRequestNextFetchRecords)
 }
 
 // 記録の削除
-function* runRequestDestroyRecord(action: RequestDestroyRecord) {
-  const { id } = action
+function* runRequestDestroyRecord(action: PayloadAction<string>) {
+  const id = action.payload
   const { payload, error }: { payload?: string, error?: string } = yield call(
-    requestDestroyRecord,
+    requestFetchDestroyRecord,
     id
   )
   if (payload && !error) {
@@ -158,7 +157,7 @@ function* runRequestDestroyRecord(action: RequestDestroyRecord) {
 
 // 記録の削除ハンドラー
 function* handleRequestDestroyRecord() {
-  yield takeEvery(REQUEST_DESTORY_RECORD, runRequestDestroyRecord)
+  yield takeEvery(requestDestroyRecord.type, runRequestDestroyRecord)
 }
 
 // コメント通知リクエスト
@@ -185,14 +184,13 @@ function* handleRequestPostCommentNotification() {
 }
 
 // 記録へのコメント送信リクエスト
-function* runRequestPostRecordComment(action: RequestPostRecordComment) {  
-  const { recordId, recordUserId, notificationGroupId } = action
-  const { temporaryComment } = yield select((state: RootState) => state.records)
+function* runRequestPostRecordComment(action: PayloadAction<RequestPostRecordComment>) {  
+  const { recordId, recordUserId, notificationGroupId, text } = action.payload
   const { payload, error }: { payload?: RecordCommentType, error?: string } = yield call(
     requestPostRecordPost,
     recordId,
-    temporaryComment,
-    notificationGroupId
+    text,
+    notificationGroupId,
   )
 
   if (payload && !error) {
@@ -207,12 +205,12 @@ function* runRequestPostRecordComment(action: RequestPostRecordComment) {
 
 // 記録へのコメントリクエストハンドラー
 function* handleRequestPostRecordComment() {
-  yield takeEvery(REQUEST_POST_RECORD_COMMENT, runRequestPostRecordComment)
+  yield takeEvery(requestPostRecordComment.type, runRequestPostRecordComment)
 }
 
 // 記録のコメント取得リクエスト
-function* runRequestFetchRecordComments(action: RequestFetchRecordComments) {
-  const { recordId } = action
+function* runRequestFetchRecordComments(action: PayloadAction<string>) {
+  const recordId = action.payload
   const { payload, error }: { payload?: RecordCommentType[], error?: string } = yield call(
     requestGetRecordComments,
     recordId
@@ -227,14 +225,14 @@ function* runRequestFetchRecordComments(action: RequestFetchRecordComments) {
 
 // 記録のコメント取得リクエストハンドラー
 function* handleRequestFetchRecordComments() {
-  yield takeEvery(REQUEST_FETCH_RECORD_COMMENTS, runRequestFetchRecordComments)
+  yield takeEvery(requestFetchRecordComments.type, runRequestFetchRecordComments)
 }
 
 // 記録のコメント削除リクエスト
-function* runRequestDeleteRecordComment(action: RequestDeleteRecordComment) {
-  const { recordId, commentId } = action
+function* runRequestDeleteRecordComment(action: PayloadAction<RequestDeleteComment>) {
+  const { recordId, commentId } = action.payload
   const { payload, error }: { payload?: string, error?: string } = yield call(
-    requestDeleteRecordComment,
+    requestFetchDeleteRecordComment,
     recordId,
     commentId
   )
@@ -248,7 +246,7 @@ function* runRequestDeleteRecordComment(action: RequestDeleteRecordComment) {
 
 // 記録のコメント削除リクエストハンドラー
 function* handleRequestDeleteRecordComment() {
-  yield takeEvery(REQUEST_DELETE_RECORD_COMMENT, runRequestDeleteRecordComment)
+  yield takeEvery(requestDeleteRecordComment.type, runRequestDeleteRecordComment)
 }
 
 export default function* recordSaga() {

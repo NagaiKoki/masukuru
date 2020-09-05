@@ -64,7 +64,7 @@ export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: 
 }
 
 // 記録の削除
-export const requestDestroyRecord = async (id: string) => {
+export const requestFetchDestroyRecord = async (id: string) => {
   try {
     const ref = db.collection('records').doc(id)
     await ref.delete()

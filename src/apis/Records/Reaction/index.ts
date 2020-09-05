@@ -75,7 +75,7 @@ export const requestGetFetchRecordCommentsSize = async (recordId: string) => {
 }
 
 // 記録のコメント削除
-export const requestDeleteRecordComment = async (recordId: string, commnetId: string) => {
+export const requestFetchDeleteRecordComment = async (recordId: string, commnetId: string) => {
   try {
     const commentRef = db.collection('records').doc(recordId).collection('comments').doc(commnetId)
     await commentRef.delete()
