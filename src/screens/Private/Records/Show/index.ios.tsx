@@ -18,7 +18,6 @@ import userSelector from '../../../../selectors/user'
 import recordSelector from '../../../../selectors/record'
 // import slice
 import {
-  requestDestroyRecord,
   requestPostRecordComment,
   requestFetchRecordComments,
   requestDeleteRecordComment,
@@ -65,7 +64,6 @@ const RecordShowScreen = (props: RecordShowProps) => {
           record={record}
           navigation={navigation}
           isShowPage={true} 
-          requestDestroyRecord={requestDestroyRecord} 
         /> 
         {renderCommentList}    
       </RecordShowWrapper>

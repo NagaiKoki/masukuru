@@ -1,8 +1,8 @@
 import { Alert } from 'react-native'
 
-export const reactAlert = (text: string, handleOnClick: () => void) => {
+export const reactAlert = (handleOnClick: any) => {
   Alert.alert(
-    text,
+    'この記録を削除します。',
     "本当によろしいですか？", 
     [
       {
@@ -11,7 +11,7 @@ export const reactAlert = (text: string, handleOnClick: () => void) => {
       },
       {
         text: 'OK',
-        onPress: () => {handleOnClick}
+        onPress: () => {() => handleOnClick()}
       }
     ],
     { cancelable: false }
