@@ -1,18 +1,25 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import ReactDatePicker from 'react-native-datepicker'
+// import slice
+import { onChangeRecordDate } from '../../slice/record'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
 interface DatePickerProps {
   date: Date
-  handleOnChange: (date: Date) => void
 }
 
 const DatePicker = (props: DatePickerProps) => {
-  const { date, handleOnChange } = props
+  const { date } = props
+  const dispatch = useDispatch()
   const minDate = new Date("2020/01/01")
   const dt = new Date()
   const maxDate = new Date(dt.setFullYear(dt.getFullYear() + 10))
+
+  const handleOnChangeDate = (date: Date) => {
+    dispatch(onChangeRecordDate(date))
+  }
 
   return (
     <ReactDatePicker 
@@ -27,7 +34,7 @@ const DatePicker = (props: DatePickerProps) => {
       confirmBtnText="完了"
       cancelBtnText="閉じる"
       showIcon={false}
-      onDateChange={(dateStr: string, date: Date) => handleOnChange(date)}
+      onDateChange={(dateStr: string, date: Date) => handleOnChangeDate(date)}
       customStyles={{
         dateIcon: {
           position: "absolute",

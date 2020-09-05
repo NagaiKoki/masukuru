@@ -1,13 +1,12 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
-import styled from 'styled-components'
 import { COLORS } from '../../../../../constants/Styles'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-// import containers
-import RecordContainer from '../../../../../containers/Private/records/recordModal'
-import AddRecordContainer from '../../../../../containers/Private/records/addRecord'
-import AddRecordWordContainer from '../../../../../containers/Private/records/addRecordWord'
+// import screens
+import RecordModalScreen from '../../../../../screens/Private/Records/Modals'
+import RecordFormScreen from '../../../../../screens/Private/Records/Modals/TrainingForm'
+import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/TweetForm'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -21,7 +20,7 @@ const RecordModalNavigator = () => {
     <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
         name="recordModal"
-        component={RecordContainer}
+        component={RecordModalScreen}
         options={{
           headerLeft: () => {
             return (
@@ -42,24 +41,15 @@ const RecordModalNavigator = () => {
 
       <RecordModalStack.Screen 
         name="addRecordModal"
-        component={AddRecordContainer}
+        component={RecordFormScreen}
       />
 
       <RecordModalStack.Screen 
         name="addRecordWordModal"
-        component={AddRecordWordContainer}
+        component={RecordTweetScreen}
       />
     </RecordModalStack.Navigator>
   )
 }
-
-const HeaderBackBtn = styled.TouchableOpacity`
-`
-
-const HeaderBackTitle = styled.Text`
-  margin-left: 10px;
-  font-size: 16px;
-  color: ${COLORS.BASE_WHITE};
-`
 
 export default RecordModalNavigator

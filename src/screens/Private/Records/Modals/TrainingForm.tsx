@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { StyleSheet } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
@@ -6,21 +7,22 @@ import { COLORS } from '../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import components
 import AddRecordAeroForm from '../../../../components/Records/AddForm/areroForm'
-import MuscleForm from '../../../../components/Records/AddForm/Musclew/musclewForm2'
+import MuscleForm from '../../../../components/Records/AddForm/Musclew/musclewForm'
 import Toast from '../../../../components/Toaster'
 // import types
 import { RecordItemType } from '../../../../types/Record'
-import { AddRecordProps } from '../../../../containers/Private/records/addRecord'
 // import constants
 import { RECORD_ERROR_MESSAGE } from '../../../../constants/errorMessage'
+// import slice
+import { addRecord, updateRecord } from '../../../../slice/record'
+import recordSelector from '../../../../selectors/record'
 
-const AddRecordScreen = (props: AddRecordProps) => {
-  const { actions, records, navigation, route } = props
-  const { addRecord, updateRecord } = actions
-  const { recordItems } = records
-  const { recordItem, isUpdate, isMuscle } = route.params
+const AddRecordScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch()
+  const { recordItems } = recordSelector()
+  const { isUpdate, isMuscle } = route.params
 
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(3)
   const [weights, setWeights] = useState(['', '', ''])
   const [amounts, setAmounts] = useState(['', '', ''])
   const [muscleName, setMuscleName] = useState('')
@@ -60,6 +62,13 @@ const AddRecordScreen = (props: AddRecordProps) => {
   }
 
   const handleOnSubmit = () => {
+    if (!muscleName) {
+      return setError(RECORD_ERROR_MESSAGE.EMPTY_NAME)
+    } else if (isMuscleMenu && !amounts.filter(Boolean).length) {
+      return setError(RECORD_ERROR_MESSAGE.EMPTY_AMOUNT)
+    } else if (!isMuscleMenu) {
+      return setError(RECORD_ERROR_MESSAGE.EMPTY_TIME_OR_DISTANCE)
+    }
     const recordItem: RecordItemType  = {
       id: parseInt(`${new Date().getTime()}${recordItems.length}, 10`),
       name: muscleName,
@@ -70,7 +79,7 @@ const AddRecordScreen = (props: AddRecordProps) => {
       distance: 1,
       recordType: isMuscleMenu ? 'muscle' : 'Aerobic'
     }
-    addRecord(recordItem)
+    dispatch(addRecord(recordItem))
     navigation.goBack()
   }
 
@@ -86,10 +95,10 @@ const AddRecordScreen = (props: AddRecordProps) => {
   
   const renderForm = isMuscleMenu ?
     <MuscleForm 
+      muscleName={muscleName}
       count={count}
       weights={weights}
       amounts={amounts}
-      musclewName={muscleName}
       setCount={setCount}
       setWeights={setWeights}
       setAmounts={setAmounts}

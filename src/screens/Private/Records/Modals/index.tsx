@@ -1,26 +1,25 @@
 import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Alert } from 'react-native'
 // import types
-import { RecordProps } from '../../../../containers/Private/records/recordModal'
 import { RecordItemType } from '../../../../types/Record'
 // import lib
 import truncateText from '../../../../utilities/truncateText'
 // import components
 import DatePicker from '../../../../common/Date'
+// import slices
+import { deleteRecord } from '../../../../slice/record'
+// import selectors
+import recordSelector from '../../../../selectors/record' 
 
-const RecordModalScreen = (props: RecordProps) => {
-  const { 
-    actions, 
-    records,
-    navigation 
-  } = props
-  const { recordItems, trainingDate } = records
-  const { deleteRecord, onChangeRecordDate } = actions
-
+const RecordModalScreen = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { recordItems, trainingDate } = recordSelector()
+  
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
@@ -49,6 +48,10 @@ const RecordModalScreen = (props: RecordProps) => {
     navigation.navigate('addRecordModal', { temporary: true })
   }
 
+  const handleDeleteRecord = (record: RecordItemType) => {
+    dispatch(deleteRecord(record))
+  }
+
   // 記録の削除
   const handleDeleteRecordItem = (record: RecordItemType) => 
     Alert.alert(
@@ -61,7 +64,7 @@ const RecordModalScreen = (props: RecordProps) => {
         },
         {
           text: "OK",
-          onPress: () => { deleteRecord(record) }
+          onPress: () => { () => handleDeleteRecord(record) }
         }
       ],
       { cancelable: false }
@@ -72,14 +75,16 @@ const RecordModalScreen = (props: RecordProps) => {
     navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true, isMuscle: record.recordType } )
   }
 
+  console.log(recordItems)
+
   const renderRecordItems = () => {
     const recordsComponent = recordItems.map((item: RecordItemType) => {
       let renderAmountText: string
       let renderWeightText: string
       let renderText: string
       if (item.recordType === 'muscle') {
-        renderAmountText = item.amounts.join('回, ') + '回, '
-        renderWeightText = item.weights.join('kg, ') + 'kg '
+        renderAmountText = item.amounts.filter(Boolean).join('回, ') + '回, '
+        renderWeightText = item.weights.filter(Boolean).join('kg, ') + 'kg '
         renderText = item.name + ', ' + renderAmountText + renderWeightText
       } else if (item.recordType === 'Aerobic') {
         const renderDistance = item.distance ? item.distance + 'km, ' : ''
@@ -109,7 +114,6 @@ const RecordModalScreen = (props: RecordProps) => {
         <TitleLabel>トレーニング日</TitleLabel>
         <DatePicker 
           date={trainingDate}
-          handleOnChange={onChangeRecordDate}
         />
       </DateWrapper>
       { recordItems.length ? 

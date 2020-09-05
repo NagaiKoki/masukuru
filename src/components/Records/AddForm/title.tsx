@@ -4,11 +4,18 @@ import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 
 interface RecordTitleProps {
+  muscleName: string
   onTitleChange: (title: string) => void
+  handleOnBlur: () => void
+  handleOnFocus: () => void
 }
 
 const RecordTitle = (props: RecordTitleProps) => {
-  const { onTitleChange } = props
+  const { muscleName, onTitleChange, handleOnBlur, handleOnFocus } = props
+
+  React.useEffect(() => {
+    onTitleChange('')
+  }, [])
 
   const renderTitleForm =
     <AddRecordItem>
@@ -20,7 +27,10 @@ const RecordTitle = (props: RecordTitleProps) => {
           autoCorrect={ false }
           returnKeyType="done"
           clearButtonMode='always'
+          value={muscleName}
           onChangeText={ (text: string) => onTitleChange(text) }
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
         />
       </TrainingFormWrapper>
     </AddRecordItem>
