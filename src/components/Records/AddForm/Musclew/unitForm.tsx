@@ -16,23 +16,25 @@ interface UnitFormProps {
 const MusclewRecordUnitForm = (props: UnitFormProps) => {
   const { count, amounts, weights, setWeights, setAmounts } = props
 
-  const handleAddWeight = (size: number, weight: number | string) => {
+  const handleAddWeight = (size: number, weight: number) => {
     if (weights[size - 1] === undefined) {
       const addedWeights = [...weights, weight]
       return setWeights(addedWeights)
     } else {
-      weights[size - 1] = weight
-      return setWeights(weights)
+      const weightsArry = weights.concat()
+      weightsArry[size - 1] = weight
+      return setWeights(weightsArry)
     }
   }
 
-  const handleAddAmount = (size: number, amount: number | string) => {
+  const handleAddAmount = (size: number, amount: number) => {
     if (!!amounts[size -1] === undefined) {
       const addedAmounts = [...amounts, amount]
       return setAmounts(addedAmounts)
     } else {
-      amounts[size - 1] = amount
-      return setAmounts(amounts)
+      const amountsArry = amounts.concat()
+      amountsArry[size - 1] = amount
+      return setAmounts(amountsArry)
     }
   }
 
@@ -46,7 +48,7 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
               placeholder="0"
               autoCapitalize={'none'}
               maxLength={5}
-              // defaultValue={amounts[size - 1]}
+              defaultValue={amounts[size - 1]}
               keyboardType={'numeric'}
               autoCorrect={ false }
               returnKeyType="done"
@@ -57,7 +59,7 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
               placeholder="0"
               autoCapitalize={'none'}
               maxLength={5}
-              // defaultValue={weights[size - 1]}
+              defaultValue={weights[size - 1]}
               keyboardType={'numeric'}
               returnKeyType="done"
               autoCorrect={ false }

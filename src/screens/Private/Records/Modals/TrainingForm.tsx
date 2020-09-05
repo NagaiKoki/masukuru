@@ -11,6 +11,7 @@ import MuscleForm from '../../../../components/Records/AddForm/Musclew/musclewFo
 import Toast from '../../../../components/Toaster'
 // import types
 import { RecordItemType } from '../../../../types/Record'
+import { RecordNavigationType } from '.'
 // import constants
 import { RECORD_ERROR_MESSAGE } from '../../../../constants/errorMessage'
 // import slice
@@ -20,15 +21,25 @@ import recordSelector from '../../../../selectors/record'
 const AddRecordScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { recordItems } = recordSelector()
-  const { isUpdate, isMuscle } = route.params
+  const { recordItem, isUpdate }: RecordNavigationType = route.params
 
   const [count, setCount] = useState(3)
   const [weights, setWeights] = useState(['', '', ''])
   const [amounts, setAmounts] = useState(['', '', ''])
   const [muscleName, setMuscleName] = useState('')
   const [error, setError] = useState('')
-  const [isMuscleMenu, setIsMuscleMenu] = useState(isMuscle || true)
-  
+  const [isMuscleMenu, setIsMuscleMenu] = useState(true)
+
+  React.useEffect(() => {
+    if (isUpdate) {
+      setCount(recordItem.set)
+      setIsMuscleMenu(recordItem.recordType === 'muscle')
+      setWeights(recordItem.weights)
+      setAmounts(recordItem.amounts)
+      setMuscleName(recordItem.name)
+    }
+  }, [])
+
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({

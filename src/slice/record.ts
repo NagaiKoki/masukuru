@@ -41,9 +41,7 @@ const recordSlice = createSlice({
       }
     },
     deleteRecord: (state, action: PayloadAction<RecordItemType>) => {
-      const updateRecordItems = state.recordItems.filter(item => {
-        return item.id !== action.payload.id
-      })
+      const updateRecordItems = state.recordItems.filter(item => item.id !== action.payload.id)
       return {
         ...state,
         recordItems: updateRecordItems

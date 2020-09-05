@@ -16,6 +16,11 @@ import { deleteRecord } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 
+export type RecordNavigationType = {
+  isUpdate: boolean
+  recordItem?: RecordItemType
+}
+
 const RecordModalScreen = ({ navigation }) => {
   const dispatch = useDispatch()
   const { recordItems, trainingDate } = recordSelector()
@@ -39,17 +44,16 @@ const RecordModalScreen = ({ navigation }) => {
     if (!recordItems.length) {
       Alert.alert('トレーニングを追加してください。')
     } else {
-      navigation.navigate('addRecordWordModal')
+      navigation.navigate('tweetRecordModal')
     }
   }
   
   // 記録フォームへ遷移
   const handleNavigateAddForm = () => {
-    navigation.navigate('addRecordModal', { temporary: true })
-  }
-
-  const handleDeleteRecord = (record: RecordItemType) => {
-    dispatch(deleteRecord(record))
+    const routeProps: RecordNavigationType = {
+      isUpdate: false
+    }
+    navigation.navigate('trainingRecordModal', routeProps)
   }
 
   // 記録の削除
@@ -64,7 +68,7 @@ const RecordModalScreen = ({ navigation }) => {
         },
         {
           text: "OK",
-          onPress: () => { () => handleDeleteRecord(record) }
+          onPress: () => {dispatch(deleteRecord(record))}
         }
       ],
       { cancelable: false }
@@ -72,10 +76,12 @@ const RecordModalScreen = ({ navigation }) => {
   
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
-    navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true, isMuscle: record.recordType } )
+    const routeProps: RecordNavigationType = {
+      recordItem: record,
+      isUpdate: true
+    }
+    navigation.navigate('trainingRecordModal', routeProps)
   }
-
-  console.log(recordItems)
 
   const renderRecordItems = () => {
     const recordsComponent = recordItems.map((item: RecordItemType) => {

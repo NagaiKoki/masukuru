@@ -40,12 +40,12 @@ const RecordModalNavigator = () => {
       />
 
       <RecordModalStack.Screen 
-        name="addRecordModal"
+        name="trainingRecordModal"
         component={RecordFormScreen}
       />
 
       <RecordModalStack.Screen 
-        name="addRecordWordModal"
+        name="tweetRecordModal"
         component={RecordTweetScreen}
       />
     </RecordModalStack.Navigator>
