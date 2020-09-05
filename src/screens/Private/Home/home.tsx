@@ -125,7 +125,7 @@ const HomeScreen = (props: HomeProps) => {
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
-            requestNextRecords(lastRecord, null, currentGroupId)
+            requestNextRecords({ lastRecord: lastRecord, uid: null, groupId: currentGroupId })
           }
         }}
         scrollEventThrottle={400}

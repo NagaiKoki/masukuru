@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import types
@@ -18,16 +18,16 @@ const RecordShowScreen = (props: RecordShowProps) => {
   const {
     requestFetchUserData,
      requestDestroyRecord, 
-     changeRecordCommentText, 
      requestPostRecordComment,
      requestFetchRecordComments,
      requestDeleteRecordComment,
      requestPostPushNotification
   } = actions
-  const { temporaryComment, comments, isLoading } = records
+  const { comments, isLoading } = records
   const { currentUser } = users
   const { record, notificationGroupId }: { record: ResponseRecordType, notificationGroupId?: string } = route.params
   const scrollRef = useRef(null)
+  const [text, setText] = useState('')
 
   useFocusEffect(
     useCallback(() => {
@@ -70,9 +70,7 @@ const RecordShowScreen = (props: RecordShowProps) => {
         <RecordCommentForm
           record={record}
           currentUser={currentUser}
-          temporaryComment={temporaryComment}
           notificationGroupId={notificationGroupId}
-          changeRecordCommentText={changeRecordCommentText}
           requestPostRecordComment={requestPostRecordComment}
           requestPostPushNotification={requestPostPushNotification}
       />

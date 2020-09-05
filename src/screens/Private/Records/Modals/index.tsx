@@ -19,7 +19,7 @@ const RecordModalScreen = (props: RecordProps) => {
     navigation 
   } = props
   const { recordItems, trainingDate } = records
-  const { deleteRecord, onChangeTrainingName, onChangeRecordDate } = actions
+  const { deleteRecord, onChangeRecordDate } = actions
 
   useFocusEffect(
     useCallback(() => {
@@ -46,7 +46,6 @@ const RecordModalScreen = (props: RecordProps) => {
   
   // 記録フォームへ遷移
   const handleNavigateAddForm = () => {
-    onChangeTrainingName('')
     navigation.navigate('addRecordModal', { temporary: true })
   }
 
@@ -70,7 +69,6 @@ const RecordModalScreen = (props: RecordProps) => {
   
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
-    onChangeTrainingName(record.name)
     navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true, isMuscle: record.recordType } )
   }
 

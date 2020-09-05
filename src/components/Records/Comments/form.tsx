@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // import componets
 import UserImage from '../../Image/userImage'
 // import types
-import { ResponseRecordType } from '../../../types/Record'
+import { ResponseRecordType, RequestPostRecordComment } from '../../../types/Record'
 import { NotificationEventType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
 // import utils
@@ -17,10 +17,8 @@ import { hapticFeedBack } from '../../../utilities/Haptic'
 interface RecordCommentProps {
   record: ResponseRecordType
   currentUser: UserType
-  temporaryComment: string
   notificationGroupId?: string
-  changeRecordCommentText: (text: string) => void
-  requestPostRecordComment: (recordId: string, recordUserId: string, notificationGroupId?: string) => void
+  requestPostRecordComment: (arg: RequestPostRecordComment) => void
   requestPostPushNotification?: (eventType: NotificationEventType, uid: string, title: string, content: string) => void
 }
 
@@ -30,7 +28,6 @@ const RecordComment = (props: RecordCommentProps) => {
     temporaryComment,
     notificationGroupId,
     currentUser,
-    changeRecordCommentText, 
     requestPostRecordComment,
     requestPostPushNotification
   } = props
@@ -42,13 +39,12 @@ const RecordComment = (props: RecordCommentProps) => {
 
   const handleOnChangeText = (value: string) => {
     setText(value)
-    changeRecordCommentText(value)
   }
   
   const handleRequestPostComment = async () => {
     if (!commentPresent && !text) return
     setText('')
-    requestPostRecordComment(id, uid, notificationGroupId)
+    requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId })
     hapticFeedBack('medium')
     Keyboard.dismiss()
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {

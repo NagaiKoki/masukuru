@@ -15,7 +15,7 @@ import { ImageUpload } from '../../../../utilities/cameraRoll';
 const AddRecordWordScreen = (props: AddRecordWordProps) => {
   const { navigation, records, actions } = props
   const { word, recordItems, isLoading } = records
-  const { onChangeWord, requestSubmitRecords, initializeRecords } = actions
+  const { requestSubmitRecords, initializeRecords } = actions
   const [progress, setProgress] = useState<string>('');
   const [temporaryUrl, setTemporaryUrl] = useState('');
   const record = 'record';
@@ -42,7 +42,7 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
 
   const handleSubmitRecord = async () => {
     if (isLoading) return
-    requestSubmitRecords(recordItems, word, temporaryUrl)
+    requestSubmitRecords({ records: recordItems, word, imageUrl: temporaryUrl })
     setTimeout(() => {
       navigation.navigate('mainContainer')
       initializeRecords()
@@ -87,7 +87,7 @@ const AddRecordWordScreen = (props: AddRecordWordProps) => {
           maxLength={300}
           defaultValue={word}
           autoCorrect={ false }
-          onChangeText={ (text: string) => onChangeWord(text) }
+          onChangeText={ (text: string) => {} }
         />
         {renderImage}
         <WordFormBottom>

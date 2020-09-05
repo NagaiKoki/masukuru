@@ -18,13 +18,12 @@ const RecordShowScreen = (props: RecordShowProps) => {
   const {
     requestFetchUserData,
      requestDestroyRecord, 
-     changeRecordCommentText, 
      requestPostRecordComment,
      requestFetchRecordComments,
      requestDeleteRecordComment
   } = actions
   const { currentUser } = users
-  const { temporaryComment, comments, isLoading } = records
+  const { comments, isLoading } = records
   const { record }: { record: ResponseRecordType } = route.params
   const scrollRef = useRef(null)
 
@@ -63,8 +62,6 @@ const RecordShowScreen = (props: RecordShowProps) => {
       <RecordComment
         record={record}
         currentUser={currentUser}
-        temporaryComment={temporaryComment}
-        changeRecordCommentText={changeRecordCommentText}
         requestPostRecordComment={requestPostRecordComment}
       />
     </RecordShowContainer>

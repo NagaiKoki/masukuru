@@ -2,17 +2,19 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import types
 import { RootState } from '../../../reducers'
-import { RecordState } from '../../../types/Record'
+import { 
+  RecordState,
+  RequestPostRecordComment
+} from '../../../types/Record'
 import { NotificationEventType } from '../../../types/Notification'
 import { UserState } from '../../../types/User'
 // import actions
 import { 
   requestDestroyRecord,
-  changeRecordCommentText,
   requestPostRecordComment,
   requestFetchRecordComments,
   requestDeleteRecordComment
-} from '../../../actions/records'
+} from '../../../slice/record'
 import { requestFetchUserData } from '../../../actions/User'
 import { requestPostPushNotification } from '../../../actions/notifications'
 // import screen
@@ -26,8 +28,7 @@ export interface RecordShowProps {
   actions: {
     requestFetchUserData: (uid: string) => void
     requestDestroyRecord: (id: string) => void
-    changeRecordCommentText: (text: string) => void
-    requestPostRecordComment: (recordId: string, recordUserId: string, notificationGroupId?: string) => void 
+    requestPostRecordComment: (arg: RequestPostRecordComment) => void 
     requestFetchRecordComments: (recordId: string) => void
     requestDeleteRecordComment: (recordId: string, commentId: string) => void
     requestPostPushNotification: (eventType: NotificationEventType, uid: string, title: string, content: string) => void
@@ -46,7 +47,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     actions: bindActionCreators({
       requestFetchUserData,
       requestDestroyRecord,
-      changeRecordCommentText,
       requestPostRecordComment,
       requestFetchRecordComments,
       requestDeleteRecordComment,

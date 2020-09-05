@@ -68,10 +68,6 @@ export type RequestFetchRecordType = {
   groupId: string
 }
 
-export type RequestDestroyRecord = {
-  id: string
-}
-
 export type RequestNextRecords = {
   uid?: string
   groupId: string
@@ -82,4 +78,9 @@ export type RequestPostRecordComment = {
   recordId: string
   recordUserId: string
   notificationGroupId?: string
+}
+
+export type RequestDeleteComment = {
+  recordId: string
+  commentId: string
 }

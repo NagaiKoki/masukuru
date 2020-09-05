@@ -4,14 +4,16 @@ import { RootState } from '../../../reducers'
 // import components
 import AddRecordWordScreen from '../../../screens/Private/Records/Modals/TweetForm'
 // import types
-import { RecordState, RecordItemType } from '../../../types/Record'
+import { 
+  RecordState, 
+  RecordItemType,
+  RequestSubmitRecords
+} from '../../../types/Record'
 // import actions
 import { 
-  onChangeWord, 
   requestSubmitRecords,
-  setRecordError,
   initializeRecords
-} from '../../../actions/records'
+} from '../../../slice/record'
 
 
 export interface AddRecordWordProps {
@@ -19,9 +21,7 @@ export interface AddRecordWordProps {
   route: any
   records: RecordState
   actions: {
-    onChangeWord: (word: string) => void
-    requestSubmitRecords: (records: RecordItemType[], word: string, imageUrl: string) => void
-    setRecordError: (error: string) => void
+    requestSubmitRecords: (arg: RequestSubmitRecords) => void
     initializeRecords: () => void
   }
 }
@@ -35,9 +35,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDistanceToProps = (dispatch: Dispatch) => {
   return {
     actions: bindActionCreators({
-      onChangeWord,
       requestSubmitRecords,
-      setRecordError,
       initializeRecords
     }, dispatch
     )

@@ -8,8 +8,8 @@ import {
   RequestFetchRecordType,
   RequestSubmitRecords,
   RequestNextRecords,
-  RequestDestroyRecord,
-  RequestPostRecordComment
+  RequestPostRecordComment,
+  RequestDeleteComment
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
@@ -49,7 +49,7 @@ const recordSlice = createSlice({
         recordItems: updateRecordItems
       }
     },
-    requestDestroyRecord: (state, action: PayloadAction<RequestDestroyRecord>) => {
+    requestDestroyRecord: (state, action: PayloadAction<string>) => {
       return state
     },
     successDestroyRecord: (state, action: PayloadAction<string>) => {
@@ -196,7 +196,7 @@ const recordSlice = createSlice({
         commentPostError: action.payload
       }
     },
-    requestFetchRecordComments: (state) => {
+    requestFetchRecordComments: (state, action: PayloadAction<string>) => {
       return {
         ...state,
         isLoading: true
@@ -215,6 +215,9 @@ const recordSlice = createSlice({
         error: action.payload
       }
     },
+    requestDeleteRecordComment: (state, action: PayloadAction<RequestDeleteComment>) => {
+      return state
+    },
     successDeleteRecordComment: (state, action: PayloadAction<string>) => {
       const id = action.payload
       const comments = state.comments.filter(comment => comment.id !== id)
@@ -227,6 +230,12 @@ const recordSlice = createSlice({
       return {
         ...state,
         error: action.payload
+      }
+    },
+    onChangeRecordDate: (state, action: PayloadAction<Date>) => {
+      return {
+        ...state,
+        trainingDate: action.payload
       }
     }
   }
@@ -255,8 +264,10 @@ export const {
   requestFetchRecordComments,
   successFetchRecordComments,
   failureFetchRecordComments,
+  requestDeleteRecordComment,
   successDeleteRecordComment,
-  failureDeleteRecordComment
+  failureDeleteRecordComment,
+  onChangeRecordDate
 } = recordSlice.actions
 
 export default recordSlice
