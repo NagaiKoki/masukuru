@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import * as Device from 'expo-device'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
@@ -25,30 +26,28 @@ interface RecordCommentProps {
 const RecordComment = (props: RecordCommentProps) => {
   const { 
     record, 
-    temporaryComment,
     notificationGroupId,
     currentUser,
     requestPostRecordComment,
     requestPostPushNotification
   } = props
-
+  
   const { id, uid } = record
   const [text, setText] = useState('')
+  const dispatch = useDispatch()
   
-  const commentPresent = temporaryComment && text ? true : false
-
   const handleOnChangeText = (value: string) => {
     setText(value)
   }
   
   const handleRequestPostComment = async () => {
-    if (!commentPresent && !text) return
+    if (!text) return
     setText('')
-    requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId })
+    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text }))
     hapticFeedBack('medium')
     Keyboard.dismiss()
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
-      requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text);
+      dispatch(requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text))
     }
     await requestAppReview()
   }
@@ -69,13 +68,13 @@ const RecordComment = (props: RecordCommentProps) => {
           maxLength={300}
           multiline={true}
           value={text}
-          autoCorrect={ false }
+          autoCorrect={false}
           onChangeText={ value => handleOnChangeText(value) }
         />
         <SubmitBtnWrapper 
           onPress={() => handleRequestPostComment()}
-          commentPresent={commentPresent}
-          disabled={!commentPresent}
+          commentPresent={!!text}
+          disabled={!text}
         >
           <Icon name="paper-plane" size={25} style={{ color: COLORS.BASE_MUSCLEW }} />
         </SubmitBtnWrapper>

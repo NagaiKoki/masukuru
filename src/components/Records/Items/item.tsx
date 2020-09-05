@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import { TouchableHighlight, Image, StyleSheet, Dimensions } from 'react-native'
 import moment from '../../../config/moment'
@@ -34,6 +35,7 @@ const RecordItem = (props: RecordItemProps) => {
   const { record, isShowPage, navigation, requestDestroyRecord } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
   const currentUser = firebase.auth().currentUser
+  const dispatch = useDispatch()
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
@@ -70,7 +72,7 @@ const RecordItem = (props: RecordItemProps) => {
   }
 
   const handleRequestDestroyRecord = () => {
-    requestDestroyRecord(id)
+    dispatch(requestDestroyRecord(id))
   }
 
   if (isUserLoading || isCommentLoading) {

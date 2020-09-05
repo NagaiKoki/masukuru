@@ -78,6 +78,7 @@ export type RequestPostRecordComment = {
   recordId: string
   recordUserId: string
   notificationGroupId?: string
+  text: string
 }
 
 export type RequestDeleteComment = {

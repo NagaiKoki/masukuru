@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import types
@@ -12,28 +13,33 @@ import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
 // import config
 import firebase from '../../../../config/firebase'
+// import selectors
+import userSelector from '../../../../selectors/user'
+import recordSelector from '../../../../selectors/record'
+// import slice
+import {
+  requestDestroyRecord,
+  requestPostRecordComment,
+  requestFetchRecordComments,
+  requestDeleteRecordComment,
+} from '../../../../slice/record'
+// import actions
+import { requestFetchUserData } from '../../../../actions/User'
+import { requestPostPushNotification } from '../../../../actions/notifications'
 
 const RecordShowScreen = (props: RecordShowProps) => {
-  const { navigation, route, records, users, actions } = props
-  const {
-    requestFetchUserData,
-     requestDestroyRecord, 
-     requestPostRecordComment,
-     requestFetchRecordComments,
-     requestDeleteRecordComment,
-     requestPostPushNotification
-  } = actions
-  const { comments, isLoading } = records
-  const { currentUser } = users
+  const { navigation, route } = props
+  const dispatch = useDispatch()
+  const { comments, isLoading } = recordSelector()
+  const { currentUser } = userSelector()
   const { record, notificationGroupId }: { record: ResponseRecordType, notificationGroupId?: string } = route.params
   const scrollRef = useRef(null)
-  const [text, setText] = useState('')
-
+  
   useFocusEffect(
     useCallback(() => {
-      requestFetchRecordComments(record.id)
+      dispatch(requestFetchRecordComments(record.id))
       if (!currentUser) {
-        requestFetchUserData(firebase.auth().currentUser.uid)
+        dispatch(requestFetchUserData(firebase.auth().currentUser.uid))
       }
     }, [])
   )
@@ -42,12 +48,13 @@ const RecordShowScreen = (props: RecordShowProps) => {
     return <Loading size="small" />
   }
 
-  const renderCommentList = isLoading ? <Loading size="small" /> 
-    : <RecordCommentList 
-        comments={comments}
-        requestDeleteRecordComment={requestDeleteRecordComment}
-        notificationGroupId={notificationGroupId}
-      />
+  const renderCommentList = isLoading ? 
+    <Loading size="small" /> : 
+    <RecordCommentList 
+      comments={comments}
+      notificationGroupId={notificationGroupId}
+      requestDeleteRecordComment={requestDeleteRecordComment}
+    />
 
   return (
     <RecordShowContainer>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 // import apis
 import { requestCurrentGroupId  } from '../../../apis/Groups/transfer'
 // import types
-import { RecordCommentType } from '../../../types/Record'
+import { RecordCommentType, RequestDeleteComment } from '../../../types/Record'
 // import components
 import RecordCommentItem from './commentItem'
 import Loading from '../../Loading'
@@ -14,7 +14,7 @@ import { requestFetchNotReadNotificationNumber } from '../../../actions/notifica
 interface RecordCommentListProps {
   comments: RecordCommentType[]
   notificationGroupId?: string
-  requestDeleteRecordComment: (recordId: string, commentId: string) => void
+  requestDeleteRecordComment: (arg: RequestDeleteComment) => void
 }
 
 const RecordCommentList = (props: RecordCommentListProps) => {
