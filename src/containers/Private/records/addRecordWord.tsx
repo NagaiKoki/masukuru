@@ -2,7 +2,7 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { RootState } from '../../../reducers'
 // import components
-import AddRecordWordScreen from '../../../screens/Private/Records/Modals/addRecordWord'
+import AddRecordWordScreen from '../../../screens/Private/Records/Modals/TweetForm'
 // import types
 import { RecordState, RecordItemType } from '../../../types/Record'
 // import actions

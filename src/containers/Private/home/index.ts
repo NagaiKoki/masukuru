@@ -13,7 +13,6 @@ import {
 import { requestFetchUserData } from '../../../actions/User'
 // import screens
 import HomeScreen from '../../../screens/Private/Home'
-import { hoge } from '../../../slice/record'
 
 export interface HomeProps {
   navigation: any

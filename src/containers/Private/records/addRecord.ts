@@ -7,13 +7,9 @@ import { RecordState, RecordItemType } from '../../../types/Record'
 import {
   addRecord, 
   updateRecord,
-  setRecordError,
-  onChangeTrainingName, 
-  onChangeDistance,
-  onChangeTime
-} from '../../../actions/records'
+} from '../../../slice/record'
 // import screens
-import AddRecordScreen from '../../../screens/Private/Records/Modals/addRecord'
+import AddRecordScreen from '../../../screens/Private/Records/Modals/TrainingForm'
 
 export interface AddRecordProps {
   navigation: any
@@ -22,10 +18,6 @@ export interface AddRecordProps {
   actions: {
     addRecord: (record: RecordItemType) => void
     updateRecord: (record: RecordItemType) => void
-    setRecordError: (error: string) => void
-    onChangeTrainingName: (name: string) => void
-    onChangeDistance: (distance: string) => void
-    onChangeTime: (time: string) => void
   }
 }
 
@@ -40,12 +32,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     actions: bindActionCreators({
       addRecord, 
       updateRecord,
-      setRecordError,
-      onChangeTrainingName, 
-      onChangeDistance,
-      onChangeTime
-    }
-    , dispatch)
+    },
+    dispatch)
   }
 }
 

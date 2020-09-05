@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, SetStateAction, Dispatch } from 'react'
 import styled from 'styled-components'
 // import constants
 import { COLORS } from '../../../../constants/Styles'
@@ -9,14 +9,31 @@ import SetBtn from '../SetBtn'
 // import types
 import { WeightType, AmountType } from '../../../../types/Record'
 
-const AddRecord2 = () => {
-  const [count, setCount] = useState(3)
-  const [weights, setWeights] = useState<WeightType[]>(['', '', ''])
-  const [amounts, setAmounts] = useState<AmountType[]>(['', '', ''])
-  const [title, setTitle] = useState('')
+interface AddMusclewProps {
+  count: number
+  weights: string[]
+  amounts: string[]
+  musclewName: string
+  setCount: Dispatch<SetStateAction<number>>
+  setWeights: Dispatch<SetStateAction<string[]>>
+  setAmounts: Dispatch<SetStateAction<string[]>>
+  setMuscleName: Dispatch<SetStateAction<string>>
+}
 
+const AddRMuscleecord = (props: AddMusclewProps) => {
+  const {
+    count,
+    weights,
+    amounts,
+    musclewName,
+    setCount,
+    setWeights,
+    setAmounts,
+    setMuscleName
+  } = props
+ 
   const handleOnTItleChange = (title: string) => {
-    return setTitle(title)
+    return setMuscleName(title)
   }
 
   const handleAddCount = () => {
@@ -56,4 +73,4 @@ const AddRecordContainer = styled.View`
   padding: 20px 0 40px 0;
 `
 
-export default AddRecord2
+export default AddRMuscleecord

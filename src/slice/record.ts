@@ -4,7 +4,12 @@ import {
   RecordState, 
   RecordItemType, 
   SuccessFetchRecordType,
-  RecordCommentType
+  RecordCommentType,
+  RequestFetchRecordType,
+  RequestSubmitRecords,
+  RequestNextRecords,
+  RequestDestroyRecord,
+  RequestPostRecordComment
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
@@ -24,19 +29,15 @@ const initialState: RecordState = {
    comments: []
 }
 
-export type hoge = {
-  uid: string, 
-  groupId: string
-}
-
 const recordSlice = createSlice({
   name: record,
   initialState: initialState,
   reducers: {
-    addRecord: (state, action: PayloadAction<RecordItemType[]>) => {
+    addRecord: (state, action: PayloadAction<RecordItemType>) => {
+      const recordItems = [action.payload, ...state.recordItems]
       return {
         ...state,
-        recordItems: action.payload
+        recordItems
       }
     },
     deleteRecord: (state, action: PayloadAction<RecordItemType>) => {
@@ -48,7 +49,7 @@ const recordSlice = createSlice({
         recordItems: updateRecordItems
       }
     },
-    requestDestroyRecord: (state) => {
+    requestDestroyRecord: (state, action: PayloadAction<RequestDestroyRecord>) => {
       return state
     },
     successDestroyRecord: (state, action: PayloadAction<string>) => {
@@ -87,7 +88,7 @@ const recordSlice = createSlice({
         recordItems: updateRecordItems
       }
     },
-    requestSubmitRecords: (state) => {
+    requestSubmitRecords: (state, action: PayloadAction<RequestSubmitRecords>) => {
       return {
         ...state,
         isLoading: true
@@ -111,7 +112,7 @@ const recordSlice = createSlice({
       }
     },
     
-    requestFetchRecords: (state, action: PayloadAction<hoge>) => {
+    requestFetchRecords: (state, action: PayloadAction<RequestFetchRecordType>) => {
       return {
         ...state,
         isLoading: true
@@ -142,7 +143,7 @@ const recordSlice = createSlice({
         error: action.payload
       }
     },
-    requestNextRecords: (state) => {
+    requestNextRecords: (state, action: PayloadAction<RequestNextRecords>) => {
       return {
         ...state,
         isLoading: true
@@ -178,7 +179,7 @@ const recordSlice = createSlice({
         error: action.payload
       }
     },
-    requestPostRecordComment: (state) => {
+    requestPostRecordComment: (state, action: PayloadAction<RequestPostRecordComment>) => {
       return state
     },
     successPostRecordComment: (state, action: PayloadAction<RecordCommentType>) => {

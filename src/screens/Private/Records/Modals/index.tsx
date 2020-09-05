@@ -71,7 +71,7 @@ const RecordModalScreen = (props: RecordProps) => {
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
     onChangeTrainingName(record.name)
-    navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true, isMuscle: record.isMuscle } )
+    navigation.navigate('addRecordModal', { recordItem: record, isUpdate: true, isMuscle: record.recordType } )
   }
 
   const renderRecordItems = () => {
@@ -79,11 +79,11 @@ const RecordModalScreen = (props: RecordProps) => {
       let renderAmountText: string
       let renderWeightText: string
       let renderText: string
-      if (item.isMuscle) {
+      if (item.recordType === 'muscle') {
         renderAmountText = item.amounts.join('回, ') + '回, '
         renderWeightText = item.weights.join('kg, ') + 'kg '
         renderText = item.name + ', ' + renderAmountText + renderWeightText
-      } else if (item.isMuscle === false) {
+      } else if (item.recordType === 'Aerobic') {
         const renderDistance = item.distance ? item.distance + 'km, ' : ''
         const renderTime = item.time ? item.time + '分 ' : ''
         renderText = item.name + ', ' + renderDistance + renderTime
