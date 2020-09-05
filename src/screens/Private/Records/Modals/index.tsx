@@ -15,6 +15,8 @@ import DatePicker from '../../../../common/Date'
 import { deleteRecord } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
+// import utils
+import { parseRecord } from '../../../../utilities/Record/recordParse'
 
 export type RecordNavigationType = {
   isUpdate: boolean
@@ -84,20 +86,8 @@ const RecordModalScreen = ({ navigation }) => {
   }
 
   const renderRecordItems = () => {
-    const recordsComponent = recordItems.map((item: RecordItemType) => {
-      let renderAmountText: string
-      let renderWeightText: string
-      let renderText: string
-      if (item.recordType === 'muscle') {
-        renderAmountText = item.amounts.filter(Boolean).join('回, ') + '回, '
-        renderWeightText = item.weights.filter(Boolean).join('kg, ') + 'kg '
-        renderText = item.name + ', ' + renderAmountText + renderWeightText
-      } else if (item.recordType === 'aerobic') {
-        const renderDistance = item.distance ? item.distance + 'km, ' : ''
-        const renderTime = item.time ? item.time + '分 ' : ''
-        renderText = item.name + ', ' + renderDistance + renderTime
-      }
-
+    const recordsComponent = recordItems.map(item => {
+      const renderText = parseRecord(item)
       return (
         <RecordItemWrapper key={item.id}>
           <RecordItemBtn onPress={ () => handleUpdateRecordItme(item) }>
