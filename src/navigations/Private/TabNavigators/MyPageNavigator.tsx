@@ -2,9 +2,9 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 // import containers
 import UserContainer from '../../../containers/Private/users/myPage'
-import RecordShowContainer from '../../../containers/Private/records/recordShow'
 // import screens
 import ProfileChangeScreen from '../../../screens/Private/MyPage/ProfileChange';
+import RecordShowScreen from '../../../screens/Private/Records/Show'
 import { COLORS } from '../../../constants/Styles'
 
 const MyPageNavigator = () => { 
@@ -37,7 +37,7 @@ const MyPageNavigator = () => {
 
       <MyPageStack.Screen 
         name="recordShow"
-        component={RecordShowContainer}
+        component={RecordShowScreen}
         options={{
           headerBackTitleVisible: false,
           headerTitle: "きろく",
