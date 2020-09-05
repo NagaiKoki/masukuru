@@ -34,7 +34,7 @@ const recordSlice = createSlice({
   initialState: initialState,
   reducers: {
     addRecord: (state, action: PayloadAction<RecordItemType>) => {
-      const recordItems = [action.payload, ...state.recordItems]
+      const recordItems = [...state.recordItems, action.payload]
       return {
         ...state,
         recordItems
@@ -74,10 +74,9 @@ const recordSlice = createSlice({
     },
     updateRecord: (state, action: PayloadAction<RecordItemType>) => {
       const record = action.payload
-      const { recordItems } = state
-      const updateRecordItems = recordItems.map((item: RecordItemType, i: number) => {
+      const updateRecordItems = state.recordItems.map(item => {
         if (item.id === record.id) {
-          return recordItems[i] = record
+          return item = record
         }
         return item
       })

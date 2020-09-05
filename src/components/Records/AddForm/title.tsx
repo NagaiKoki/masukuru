@@ -13,10 +13,6 @@ interface RecordTitleProps {
 const RecordTitle = (props: RecordTitleProps) => {
   const { muscleName, onTitleChange, handleOnBlur, handleOnFocus } = props
 
-  React.useEffect(() => {
-    onTitleChange('')
-  }, [])
-
   const renderTitleForm =
     <AddRecordItem>
       <AddRecordName>種目</AddRecordName>

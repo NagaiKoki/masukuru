@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import components
-import AddRecordAeroForm from '../../../../components/Records/AddForm/areroForm'
+import AeroForm from '../../../../components/Records/AddForm/areroForm'
 import MuscleForm from '../../../../components/Records/AddForm/Musclew/musclewForm'
 import Toast from '../../../../components/Toaster'
 // import types
@@ -26,19 +26,31 @@ const AddRecordScreen = ({ navigation, route }) => {
   const [count, setCount] = useState(3)
   const [weights, setWeights] = useState(['', '', ''])
   const [amounts, setAmounts] = useState(['', '', ''])
+  const [distance, setDistance] = useState('')
+  const [time, setTime] = useState('')
+  const [aeroName, setAeroName] = useState('')
   const [muscleName, setMuscleName] = useState('')
   const [error, setError] = useState('')
   const [isMuscleMenu, setIsMuscleMenu] = useState(true)
 
   React.useEffect(() => {
     if (isUpdate) {
-      setCount(recordItem.set)
-      setIsMuscleMenu(recordItem.recordType === 'muscle')
-      setWeights(recordItem.weights)
-      setAmounts(recordItem.amounts)
-      setMuscleName(recordItem.name)
+      takeOverRecord()
     }
   }, [])
+
+  const takeOverRecord = () => {
+    const { name, set, weights, amounts, distance, time, recordType } = recordItem
+    const isMuscle =  recordType === 'muscle' ? true : false
+    setCount(isMuscle ? set : 3)
+    setIsMuscleMenu(isMuscle)
+    setWeights(isMuscle ? weights : ['', '', ''])
+    setAmounts(isMuscle ? amounts : ['', '', ''])
+    setDistance(!isMuscle ? String(distance) : '')
+    setTime(!isMuscle ? String(time) : '')
+    setAeroName(!isMuscle ? name : '')
+    setMuscleName(isMuscleMenu ? name : '')
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -59,7 +71,7 @@ const AddRecordScreen = ({ navigation, route }) => {
         },
       })
       // 初回マウント時点の変数がcallback関数内で使われるので、以下の変数に変更があるたびに関数を呼び出す
-    }, [count, weights, amounts, muscleName]
+    }, [count, weights, amounts, muscleName, aeroName, distance, time]
   ))
 
   // エラーの削除
@@ -69,28 +81,30 @@ const AddRecordScreen = ({ navigation, route }) => {
 
   // トレーニング対象の切り替え
   const handleToggleRecord = () => {
-    isMuscleMenu ? setIsMuscleMenu(true) : setIsMuscleMenu(false)
+    setIsMuscleMenu(!isMuscleMenu)
   }
 
   const handleOnSubmit = () => {
-    if (!muscleName) {
+    if (isMuscleMenu && !muscleName) {
+      return setError(RECORD_ERROR_MESSAGE.EMPTY_NAME)
+    } else if (!isMuscleMenu && !aeroName) {
       return setError(RECORD_ERROR_MESSAGE.EMPTY_NAME)
     } else if (isMuscleMenu && !amounts.filter(Boolean).length) {
       return setError(RECORD_ERROR_MESSAGE.EMPTY_AMOUNT)
-    } else if (!isMuscleMenu) {
+    } else if (!isMuscleMenu && (!time && !distance)) {
       return setError(RECORD_ERROR_MESSAGE.EMPTY_TIME_OR_DISTANCE)
     }
-    const recordItem: RecordItemType  = {
-      id: parseInt(`${new Date().getTime()}${recordItems.length}, 10`),
-      name: muscleName,
+    const recordItemObj: RecordItemType  = {
+      id: isUpdate ? recordItem.id : parseInt(`${new Date().getTime()}${recordItems.length}, 10`),
+      name: isMuscleMenu ? muscleName : aeroName,
       set: count || undefined,
       amounts: !!amounts.length ? amounts : [],
       weights: !!weights.length ? weights : [],
-      time: 1,
-      distance: 1,
-      recordType: isMuscleMenu ? 'muscle' : 'Aerobic'
+      time: Number(time),
+      distance: Number(distance),
+      recordType: isMuscleMenu ? 'muscle' : 'aerobic'
     }
-    dispatch(addRecord(recordItem))
+    isUpdate ? dispatch(updateRecord(recordItemObj)) : dispatch(addRecord(recordItemObj))
     navigation.goBack()
   }
 
@@ -114,7 +128,15 @@ const AddRecordScreen = ({ navigation, route }) => {
       setWeights={setWeights}
       setAmounts={setAmounts}
       setMuscleName={setMuscleName}
-    /> : null
+    /> :
+    <AeroForm 
+      aeroName={aeroName}
+      time={time}
+      distance={distance}
+      setAeroName={setAeroName}
+      setTime={setTime}
+      setDistance={setDistance}
+    />
 
   return (
     <AddRecordContainer keyboardShouldPersistTaps="always">

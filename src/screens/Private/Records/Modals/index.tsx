@@ -92,7 +92,7 @@ const RecordModalScreen = ({ navigation }) => {
         renderAmountText = item.amounts.filter(Boolean).join('回, ') + '回, '
         renderWeightText = item.weights.filter(Boolean).join('kg, ') + 'kg '
         renderText = item.name + ', ' + renderAmountText + renderWeightText
-      } else if (item.recordType === 'Aerobic') {
+      } else if (item.recordType === 'aerobic') {
         const renderDistance = item.distance ? item.distance + 'km, ' : ''
         const renderTime = item.time ? item.time + '分 ' : ''
         renderText = item.name + ', ' + renderDistance + renderTime
@@ -242,7 +242,7 @@ const DateWrapper = styled.View`
 
 const TitleLabel = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  padding: 0 20px 15px 0;
+  padding: 0 20px 20px 0;
   font-size: 14px;
   font-weight: bold;
 `
