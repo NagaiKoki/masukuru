@@ -124,6 +124,7 @@ export const requestUpdateRecordItem = async (recordId: string, records: RecordI
     })
     return { payload: 'success' }
   } catch(error) {
+    console.log(error)
     return { error: error }
   }
 }

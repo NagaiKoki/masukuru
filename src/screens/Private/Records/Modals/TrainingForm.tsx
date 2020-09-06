@@ -97,8 +97,8 @@ const AddRecordScreen = ({ navigation, route }) => {
       id: isUpdate ? recordItem.id : parseInt(`${new Date().getTime()}${recordItems.length}, 10`),
       name: isMuscleMenu ? muscleName : aeroName,
       set: count || undefined,
-      amounts: !!amounts.length ? amounts : [],
-      weights: !!weights.length ? weights : [],
+      amounts: !!amounts.length ? amounts.filter(Boolean) : [],
+      weights: !!weights.length ? weights.filter(Boolean) : [],
       time: Number(time),
       distance: Number(distance),
       isMuscle: isMuscleMenu
