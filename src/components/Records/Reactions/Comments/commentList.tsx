@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 // import apis
-import { requestCurrentGroupId  } from '../../../apis/Groups/transfer'
+import { requestCurrentGroupId  } from '../../../../apis/Groups/transfer'
 // import types
-import { RecordCommentType, RequestDeleteComment } from '../../../types/Record'
+import { RecordCommentType, RequestDeleteComment } from '../../../../types/Record'
 // import components
 import RecordCommentItem from './commentItem'
-import Loading from '../../Loading'
-import { COLORS } from '../../../constants/Styles'
-import store from '../../../reducers'
-import { requestFetchNotReadNotificationNumber } from '../../../actions/notifications'
+import Loading from '../../../Loading'
+import { COLORS } from '../../../../constants/Styles'
+import store from '../../../../reducers'
+import { requestFetchNotReadNotificationNumber } from '../../../../actions/notifications'
 
 interface RecordCommentListProps {
   comments: RecordCommentType[]
@@ -65,7 +65,7 @@ const CommnetListWrapper = styled.View<{ commentPresent: boolean }>`
   margin-top: ${props => props.commentPresent ? '-20px' : '-10px'};
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 0.3px;
-  padding: 15px 0;
+  padding: 15px 0 30px 0;
 `
 
 const CommentListTitle = styled.Text`

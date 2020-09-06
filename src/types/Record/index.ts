@@ -58,6 +58,7 @@ export type SuccessFetchRecordType = {
 }
 
 export type RequestSubmitRecords = {
+  id?: string
   records: RecordItemType[]
   word: string
   imageUrl: string

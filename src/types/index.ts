@@ -11,3 +11,8 @@ export type NotificationType = {
   createdAt: any
   readUserIds: number[]
 }
+
+export type ResponseType<T> = {
+  payload?: T
+  error?: string
+}

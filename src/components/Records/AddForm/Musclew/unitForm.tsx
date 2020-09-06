@@ -17,7 +17,7 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
   const { count, amounts, weights, setWeights, setAmounts } = props
 
   const handleAddWeight = (size: number, weight: number) => {
-    if (weights[size - 1] === undefined) {
+    if (!!weights[size - 1] === undefined) {
       const addedWeights = [...weights, weight]
       return setWeights(addedWeights)
     } else {

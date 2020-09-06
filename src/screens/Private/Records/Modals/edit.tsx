@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
@@ -12,7 +12,7 @@ import truncateText from '../../../../utilities/truncateText'
 // import components
 import DatePicker from '../../../../common/Date'
 // import slices
-import { deleteRecord } from '../../../../slice/record'
+import { deleteRecord, requestFetchRecord } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 // import utils
@@ -23,9 +23,10 @@ export type RecordNavigationType = {
   recordItem?: RecordItemType
 }
 
-const RecordModalScreen = ({ navigation }) => {
+const RecordModalScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
-  const { recordItems, trainingDate } = recordSelector()
+  const { recordId } = route.params
+  const { recordItems, trainingDate, isLoading } = recordSelector() 
   
   useFocusEffect(
     useCallback(() => {
@@ -40,13 +41,21 @@ const RecordModalScreen = ({ navigation }) => {
       })
     }, [recordItems])
   )
+  
+  useEffect(() => {
+    dispatch(requestFetchRecord(recordId))
+  }, [])
+
+  if (isLoading) {
+    return <React.Fragment />
+  }
 
   // 一言画面へ遷移
   const handleNavigationWord = () => {
     if (!recordItems.length) {
       Alert.alert('トレーニングを追加してください。')
     } else {
-      navigation.navigate('tweetRecordModal', { isEdit: false })
+      navigation.navigate('tweetRecordModal', { isEdit: true, recordId: recordId })
     }
   }
   
@@ -78,8 +87,15 @@ const RecordModalScreen = ({ navigation }) => {
   
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
+    const editableWeights = record.weights.map(weight => String(weight)).filter(Boolean)
+    const editableAmounts = record.amounts.map(amount => String(amount)).filter(Boolean)
+    const editableRecord = {
+      ...record, 
+      weights: editableWeights,
+      amounts: editableAmounts
+    }
     const routeProps: RecordNavigationType = {
-      recordItem: record,
+      recordItem: editableRecord,
       isUpdate: true
     }
     navigation.navigate('trainingRecordModal', routeProps)

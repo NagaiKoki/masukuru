@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import types
-import { RecordShowProps } from '../../../../containers/Private/records/recordShow'
 import { ResponseRecordType } from '../../../../types/Record'
 // import components
 import RecordItem from '../../../../components/Records/Items/item'
-import RecordCommentForm from '../../../../components/Records/Comments/form'
-import RecordCommentList from '../../../../components/Records/Comments/commentList'
+import RecordCommentForm from '../../../../components/Records/Reactions/Comments/form'
+import RecordCommentList from '../../../../components/Records/Reactions/Comments/commentList'
 import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'
 // import config
@@ -26,8 +25,7 @@ import {
 import { requestFetchUserData } from '../../../../actions/User'
 import { requestPostPushNotification } from '../../../../actions/notifications'
 
-const RecordShowScreen = (props: RecordShowProps) => {
-  const { navigation, route } = props
+const RecordShowScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { comments, isLoading } = recordSelector()
   const { currentUser } = userSelector()

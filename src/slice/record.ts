@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
 import { 
   RecordState, 
+  ResponseRecordType,
   RecordItemType, 
   SuccessFetchRecordType,
   RecordCommentType,
@@ -9,10 +10,12 @@ import {
   RequestSubmitRecords,
   RequestNextRecords,
   RequestPostRecordComment,
-  RequestDeleteComment
+  RequestDeleteComment,
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
+// import utils
+import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
 
 const initialState: RecordState = {
    recordItems: [],
@@ -67,9 +70,17 @@ const recordSlice = createSlice({
       }
     },
     initializeRecords: (state) => {
+      return initialState
+    },
+    initializeTemporaryRecord: (state) => {
       return {
         ...state,
-        initialState
+        recordItems: [],
+        trainingDate: new Date,
+        word: '',
+        imageUrl: '',
+        error: '',
+        isLoading: false,
       }
     },
     updateRecord: (state, action: PayloadAction<RecordItemType>) => {
@@ -113,6 +124,32 @@ const recordSlice = createSlice({
       return {
         ...state,
         isLoading: true
+      }
+    },
+    requestFetchRecord: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successFetchRecord: (state, action: PayloadAction<ResponseRecordType>) => {
+      const responseRecordData = action.payload
+      const { records, word, imageUrl, trainingDate, createdAt } = responseRecordData
+      const date = trainingDate ? new Date(convertTimeStampToStringOnlyDate(trainingDate)) : new Date(convertTimeStampToStringOnlyDate(createdAt))
+      return {
+        ...state,
+        recordItems: records,
+        trainingDate: date,
+        word,
+        imageUrl,
+        isLoading: false
+      }
+    },
+    failureFetchRecord: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false
       }
     },
     successFetchRecords: (state, action: PayloadAction<SuccessFetchRecordType>) => {
@@ -235,6 +272,29 @@ const recordSlice = createSlice({
         trainingDate: action.payload
       }
     },
+    requestUpdateRecord: (state, action: PayloadAction<RequestSubmitRecords>) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successUpdateRecord: (state) => {
+      return {
+        ...state,
+        recordItems: [],
+        word: '',
+        imageUrl: '',
+        error: '',
+        isLoading: false
+      }
+    },
+    failureUpdateRecord: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false
+      }
+    }
   }
 })
 
@@ -245,10 +305,14 @@ export const {
   successDestroyRecord,
   failureDestroyRecord,
   initializeRecords,
+  initializeTemporaryRecord,
   updateRecord,
   requestSubmitRecords,
   successSubmitRecords,
   failureSubmitRecords,
+  requestFetchRecord,
+  successFetchRecord,
+  failureFetchRecord,
   requestFetchRecords,
   successFetchRecords,
   failureFetchRecords,
@@ -264,7 +328,10 @@ export const {
   requestDeleteRecordComment,
   successDeleteRecordComment,
   failureDeleteRecordComment,
-  onChangeRecordDate
+  onChangeRecordDate,
+  requestUpdateRecord,
+  successUpdateRecord,
+  failureUpdateRecord
 } = recordSlice.actions
 
 export default recordSlice

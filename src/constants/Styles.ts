@@ -17,6 +17,7 @@ export const COLORS = {
   TOGGLE_ON_COLOR: '#33cc00',
 
   BATCH_COLOR: '#ff5b5b',
+  DANGER_COLOR: '#dc3545',
 
   CARD_SHADOW1: 'rgba(0, 0, 0, 0.1)',
 

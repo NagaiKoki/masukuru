@@ -1,27 +1,32 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import { COLORS } from '../../../../../constants/Styles'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // import screens
-import RecordModalScreen from '../../../../../screens/Private/Records/Modals'
 import RecordFormScreen from '../../../../../screens/Private/Records/Modals/TrainingForm'
 import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/TweetForm'
 import RecordEditScreen from '../../../../../screens/Private/Records/Modals/edit'
+// import slice
+import { initializeTemporaryRecord } from '../../../../../slice/record'
 
-const RecordModalNavigator = () => {
+const RecordModalNavigator = ({ route }) => {
   const RecordModalStack = createStackNavigator()
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const handleCancelRecord = () => {
+    dispatch(initializeTemporaryRecord())
     navigation.navigate('mainContainer')
   }
 
   return (
     <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
-        name="recordModal"
-        component={RecordModalScreen}
+        name="recordEditModal"
+        component={RecordEditScreen}
+        initialParams={{ recordId: route.params.recordId }}
         options={{
           headerLeft: () => {
             return (

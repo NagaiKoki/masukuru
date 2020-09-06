@@ -110,3 +110,20 @@ export const requestFetchRecordItem = async (recordId: string) => {
     return { erorr: COMMON_ERROR_MESSSAGE }
   }
 }
+
+export const requestUpdateRecordItem = async (recordId: string, records: RecordItemType[], word: string, trainingDate: Date, imageUrl: string) => {
+  const recordRef = db.collection('records').doc(recordId)
+  const currentTime = firebase.firestore.FieldValue.serverTimestamp()
+  try {
+    recordRef.update({
+      records: records,
+      word: word,
+      imageUrl: imageUrl,
+      trainingDate: trainingDate,
+      updatedAt: currentTime
+    })
+    return { payload: 'success' }
+  } catch(error) {
+    return { error: error }
+  }
+}

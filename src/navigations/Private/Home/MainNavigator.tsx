@@ -16,7 +16,7 @@ import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 import HomeNavigator from './HomeNavigator'
 // import container
 import UserPageContainer from '../../../containers/Private/users/userPage'
-import RecordShowContainer from '../../../containers/Private/records/recordShow'
+import RecordShowScreen from '../../../screens/Private/Records/Show'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
@@ -107,7 +107,7 @@ const MainNavigator = () => {
 
       <MainStack.Screen 
         name="recordShow"
-        component={RecordShowContainer}
+        component={RecordShowScreen}
         options={{
           headerBackTitleVisible: false,
           headerTitle: "きろく",
