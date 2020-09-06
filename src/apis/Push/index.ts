@@ -95,7 +95,6 @@ export const requestFetchGroupUserIds = async () => {
     return { payload: ids }
   
   } catch(error) {
-    console.log(error)
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
