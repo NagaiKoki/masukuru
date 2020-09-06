@@ -73,7 +73,7 @@ const Container = styled.View`
   align-self: center;
   bottom: -20px;
   border-radius: 10px;
-  height: 180px;
+  height: 260px;
   width: 110%;
   background-color: ${COLORS.BASE_BACKGROUND};
 `

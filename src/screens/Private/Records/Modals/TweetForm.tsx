@@ -75,16 +75,26 @@ const AddRecordWordScreen = ({ navigation, route }) => {
     ImageUpload(setProgress, setTemporaryUrl, undefined, undefined, record)
   }
 
+  const handleOnDeleteImage = () => {
+    setTemporaryUrl('')
+  }
+
   const renderImage =
     <UploadImageView>
-      { temporaryUrl ? <Image source={{ uri: temporaryUrl }} style={{ width: 100, height: 100, resizeMode: 'cover', borderRadius: 4 }} /> : null }
+      { temporaryUrl ? <Image source={{ uri: temporaryUrl }} style={{ width: 200, height: 150, resizeMode: 'cover', borderRadius: 4 }} /> : null }
+      { temporaryUrl ? 
+         <ImageCloseBtn onPress={handleOnDeleteImage}>
+          <Icon name="times-circle" size={20} style={{ color: COLORS.BASE_WHITE }} />
+        </ImageCloseBtn> :
+        null
+      }
       { progress ? <RecordImageProgress>{progress}</RecordImageProgress> : null }
     </UploadImageView>
 
 
   const renderImageForm =
     <RecordImageUpload onPress={handleUpload}>
-      <Icon name="image" size={15} style={{ marginRight: 5, color: '#484848' }}/>
+      <Icon name="image" size={15} style={{ marginRight: 7, marginLeft: 7, color: '#484848' }}/>
       <RecordImageUploadText>
         { !!temporaryUrl ? '画像を変更する' : '画像を追加する' }
       </RecordImageUploadText>
@@ -147,7 +157,9 @@ const AddWordForm = styled.TextInput`
 `
 
 const UploadImageView = styled.View`
+  width: 200px;
   margin-left: 15px;
+  position: relative;
 `
 
 const RecordImageProgress = styled.Text`
@@ -166,6 +178,12 @@ const WordFormBottom = styled.View`
 const RecordImageUpload = styled.TouchableOpacity`
   margin: 15px 0 0 10px;
   flex-direction: row;
+`
+
+const ImageCloseBtn = styled.TouchableOpacity`
+  position: absolute;
+  top: 3px;
+  right: 3px;
 `
 
 const RecordImageUploadText = styled.Text`

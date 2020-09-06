@@ -155,7 +155,7 @@ export default RecordModalScreen;
 const RecordModalContainer = styled.ScrollView`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-  padding: 30px 10px 70px 10px;
+  padding: 30px 10px;
 `
 
 const HeaderNextBtn = styled.TouchableOpacity`
@@ -187,6 +187,7 @@ const RecordModalAddItemBtnForm = styled.TouchableOpacity`
 const RecordListContainer = styled.View`
   align-self: center;
   width: 90%;
+  padding-bottom: 40px;
 `
 
 const RecordItemWrapper = styled.View`

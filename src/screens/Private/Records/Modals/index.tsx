@@ -171,6 +171,7 @@ const RecordModalAddItemBtnForm = styled.TouchableOpacity`
 const RecordListContainer = styled.View`
   align-self: center;
   width: 90%;
+  padding-bottom: 40px;
 `
 
 const RecordItemWrapper = styled.View`
