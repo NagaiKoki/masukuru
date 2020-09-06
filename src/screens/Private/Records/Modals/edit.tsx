@@ -55,7 +55,7 @@ const RecordModalScreen = ({ navigation, route }) => {
     if (!recordItems.length) {
       Alert.alert('トレーニングを追加してください。')
     } else {
-      navigation.navigate('tweetRecordModal')
+      navigation.navigate('tweetRecordModal', { isEdit: true, recordId: recordId })
     }
   }
   

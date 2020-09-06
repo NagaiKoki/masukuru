@@ -264,6 +264,29 @@ const recordSlice = createSlice({
         trainingDate: action.payload
       }
     },
+    requestUpdateRecord: (state, action: PayloadAction<RequestSubmitRecords>) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successUpdateRecord: (state) => {
+      return {
+        ...state,
+        recordItems: [],
+        word: '',
+        imageUrl: '',
+        error: '',
+        isLoading: false
+      }
+    },
+    failureUpdateRecord: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false
+      }
+    }
   }
 })
 
@@ -296,7 +319,10 @@ export const {
   requestDeleteRecordComment,
   successDeleteRecordComment,
   failureDeleteRecordComment,
-  onChangeRecordDate
+  onChangeRecordDate,
+  requestUpdateRecord,
+  successUpdateRecord,
+  failureUpdateRecord
 } = recordSlice.actions
 
 export default recordSlice

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from 'react-native';
@@ -11,17 +11,21 @@ import Loading from '../../../../components/Loading'
 import { requestAppReview } from '../../../../utilities/requestReview'
 import { ImageUpload } from '../../../../utilities/cameraRoll';
 // import slices
-import { requestSubmitRecords, initializeRecords } from '../../../../slice/record'
+import { requestUpdateRecord, requestSubmitRecords, initializeRecords } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 
-const AddRecordWordScreen = ({ navigation }) => {
+const AddRecordWordScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
-  const { recordItems, isLoading } = recordSelector()
+  const { recordItems, isLoading, word, imageUrl } = recordSelector()
+  console.log({ isLoading })
+  const { isEdit, recordId } = route.params
   const [text, setText] = useState('')
   const [progress, setProgress] = useState<string>('');
   const [temporaryUrl, setTemporaryUrl] = useState('');
   const record = 'record';
+
+  const SUBMIT_BTN_TEXT = isEdit ? '更新する' : '送信する'
   
   useFocusEffect(
     useCallback(() => {
@@ -35,7 +39,7 @@ const AddRecordWordScreen = ({ navigation }) => {
         headerRight: () => {
           return (
             <HeaderSaveBtn onPress={ () => handleSubmitRecord()} disabled={isLoading} >
-              <HeaderSaveTitle>{ !isLoading ? '送信する' : '送信中...' }</HeaderSaveTitle>
+              <HeaderSaveTitle>{ !isLoading ? SUBMIT_BTN_TEXT : '送信中...' }</HeaderSaveTitle>
             </HeaderSaveBtn>
           )
         }
@@ -43,9 +47,24 @@ const AddRecordWordScreen = ({ navigation }) => {
     }, [text, temporaryUrl, isLoading])
   )
 
+  useEffect(() => {
+    if (isEdit) {
+      setText(word)
+      setTemporaryUrl(imageUrl)
+    }
+  }, [])
+
+  const handleRequestSubmit = () => {
+    if (isEdit) {
+      dispatch(requestUpdateRecord({ id: recordId, records: recordItems, word: text, imageUrl: temporaryUrl }))
+    } else {
+      dispatch(requestSubmitRecords({ records: recordItems, word: text, imageUrl: temporaryUrl }))
+    }
+  }
+
   const handleSubmitRecord = async () => {
     if (isLoading) return
-    dispatch(requestSubmitRecords({ records: recordItems, word: text, imageUrl: temporaryUrl }))
+    handleRequestSubmit()
     setTimeout(() => {
       navigation.navigate('mainContainer')
       dispatch(initializeRecords())
@@ -55,12 +74,6 @@ const AddRecordWordScreen = ({ navigation }) => {
 
   const handleUpload = () => {
     ImageUpload(setProgress, setTemporaryUrl, undefined, undefined, record)
-  }
-
-  if (isLoading) {
-    return (
-      <Loading size="small" />
-    )
   }
 
   const renderImage =
@@ -78,26 +91,28 @@ const AddRecordWordScreen = ({ navigation }) => {
       </RecordImageUploadText>
    </RecordImageUpload>
     
-
   return (
     <AddWordContainer>
-      <AddWordFormWrapper>
-        <AddWordForm
-          placeholder="今日のトレーニングはどうでしたか？"
-          autoCapitalize={'none'}
-          multiline = {true}
-          numberOfLines = {4}
-          maxLength={300}
-          defaultValue={text}
-          autoCorrect={ false }
-          onChangeText={ (text: string) => setText(text) }
-        />
-        {renderImage}
-        <WordFormBottom>
-          {renderImageForm}
-          <WordLengthText>{text.length} / 300</WordLengthText>
-        </WordFormBottom>
+      { isLoading ? 
+        <Loading size="small" /> :  
+        <AddWordFormWrapper>
+          <AddWordForm
+            placeholder="今日のトレーニングはどうでしたか？"
+            autoCapitalize={'none'}
+            multiline = {true}
+            numberOfLines = {4}
+            maxLength={300}
+            defaultValue={text}
+            autoCorrect={ false }
+            onChangeText={ (text: string) => setText(text) }
+          />
+          {renderImage}
+          <WordFormBottom>
+            {renderImageForm}
+            <WordLengthText>{text.length} / 300</WordLengthText>
+          </WordFormBottom>
       </AddWordFormWrapper>
+      }
     </AddWordContainer>
   )
 }

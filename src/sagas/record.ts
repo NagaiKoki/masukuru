@@ -27,7 +27,8 @@ import {
   requestPostRecords, 
   requestFetchRecord, 
   requestFetchDestroyRecord,
-  requestFetchRecordItem
+  requestFetchRecordItem,
+  requestUpdateRecordItem
 } from '../apis/Records'
 import { 
   requestPostRecordPost, 
@@ -49,6 +50,9 @@ import {
   requestDestroyRecord,
   successDestroyRecord,
   failureDestroyRecord,
+  requestUpdateRecord,
+  successUpdateRecord,
+  failureUpdateRecord,
   requestPostRecordComment,
   successPostRecordComment,
   failurePostRecordComment,
@@ -67,6 +71,8 @@ import {
 import firebase from '../config/firebase'
 // import utils
 import * as RecordAnalytics from '../utilities/Analytics/record'
+
+const recordSelector = (state: RootState) => state.records
 
 // 記録の保存
 function* runRequestSubmitRecords(action: PayloadAction<RequestSubmitRecords>) {
@@ -183,6 +189,38 @@ function* handleRequestDestroyRecord() {
   yield takeEvery(requestDestroyRecord.type, runRequestDestroyRecord)
 }
 
+function* runRequestUpdateRecord(action: PayloadAction<RequestSubmitRecords>) {
+  const { word, imageUrl, records, id } = action.payload
+  const { trainingDate }: ReturnType<typeof recordSelector> = yield select(recordSelector)
+  const { payload, error } : ResponseType<string> = yield call(
+    requestUpdateRecordItem,
+    id,
+    records,
+    word,
+    trainingDate,
+    imageUrl
+  )
+
+  function* requestPostRecordNamesForSuggest () {
+    records.forEach(async record => {
+      await requestPutSuggestRecord(record.name)
+    })
+  }
+
+  if (payload && !error) {
+    yield delay(2000)
+    yield requestPostRecordNamesForSuggest()
+    yield put(successUpdateRecord())
+  } else if (error) {
+    yield put(failureUpdateRecord(error))
+  }
+}
+
+function* handleRequestUpdateRecord() {
+  yield takeEvery(requestUpdateRecord.type, runRequestUpdateRecord)
+}
+
+/////////////////////// コメント //////////////////////////////////
 // コメント通知リクエスト
 function* runRequestPostCommentNotification(action: RequestPostCommentNotification) {
   const { recordUserId, recordId, notificationType } = action
@@ -278,6 +316,7 @@ export default function* recordSaga() {
   yield fork(handleRequestFetchRecord)
   yield fork(handleRequestNextFetchRecords)
   yield fork(handleRequestDestroyRecord)
+  yield fork(handleRequestUpdateRecord)
   yield fork(handleRequestPostRecordComment)
   yield fork(handleRequestFetchRecordComments)
   yield fork(handleRequestDeleteRecordComment)
