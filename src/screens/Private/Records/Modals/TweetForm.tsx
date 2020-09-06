@@ -18,7 +18,6 @@ import recordSelector from '../../../../selectors/record'
 const AddRecordWordScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const { recordItems, isLoading, word, imageUrl } = recordSelector()
-  console.log({ isLoading })
   const { isEdit, recordId } = route.params
   const [text, setText] = useState('')
   const [progress, setProgress] = useState<string>('');
