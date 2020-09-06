@@ -34,7 +34,7 @@ const MunuScreen = ({ navigation, route }) => {
       "本当によろしいですか？",
       [
         {
-          text: "Cansel",
+          text: "Cancel",
           style: "cancel"
         },
         {

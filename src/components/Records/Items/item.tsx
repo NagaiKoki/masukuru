@@ -22,7 +22,6 @@ import SettingModal from '../SettingModal/list'
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import constants
 import { COLORS } from '../../../constants/Styles';
-import { requestDestroyRecord } from '../../../slice/record'
 
 interface RecordItemProps {
   record: ResponseRecordType
@@ -69,25 +68,6 @@ const RecordItem = (props: RecordItemProps) => {
     }
     setIsCommentLoading(false)
   }
-
-  const deleteRecordWithAlert = () => {
-    Alert.alert(
-      'この記録を削除します。',
-      "本当によろしいですか？", 
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        },
-        {
-          text: 'OK',
-          onPress: () => {dispatch(requestDestroyRecord(id))}
-        }
-      ],
-      { cancelable: false }
-    )
-  }
-
 
   if (isUserLoading || isCommentLoading) {
     return (
@@ -149,7 +129,6 @@ const RecordItem = (props: RecordItemProps) => {
         visibleModal={visibleModal}
         navigation={navigation}
         setVisibleModal={setVisibleModal}
-        deleteRecordWithAlert={deleteRecordWithAlert}
       />
     </RecordItemContainer>
     </TouchableHighlight>

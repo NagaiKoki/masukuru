@@ -1,20 +1,23 @@
 import React, { SetStateAction, Dispatch } from 'react'
+import { Alert } from 'react-native'
+import { useDispatch } from 'react-redux'
 import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import styled from 'styled-components'
 // import constants
 import { COLORS } from '../../../constants/Styles'
+import { requestDestroyRecord } from '../../../slice/record'
 
 interface SettingModalProps {
   recordId: string
   visibleModal: boolean
   navigation: any
   setVisibleModal: Dispatch<SetStateAction<boolean>>
-  deleteRecordWithAlert: () => void
 }
 
 const SettingModal = (props: SettingModalProps) => {
-  const { recordId, visibleModal, navigation, setVisibleModal, deleteRecordWithAlert } = props
+  const { recordId, visibleModal, navigation, setVisibleModal } = props
+  const dispatch = useDispatch()
 
   const handleNavigateEdit = () => {
     setVisibleModal(false)
@@ -22,8 +25,26 @@ const SettingModal = (props: SettingModalProps) => {
   }
 
   const handleOnDelete = () => {
+    dispatch(requestDestroyRecord(recordId))
     setVisibleModal(false)
-    deleteRecordWithAlert()
+  }
+
+  const deleteRecordWithAlert = () => {
+    Alert.alert(
+      'この記録を削除します。',
+      "本当によろしいですか？", 
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => { handleOnDelete() }
+        }
+      ],
+      { cancelable: false }
+    )
   }
 
   return (
@@ -35,7 +56,7 @@ const SettingModal = (props: SettingModalProps) => {
             <Icon name="edit" size={20} style={{ color: COLORS.BASE_BLACK, fontWeight: 300 }} />
             <ItemText>投稿を編集する</ItemText>
           </ItemWrapper>
-          <ItemWrapper activeOpacity={1} onPress={handleOnDelete}>
+          <ItemWrapper activeOpacity={1} onPress={deleteRecordWithAlert}>
             <Icon name="trash-o" size={25} style={{ color: COLORS.DANGER_COLOR, fontWeight: 300 }} />
             <ItemText color={COLORS.DANGER_COLOR}>投稿を削除する</ItemText>
           </ItemWrapper>
