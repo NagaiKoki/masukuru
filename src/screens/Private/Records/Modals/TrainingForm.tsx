@@ -41,6 +41,7 @@ const AddRecordScreen = ({ navigation, route }) => {
 
   const takeOverRecord = () => {
     const { name, set, weights, amounts, distance, time, isMuscle } = recordItem
+    console.log(weights)
     setCount(isMuscle ? set : 3)
     setIsMuscleMenu(isMuscle)
     setWeights(isMuscle ? weights : ['', '', ''])

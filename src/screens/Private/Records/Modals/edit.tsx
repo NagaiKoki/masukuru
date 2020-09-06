@@ -87,8 +87,15 @@ const RecordModalScreen = ({ navigation, route }) => {
   
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
+    const editableWeights = record.weights.map(weight => String(weight)).filter(Boolean)
+    const editableAmounts = record.amounts.map(amount => String(amount)).filter(Boolean)
+    const editableRecord = {
+      ...record, 
+      weights: editableWeights,
+      amounts: editableAmounts
+    }
     const routeProps: RecordNavigationType = {
-      recordItem: record,
+      recordItem: editableRecord,
       isUpdate: true
     }
     navigation.navigate('trainingRecordModal', routeProps)

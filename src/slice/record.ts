@@ -70,9 +70,17 @@ const recordSlice = createSlice({
       }
     },
     initializeRecords: (state) => {
+      return initialState
+    },
+    initializeTemporaryRecord: (state) => {
       return {
         ...state,
-        initialState
+        recordItems: [],
+        trainingDate: new Date,
+        word: '',
+        imageUrl: '',
+        error: '',
+        isLoading: false,
       }
     },
     updateRecord: (state, action: PayloadAction<RecordItemType>) => {
@@ -297,6 +305,7 @@ export const {
   successDestroyRecord,
   failureDestroyRecord,
   initializeRecords,
+  initializeTemporaryRecord,
   updateRecord,
   requestSubmitRecords,
   successSubmitRecords,
