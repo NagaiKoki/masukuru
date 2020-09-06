@@ -37,7 +37,7 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
   const { user }: { user?: UserType } = await requestFetchUser(uid)
   console.log(firebase.auth().currentUser.uid === uid)
   if (!user || (user && !user.expoNotificationToken) || firebase.auth().currentUser.uid === uid) {
-    return
+    return new Error('no data')
   }
 
   const message = {
