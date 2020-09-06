@@ -15,7 +15,7 @@ import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 
 const MyPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props
-  const { userRecords, isLoading, beforeUserRecordSize } = records
+  const { userRecords, isLoading } = records
   const lastRecord = userRecords[userRecords.length - 1]
   const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
   const user = firebase.auth().currentUser

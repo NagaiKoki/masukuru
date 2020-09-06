@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+// import apis
+import { requestUpdateUser } from '../../../apis/Users'
 // import components
 import UserImage from '../../../components/Image/userImage';
 import Form from '../../../common/Form'
@@ -40,24 +42,9 @@ const ProfileChangeScreen = ({ route, navigation }) => {
       )
       
     // ユーザーの更新処理
-    const updateUserProfile = () => {
-      user.updateProfile({
-        displayName: userName,
-        photoURL: uri
-      }).then(function() {
-        const userdata  = { imageUrl: uri, name: userName };
-        db.collection('users').doc(user.uid).update(userdata);
-      }).then(() => {
-        db.collectionGroup('groupUsers').where('uid', '==', user.uid).limit(1).get().then(snapshot => {
-          snapshot.forEach(doc => {
-            doc.ref.update({ name: userName, imageUrl: uri })
-          });
-        })
-      }).then(function() {
-        navigation.goBack('マイページ', { user: user })
-      }).catch(function(error) {
-        alert(error);
-      })
+    const updateUserProfile = async () => {
+      await requestUpdateUser(userName, uri, user)
+      navigation.goBack('マイページ', { user: user })
     };
 
   return (

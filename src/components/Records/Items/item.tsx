@@ -127,7 +127,7 @@ const RecordItem = (props: RecordItemProps) => {
         <RecordRightUpper>
         { currentUser.uid === uid && !isShowPage ? 
             <IconWrapper onPress={ () => setVisibleModal(true) }>
-              <Icon name='ellipsis1' size={20} style={{ color: COLORS.BASE_BLACK, marginTop: -10, marginRight: 5 }}/>
+              <Icon name='ellipsis1' size={25} style={{ color: COLORS.BASE_BLACK, fontWeight: 'bold', marginTop: -10, marginRight: 5 }}/>
             </IconWrapper> : null
           }
           <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>

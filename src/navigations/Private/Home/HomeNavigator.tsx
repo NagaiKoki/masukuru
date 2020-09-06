@@ -5,6 +5,7 @@ import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen
 import RecordEditModalNavigator from './Records/Modals/RecordEditModalNavigator'
+import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 // import containers
 import HomeContainer from '../../../containers/Private/home'
 
@@ -37,6 +38,14 @@ const HomeNavigator = ({ navigation, route }) => {
       <HomeStack.Screen 
         name="recordEditModal"
         component={RecordEditModalNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <HomeStack.Screen 
+        name="recordModal"
+        component={RecordModalNavigator}
         options={{
           headerShown: false,
         }}

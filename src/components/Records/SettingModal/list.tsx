@@ -15,13 +15,14 @@ interface SettingModalProps {
 
 const SettingModal = (props: SettingModalProps) => {
   const { recordId, visibleModal, navigation, setVisibleModal, deleteRecordWithAlert } = props
-  
+
   const handleNavigateEdit = () => {
     setVisibleModal(false)
     navigation.navigate('recordEditModal', { recordId: recordId } )
   }
 
   const handleOnDelete = () => {
+    setVisibleModal(false)
     deleteRecordWithAlert()
   }
 
@@ -31,11 +32,11 @@ const SettingModal = (props: SettingModalProps) => {
         <CloseBar />
         <List>
           <ItemWrapper activeOpacity={1} onPress={handleNavigateEdit} >
-            <Icon name="edit" size={20} style={{ color: COLORS.BASE_BLACK }} />
+            <Icon name="edit" size={20} style={{ color: COLORS.BASE_BLACK, fontWeight: 300 }} />
             <ItemText>投稿を編集する</ItemText>
           </ItemWrapper>
           <ItemWrapper activeOpacity={1} onPress={handleOnDelete}>
-            <Icon name="trash-o" size={25} style={{ color: COLORS.DANGER_COLOR }} />
+            <Icon name="trash-o" size={25} style={{ color: COLORS.DANGER_COLOR, fontWeight: 300 }} />
             <ItemText color={COLORS.DANGER_COLOR}>投稿を削除する</ItemText>
           </ItemWrapper>
         </List>
@@ -66,7 +67,7 @@ const CloseBar = styled.View`
 `
 
 const List = styled.View`
-  margin-top: 30px;
+  margin-top: 20px;
 `
 
 const ItemWrapper = styled.TouchableOpacity`
@@ -75,11 +76,11 @@ const ItemWrapper = styled.TouchableOpacity`
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 0.3;
   margin-top: 10px;
-  padding: 15px 10px 0px 30px;
+  padding: 15px 10px 5px 30px;
 `
 
 const ItemText = styled.Text<{ color?: string }>`
-  font-size: 18px;
+  font-size: 20px;
   color: ${props => props.color ? props.color : COLORS.BASE_BLACK};
   margin-left: 15px;
 `
