@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import screen
-import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
+import RecordEditModalNavigator from './Records/Modals/RecordEditModalNavigator'
 // import containers
 import HomeContainer from '../../../containers/Private/home'
 
@@ -35,8 +35,8 @@ const HomeNavigator = ({ navigation, route }) => {
       />
 
       <HomeStack.Screen 
-        name="recordModal"
-        component={RecordModalNavigator}
+        name="recordEditModal"
+        component={RecordEditModalNavigator}
         options={{
           headerShown: false,
         }}

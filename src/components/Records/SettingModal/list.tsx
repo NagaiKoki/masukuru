@@ -15,9 +15,10 @@ interface SettingModalProps {
 
 const SettingModal = (props: SettingModalProps) => {
   const { recordId, visibleModal, navigation, setVisibleModal, deleteRecordWithAlert } = props
-
+  
   const handleNavigateEdit = () => {
-    navigation.navigate('editRecordModal')
+    setVisibleModal(false)
+    navigation.navigate('recordEditModal', { recordId: recordId } )
   }
 
   const handleOnDelete = () => {
@@ -29,7 +30,7 @@ const SettingModal = (props: SettingModalProps) => {
       <Container>
         <CloseBar />
         <List>
-          <ItemWrapper>
+          <ItemWrapper activeOpacity={1} onPress={handleNavigateEdit} >
             <Icon name="edit" size={20} style={{ color: COLORS.BASE_BLACK }} />
             <ItemText>投稿を編集する</ItemText>
           </ItemWrapper>

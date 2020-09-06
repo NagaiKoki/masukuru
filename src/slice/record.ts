@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
 import { 
   RecordState, 
+  ResponseRecordType,
   RecordItemType, 
   SuccessFetchRecordType,
   RecordCommentType,
@@ -9,10 +10,12 @@ import {
   RequestSubmitRecords,
   RequestNextRecords,
   RequestPostRecordComment,
-  RequestDeleteComment
+  RequestDeleteComment,
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
+// import utils
+import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
 
 const initialState: RecordState = {
    recordItems: [],
@@ -113,6 +116,32 @@ const recordSlice = createSlice({
       return {
         ...state,
         isLoading: true
+      }
+    },
+    requestFetchRecord: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successFetchRecord: (state, action: PayloadAction<ResponseRecordType>) => {
+      const responseRecordData = action.payload
+      const { records, word, imageUrl, trainingDate, createdAt } = responseRecordData
+      const date = trainingDate ? new Date(convertTimeStampToStringOnlyDate(trainingDate)) : new Date(convertTimeStampToStringOnlyDate(createdAt))
+      return {
+        ...state,
+        recordItems: records,
+        trainingDate: date,
+        word,
+        imageUrl,
+        isLoading: false
+      }
+    },
+    failureFetchRecord: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false
       }
     },
     successFetchRecords: (state, action: PayloadAction<SuccessFetchRecordType>) => {
@@ -249,6 +278,9 @@ export const {
   requestSubmitRecords,
   successSubmitRecords,
   failureSubmitRecords,
+  requestFetchRecord,
+  successFetchRecord,
+  failureFetchRecord,
   requestFetchRecords,
   successFetchRecords,
   failureFetchRecords,

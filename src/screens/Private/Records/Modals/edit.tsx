@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
@@ -12,7 +12,7 @@ import truncateText from '../../../../utilities/truncateText'
 // import components
 import DatePicker from '../../../../common/Date'
 // import slices
-import { deleteRecord } from '../../../../slice/record'
+import { deleteRecord, requestFetchRecord } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 // import utils
@@ -23,9 +23,10 @@ export type RecordNavigationType = {
   recordItem?: RecordItemType
 }
 
-const RecordModalScreen = ({ navigation }) => {
+const RecordModalScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
-  const { recordItems, trainingDate } = recordSelector()
+  const { recordId } = route.params
+  const { recordItems, trainingDate, isLoading } = recordSelector() 
   
   useFocusEffect(
     useCallback(() => {
@@ -40,6 +41,14 @@ const RecordModalScreen = ({ navigation }) => {
       })
     }, [recordItems])
   )
+  
+  useEffect(() => {
+    dispatch(requestFetchRecord(recordId))
+  }, [])
+
+  if (isLoading) {
+    return <React.Fragment />
+  }
 
   // 一言画面へ遷移
   const handleNavigationWord = () => {

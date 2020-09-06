@@ -9,7 +9,7 @@ import RecordFormScreen from '../../../../../screens/Private/Records/Modals/Trai
 import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/TweetForm'
 import RecordEditScreen from '../../../../../screens/Private/Records/Modals/edit'
 
-const RecordModalNavigator = () => {
+const RecordModalNavigator = ({ route }) => {
   const RecordModalStack = createStackNavigator()
   const navigation = useNavigation()
 
@@ -20,8 +20,9 @@ const RecordModalNavigator = () => {
   return (
     <RecordModalStack.Navigator>
       <RecordModalStack.Screen 
-        name="recordModal"
-        component={RecordModalScreen}
+        name="recordEditModal"
+        component={RecordEditScreen}
+        initialParams={{ recordId: route.params.recordId }}
         options={{
           headerLeft: () => {
             return (
