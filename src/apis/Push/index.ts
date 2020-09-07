@@ -35,7 +35,6 @@ export const isSetExpoNotificationToken = async () => {
 
 export const requestSendPushNotification = async (uid: string, title: string, body: string) => {
   const { user }: { user?: UserType } = await requestFetchUser(uid)
-  console.log(firebase.auth().currentUser.uid === uid)
   if (!user || (user && !user.expoNotificationToken) || firebase.auth().currentUser.uid === uid) {
     return new Error('no data')
   }
@@ -47,6 +46,8 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
     body: body,
     data: { data: 'test' }
   }
+
+  console.log(user.name)
 
   try {
     // expo serverに対して直接送信する
