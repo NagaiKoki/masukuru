@@ -1,18 +1,17 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../../constants/Styles'
-// import navigators
-import RecordCardsNavigator from '../Home/Records/Cards'
+// import screens
+import ChartScreen from '../../../screens/Private/Charts'
 
-const RecordNavigator = () => {
+const ChartNavigator = () => {
   const RecordStack = createStackNavigator();
 
   return (
-    
     <RecordStack.Navigator initialRouteName='きろく' mode="modal">
       <RecordStack.Screen
-        name="record"
-        component={RecordCardsNavigator}
+        name="chart"
+        component={ChartScreen}
         options={{
           headerBackTitleVisible: false,
           headerTitle: 'じぶんのきろく',
@@ -27,4 +26,4 @@ const RecordNavigator = () => {
   )
 }
 
-export default RecordNavigator
+export default ChartNavigator
