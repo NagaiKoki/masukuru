@@ -35,4 +35,6 @@ const WeightChart = () => {
 
 export default WeightChart
 
-const Container = styled.View``
+const Container = styled.View`
+  margin-top: 100px;
+`
