@@ -17,12 +17,9 @@ const ChartScreen = ({ navigation }) => {
     }
   }
 
-  console.log(index)
-
   return (
     <Container>
       <Header 
-        index={index}
         setIndex={setIndex}
       />
       {renderChart()}

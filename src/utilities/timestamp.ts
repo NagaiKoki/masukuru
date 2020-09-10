@@ -20,11 +20,19 @@ export const convertTimestampToString = (date?: Timestamp, jsDate?: Date) => {
   }
 }
 
-export const convertTimeStampToStringOnlyDate = (date: Timestamp) => {
-  const time = new Date(date.seconds * 1000);
-  const year = time.getFullYear();
-  const month = (`0${time.getMonth() + 1}`).slice(-2);
-  const day = (`0${time.getDate()}`).slice(-2);
-  return `${year}/${month}/${day}`;
+export const convertTimeStampToStringOnlyDate = (date?: Timestamp, jsDate?: Date) => {
+  if (date) {
+    const time = new Date(date.seconds * 1000);
+    const year = time.getFullYear();
+    const month = (`0${time.getMonth() + 1}`).slice(-2);
+    const day = (`0${time.getDate()}`).slice(-2);
+    return `${year}/${month}/${day}`;
+  } else {
+    const time = new Date(jsDate)
+    const year = time.getFullYear();
+    const month = (`0${time.getMonth() + 1}`).slice(-2);
+    const day = (`0${time.getDate()}`).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
 }
 
