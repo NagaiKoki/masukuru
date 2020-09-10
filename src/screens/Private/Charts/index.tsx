@@ -29,7 +29,7 @@ const ChartScreen = ({ navigation }) => {
       <Wrapper>
         {renderChart()}
       </Wrapper>
-      <AddButton navigation={''} />
+      <AddButton navigation={navigation} />
     </Container>
   )  
 }

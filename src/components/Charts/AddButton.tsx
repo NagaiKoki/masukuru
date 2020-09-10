@@ -11,8 +11,12 @@ interface AddWeightButton {
 const AddWeightButton = (props: AddWeightButton) => {
   const { navigation } = props
 
+  const handleOnNavigation = () => {
+    return navigation.navigate('addWeight')
+  }
+
   return (
-    <RecordAddBtn onPress={() => {}} >
+    <RecordAddBtn onPress={handleOnNavigation} >
       <Icon name="plus" size={25} style={{ color: COLORS.BASE_WHITE, marginTop: 3 }}  />
     </RecordAddBtn>
   )
