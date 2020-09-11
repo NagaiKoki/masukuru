@@ -13,3 +13,8 @@ export type UserWeightType = {
   createdAt: Date | FirestoreTimestamp
   updatedAt: Date | FirestoreTimestamp
 }
+
+export type RequestPostWeightType = {
+  weight: number
+  date: Date
+}

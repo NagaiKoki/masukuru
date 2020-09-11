@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { UserWeightType, ChartState } from '../types/Chart'
+import { UserWeightType, ChartState, RequestPostWeightType } from '../types/Chart'
 
 const initialState: ChartState = {
   isLoading: false,
@@ -30,6 +30,24 @@ const chartSlice = createSlice({
         ...state,
         error: action.payload
       }
+    },
+    requestPostWeight: (state, action: PayloadAction<RequestPostWeightType>) => {
+      return {
+        ...state
+      }
+    },
+    successPostWeight: (state, action: PayloadAction<UserWeightType>) => {
+      const updateWeights = [action.payload, ...state.weights]
+      return {
+        ...state,
+        weights: updateWeights
+      }
+    },
+    failurePostWeight: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
     }
   }
 })
@@ -37,7 +55,10 @@ const chartSlice = createSlice({
 export const {
   requestFetchWeights,
   successFetchWeights,
-  failureFetchWeights
+  failureFetchWeights,
+  requestPostWeight,
+  successPostWeight,
+  failurePostWeight
 } = chartSlice.actions
 
 export default chartSlice

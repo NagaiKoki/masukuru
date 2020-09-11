@@ -12,7 +12,7 @@ import truncateText from '../../../../utilities/truncateText'
 // import components
 import DatePicker from '../../../../common/Date'
 // import slices
-import { deleteRecord, requestFetchRecord } from '../../../../slice/record'
+import { deleteRecord, requestFetchRecord, onChangeRecordDate } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 // import utils
@@ -84,6 +84,10 @@ const RecordModalScreen = ({ navigation, route }) => {
       ],
       { cancelable: false }
     )
+
+  const handleOnChangeDate = (date: Date) => {
+    dispatch(onChangeRecordDate(date))
+  }
   
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
@@ -126,6 +130,7 @@ const RecordModalScreen = ({ navigation, route }) => {
         <TitleLabel>トレーニング日</TitleLabel>
         <DatePicker 
           date={trainingDate}
+          handleOnChangeDate={handleOnChangeDate}
         />
       </DateWrapper>
       { recordItems.length ? 
