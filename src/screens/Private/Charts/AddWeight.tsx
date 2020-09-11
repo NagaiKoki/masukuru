@@ -51,14 +51,15 @@ const AddWeightScreen = ({ navigation }) => {
   return (
     <Container>
       <Wrapper>
-        <Label>日付</Label>
+        <DateLabel>日付</DateLabel>
         <DatePicker 
           date={date}
+          border={true}
           handleOnChangeDate={handleOnDateChange}
         />
       </Wrapper>
       <Wrapper>
-        <Label>体重</Label>
+        <WeightLabel>体重</WeightLabel>
         <Form 
           placeholder="0"
           autoCapitalize={'none'}
@@ -90,17 +91,26 @@ const AddText = styled.Text`
 const Container = styled.View`
   flex: 1;
   background: ${COLORS.BASE_WHITE};
-  padding: 0 30px;
 `
 
 const Wrapper = styled.View`
   flex-direction: row;
   align-items: center;
   margin-top: 20px;
+  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
+  border-bottom-width: 0.3;
+  padding: 10px 30px;
 `
 
-const Label = styled.Text`
+const DateLabel = styled.Text`
   margin-right: 30px;
+  color: ${COLORS.BASE_BLACK};
+  font-size: 16px;
+  font-weight: bold;
+`
+
+const WeightLabel = styled.Text`
+  margin-right: 40px;
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
   font-weight: bold;
