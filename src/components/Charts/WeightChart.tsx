@@ -9,17 +9,16 @@ import chartSelector from '../../selectors/chart'
 // import slices
 import { requestFetchWeights } from '../../slice/chart'
 // import utils
-import { getDayOfWeekBetween, convertTimeStampToStringOnlyMonthAndDate } from '../../utilities/timestamp'
+import { getLastWeekDay, getMidnightTime,  convertTimeStampToStringOnlyMonthAndDate } from '../../utilities/timestamp'
 import { COLORS } from '../../constants/Styles'
 
 const WeightChart = () => {
   const dispatch = useDispatch()
   const { weights, isLoading } = chartSelector()
-  const [monday, sunday] = getDayOfWeekBetween(new Date())
-  const [startDate, setStartDate] = useState(monday)
-  
+  const [startDate, setStartDate] = useState(new Date())
+
   useEffect(() => {
-    dispatch(requestFetchWeights(monday))
+    dispatch(requestFetchWeights(startDate))
   }, [])
 
   const getRequireData = (): { weightArry: number[], dateArry: string[] } => {

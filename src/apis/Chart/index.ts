@@ -2,22 +2,22 @@ import firebase, { db } from '../../config/firebase'
 // import types
 import { UserWeightType } from '../../types/Chart'
 // import utils 
-import { getDayOfStortToday, convertFirebaseTimeStamp, convertTimeStampToStringOnlyDate } from '../../utilities/timestamp'
+import { getDayOfStortToday, convertFirebaseTimeStamp, getLastWeekDay, getMidnightTime } from '../../utilities/timestamp'
 
-export const requestFetchWeights = async (monday: Date) => {
+export const requestFetchWeights = async (date: Date) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const year = monday.getFullYear()
-  const month = monday.getMonth()
-  const mondayDate = monday.getDate()
-  const sundayDate = monday.getDate() + 6
-  const mondayFullDay = new Date(year, month, mondayDate)
-  const sundayFullDay = new Date(year, month, sundayDate)
+  const endDate = getMidnightTime(date) // 引数の日の正子を取得する
+  const startDate = getLastWeekDay(endDate)
 
-  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '>=', mondayFullDay).where('date', '<=', sundayFullDay).get()
+  console.log(`startDate: ${startDate}`)
+  console.log(`endDate: ${endDate}`)
+
+  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '>=', startDate).where('date', '<=', endDate).get()
 
   let weights: UserWeightType[] = []
   try {
     await userRef.then(snap => {
+      console.log(snap.size)
       snap.forEach(doc => {
         const data = doc.data() as UserWeightType
         weights.push(data)

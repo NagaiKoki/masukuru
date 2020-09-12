@@ -52,11 +52,16 @@ export const convertFirebaseTimeStamp = (date: Date) => {
   return firebase.firestore.Timestamp.fromDate(date)
 }
 
-export const getDayOfWeekBetween = (d: Date): Date[] => {
-  let year = d.getFullYear();
-  let month = d.getMonth();
-  let date = d.getDate();
-  let dayNum = d.getDay();
-  let thisMonday = date - dayNum + (dayNum === 0 ? -6 : 1)
-  return [new Date(year, month, thisMonday), new Date(year, month, thisMonday + 6)]
+export const getLastWeekDay = (date: Date) => {
+  const dt = new Date(date)
+  const lastWeek = dt.setDate(dt.getDate() - 6)
+  return new Date(lastWeek)
+}
+
+export const getMidnightTime = (date: Date) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate() + 1
+
+  return new Date(year, month, day)
 }

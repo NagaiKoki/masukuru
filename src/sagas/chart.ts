@@ -18,10 +18,10 @@ import {
 } from '../apis/Chart'
 
 function* runRequestFetchWeight(action: PayloadAction<Date>) {
-  const monday = action.payload
+  const date = action.payload
   const { payload, error }: { payload?: UserWeightType[], error?: string } = yield call(
     requestFetchGetWeights,
-    monday
+    date
   )
 
   if (payload && !error) {
