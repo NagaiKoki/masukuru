@@ -27,10 +27,6 @@ const WeightChart = () => {
     dispatch(requestFetchWeights(startDate))
   }, [])
 
-  if (isLoading && !!weights.length) {
-    return <Loading size="small" />
-  }
-
   const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights)
   const firstDate = datesWithYear[0]
   const lastDate = datesWithYear[1] || ''
@@ -59,11 +55,17 @@ const WeightChart = () => {
           <IconButton onPress={handleFetchNextWeek}>
             <Icon name="angle-right" size={20} />
           </IconButton>
+          <IconButton>
+            <MonthText>月</MonthText>
+          </IconButton>
         </DateRangeWrapper>
-        <Chart 
-          labels={dateArry}
-          data={weightArry}
-        />
+        { isLoading ? 
+          <Loading size='small' /> :
+          <Chart 
+            labels={ isLoading ? [''] : dateArry }
+            data={ isLoading ? [0] : weightArry }
+          />
+        }
       </ChartWrapper>
     </Container>
   )
@@ -78,6 +80,7 @@ const Container = styled.View`
 const ChartWrapper = styled.View`
   background: ${COLORS.BASE_WHITE};
   padding: 10px 20px 0 0;
+  height: 350px;
   margin: 0 10px;
   border-radius: 10px;
   box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};
@@ -108,4 +111,10 @@ const DateRangeText = styled.Text`
   margin: 0 20px;
   color: ${COLORS.BASE_BLACK};
   font-size: 12px;
+`
+
+const MonthText = styled.Text`
+  color: ${COLORS.SUB_BLACK};
+  font-weight: bold;
+  font-size: 13px;
 `

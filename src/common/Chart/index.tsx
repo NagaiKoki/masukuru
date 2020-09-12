@@ -19,7 +19,7 @@ const Chart = (props: ChartProps) => {
     strokeWidth: 1,
     useShadowColorFromDataset: true,
     fillShadowGradient: COLORS.BASE_MUSCLEW,
-    fillShadowGradientOpacity: 0.6,
+    fillShadowGradientOpacity: 0.6, 
     propsForBackgroundLines: {
       strokeDasharray: "",
       stroke: '#efefef',
@@ -47,7 +47,7 @@ const Chart = (props: ChartProps) => {
         yAxisSuffix={'kg'}
         height={220}
         getDotColor={() => `${COLORS.BASE_MUSCLEW}`}
-        width={Dimensions.get("window").width - 30}
+        width={Dimensions.get("window").width}
         bezier
         fromZero
       />
