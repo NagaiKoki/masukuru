@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { LineChart } from 'react-native-chart-kit'
+// import components
+import Loading from '../Loading'
+// import selectors
+import chartSelector from '../../selectors/chart'
+// import slices
+import { requestFetchWeights } from '../../slice/chart'
 
 const WeightChart = () => {
+  const dispatch = useDispatch()
+  const { weights, isLoading } = chartSelector()
+
+  useEffect(() => {
+    dispatch(requestFetchWeights())
+  }, [])
   
   const chartConfig = {
     backgroundColor: '#fff',
@@ -13,6 +26,10 @@ const WeightChart = () => {
     fillShadowGradient: '#fff',
     color: () => `rgba(89, 87, 87, 1)`,
   };
+
+  if (isLoading) {
+    return <Loading size="small" />
+  }
 
   return (
     <Container>

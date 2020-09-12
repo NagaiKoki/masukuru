@@ -2,14 +2,36 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { fork, select, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
 // import slice
 import {  
+  requestFetchWeights,
+  successFetchWeights,
+  failureFetchWeights,
   requestPostWeight,
   successPostWeight,
-  failurePostWeight
+  failurePostWeight,
 } from '../slice/chart'
 // import types
 import { RequestPostWeightType, UserWeightType } from '../types/Chart'
 // import apis
-import { requestPostWeight as requestFetchPostWeight } from '../apis/Chart'
+import { 
+  requestPostWeight as requestFetchPostWeight, 
+  requestFetchWeights as requestFetchGetWeights  
+} from '../apis/Chart'
+
+function* runRequestFetchWeight() {
+  const { payload, error }: { payload?: UserWeightType[], error?: string } = yield call(
+    requestFetchGetWeights
+  )
+
+  if (payload && !error) {
+    yield put(successFetchWeights(payload))
+  } else if (error) {
+    yield put(failureFetchWeights(error))
+  }
+}
+
+function* handleRequestFetchRecord() {
+  yield takeEvery(requestFetchWeights.type, runRequestFetchWeight)
+}
 
 function* runRequestPostWeight(action: PayloadAction<RequestPostWeightType>) {
   const { weight, date } = action.payload
@@ -18,8 +40,6 @@ function* runRequestPostWeight(action: PayloadAction<RequestPostWeightType>) {
     weight,
     date
   )
-
-  console.log(payload)
 
   if (payload && !error) {
     yield put(successPostWeight(payload))
@@ -34,4 +54,5 @@ function* handleRequestPostWeight() {
 
 export default function* chartSaga() {
   yield fork(handleRequestPostWeight)
+  yield fork(handleRequestFetchRecord)
 }

@@ -28,7 +28,8 @@ const chartSlice = createSlice({
     failureFetchWeights: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        isLoading: false
       }
     },
     requestPostWeight: (state, action: PayloadAction<RequestPostWeightType>) => {

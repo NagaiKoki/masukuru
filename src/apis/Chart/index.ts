@@ -4,6 +4,24 @@ import { UserWeightType } from '../../types/Chart'
 // import utils 
 import { getDayOfStortToday, convertFirebaseTimeStamp } from '../../utilities/timestamp'
 
+export const requestFetchWeights = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const userRef = db.collection('users').doc(currentUserId).collection('weights').get()
+  let weights: UserWeightType[]
+  try {
+    await userRef.then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data() as UserWeightType
+        weights.push(data)
+      })
+    })
+
+    return { payload: weights }
+  } catch(error) {
+    return { error: error }
+  }
+}
+
 export const requestPostWeight = async (weight: number, date: Date) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
