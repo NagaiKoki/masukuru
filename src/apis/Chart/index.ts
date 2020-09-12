@@ -8,10 +8,6 @@ export const requestFetchWeights = async (date: Date) => {
   const currentUserId = firebase.auth().currentUser.uid
   const endDate = getMidnightTime(date) // 引数の日の正子を取得する
   const startDate = getLastWeekDay(endDate)
-
-  console.log(`startDate: ${startDate}`)
-  console.log(`endDate: ${endDate}`)
-
   const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '>=', startDate).where('date', '<=', endDate).get()
 
   let weights: UserWeightType[] = []

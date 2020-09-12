@@ -9,7 +9,7 @@ import chartSelector from '../../selectors/chart'
 // import slices
 import { requestFetchWeights } from '../../slice/chart'
 // import utils
-import { getLastWeekDay, getMidnightTime,  convertTimeStampToStringOnlyMonthAndDate } from '../../utilities/timestamp'
+import { getLastWeekDay, getMidnightTime,  convertFirebaseTimeStamp, convertTimeStampToStringOnlyMonthAndDate } from '../../utilities/timestamp'
 import { COLORS } from '../../constants/Styles'
 
 const WeightChart = () => {
@@ -26,14 +26,19 @@ const WeightChart = () => {
     let dateArry: string[] = []
 
     weights.forEach(weight => {
-      weightArry.push(weight.weight)
+      weightArry.push(Number(weight.weight))
       dateArry.push(convertTimeStampToStringOnlyMonthAndDate(weight.date))
     })
+
+    if (!weightArry.length) {
+      weightArry.push(0)
+      dateArry.push(convertTimeStampToStringOnlyMonthAndDate(convertFirebaseTimeStamp(new Date)))
+    }
 
     return { weightArry: weightArry, dateArry: dateArry }
   }
 
-  if (isLoading) {
+  if (isLoading && !!weights.length) {
     return <Loading size="small" />
   }
 

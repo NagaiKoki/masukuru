@@ -11,7 +11,6 @@ interface ChartProps {
 
 const Chart = (props: ChartProps) => {
   const { labels, data } = props
-
   const chartConfig = {
     backgroundColor: '#fff',
     backgroundGradientFrom: '#fff',

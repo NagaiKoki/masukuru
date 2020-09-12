@@ -18,3 +18,8 @@ export type RequestPostWeightType = {
   weight: number
   date: Date
 }
+
+export type ChartWeightType = {
+  weight: number
+  date: Date
+}
