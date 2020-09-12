@@ -1,14 +1,15 @@
 import firebase, { db } from '../../config/firebase'
-import { convertTimeStampToStringOnlyDate } from '../../utilities/timestamp'
 // import types
 import { UserWeightType } from '../../types/Chart'
+// import utils 
+import { getDayOfStortToday, convertFirebaseTimeStamp } from '../../utilities/timestamp'
 
 export const requestPostWeight = async (weight: number, date: Date) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
-  const onlyDate = convertTimeStampToStringOnlyDate(undefined, date)
-  const firebaseTimstamp = firebase.firestore.Timestamp.fromDate(new Date(onlyDate))
-  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '==', firebaseTimstamp).get()
+  const startToday = convertFirebaseTimeStamp(getDayOfStortToday(date))
+
+  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', "==", startToday).get()
   let payload: UserWeightType
 
   try {
@@ -19,7 +20,7 @@ export const requestPostWeight = async (weight: number, date: Date) => {
         })
         const weightObj: UserWeightType = {
           uid: currentUserId,
-          date: date,
+          date: getDayOfStortToday(date),
           weight: weight,
           createdAt: new Date,
           updatedAt: new Date
@@ -29,7 +30,7 @@ export const requestPostWeight = async (weight: number, date: Date) => {
         const userRef = db.collection('users').doc(currentUserId).collection('weights')
         userRef.add({ 
           weight: weight, 
-          date: date, 
+          date: getDayOfStortToday(date), 
           uid: currentUserId,
           createdAt: currentTime,
           updatedAt: currentTime
@@ -46,7 +47,6 @@ export const requestPostWeight = async (weight: number, date: Date) => {
     })
     return { paload: payload }
   } catch(error) {
-    console.log(error)
     return { error: error }
   }
 }
