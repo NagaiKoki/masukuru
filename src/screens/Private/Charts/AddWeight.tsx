@@ -7,13 +7,19 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import { COLORS } from '../../../constants/Styles'
 // import components
 import DatePicker from '../../../common/Date'
+import SpinnerOverlay from '../../../common/Loading/SpinnerOverlay'
+import Toastr from '../../../components/Toaster'
 // import slice
 import { requestPostWeight } from '../../../slice/chart'
+// import constants
+import { WEIGHT_FORM_ERROR_MESSAGE } from '../../../constants/errorMessage'
 
 
 const AddWeightScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date)
   const [weight, setWeight] = useState(0)
+  const [isLoadingVisible, setIsLoadingVisible] = useState(false)
+  const [error, setError] = useState('')
   const dispatch = useDispatch()
 
   useFocusEffect(
@@ -39,17 +45,42 @@ const AddWeightScreen = ({ navigation }) => {
     }, [weight, date])
   )
 
+  const handleInVisibleLoading = () => {
+    setIsLoadingVisible(false)
+  }
+
   const handleOnSubmit = () => {
-    dispatch(requestPostWeight({ weight: weight, date: date }))
-    navigation.goBack()
+    if (!weight) {
+      return setError(WEIGHT_FORM_ERROR_MESSAGE.EMPTY_WEIGHT)
+    }
+    setIsLoadingVisible(true)
+    setTimeout(() => {
+      dispatch(requestPostWeight({ weight: weight, date: date }))
+      handleInVisibleLoading()
+      navigation.goBack()
+    }, 2000)
   }
 
   const handleOnDateChange = (date: Date) => {
     setDate(date)
   }
 
+  const handleClearError = () => {
+    setError('')
+  }
+
+  if (isLoadingVisible) {
+    return (
+      <SpinnerOverlay 
+        visible={isLoadingVisible}
+        handleInVisible={handleInVisibleLoading}
+      />
+    )
+  }
+
   return (
     <Container>
+      <Toastr message={error} onDismiss={handleClearError} />
       <Wrapper>
         <DateLabel>日付</DateLabel>
         <DatePicker 
@@ -120,12 +151,12 @@ const Form = styled.TextInput`
   align-self: center;
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
-  height: 50px;
-  width: 80px;
+  height: 40px;
+  width: 70px;
   margin: 10px 0;
   margin-right: 10px;
-  padding: 15px;
-  font-size: 17px;
+  padding: 5px 15px;
+  font-size: 16px;
   color: ${COLORS.BASE_BLACK};
 `
 
