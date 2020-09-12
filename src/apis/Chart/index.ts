@@ -26,7 +26,7 @@ export const requestPostWeight = async (weight: number, date: Date) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   const startToday = convertFirebaseTimeStamp(getDayOfStortToday(date))
-
+  // 記録日が同じの場合はアップデート対象とする
   const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', "==", startToday).get()
   let payload: UserWeightType
 
