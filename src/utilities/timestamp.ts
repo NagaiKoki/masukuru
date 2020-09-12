@@ -46,8 +46,10 @@ export const convertFirebaseTimeStamp = (date: Date) => {
 }
 
 export const getDayOfWeekBetween = (d: Date): Date[] => {
+  let year = d.getFullYear();
+  let month = d.getMonth();
   let date = d.getDate();
   let dayNum = d.getDay();
   let thisMonday = date - dayNum + (dayNum === 0 ? -6 : 1)
-  return [new Date(thisMonday), new Date(thisMonday + 6)]
+  return [new Date(year, month, thisMonday), new Date(year, month, thisMonday + 6)]
 }

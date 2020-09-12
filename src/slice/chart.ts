@@ -13,7 +13,7 @@ const chartSlice = createSlice({
   name: 'chart',
   initialState: initialState,
   reducers: {
-    requestFetchWeights: (state) => {
+    requestFetchWeights: (state, action: PayloadAction<Date>) => {
       return {
         ...state,
         isLoading: true

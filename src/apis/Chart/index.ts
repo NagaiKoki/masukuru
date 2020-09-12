@@ -2,12 +2,20 @@ import firebase, { db } from '../../config/firebase'
 // import types
 import { UserWeightType } from '../../types/Chart'
 // import utils 
-import { getDayOfStortToday, convertFirebaseTimeStamp } from '../../utilities/timestamp'
+import { getDayOfStortToday, convertFirebaseTimeStamp, convertTimeStampToStringOnlyDate } from '../../utilities/timestamp'
 
-export const requestFetchWeights = async () => {
+export const requestFetchWeights = async (monday: Date) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const userRef = db.collection('users').doc(currentUserId).collection('weights').get()
-  let weights: UserWeightType[]
+  const year = monday.getFullYear()
+  const month = monday.getMonth()
+  const mondayDate = monday.getDate()
+  const sundayDate = monday.getDate() + 6
+  const mondayFullDay = new Date(year, month, mondayDate)
+  const sundayFullDay = new Date(year, month, sundayDate)
+
+  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '>=', mondayFullDay).where('date', '<=', sundayFullDay).get()
+
+  let weights: UserWeightType[] = []
   try {
     await userRef.then(snap => {
       snap.forEach(doc => {
@@ -15,9 +23,9 @@ export const requestFetchWeights = async () => {
         weights.push(data)
       })
     })
-
     return { payload: weights }
   } catch(error) {
+    console.log(error)
     return { error: error }
   }
 }
@@ -38,27 +46,27 @@ export const requestPostWeight = async (weight: number, date: Date) => {
         })
         const weightObj: UserWeightType = {
           uid: currentUserId,
-          date: getDayOfStortToday(date),
+          date: startToday,
           weight: weight,
-          createdAt: new Date,
-          updatedAt: new Date
+          createdAt: convertFirebaseTimeStamp(new Date),
+          updatedAt: convertFirebaseTimeStamp(new Date)
         }
         payload = weightObj
       } else {
         const userRef = db.collection('users').doc(currentUserId).collection('weights')
         userRef.add({ 
           weight: weight, 
-          date: getDayOfStortToday(date), 
+          date: startToday, 
           uid: currentUserId,
           createdAt: currentTime,
           updatedAt: currentTime
         })
         const weightObj: UserWeightType = {
           weight: weight,
-          date: date,
+          date: startToday,
           uid: currentUserId,
-          createdAt: new Date,
-          updatedAt: new Date
+          createdAt: convertFirebaseTimeStamp(new Date),
+          updatedAt: convertFirebaseTimeStamp(new Date)
         }
         payload = weightObj
       }

@@ -8,10 +8,10 @@ export interface ChartState {
 
 export type UserWeightType = {
   weight: number
-  date: Date
+  date: FirestoreTimestamp
   uid: string
-  createdAt: Date | FirestoreTimestamp
-  updatedAt: Date | FirestoreTimestamp
+  createdAt: FirestoreTimestamp
+  updatedAt: FirestoreTimestamp
 }
 
 export type RequestPostWeightType = {

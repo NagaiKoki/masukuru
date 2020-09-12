@@ -8,15 +8,18 @@ import Loading from '../Loading'
 import chartSelector from '../../selectors/chart'
 // import slices
 import { requestFetchWeights } from '../../slice/chart'
+// import utils
+import { getDayOfWeekBetween, convertTimeStampToStringOnlyDate } from '../../utilities/timestamp'
 
 const WeightChart = () => {
   const dispatch = useDispatch()
   const { weights, isLoading } = chartSelector()
-
-  useEffect(() => {
-    dispatch(requestFetchWeights())
-  }, [])
+  const [monday, sunday] = getDayOfWeekBetween(new Date())
   
+  useEffect(() => {
+    dispatch(requestFetchWeights(monday))
+  }, [])
+
   const chartConfig = {
     backgroundColor: '#fff',
     backgroundGradientFrom: '#fff',
@@ -30,6 +33,12 @@ const WeightChart = () => {
   if (isLoading) {
     return <Loading size="small" />
   }
+
+  // console.log(`weights: ${weights}`)
+
+  // weights.forEach(w => {
+  //   console.log(convertTimeStampToStringOnlyDate(w.date, undefined))
+  // })
 
   return (
     <Container>
