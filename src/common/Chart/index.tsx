@@ -18,11 +18,14 @@ const Chart = (props: ChartProps) => {
     decimalPlaces: 0,
     strokeWidth: 1,
     useShadowColorFromDataset: true,
-    fillShadowGradient: COLORS.MUSCLEW_COLOR,
+    fillShadowGradient: COLORS.BASE_MUSCLEW,
     fillShadowGradientOpacity: 0.6,
     propsForBackgroundLines: {
       strokeDasharray: "",
-      stroke: COLORS.BASE_BORDER_COLOR,
+      stroke: '#efefef',
+    },
+    propsForLabels: {
+      fontSize: 10
     },
     color: () => COLORS.BASE_BLACK,
   };
@@ -33,13 +36,12 @@ const Chart = (props: ChartProps) => {
           labels: labels,
           datasets: [{
             data: data,
-            color: (opacity = 1) => COLORS.MUSCLEW_COLOR,
+            color: (opacity = 1) => COLORS.BASE_MUSCLEW,
             strokeWidth: 3
           }]
         }}
         style={{
-          borderRadius: 10,
-          marginVertical: 8
+          marginVertical: 8,
         }}
         chartConfig={chartConfig}
         yAxisSuffix={'kg'}
