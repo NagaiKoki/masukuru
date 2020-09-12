@@ -44,3 +44,10 @@ export const getDayOfStortToday = (date: Date) => {
 export const convertFirebaseTimeStamp = (date: Date) => {
   return firebase.firestore.Timestamp.fromDate(date)
 }
+
+export const getDayOfWeekBetween = (d: Date): Date[] => {
+  let date = d.getDate();
+  let dayNum = d.getDay();
+  let thisMonday = date - dayNum + (dayNum === 0 ? -6 : 1)
+  return [new Date(thisMonday), new Date(thisMonday + 6)]
+}

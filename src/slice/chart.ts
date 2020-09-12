@@ -5,6 +5,7 @@ import { UserWeightType, ChartState, RequestPostWeightType } from '../types/Char
 const initialState: ChartState = {
   isLoading: false,
   weights: [],
+  
   error: ''
 }
 

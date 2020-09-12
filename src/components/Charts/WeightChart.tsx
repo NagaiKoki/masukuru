@@ -45,6 +45,7 @@ const WeightChart = () => {
         withInnerLines={false}
         height={181}
         width={200}
+        bezier
       />
     </Container>
   )
