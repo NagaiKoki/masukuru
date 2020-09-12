@@ -58,6 +58,12 @@ export const getLastWeekDay = (date: Date) => {
   return new Date(lastWeek)
 }
 
+export const getNextWeekDay = (date: Date) => {
+  const dt = new Date(date)
+  const nextWeek = dt.setDate(dt.getDate() + 6)
+  return new Date(nextWeek)
+}
+
 export const getMidnightTime = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth()

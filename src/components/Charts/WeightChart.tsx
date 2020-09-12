@@ -13,7 +13,7 @@ import { requestFetchWeights } from '../../slice/chart'
 // import utils
 import { 
   getLastWeekDay, 
-  getMidnightTime,
+  getNextWeekDay
 } from '../../utilities/timestamp'
 import { getRequireWeightData } from '../../utilities/Chart'
 import { COLORS } from '../../constants/Styles'
@@ -35,16 +35,28 @@ const WeightChart = () => {
   const firstDate = datesWithYear[0]
   const lastDate = datesWithYear[1] || ''
 
+  const handleFetchLastWeek = () => {
+    const lastWeek = getLastWeekDay(startDate)
+    setStartDate(lastWeek)
+    dispatch(requestFetchWeights(lastWeek))
+  }
+
+  const handleFetchNextWeek = () => {
+    const nextWeek = getNextWeekDay(startDate)
+    setStartDate(nextWeek)
+    dispatch(requestFetchWeights(nextWeek))
+  }
+
   return (
     <Container>
       <ChartWrapper>
         <Title>目標体重</Title>
         <DateRangeWrapper>
-          <IconButton>
+          <IconButton onPress={handleFetchLastWeek}>
             <Icon name="angle-left" size={20} />
           </IconButton>
           <DateRangeText>{`${firstDate}${lastDate ? ' ~ ' : ''}${lastDate}`}</DateRangeText>
-          <IconButton>
+          <IconButton onPress={handleFetchNextWeek}>
             <Icon name="angle-right" size={20} />
           </IconButton>
         </DateRangeWrapper>
@@ -72,7 +84,7 @@ const ChartWrapper = styled.View`
 `
 
 const Title = styled.Text`
-  margin: 15px 0 0px 0;
+  margin: 15px 0 20px 0;
   text-align: center;
   font-weight: bold;
   font-size: 17px;
