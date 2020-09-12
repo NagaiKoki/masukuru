@@ -3,6 +3,7 @@ export const COLORS = {
   BASE_BACKGROUND2: '#fff7ef',
   COMMENT_BACKGROUND: '#F2F3F5',
   BASE_MUSCLEW: '#FFA000',
+  MUSCLEW_COLOR: '#ffe2c6',
 
   BASE_BORDER_COLOR: '#a1a6ab',
   BORDER_COLOR_1: '#c7c7c7',

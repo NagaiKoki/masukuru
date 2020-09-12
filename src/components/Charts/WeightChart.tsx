@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { LineChart } from 'react-native-chart-kit'
+import Chart from '../../common/Chart'
 // import components
 import Loading from '../Loading'
 // import selectors
@@ -9,53 +9,43 @@ import chartSelector from '../../selectors/chart'
 // import slices
 import { requestFetchWeights } from '../../slice/chart'
 // import utils
-import { getDayOfWeekBetween, convertTimeStampToStringOnlyDate } from '../../utilities/timestamp'
+import { getDayOfWeekBetween, convertTimeStampToStringOnlyMonthAndDate } from '../../utilities/timestamp'
+import { COLORS } from '../../constants/Styles'
 
 const WeightChart = () => {
   const dispatch = useDispatch()
   const { weights, isLoading } = chartSelector()
   const [monday, sunday] = getDayOfWeekBetween(new Date())
+  const [startDate, setStartDate] = useState(monday)
   
   useEffect(() => {
     dispatch(requestFetchWeights(monday))
   }, [])
 
-  const chartConfig = {
-    backgroundColor: '#fff',
-    backgroundGradientFrom: '#fff',
-    backgroundGradientTo: '#fff',
-    decimalPlaces: 0,
-    strokeWidth: 0.5,
-    fillShadowGradient: '#fff',
-    color: () => `rgba(89, 87, 87, 1)`,
-  };
+  const getRequireData = (): { weightArry: number[], dateArry: string[] } => {
+    let weightArry: number[] = []
+    let dateArry: string[] = []
+
+    weights.forEach(weight => {
+      weightArry.push(weight.weight)
+      dateArry.push(convertTimeStampToStringOnlyMonthAndDate(weight.date))
+    })
+
+    return { weightArry: weightArry, dateArry: dateArry }
+  }
 
   if (isLoading) {
     return <Loading size="small" />
   }
 
-  // console.log(`weights: ${weights}`)
-
-  // weights.forEach(w => {
-  //   console.log(convertTimeStampToStringOnlyDate(w.date, undefined))
-  // })
-
   return (
     <Container>
-      <LineChart 
-        data={{
-          labels: ['1月', '2月', '3月', '4月', '5月'],
-          datasets: [{
-            data: [101, 163, 187, 203, 235]
-          }]
-        }}
-        chartConfig={chartConfig}
-        yAxisSuffix={''}
-        withInnerLines={false}
-        height={181}
-        width={200}
-        bezier
-      />
+      <ChartWrapper>
+        <Chart 
+          labels={getRequireData().dateArry}
+          data={getRequireData().weightArry}
+        />
+      </ChartWrapper>
     </Container>
   )
 }
@@ -64,4 +54,10 @@ export default WeightChart
 
 const Container = styled.View`
   margin-top: 100px;
+`
+
+const ChartWrapper = styled.View`
+  background: ${COLORS.BASE_WHITE};
+  padding: 20px 20px 0 0;
+  margin: 0 10px;
 `

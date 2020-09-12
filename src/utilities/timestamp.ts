@@ -37,6 +37,13 @@ export const convertTimeStampToStringOnlyDate = (date?: Timestamp, jsDate?: Date
   }
 }
 
+export const convertTimeStampToStringOnlyMonthAndDate = (firebaseDate: Timestamp) => {
+  const time = new Date(firebaseDate.seconds * 1000);
+  const month = (`0${time.getMonth() + 1}`).slice(-2);
+  const day = (`0${time.getDate()}`).slice(-2);
+  return `${month}/${day}`;
+}
+
 export const getDayOfStortToday = (date: Date) => {
   return new Date(date.setHours(0, 0, 0, 0))
 }
