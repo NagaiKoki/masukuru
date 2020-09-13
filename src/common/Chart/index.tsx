@@ -25,7 +25,7 @@ const Chart = (props: ChartProps) => {
       stroke: '#efefef',
     },
     propsForLabels: {
-      fontSize: 10
+      fontSize: 9
     },
     color: () => COLORS.BASE_BLACK,
   };
@@ -47,7 +47,7 @@ const Chart = (props: ChartProps) => {
         yAxisSuffix={'kg'}
         height={220}
         getDotColor={() => `${COLORS.BASE_MUSCLEW}`}
-        width={Dimensions.get("window").width - 30}
+        width={Dimensions.get("window").width - 20}
         bezier
         fromZero
       />

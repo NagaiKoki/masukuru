@@ -5,25 +5,15 @@ import { UserWeightType, ChartTermType } from '../../types/Chart'
 import { 
   getDayOfStortToday, 
   convertFirebaseTimeStamp, 
-  getLastWeekDay,
-  getLastMonthDay,
-  getLastYearDay,
   getMidnightTime
 } from '../../utilities/timestamp'
+import { getHeadDay } from '../../utilities/Chart'
 
 export const requestFetchWeights = async (date: Date, type: ChartTermType) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const endDate = getMidnightTime(date) // 引数の日の正子を取得する
-  const startDate = () => {
-    if (type === 'week') {
-      return getLastWeekDay(endDate)
-    } else if (type === 'month') {
-      return getLastMonthDay(endDate)
-    } else if (type === 'year') {
-      return getLastYearDay(endDate)
-    }
-  }
-  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '>=', startDate()).where('date', '<=', endDate).get()
+  const endDate = getMidnightTime(date) // 引数の日の正子を取得する 
+  const headDate = getHeadDay(endDate, type)
+  const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', '>=', headDate).where('date', '<=', endDate).get()
 
   let weights: UserWeightType[] = []
   try {

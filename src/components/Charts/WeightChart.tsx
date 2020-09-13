@@ -21,26 +21,26 @@ const WeightChart = () => {
   const dispatch = useDispatch()
   const { showActionSheetWithOptions } = useActionSheet();
   const { weights, isLoading } = chartSelector()
-  const [startDate, setStartDate] = useState(new Date())
-  const [term, setTerm] = useState<ChartTermType>('week')
+  const [endDate, setendDate] = useState(new Date())
+  const [term, setTerm] = useState<ChartTermType>('year')
 
   useEffect(() => {
-    dispatch(requestFetchWeights({ date: startDate, type: term }))
+    dispatch(requestFetchWeights({ date: endDate, type: term }))
   }, [])
 
-  const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, startDate, term)
-  const firstDate = datesWithYear[0]
-  const lastDate = datesWithYear[datesWithYear.length - 1] || ''
+  const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
+  const headDate = datesWithYear[0]
+  const lastDate = datesWithYear[datesWithYear.length - 1]
 
   const handleFetchBackward = () => {
-    const lastDay = getLastDay(startDate, term)
-    setStartDate(lastDay)
+    const lastDay = getLastDay(endDate, term)
+    setendDate(lastDay)
     dispatch(requestFetchWeights({ date: lastDay, type: term }))
   }
 
   const handleFetchForward = () => {
-    const nextDay = getNextDay(startDate, term)
-    setStartDate(nextDay)
+    const nextDay = getNextDay(endDate, term)
+    setendDate(nextDay)
     dispatch(requestFetchWeights({ date: nextDay, type: term }))
   }
 
@@ -82,18 +82,20 @@ const WeightChart = () => {
     <Container>
       <ChartWrapper>
         <Title>目標体重</Title>
-        <DateRangeWrapper>
-          <IconButton onPress={handleFetchBackward}>
-            <Icon name="angle-left" size={20} />
-          </IconButton>
-          <DateRangeText>{`${firstDate}${lastDate ? ' ~ ' : ''}${lastDate}`}</DateRangeText>
-          <IconButton onPress={handleFetchForward}>
-            <Icon name="angle-right" size={20} />
-          </IconButton>
+        <DateRangeContainer>
+          <DateRangeWrapper>
+            <IconButton onPress={handleFetchBackward}>
+              <Icon name="angle-left" size={20} />
+            </IconButton>
+            <DateRangeText>{`${headDate}${lastDate ? ' ~ ' : ''}${lastDate}`}</DateRangeText>
+            <IconButton onPress={handleFetchForward}>
+              <Icon name="angle-right" size={20} />
+            </IconButton>
+          </DateRangeWrapper>
           <MonthButton onPress={handleOnClickTerm}>
             <MonthText>{termLabel()}</MonthText>
           </MonthButton>
-        </DateRangeWrapper>
+        </DateRangeContainer>
         { isLoading ? 
           <Loading size='small' /> :
           <Chart 
@@ -114,9 +116,9 @@ const Container = styled.View`
 
 const ChartWrapper = styled.View`
   background: ${COLORS.BASE_WHITE};
-  padding: 10px 20px 0 0;
+  padding: 10px 15px 0 0;
   height: 350px;
-  margin: 0 10px;
+  margin: 0 5px;
   border-radius: 10px;
   box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};
 `
@@ -128,9 +130,15 @@ const Title = styled.Text`
   font-size: 17px;
 `
 
-const DateRangeWrapper = styled.View`
+const DateRangeContainer = styled.View`
   margin: 15px 0 20px 15px;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const DateRangeWrapper = styled.View`
+  flex-direction: row; 
   align-items: center;
 `
 
@@ -146,7 +154,6 @@ const IconButton = styled.TouchableOpacity`
 const MonthButton = styled.TouchableOpacity`
   width: 25px;
   height: 25px;
-  margin-left: 40px;
   justify-content: center;
   align-items: center;
   border-radius: 30;

@@ -6,6 +6,9 @@ import {
   getLastWeekDay,
   getLastMonthDay,
   getLastYearDay,
+  getHeadWeekDay,
+  getHeadMonthDay,
+  getHeadYearDay,
   getNextWeekDay,
   getNextMonthDay,
   getNextYearDay
@@ -15,9 +18,10 @@ export const getRequireWeightData = (weights: UserWeightType[], startDate: Date,
   let weightArry: number[] = []
   let dateArry: string[] = []
   let datesWithYear: string[] = []
-  const endDate = getLastDay(startDate, term)
+  const endDate = getHeadDay(startDate, term)
 
   weights.forEach(weight => {
+    console.log(convertTimeStampToStringOnlyMonthAndDate(weight.date))
     weightArry.push(Number(weight.weight))
     dateArry.push(convertTimeStampToStringOnlyMonthAndDate(weight.date))
     datesWithYear.push(convertTimeStampToStringOnlyDate(weight.date))
@@ -35,15 +39,15 @@ export const getRequireWeightData = (weights: UserWeightType[], startDate: Date,
   // データがない場合は、期間の始めと終わりの空データを突っ込む
   if (!weightArry.length) {
     weightArry = [0, 0]
-    dateArry = [convertTimeStampToStringOnlyMonthAndDate(undefined, endDate), convertTimeStampToStringOnlyMonthAndDate(undefined, startDate)]
+    dateArry = [
+      term === 'year' ? convertTimeStampToStringOnlyDate(undefined, endDate) : convertTimeStampToStringOnlyMonthAndDate(undefined, endDate),
+      term === 'year' ? convertTimeStampToStringOnlyDate(undefined, startDate) : convertTimeStampToStringOnlyMonthAndDate(undefined, startDate)
+    ]
     datesWithYear = [convertTimeStampToStringOnlyDate(undefined, endDate), convertTimeStampToStringOnlyDate(undefined, startDate)]
-  }
-
-  // 配列が1以上 かつ 期間の始め or 終わりを持っていない場合は、それらを配列に突っ込む
-  if (weightArry.length >= 1) {
+  } else if (weightArry.length >= 1) { // 配列が1以上 かつ 期間の始め or 終わりを持っていない場合は、それらを配列に突っ込む
     if (!dateArry.includes(convertTimeStampToStringOnlyMonthAndDate(undefined, endDate))) {
       // 年の場合は期間の文字列に年も付与する
-      dateArry.unshift( term === 'year' ? convertTimeStampToStringOnlyDate(undefined, endDate) : convertTimeStampToStringOnlyMonthAndDate(undefined, endDate))
+      dateArry.unshift(term === 'year' ? convertTimeStampToStringOnlyDate(undefined, endDate) : convertTimeStampToStringOnlyMonthAndDate(undefined, endDate))
       weightArry.unshift(0)
       datesWithYear.unshift(convertTimeStampToStringOnlyDate(undefined, endDate))
     }
@@ -55,6 +59,16 @@ export const getRequireWeightData = (weights: UserWeightType[], startDate: Date,
   }
 
   return { weightArry: weightArry, dateArry: dateArry, datesWithYear: datesWithYear }
+}
+
+export const getHeadDay = (date: Date, type: ChartTermType): Date => {
+  if (type === 'week') {
+    return getHeadWeekDay(date)
+  } else if (type === 'month') {
+    return getHeadMonthDay(date)
+  } else if (type === 'year') {
+    return getHeadYearDay(date)
+  }
 }
 
 export const getLastDay = (date: Date, type: ChartTermType): Date => {
