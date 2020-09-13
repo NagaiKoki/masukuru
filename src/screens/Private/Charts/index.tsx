@@ -57,7 +57,7 @@ const Container = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
-const Wrapper = styled.View`
+const Wrapper = styled.ScrollView`
 `
 
 export default ChartScreen

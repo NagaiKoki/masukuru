@@ -32,7 +32,7 @@ const RecordAddBtn = styled.TouchableOpacity`
   border-radius: 60px;
   height: 60px;
   width: 60px;
-  bottom: 10%;
+  bottom: 7%;
   right: 5%;
   box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};
 `
