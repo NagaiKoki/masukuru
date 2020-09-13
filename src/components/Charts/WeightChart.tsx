@@ -28,7 +28,7 @@ const WeightChart = () => {
     dispatch(requestFetchWeights({ date: startDate, type: term }))
   }, [])
 
-  const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights)
+  const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, startDate, term)
   const firstDate = datesWithYear[0]
   const lastDate = datesWithYear[datesWithYear.length - 1] || ''
 

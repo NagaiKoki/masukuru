@@ -12,10 +12,11 @@ import {
   getNextYearDay
  } from '../../utilities/timestamp'
 
-export const getRequireWeightData = (weights: UserWeightType[]): { weightArry: number[], dateArry: string[], datesWithYear: string[] } => {
+export const getRequireWeightData = (weights: UserWeightType[], startDate: Date, term: ChartTermType): { weightArry: number[], dateArry: string[], datesWithYear: string[] } => {
   let weightArry: number[] = []
   let dateArry: string[] = []
   let datesWithYear: string[] = []
+  const endDate = getLastDay(startDate, term)
 
   weights.forEach(weight => {
     weightArry.push(Number(weight.weight))
@@ -23,10 +24,25 @@ export const getRequireWeightData = (weights: UserWeightType[]): { weightArry: n
     datesWithYear.push(convertTimeStampToStringOnlyDate(weight.date))
   })
 
+  // データがない場合は、期間の始めと終わりの空データを突っ込む
   if (!weightArry.length) {
-    weightArry.push(0)
-    dateArry.push(convertTimeStampToStringOnlyMonthAndDate(convertFirebaseTimeStamp(new Date)))
-    datesWithYear.push(convertTimeStampToStringOnlyDate(convertFirebaseTimeStamp(new Date)))
+    weightArry = [0, 0]
+    dateArry = [convertTimeStampToStringOnlyMonthAndDate(undefined, endDate), convertTimeStampToStringOnlyMonthAndDate(undefined, startDate)]
+    datesWithYear = [convertTimeStampToStringOnlyDate(undefined, endDate), convertTimeStampToStringOnlyDate(undefined, startDate)]
+  }
+
+  // 配列が1以上で、期間の始め or 終わりを持っていない場合は、配列に突っ込む
+  if (weightArry.length >= 1) {
+    if (!dateArry.includes(convertTimeStampToStringOnlyMonthAndDate(undefined, endDate))) {
+      dateArry.unshift(convertTimeStampToStringOnlyMonthAndDate(undefined, endDate))
+      weightArry.unshift(0)
+      datesWithYear.unshift(convertTimeStampToStringOnlyDate(undefined, endDate))
+    }
+    if (!dateArry.includes(convertTimeStampToStringOnlyMonthAndDate(undefined, startDate))) {
+      dateArry.push(convertTimeStampToStringOnlyMonthAndDate(undefined, startDate))
+      weightArry.push(0)
+      datesWithYear.push(convertTimeStampToStringOnlyDate(undefined, startDate))
+    }
   }
 
   return { weightArry: weightArry, dateArry: dateArry, datesWithYear: datesWithYear }
