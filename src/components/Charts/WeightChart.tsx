@@ -35,13 +35,19 @@ const WeightChart = () => {
     dispatch(requestFetchWeights({ date: endDate, type: term }))
     dispatch(requestFetchChartSetting())
     return () => {
-      setLatestWeight(weightArry[weightArry.length - 1])
+      setLatestDate()
     }
   }, [])
 
   useEffect(() => {
-    setLatestWeight(weightArry[weightArry.length - 1])
+    setLatestDate()
   }, [isLoading])
+
+
+  const setLatestDate = () => {
+    const lw = weightArry[weightArry.length - 1] !== 0 ? weightArry[weightArry.length - 1] : weightArry[weightArry.length - 2]
+    setLatestWeight(lw || 0)
+  }
 
   const headDate = datesWithYear[0]
   const lastDate = datesWithYear[datesWithYear.length - 1]
