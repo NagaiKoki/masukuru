@@ -27,16 +27,18 @@ const WeightChart = () => {
   const { showActionSheetWithOptions } = useActionSheet();
   const { weights, isLoading, weightGoal } = chartSelector()
   const [endDate, setendDate] = useState(new Date())
+  const [latestWeight, setLatestWeight] = useState(0)
   const [term, setTerm] = useState<ChartTermType>('week')
-
-  console.log(weights.length)
+  const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
 
   useEffect(() => {
     dispatch(requestFetchWeights({ date: endDate, type: term }))
     dispatch(requestFetchChartSetting())
+    return () => {
+      setLatestWeight(weightArry[weightArry.length - 1])
+    }
   }, [])
 
-  const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
   const headDate = datesWithYear[0]
   const lastDate = datesWithYear[datesWithYear.length - 1]
 
@@ -89,20 +91,33 @@ const WeightChart = () => {
       return '年'
     }
   }
+
+  const diffWeight = (): string => {
+    if (weightGoal === 0) return '0'
+    const diff = weightGoal - latestWeight
+    if (diff === 0) {
+      return '0'
+    } else if (diff < 0) {
+      return `${diff}`
+    } else {
+      return `+${diff}`
+    }
+  }
   
   return (
     <Container>
       <ChartWrapper>
         <Title>目標体重</Title>
         <GoalText>{weightGoal === 0 ? `--` : weightGoal}kg</GoalText>
+          <SubText>{ weightGoal === 0 ? '右上の設定から目標体重を設定しよう♪' : `目標まであと、${diffWeight()}kg`}</SubText>
         <DateRangeContainer>
           <DateRangeWrapper>
             <IconButton onPress={handleFetchBackward}>
-              <Icon name="angle-left" size={20} />
+              <Icon name="angle-left" size={25} />
             </IconButton>
             <DateRangeText>{`${headDate}${lastDate ? ' ~ ' : ''}${lastDate}`}</DateRangeText>
             <IconButton onPress={handleFetchForward} disable={isTodayLastDay} activeOpacity={ isTodayLastDay ? 1 : 0.6 }>
-              <Icon name="angle-right" size={20} />
+              <Icon name="angle-right" size={25} />
             </IconButton>
           </DateRangeWrapper>
           <MonthButton onPress={handleOnClickTerm}>
@@ -130,7 +145,7 @@ const Container = styled.View`
 const ChartWrapper = styled.View`
   background: ${COLORS.BASE_WHITE};
   padding: 10px 15px 0 0;
-  height: 400px;
+  height: 480px;
   margin: 0 5px;
   border-radius: 10px;
   box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};
@@ -140,16 +155,25 @@ const Title = styled.Text`
   margin-top: 15px;
   text-align: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
 
 const GoalText = styled.Text`
-  margin: 15px 0 20px 0;
+  margin: 10px 0 5px 0;
   text-align: center;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 35px;
   color: ${COLORS.BASE_BLACK};
+  letter-spacing: 6;
+`
+
+const SubText = styled.Text`
+  margin: 10px 0 20px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const DateRangeContainer = styled.View`
@@ -165,8 +189,8 @@ const DateRangeWrapper = styled.View`
 `
 
 const IconButton = styled.TouchableOpacity<{ disable?: boolean }>`
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
   justify-content: center;
   align-items: center;
   border-radius: 30;
@@ -174,8 +198,8 @@ const IconButton = styled.TouchableOpacity<{ disable?: boolean }>`
 `
 
 const MonthButton = styled.TouchableOpacity`
-  width: 25px;
-  height: 25px;
+  width: 60px;
+  height: 30px;
   justify-content: center;
   align-items: center;
   border-radius: 30;
@@ -191,5 +215,5 @@ const DateRangeText = styled.Text`
 const MonthText = styled.Text`
   color: ${COLORS.SUB_BLACK};
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
 `

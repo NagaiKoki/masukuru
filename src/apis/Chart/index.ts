@@ -28,7 +28,6 @@ export const requestFetchWeights = async (date: Date, type: ChartTermType) => {
         weights.push(data)
       })
     })
-    console.log(weights.length)
     return { payload: weights }
   } catch(error) {
     console.log(error)
@@ -103,19 +102,35 @@ export const requestFetchGetChartSetting = async () => {
 export const requestFetchPostChartSetting = async (settings: RequestChartSettingType) => {
   const { weightGoal } = settings
   const currentUserId = firebase.auth().currentUser.uid
-
   const settingRef = db.collection('users').doc(currentUserId).collection('settings')
-  const settingObj: ResponseChartSettingType = {
-    uid: currentUserId,
-    weightGoal: weightGoal,
-    createdAt: convertFirebaseTimeStamp(new Date),
-    updatedAt: convertFirebaseTimeStamp(new Date)
-  }
+  let payload: ResponseChartSettingType
 
   try {
-    await settingRef.add(settingObj)
-    return { payload: settingObj }
+    await settingRef.get().then(snap => {
+      if (!snap.empty) {
+        snap.forEach(doc => {
+          doc.ref.update({ weightGoal: weightGoal })
+        })
+        const settingObj: ResponseChartSettingType = {
+          uid: currentUserId,
+          weightGoal: weightGoal,
+          createdAt: convertFirebaseTimeStamp(new Date),
+          updatedAt: convertFirebaseTimeStamp(new Date)
+        }
+        payload = settingObj
+      } else {
+        const settingObj: ResponseChartSettingType = {
+          uid: currentUserId,
+          weightGoal: weightGoal,
+          createdAt: convertFirebaseTimeStamp(new Date),
+          updatedAt: convertFirebaseTimeStamp(new Date)
+        }
+        settingRef.add(settingObj)
+        payload = settingObj
+      }
+    })
+    return { payload }
   } catch(error) {
-    return { error: error }
+    return { error }
   }
 }

@@ -27,9 +27,9 @@ const ChartHeader = (props: ChartHeaderProps) => {
       <Item active={isActive(0)} onPress={() => handleOnSwitch(0)}>
         <ItemText active={isActive(0)}>体重</ItemText>
       </Item>
-      <Item active={isActive(1)} onPress={() => handleOnSwitch(1)}>
+      {/* <Item active={isActive(1)} onPress={() => handleOnSwitch(1)}>
         <ItemText active={isActive(1)}>体脂肪率</ItemText>
-      </Item>
+      </Item> */}
     </Container>
   )
 }
@@ -38,20 +38,22 @@ export default ChartHeader
 
 const Container = styled.View`
   flex-direction: row;
-  justify-content: space-around;
   padding-top: 20px;
-  background: ${COLORS.BASE_MUSCLEW};
+  padding-left: 20px;
+  background: ${COLORS.BASE_BACKGROUND};
+  border-bottom-width: 1;
+  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
 `
 
 const Item = styled.TouchableOpacity<{ active: boolean }>`
   width: 80px;
-  border-bottom-width: ${props => props.active ? 5 : 0};
-  border-bottom-color: ${props => props.active ? COLORS.BASE_WHITE : COLORS.BASE_MUSCLEW};
+  border-bottom-width: ${props => props.active ? 3 : 0};
+  border-bottom-color: ${props => props.active ? COLORS.BORDER_COLOR_1 : COLORS.BASE_MUSCLEW};
 `
 
 const ItemText = styled.Text<{ active: boolean }>`
-  padding-bottom: 15px;
-  color: ${COLORS.BASE_WHITE};
+  padding-bottom: 10px;
+  color: ${COLORS.BASE_BLACK};
   font-weight: ${props => props.active ? 'bold' : 300};
   font-size: 18px;
   text-align: center;

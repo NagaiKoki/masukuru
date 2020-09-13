@@ -7,10 +7,13 @@ import { COLORS } from '../../../../constants/Styles'
 import { requestPostChartSetting } from '../../../../slice/chart'
 // import components
 import SpinnerOverlay from '../../../../common/Loading/SpinnerOverlay'
+// import selectors
+import chartSelector from '../../../../selectors/chart'
 
 const GoalSetting = ({ navigation }) => {
   const [weightGoalText, setWeightGoal] = useState<number>()
   const [isLoadingVisible, setIsLoadingVisible] = useState(false)
+  const { weightGoal } = chartSelector()
   const dispatch = useDispatch()
 
   useFocusEffect(
@@ -59,6 +62,7 @@ const GoalSetting = ({ navigation }) => {
           autoCapitalize={'none'}
           maxLength={3}
           value={weightGoalText}
+          defaultValue={weightGoal ? weightGoal : ''}
           onChangeText={(value: number) => setWeightGoal(value)}
           returnKeyType="done"
           keyboardType={'numeric'}

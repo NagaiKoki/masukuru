@@ -11,7 +11,7 @@ interface DatePickerProps {
 
 const DatePicker = (props: DatePickerProps) => {
   const { date, border, handleOnChangeDate } = props
-  const minDate = new Date("2020/01/01")
+  const minDate = new Date("2010/01/01")
   const dt = new Date()
   const maxDate = new Date(dt.setFullYear(dt.getFullYear()))
 

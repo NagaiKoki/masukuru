@@ -13,7 +13,7 @@ const initialState: ChartState = {
   isLoading: false,
   weights: [],
   error: '',
-  weightGoal: 0
+  weightGoal: 0,
 }
 
 const chartSlice = createSlice({

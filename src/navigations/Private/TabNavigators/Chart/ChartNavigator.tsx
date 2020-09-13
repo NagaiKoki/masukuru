@@ -30,7 +30,7 @@ const ChartNavigator = () => {
           headerBackTitleVisible: false,
           headerTitle: '体重を記録する',
           headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
+            backgroundColor: COLORS.BASE_MUSCLEW,
           },
           headerTintColor: COLORS.BASE_WHITE,
         }}
