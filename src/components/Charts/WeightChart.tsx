@@ -13,7 +13,12 @@ import chartSelector from '../../selectors/chart'
 // import slices
 import { requestFetchWeights } from '../../slice/chart'
 // import utils
-import { getRequireWeightData, getLastDay, getNextDay } from '../../utilities/Chart'
+import { 
+  getRequireWeightData, 
+  getLastDay, 
+  getNextDay,
+} from '../../utilities/Chart'
+import { getMidnightTime } from '../../utilities/timestamp'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
@@ -38,7 +43,11 @@ const WeightChart = () => {
     dispatch(requestFetchWeights({ date: lastDay, type: term }))
   }
 
+  // 末日が今日であるか？
+  const isTodayLastDay = getMidnightTime(new Date).getTime() === getMidnightTime(endDate).getTime()
+
   const handleFetchForward = () => {
+    if (isTodayLastDay) return
     const nextDay = getNextDay(endDate, term)
     setendDate(nextDay)
     dispatch(requestFetchWeights({ date: nextDay, type: term }))
@@ -88,7 +97,7 @@ const WeightChart = () => {
               <Icon name="angle-left" size={20} />
             </IconButton>
             <DateRangeText>{`${headDate}${lastDate ? ' ~ ' : ''}${lastDate}`}</DateRangeText>
-            <IconButton onPress={handleFetchForward}>
+            <IconButton onPress={handleFetchForward} disable={isTodayLastDay} activeOpacity={ isTodayLastDay ? 1 : 0.6 }>
               <Icon name="angle-right" size={20} />
             </IconButton>
           </DateRangeWrapper>
@@ -142,13 +151,13 @@ const DateRangeWrapper = styled.View`
   align-items: center;
 `
 
-const IconButton = styled.TouchableOpacity`
+const IconButton = styled.TouchableOpacity<{ disable?: boolean }>`
   width: 22px;
   height: 22px;
   justify-content: center;
   align-items: center;
   border-radius: 30;
-  background: ${COLORS.SUB_BACKGROUND};
+  background: ${props =>  props.disable ? COLORS.BASE_WHITE : COLORS.SUB_BACKGROUND};
 `
 
 const MonthButton = styled.TouchableOpacity`
