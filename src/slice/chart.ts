@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { UserWeightType, ChartState, RequestPostWeightType } from '../types/Chart'
+import { 
+  UserWeightType, 
+  ChartState, 
+  RequestPostWeightType,
+  RequestFetchChartType
+} from '../types/Chart'
 
 const initialState: ChartState = {
   isLoading: false,
@@ -13,7 +18,7 @@ const chartSlice = createSlice({
   name: 'chart',
   initialState: initialState,
   reducers: {
-    requestFetchWeights: (state, action: PayloadAction<Date>) => {
+    requestFetchWeights: (state, action: PayloadAction<RequestFetchChartType>) => {
       return {
         ...state,
         isLoading: true

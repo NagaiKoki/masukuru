@@ -3,7 +3,9 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import Chart from '../../common/Chart'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import { useActionSheet } from '@expo/react-native-action-sheet'
+// import types
+import { ChartTermType } from '../../types/Chart'
 // import components
 import Loading from '../Loading'
 // import selectors
@@ -11,36 +13,69 @@ import chartSelector from '../../selectors/chart'
 // import slices
 import { requestFetchWeights } from '../../slice/chart'
 // import utils
-import { 
-  getLastWeekDay, 
-  getNextWeekDay
-} from '../../utilities/timestamp'
-import { getRequireWeightData } from '../../utilities/Chart'
+import { getRequireWeightData, getLastDay, getNextDay } from '../../utilities/Chart'
+// import constants
 import { COLORS } from '../../constants/Styles'
 
 const WeightChart = () => {
   const dispatch = useDispatch()
+  const { showActionSheetWithOptions } = useActionSheet();
   const { weights, isLoading } = chartSelector()
   const [startDate, setStartDate] = useState(new Date())
+  const [term, setTerm] = useState<ChartTermType>('week')
 
   useEffect(() => {
-    dispatch(requestFetchWeights(startDate))
+    dispatch(requestFetchWeights({ date: startDate, type: term }))
   }, [])
 
   const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights)
   const firstDate = datesWithYear[0]
-  const lastDate = datesWithYear[1] || ''
+  const lastDate = datesWithYear[datesWithYear.length - 1] || ''
 
-  const handleFetchLastWeek = () => {
-    const lastWeek = getLastWeekDay(startDate)
-    setStartDate(lastWeek)
-    dispatch(requestFetchWeights(lastWeek))
+  const handleFetchBackward = () => {
+    const lastDay = getLastDay(startDate, term)
+    setStartDate(lastDay)
+    dispatch(requestFetchWeights({ date: lastDay, type: term }))
   }
 
-  const handleFetchNextWeek = () => {
-    const nextWeek = getNextWeekDay(startDate)
-    setStartDate(nextWeek)
-    dispatch(requestFetchWeights(nextWeek))
+  const handleFetchForward = () => {
+    const nextDay = getNextDay(startDate, term)
+    setStartDate(nextDay)
+    dispatch(requestFetchWeights({ date: nextDay, type: term }))
+  }
+
+  const handleOnClickTerm = () => {
+    const options = ['週', '月', '年', 'Cancel'];
+    const cancelButtonIndex = 3;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          setTerm('week')
+          dispatch(requestFetchWeights({ date: new Date, type: 'week' }))
+        } else if (buttonIndex === 1) {
+          setTerm('month')
+          dispatch(requestFetchWeights({ date: new Date, type: 'month' }))
+        } else if (buttonIndex === 2) {
+          setTerm('year')
+          dispatch(requestFetchWeights({ date: new Date, type: 'year' }))
+        }
+      }
+    )
+  }
+
+  const termLabel = (): '月' | '週' | '年' => {
+    if (term === 'month') {
+      return '月'
+    } else if (term === 'week') {
+      return '週'
+    } else if (term === 'year') {
+      return '年'
+    }
   }
 
   return (
@@ -48,16 +83,16 @@ const WeightChart = () => {
       <ChartWrapper>
         <Title>目標体重</Title>
         <DateRangeWrapper>
-          <IconButton onPress={handleFetchLastWeek}>
+          <IconButton onPress={handleFetchBackward}>
             <Icon name="angle-left" size={20} />
           </IconButton>
           <DateRangeText>{`${firstDate}${lastDate ? ' ~ ' : ''}${lastDate}`}</DateRangeText>
-          <IconButton onPress={handleFetchNextWeek}>
+          <IconButton onPress={handleFetchForward}>
             <Icon name="angle-right" size={20} />
           </IconButton>
-          <IconButton>
-            <MonthText>月</MonthText>
-          </IconButton>
+          <MonthButton onPress={handleOnClickTerm}>
+            <MonthText>{termLabel()}</MonthText>
+          </MonthButton>
         </DateRangeWrapper>
         { isLoading ? 
           <Loading size='small' /> :
@@ -94,17 +129,28 @@ const Title = styled.Text`
 `
 
 const DateRangeWrapper = styled.View`
-  margin: 15px;
+  margin: 15px 0 20px 15px;
   flex-direction: row;
   align-items: center;
 `
 
 const IconButton = styled.TouchableOpacity`
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   justify-content: center;
   align-items: center;
   border-radius: 30;
+  background: ${COLORS.SUB_BACKGROUND};
+`
+
+const MonthButton = styled.TouchableOpacity`
+  width: 25px;
+  height: 25px;
+  margin-left: 40px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30;
+  background: ${COLORS.SUB_BACKGROUND};
 `
 
 const DateRangeText = styled.Text`
@@ -116,5 +162,5 @@ const DateRangeText = styled.Text`
 const MonthText = styled.Text`
   color: ${COLORS.SUB_BLACK};
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
 `

@@ -23,3 +23,10 @@ export type ChartWeightType = {
   weight: number
   date: Date
 }
+
+export type RequestFetchChartType = {
+  date: Date
+  type: ChartTermType
+}
+
+export type ChartTermType = 'week' | 'month' | 'year'

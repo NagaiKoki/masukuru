@@ -6,6 +6,7 @@ import {decode, encode} from 'base-64'
 import store from './reducers'
 import { Provider } from 'react-redux'
 import { YellowBox } from 'react-native'
+import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet'
 
 // シミュレーション上の Setting a timer エラーを非表示
 YellowBox.ignoreWarnings([
@@ -20,7 +21,9 @@ if (!window.atob) { window.atob = decode }
   return (
     <Container>
       <Provider store={store}>
-        <Navigator/>
+        <ActionSheetProvider>
+          <Navigator/>
+        </ActionSheetProvider>
       </Provider>
     </Container>
   );
@@ -30,4 +33,5 @@ const Container = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
 `
-export default App;
+const Application = connectActionSheet(App)
+export default Application;

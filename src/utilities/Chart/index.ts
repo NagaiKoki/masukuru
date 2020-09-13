@@ -1,9 +1,15 @@
-import { UserWeightType } from '../../types/Chart'
+import { UserWeightType, ChartTermType } from '../../types/Chart'
 // import utils
 import { 
   convertTimeStampToStringOnlyMonthAndDate,
   convertTimeStampToStringOnlyDate,
-  convertFirebaseTimeStamp
+  convertFirebaseTimeStamp,
+  getLastWeekDay,
+  getLastMonthDay,
+  getLastYearDay,
+  getNextWeekDay,
+  getNextMonthDay,
+  getNextYearDay
  } from '../../utilities/timestamp'
 
 export const getRequireWeightData = (weights: UserWeightType[]): { weightArry: number[], dateArry: string[], datesWithYear: string[] } => {
@@ -24,4 +30,24 @@ export const getRequireWeightData = (weights: UserWeightType[]): { weightArry: n
   }
 
   return { weightArry: weightArry, dateArry: dateArry, datesWithYear: datesWithYear }
+}
+
+export const getLastDay = (date: Date, type: ChartTermType): Date => {
+  if (type === 'week') {
+    return getLastWeekDay(date)
+  } else if (type === 'month') {
+    return getLastMonthDay(date)
+  } else if (type === 'year') {
+    return getLastYearDay(date)
+  }
+}
+
+export const getNextDay = (date: Date, type: ChartTermType) => {
+  if (type === 'week') {
+    return getNextWeekDay(date)
+  } else if (type === 'month') {
+    return getNextMonthDay(date)
+  } else if (type === 'year') {
+    return getNextYearDay(date)
+  }
 }

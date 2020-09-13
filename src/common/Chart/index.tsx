@@ -47,7 +47,7 @@ const Chart = (props: ChartProps) => {
         yAxisSuffix={'kg'}
         height={220}
         getDotColor={() => `${COLORS.BASE_MUSCLEW}`}
-        width={Dimensions.get("window").width}
+        width={Dimensions.get("window").width - 30}
         bezier
         fromZero
       />

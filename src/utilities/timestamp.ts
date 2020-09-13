@@ -64,6 +64,30 @@ export const getNextWeekDay = (date: Date) => {
   return new Date(nextWeek)
 }
 
+export const getLastMonthDay = (date: Date) => {
+  const dt = new Date(date)
+  const lastMonth = dt.setDate(dt.getDate() - 31)
+  return new Date(lastMonth)
+}
+
+export const getNextMonthDay = (date: Date) => {
+  const dt = new Date(date)
+  const nextMonth = dt.setDate(dt.getDate() + 31)
+  return new Date(nextMonth)
+}
+
+export const getLastYearDay = (date: Date) => {
+  const dt = new Date(date)
+  const lastYear = dt.setDate(dt.getDate() - 365)
+  return new Date(lastYear)
+}
+
+export const getNextYearDay = (date: Date) => {
+  const dt = new Date(date)
+  const nextYear = dt.setDate(dt.getDate() + 365)
+  return new Date(nextYear)
+}
+
 export const getMidnightTime = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth()

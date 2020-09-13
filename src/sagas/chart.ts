@@ -10,18 +10,23 @@ import {
   failurePostWeight,
 } from '../slice/chart'
 // import types
-import { RequestPostWeightType, UserWeightType } from '../types/Chart'
+import { 
+  RequestPostWeightType, 
+  UserWeightType,
+  RequestFetchChartType
+} from '../types/Chart'
 // import apis
 import { 
   requestPostWeight as requestFetchPostWeight, 
   requestFetchWeights as requestFetchGetWeights  
 } from '../apis/Chart'
 
-function* runRequestFetchWeight(action: PayloadAction<Date>) {
-  const date = action.payload
+function* runRequestFetchWeight(action: PayloadAction<RequestFetchChartType>) {
+  const { date, type } = action.payload
   const { payload, error }: { payload?: UserWeightType[], error?: string } = yield call(
     requestFetchGetWeights,
-    date
+    date,
+    type
   )
 
   if (payload && !error) {
