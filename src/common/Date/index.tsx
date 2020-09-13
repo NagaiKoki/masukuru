@@ -1,25 +1,19 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import ReactDatePicker from 'react-native-datepicker'
-// import slice
-import { onChangeRecordDate } from '../../slice/record'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
 interface DatePickerProps {
   date: Date
+  border?: boolean
+  handleOnChangeDate: (date: Date) => void
 }
 
 const DatePicker = (props: DatePickerProps) => {
-  const { date } = props
-  const dispatch = useDispatch()
-  const minDate = new Date("2020/01/01")
+  const { date, border, handleOnChangeDate } = props
+  const minDate = new Date("2010/01/01")
   const dt = new Date()
-  const maxDate = new Date(dt.setFullYear(dt.getFullYear() + 10))
-
-  const handleOnChangeDate = (date: Date) => {
-    dispatch(onChangeRecordDate(date))
-  }
+  const maxDate = new Date(dt.setFullYear(dt.getFullYear()))
 
   return (
     <ReactDatePicker 
@@ -42,7 +36,7 @@ const DatePicker = (props: DatePickerProps) => {
         },
         dateInput: {
           borderColor: "transparent",
-          borderBottomColor: COLORS.BASE_BORDER_COLOR,
+          borderBottomColor: border ? "transparent" : COLORS.BASE_BORDER_COLOR,
           padding: 0,
         }
       }}

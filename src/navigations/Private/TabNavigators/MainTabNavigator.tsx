@@ -7,7 +7,7 @@ import NotificationBatchIcon from '../../../containers/Private/notifications/bat
 // import navigators
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainNavigator from '../Home/MainNavigator';
-import RecordNavigator from './recordNavigator'
+import ChartNavigator from './Chart'
 import NotificationNavigator from './NotificationNavigator';
 import MyPageNavigator from './MyPageNavigator';
 // import store
@@ -63,7 +63,7 @@ const MainTabNavigator = () => {
 
       <Tab.Screen 
         name='きろく' 
-        component={RecordNavigator}
+        component={ChartNavigator}
         options={{
           tabBarLabel: '' 
         }}

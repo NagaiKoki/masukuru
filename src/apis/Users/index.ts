@@ -1,4 +1,4 @@
-import { db } from '../../config/firebase'
+import firebase, { db } from '../../config/firebase'
 
 export const requestFetchUser = async (uid: string) => {
   let user;
@@ -27,7 +27,6 @@ export const requestUpdateUser = async (name: string, imageUrl: string, user: fi
     await batch.update(userRef, { imageUrl: imageUrl, name: name })
     await groupUserRef.get().then(snap => {
       snap.forEach(doc => {
-        console.log(doc.data())
         batch.update(doc.ref, {
           name: name, 
           imageUrl: imageUrl

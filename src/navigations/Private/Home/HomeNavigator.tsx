@@ -54,12 +54,4 @@ const HomeNavigator = ({ navigation, route }) => {
   );
 }
 
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center'
-  }
-})
-
 export default HomeNavigator;

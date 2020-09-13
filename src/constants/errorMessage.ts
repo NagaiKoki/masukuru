@@ -53,3 +53,7 @@ export const RECORD_ERROR_MESSAGE = {
   EMPTY_AMOUNT: '回数を入力してください。',
   EMPTY_TIME_OR_DISTANCE: '時間か距離のどちらかを入力してください。',
 }
+
+export const WEIGHT_FORM_ERROR_MESSAGE = {
+  EMPTY_WEIGHT: '体重を入力してください。'
+}

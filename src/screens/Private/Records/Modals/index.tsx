@@ -12,7 +12,7 @@ import truncateText from '../../../../utilities/truncateText'
 // import components
 import DatePicker from '../../../../common/Date'
 // import slices
-import { deleteRecord } from '../../../../slice/record'
+import { deleteRecord, onChangeRecordDate } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 // import utils
@@ -85,6 +85,10 @@ const RecordModalScreen = ({ navigation }) => {
     navigation.navigate('trainingRecordModal', routeProps)
   }
 
+  const handleOnChangeDate = (date: Date) => {
+    dispatch(onChangeRecordDate(date))
+  }
+
   const renderRecordItems = () => {
     const recordsComponent = recordItems.map(item => {
       const renderText = parseRecord(item)
@@ -110,6 +114,7 @@ const RecordModalScreen = ({ navigation }) => {
         <TitleLabel>トレーニング日</TitleLabel>
         <DatePicker 
           date={trainingDate}
+          handleOnChangeDate={handleOnChangeDate}
         />
       </DateWrapper>
       { recordItems.length ? 
