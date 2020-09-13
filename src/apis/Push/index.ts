@@ -47,8 +47,6 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
     data: { data: 'test' }
   }
 
-  console.log(user.name)
-
   try {
     // expo serverに対して直接送信する
     await fetch("https://exp.host/--/api/v2/push/send", {

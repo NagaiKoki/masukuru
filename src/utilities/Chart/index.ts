@@ -21,7 +21,6 @@ export const getRequireWeightData = (weights: UserWeightType[], startDate: Date,
   const endDate = getHeadDay(startDate, term)
 
   weights.forEach(weight => {
-    console.log(convertTimeStampToStringOnlyMonthAndDate(weight.date))
     weightArry.push(Number(weight.weight))
     dateArry.push(convertTimeStampToStringOnlyMonthAndDate(weight.date))
     datesWithYear.push(convertTimeStampToStringOnlyDate(weight.date))
