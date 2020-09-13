@@ -19,7 +19,7 @@ const GoalSetting = ({ navigation }) => {
         headerRight: () => {
           return (
             <AddTextButton onPress={handleOnSubmit}>
-              <AddText>記録</AddText>
+              <AddText>保存</AddText>
             </AddTextButton>
           )
         }
