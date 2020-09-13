@@ -10,7 +10,7 @@ import DatePicker from '../../../common/Date'
 import SpinnerOverlay from '../../../common/Loading/SpinnerOverlay'
 import Toastr from '../../../components/Toaster'
 // import slice
-import { requestPostWeight } from '../../../slice/chart'
+import { requestPostWeight, requestFetchWeights } from '../../../slice/chart'
 // import constants
 import { WEIGHT_FORM_ERROR_MESSAGE } from '../../../constants/errorMessage'
 
@@ -58,6 +58,10 @@ const AddWeightScreen = ({ navigation }) => {
       dispatch(requestPostWeight({ weight: weight, date: date }))
       handleInVisibleLoading()
       navigation.goBack()
+
+      setTimeout(() => {
+        dispatch(requestFetchWeights({ date: new Date, type: 'week' }))
+      }, 1000)
     }, 2000)
   }
 

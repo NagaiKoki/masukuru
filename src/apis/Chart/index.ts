@@ -28,6 +28,7 @@ export const requestFetchWeights = async (date: Date, type: ChartTermType) => {
         weights.push(data)
       })
     })
+    console.log(weights.length)
     return { payload: weights }
   } catch(error) {
     console.log(error)

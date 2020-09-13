@@ -29,6 +29,8 @@ const WeightChart = () => {
   const [endDate, setendDate] = useState(new Date())
   const [term, setTerm] = useState<ChartTermType>('week')
 
+  console.log(weights.length)
+
   useEffect(() => {
     dispatch(requestFetchWeights({ date: endDate, type: term }))
     dispatch(requestFetchChartSetting())
@@ -87,9 +89,7 @@ const WeightChart = () => {
       return '年'
     }
   }
-
-  console.log(weightGoal)
-
+  
   return (
     <Container>
       <ChartWrapper>
@@ -130,7 +130,7 @@ const Container = styled.View`
 const ChartWrapper = styled.View`
   background: ${COLORS.BASE_WHITE};
   padding: 10px 15px 0 0;
-  height: 350px;
+  height: 400px;
   margin: 0 5px;
   border-radius: 10px;
   box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};

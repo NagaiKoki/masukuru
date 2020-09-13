@@ -45,7 +45,7 @@ const Container = styled.View`
 
 const Item = styled.TouchableOpacity<{ active: boolean }>`
   width: 80px;
-  border-bottom-width: ${props => props.active ? 3 : 0};
+  border-bottom-width: ${props => props.active ? 5 : 0};
   border-bottom-color: ${props => props.active ? COLORS.BASE_WHITE : COLORS.BASE_MUSCLEW};
 `
 
@@ -53,6 +53,6 @@ const ItemText = styled.Text<{ active: boolean }>`
   padding-bottom: 15px;
   color: ${COLORS.BASE_WHITE};
   font-weight: ${props => props.active ? 'bold' : 300};
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
 `

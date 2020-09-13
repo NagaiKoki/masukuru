@@ -46,10 +46,10 @@ const chartSlice = createSlice({
       }
     },
     successPostWeight: (state, action: PayloadAction<UserWeightType>) => {
-      const updateWeights = [action.payload, ...state.weights]
+      // const updateWeights = [action.payload, ...state.weights]
       return {
         ...state,
-        weights: updateWeights
+        // weights: updateWeights
       }
     },
     failurePostWeight: (state, action: PayloadAction<string>) => {

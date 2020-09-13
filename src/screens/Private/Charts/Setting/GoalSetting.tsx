@@ -5,8 +5,6 @@ import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
 // slice
 import { requestPostChartSetting } from '../../../../slice/chart'
-// import selectors
-import chartSelectors from '../../../../selectors/chart'
 // import components
 import SpinnerOverlay from '../../../../common/Loading/SpinnerOverlay'
 
