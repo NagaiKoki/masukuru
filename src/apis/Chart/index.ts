@@ -1,4 +1,5 @@
 import firebase, { db } from '../../config/firebase'
+import Analytics from '../../config/amplitude'
 // import types
 import { 
   UserWeightType, 
@@ -42,6 +43,8 @@ export const requestPostWeight = async (weight: number, date: Date) => {
   // 記録日が同じの場合はアップデート対象とする
   const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', "==", startToday).get()
   let payload: UserWeightType
+
+  Analytics.track('postWeight', { weight: weight, uid: currentUserId })
 
   try {
     await userRef.then(snap => {
@@ -104,6 +107,8 @@ export const requestFetchPostChartSetting = async (settings: RequestChartSetting
   const currentUserId = firebase.auth().currentUser.uid
   const settingRef = db.collection('users').doc(currentUserId).collection('settings')
   let payload: ResponseChartSettingType
+
+  Analytics.track('postChartSetting', { weightGoal: weightGoal, uid: currentUserId })
 
   try {
     await settingRef.get().then(snap => {
