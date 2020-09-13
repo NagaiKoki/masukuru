@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
+import { useFocusEffect } from '@react-navigation/native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // import components
 import WeightChart from '../../../components/Charts/WeightChart'
 import Header from '../../../components/Charts/Header'
@@ -9,6 +11,22 @@ import { COLORS } from '../../../constants/Styles'
 
 const ChartScreen = ({ navigation }) => {
   const [index, setIndex] = useState(0)
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <EvilIcons name="gear" 
+              size={24}
+              onPress={() => navigation.navigate('chartSetting')}
+              style={{ paddingRight: 20, color: COLORS.BASE_WHITE }}
+            />
+          )
+        }
+      })
+    }, [])
+  )
 
   const renderChart = () => {
     switch(index) {

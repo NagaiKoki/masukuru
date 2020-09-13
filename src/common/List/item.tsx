@@ -27,6 +27,7 @@ const ItemWrapper = styled.TouchableOpacity`
   border-bottom-color: ${COLORS.BORDER_COLOR_1};
   border-bottom-width: 1px;
   padding: 10px 20px;
+  background: ${COLORS.BASE_WHITE}
 `
 
 const ItemText = styled.Text`

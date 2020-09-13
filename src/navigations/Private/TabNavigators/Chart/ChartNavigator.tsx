@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { COLORS } from '../../../constants/Styles'
+import { COLORS } from '../../../../constants/Styles'
 // import screens
-import WeightChartScreen from '../../../screens/Private/Charts'
-import AddWeightScreen from '../../../screens/Private/Charts/AddWeight'
+import WeightChartScreen from '../../../../screens/Private/Charts'
+import AddWeightScreen from '../../../../screens/Private/Charts/AddWeight'
 
 const ChartNavigator = () => {
   const RecordStack = createStackNavigator();
