@@ -1,6 +1,11 @@
 import firebase, { db } from '../../config/firebase'
 // import types
-import { UserWeightType, ChartTermType } from '../../types/Chart'
+import { 
+  UserWeightType, 
+  ChartTermType,
+  RequestChartSettingType,
+  ResponseChartSettingType
+} from '../../types/Chart'
 // import utils 
 import { 
   getDayOfStortToday, 
@@ -72,6 +77,43 @@ export const requestPostWeight = async (weight: number, date: Date) => {
       }
     })
     return { paload: payload }
+  } catch(error) {
+    return { error: error }
+  }
+}
+
+export const requestFetchGetChartSetting = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const settingRef = db.collection('users').doc(currentUserId).collection('settings').get()
+  let settingArry: ResponseChartSettingType[] = []
+  try {
+    await settingRef.then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data() as ResponseChartSettingType
+        settingArry.push(data)
+      })
+    })
+    return { payload: settingArry[0] }
+  } catch(error) {
+    return { error: error }
+  }
+}
+
+export const requestFetchPostChartSetting = async (settings: RequestChartSettingType) => {
+  const { weightGoal } = settings
+  const currentUserId = firebase.auth().currentUser.uid
+
+  const settingRef = db.collection('users').doc(currentUserId).collection('settings')
+  const settingObj: ResponseChartSettingType = {
+    uid: currentUserId,
+    weightGoal: weightGoal,
+    createdAt: convertFirebaseTimeStamp(new Date),
+    updatedAt: convertFirebaseTimeStamp(new Date)
+  }
+
+  try {
+    await settingRef.add(settingObj)
+    return { payload: settingObj }
   } catch(error) {
     return { error: error }
   }

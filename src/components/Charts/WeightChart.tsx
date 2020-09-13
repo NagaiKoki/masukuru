@@ -11,7 +11,7 @@ import Loading from '../Loading'
 // import selectors
 import chartSelector from '../../selectors/chart'
 // import slices
-import { requestFetchWeights } from '../../slice/chart'
+import { requestFetchWeights, requestFetchChartSetting } from '../../slice/chart'
 // import utils
 import { 
   getRequireWeightData, 
@@ -25,12 +25,13 @@ import { COLORS } from '../../constants/Styles'
 const WeightChart = () => {
   const dispatch = useDispatch()
   const { showActionSheetWithOptions } = useActionSheet();
-  const { weights, isLoading } = chartSelector()
+  const { weights, isLoading, weightGoal } = chartSelector()
   const [endDate, setendDate] = useState(new Date())
-  const [term, setTerm] = useState<ChartTermType>('year')
+  const [term, setTerm] = useState<ChartTermType>('week')
 
   useEffect(() => {
     dispatch(requestFetchWeights({ date: endDate, type: term }))
+    dispatch(requestFetchChartSetting())
   }, [])
 
   const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
@@ -87,10 +88,13 @@ const WeightChart = () => {
     }
   }
 
+  console.log(weightGoal)
+
   return (
     <Container>
       <ChartWrapper>
         <Title>目標体重</Title>
+        <GoalText>{weightGoal === 0 ? `--` : weightGoal}kg</GoalText>
         <DateRangeContainer>
           <DateRangeWrapper>
             <IconButton onPress={handleFetchBackward}>
@@ -133,10 +137,19 @@ const ChartWrapper = styled.View`
 `
 
 const Title = styled.Text`
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: ${COLORS.BASE_BLACK};
+`
+
+const GoalText = styled.Text`
   margin: 15px 0 20px 0;
   text-align: center;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 18px;
+  color: ${COLORS.BASE_BLACK};
 `
 
 const DateRangeContainer = styled.View`

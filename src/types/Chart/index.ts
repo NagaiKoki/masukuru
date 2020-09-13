@@ -4,6 +4,7 @@ export interface ChartState {
   isLoading: boolean
   weights: UserWeightType[]
   error: string
+  weightGoal: number
 }
 
 export type UserWeightType = {
@@ -27,6 +28,17 @@ export type ChartWeightType = {
 export type RequestFetchChartType = {
   date: Date
   type: ChartTermType
+}
+
+export type RequestChartSettingType = {
+  weightGoal: number
+}
+
+export type ResponseChartSettingType = {
+  weightGoal: number
+  uid: string
+  createdAt: FirestoreTimestamp
+  updatedAt: FirestoreTimestamp
 }
 
 export type ChartTermType = 'week' | 'month' | 'year'

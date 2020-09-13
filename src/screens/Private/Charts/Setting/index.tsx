@@ -1,12 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import components
 import Item from '../../../../common/List/item'
 import { COLORS } from '../../../../constants/Styles'
+// slice
+import { requestFetchChartSetting } from '../../../../slice/chart'
+// import selectors
+import chartSelectors from '../../../../selectors/chart'
+// import components
+import Loading from '../../../../components/Loading'
 
 
 const ChartSettingScreen = ({ navigation }) => {
+
+  const dispatch = useDispatch()
+  const { isLoading, weightGoal } = chartSelectors()
+
+  useEffect(() => {
+    dispatch(requestFetchChartSetting())
+  }, [])
+
+  if (isLoading) {
+    return <Loading size="small" />
+  }
 
   const handleNavigate = (navigationName: string) => {
     navigation.navigate(navigationName)

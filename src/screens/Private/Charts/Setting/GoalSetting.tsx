@@ -1,10 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles'
+// slice
+import { requestPostChartSetting } from '../../../../slice/chart'
+// import selectors
+import chartSelectors from '../../../../selectors/chart'
+// import components
+import SpinnerOverlay from '../../../../common/Loading/SpinnerOverlay'
 
+const GoalSetting = ({ navigation }) => {
+  const [weightGoalText, setWeightGoal] = useState<number>()
+  const [isLoadingVisible, setIsLoadingVisible] = useState(false)
+  const dispatch = useDispatch()
 
-const GoalSetting = () => {
-  const [weightGoal, setWeightGoal] = useState('')
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <AddTextButton onPress={handleOnSubmit}>
+              <AddText>記録</AddText>
+            </AddTextButton>
+          )
+        }
+      })
+    }, [weightGoalText])
+  )
+
+  const handleInVisibleLoading = () => {
+    setIsLoadingVisible(false)
+  }
+
+  const handleOnSubmit = () => {
+    setIsLoadingVisible(true)
+    setTimeout(() => {
+      dispatch(requestPostChartSetting({ weightGoal: weightGoalText }))
+      handleInVisibleLoading()
+      navigation.goBack()
+    }, 2000)
+  }
+
+  if (isLoadingVisible) {
+    return (
+      <SpinnerOverlay 
+        visible={isLoadingVisible}
+        handleInVisible={handleInVisibleLoading}
+      />
+    )
+  }
 
   return (
     <Container>
@@ -14,10 +59,11 @@ const GoalSetting = () => {
         <Form 
           placeholder="50"
           autoCapitalize={'none'}
-          maxLength={5}
-          value={weightGoal}
-          onChangeText={(value: string) => setWeightGoal(value)}
+          maxLength={3}
+          value={weightGoalText}
+          onChangeText={(value: number) => setWeightGoal(value)}
           returnKeyType="done"
+          keyboardType={'numeric'}
           autoCorrect={ false }
         />
         <UnitText>kg</UnitText>
@@ -33,6 +79,17 @@ const Container = styled.View`
   padding: 40px 0;
   background: ${COLORS.BASE_BACKGROUND};
 `
+
+const AddTextButton = styled.TouchableOpacity`
+  margin-right: 20px;
+`
+
+const AddText = styled.Text`
+  color: ${COLORS.BASE_WHITE};
+  font-size: 16px;
+  font-weight: bold;
+`
+
 
 const Title = styled.Text`
   margin: 0 0 20px 15px;

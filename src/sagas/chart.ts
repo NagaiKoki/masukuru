@@ -8,22 +8,33 @@ import {
   requestPostWeight,
   successPostWeight,
   failurePostWeight,
+  requestFetchChartSetting,
+  successFetchChartSetting,
+  failureFetchChartSetting,
+  requestPostChartSetting,
+  successPostChartSetting,
+  failurePostChartSetting,
 } from '../slice/chart'
 // import types
 import { 
   RequestPostWeightType, 
   UserWeightType,
-  RequestFetchChartType
+  RequestFetchChartType,
+  RequestChartSettingType,
+  ResponseChartSettingType,
 } from '../types/Chart'
+import { ResponseType } from '../types'
 // import apis
 import { 
   requestPostWeight as requestFetchPostWeight, 
-  requestFetchWeights as requestFetchGetWeights  
+  requestFetchWeights as requestFetchGetWeights,
+  requestFetchGetChartSetting,
+  requestFetchPostChartSetting
 } from '../apis/Chart'
 
 function* runRequestFetchWeight(action: PayloadAction<RequestFetchChartType>) {
   const { date, type } = action.payload
-  const { payload, error }: { payload?: UserWeightType[], error?: string } = yield call(
+  const { payload, error }: ResponseType<UserWeightType[]> = yield call(
     requestFetchGetWeights,
     date,
     type
@@ -42,7 +53,7 @@ function* handleRequestFetchRecord() {
 
 function* runRequestPostWeight(action: PayloadAction<RequestPostWeightType>) {
   const { weight, date } = action.payload
-  const { payload, error }: { payload?: UserWeightType, error?: string } = yield call(
+  const { payload, error }: ResponseType<UserWeightType> = yield call(
     requestFetchPostWeight,
     weight,
     date
@@ -59,7 +70,42 @@ function* handleRequestPostWeight() {
   yield takeEvery(requestPostWeight.type, runRequestPostWeight)
 }
 
+function* runRequestFetchChartSetting() {
+  const { payload, error }: ResponseType<ResponseChartSettingType> = yield call(
+    requestFetchGetChartSetting
+  )
+
+  if (payload && !error) {
+    yield put(successFetchChartSetting(payload))
+  } else if (!error) {
+    yield put(failureFetchChartSetting(error))
+  }
+}
+
+function* handleRequestFetchChartSetting() {
+  yield takeEvery(requestFetchChartSetting.type, runRequestFetchChartSetting)
+}
+
+function* runRequestPostChartSetting(action: PayloadAction<RequestChartSettingType>) {
+  const { payload, error }: ResponseType<ResponseChartSettingType> = yield call(
+    requestFetchPostChartSetting,
+    action.payload
+  )
+
+  if (payload && !error) {
+    yield put(successPostChartSetting(payload))
+  } else if (!error) {
+    yield put(failurePostChartSetting(error))
+  }
+}
+
+function* handleRequestPostChartSetting() {
+  yield takeEvery(requestPostChartSetting.type, runRequestPostChartSetting)
+}
+
 export default function* chartSaga() {
   yield fork(handleRequestPostWeight)
   yield fork(handleRequestFetchRecord)
+  yield fork(handleRequestPostChartSetting)
+  yield fork(handleRequestFetchChartSetting)
 }

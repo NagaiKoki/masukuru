@@ -4,14 +4,16 @@ import {
   UserWeightType, 
   ChartState, 
   RequestPostWeightType,
-  RequestFetchChartType
+  RequestFetchChartType,
+  RequestChartSettingType,
+  ResponseChartSettingType
 } from '../types/Chart'
 
 const initialState: ChartState = {
   isLoading: false,
   weights: [],
-  
-  error: ''
+  error: '',
+  weightGoal: 0
 }
 
 const chartSlice = createSlice({
@@ -55,6 +57,42 @@ const chartSlice = createSlice({
         ...state,
         error: action.payload
       }
+    },
+    requestFetchChartSetting: (state) => {
+      return {
+        ...state,
+      }
+    },
+    successFetchChartSetting: (state, action: PayloadAction<ResponseChartSettingType>) => {
+      const { weightGoal } = action.payload
+      return {
+        ...state,
+        weightGoal,
+      }
+    },
+    failureFetchChartSetting: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
+    },
+    requestPostChartSetting: (state, action: PayloadAction<RequestChartSettingType>) => {
+      return {
+        ...state,
+      }
+    },
+    successPostChartSetting: (state, action: PayloadAction<ResponseChartSettingType>) => {
+      const { weightGoal } = action.payload
+      return {
+        ...state,
+        weightGoal
+      }
+    },
+    failurePostChartSetting: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
     }
   }
 })
@@ -65,7 +103,13 @@ export const {
   failureFetchWeights,
   requestPostWeight,
   successPostWeight,
-  failurePostWeight
+  failurePostWeight,
+  requestFetchChartSetting,
+  successFetchChartSetting,
+  failureFetchChartSetting,
+  requestPostChartSetting,
+  successPostChartSetting,
+  failurePostChartSetting
 } = chartSlice.actions
 
 export default chartSlice
