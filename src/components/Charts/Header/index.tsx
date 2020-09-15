@@ -1,8 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
-// import screen
-import WeightChart from '../WeightChart'
-import FatChart from '../FatChart'
 // import constants
 import { COLORS } from '../../../constants/Styles'
 
@@ -46,9 +43,9 @@ const Container = styled.View`
 `
 
 const Item = styled.TouchableOpacity<{ active: boolean }>`
-  width: 80px;
+  width: 70px;
   border-bottom-width: ${props => props.active ? 3 : 0};
-  border-bottom-color: ${props => props.active ? COLORS.BORDER_COLOR_1 : COLORS.BASE_MUSCLEW};
+  border-bottom-color: ${props => props.active ? COLORS.BASE_BLACK : COLORS.BASE_MUSCLEW};
 `
 
 const ItemText = styled.Text<{ active: boolean }>`

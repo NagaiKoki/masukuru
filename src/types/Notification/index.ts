@@ -27,7 +27,7 @@ export type NoticationState = {
 export type NotificationType = {
   id: string
   type: NotificationEventType,
-  from: string, // uid
+  from: string, // uid or official
   recordId?: string,
   title?: string
   groupId?: string,

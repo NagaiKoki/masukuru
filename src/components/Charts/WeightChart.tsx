@@ -31,13 +31,23 @@ const WeightChart = () => {
   const [term, setTerm] = useState<ChartTermType>('week')
   const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
 
-  useEffect(() => {
+  useEffect(()  => {
     dispatch(requestFetchWeights({ date: endDate, type: term }))
     dispatch(requestFetchChartSetting())
     return () => {
-      setLatestWeight(weightArry[weightArry.length - 1])
+      setLatestDate()
     }
   }, [])
+
+  useEffect(() => {
+    setLatestDate()
+  }, [isLoading])
+
+
+  const setLatestDate = () => {
+    const lw = weightArry[weightArry.length - 1] !== 0 ? weightArry[weightArry.length - 1] : weightArry[weightArry.length - 2]
+    setLatestWeight(lw || 0)
+  }
 
   const headDate = datesWithYear[0]
   const lastDate = datesWithYear[datesWithYear.length - 1]
@@ -146,9 +156,7 @@ const ChartWrapper = styled.View`
   background: ${COLORS.BASE_WHITE};
   padding: 10px 15px 0 0;
   height: 480px;
-  margin: 0 5px;
   border-radius: 10px;
-  box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};
 `
 
 const Title = styled.Text`
