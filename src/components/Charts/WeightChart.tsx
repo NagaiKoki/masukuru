@@ -139,6 +139,7 @@ const WeightChart = () => {
           <Chart 
             labels={ isLoading ? [''] : dateArry }
             data={ isLoading ? [0] : weightArry }
+            yAxisSuffix="kg"
           />
         }
       </ChartWrapper>

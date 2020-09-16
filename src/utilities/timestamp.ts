@@ -120,3 +120,20 @@ export const getMidnightTime = (date: Date) => {
 
   return new Date(year, month, day)
 }
+
+export const getNextDay = (date: Date) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate() + 1
+
+  return new Date(year, month, day)
+}
+
+export const getHourLaterTime = (date: Date, h: number) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+  const hour = date.getHours() + h
+
+  return new Date(year, month, day, hour)
+}
