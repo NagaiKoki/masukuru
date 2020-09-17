@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Pedometer } from 'expo-sensors'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { useActionSheet } from '@expo/react-native-action-sheet'
 // import conponents
 import Chart from '../../common/Chart'
 // import constants
@@ -15,7 +16,9 @@ import {
   getNextDay, 
   getDateLaterTime,
   getLastDay,
-  convertTimeStampToStringOnlyDate
+  convertTimeStampToStringOnlyDate,
+  isToday,
+  isLastWeek
 } from '../../utilities/timestamp'
 import { hapticFeedBack } from '../../utilities/Haptic'
 
@@ -25,6 +28,7 @@ const PedometerChart = () => {
   const [term, setTerm] = useState<Extract<ChartTermType, 'day' | 'week'>>('day')
   const [currentDate, setCurrentDate] = useState(getMidnightTime(new Date))
   const LABELS = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00']
+  const { showActionSheetWithOptions } = useActionSheet();
 
   // 歩行数を取得する
   const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
@@ -68,6 +72,7 @@ const PedometerChart = () => {
   const handleGetForward = () => {
     // 週の場合はiosの仕様上、前後を取得できないためreturnさせる
     if (term === 'week') return
+    if (isToday(currentDate)) return
     hapticFeedBack('medium')
     const nextDate = getNextDay(currentDate)
     setCurrentDate(nextDate)
@@ -76,10 +81,42 @@ const PedometerChart = () => {
 
   const handleGetBackward = () => {
     if (term === 'week') return
+    if (isLastWeek(currentDate)) return
     hapticFeedBack('medium')
     const lastDate = getLastDay(currentDate)
     setCurrentDate(lastDate)
     getPastSteps(lastDate)
+  }
+
+  const handleOnClickTerm = () => {
+    const options = ['日', '週', 'Cancel'];
+    const cancelButtonIndex = 2;
+    hapticFeedBack('medium')
+    const today = getMidnightTime(new Date())
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          setTerm('day')
+          getPastSteps(today, 'day')
+        } else if (buttonIndex === 1) {
+          setTerm('week')
+          getPastSteps(today, 'week')
+        }
+      }
+    )
+  }
+
+  const termLabel = (): '週' | '日' => {
+    if (term === 'week') {
+      return '週'
+    } else if (term === 'day') {
+      return '日'
+    }
   }
 
   return (
@@ -90,16 +127,16 @@ const PedometerChart = () => {
 
         <DateRangeContainer>
           <DateRangeWrapper>
-            <IconButton onPress={handleGetBackward}>
+            <IconButton onPress={handleGetBackward} disable={isLastWeek(currentDate)}>
               <Icon name="angle-left" size={25} />
             </IconButton>
             <DateRangeText>{convertTimeStampToStringOnlyDate(undefined, currentDate)}</DateRangeText>
-            <IconButton onPress={handleGetForward} disable={false} activeOpacity={ true ? 1 : 0.6 }>
+            <IconButton onPress={handleGetForward} disable={isToday(currentDate)} activeOpacity={ true ? 1 : 0.6 }>
               <Icon name="angle-right" size={25} />
             </IconButton>
           </DateRangeWrapper>
-          <MonthButton onPress={() => {}}>
-            <MonthText>今日</MonthText>
+          <MonthButton onPress={handleOnClickTerm}>
+            <MonthText>{termLabel()}</MonthText>
           </MonthButton>
         </DateRangeContainer>
         <Chart 

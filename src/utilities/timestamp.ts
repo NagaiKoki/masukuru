@@ -153,3 +153,11 @@ export const getDateLaterTime = (date: Date, d: number) => {
 
   return new Date(year, month, day)
 }
+
+export const isToday = (date: Date) => {
+  return new Date().getDate() === date.getDate()
+}
+
+export const isLastWeek = (date: Date) => {
+  return new Date().getDate() - 7 === date.getDate()
+}
