@@ -7,6 +7,8 @@ import { useActionSheet } from '@expo/react-native-action-sheet'
 import Chart from '../../common/Chart'
 // import constants
 import { COLORS } from '../../constants/Styles'
+// import selectors
+import chartSelector from '../../selectors/chart'
 // import types
 import { ChartTermType } from '../../types/Chart'
 // import utils
@@ -14,7 +16,6 @@ import {
   getMidnightTime, 
   getHourLaterTime, 
   getNextDay, 
-  getDateLaterTime,
   getLastDay,
   convertTimeStampToStringOnlyDate,
   convertTimeStampToStringOnlyMonthAndDate,
@@ -39,6 +40,7 @@ const PedometerChart = () => {
   const [currentDate, setCurrentDate] = useState(getMidnightTime(new Date))
   const LABELS = term === 'day' ? ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'] : getLastWeekLabels()
   const { showActionSheetWithOptions } = useActionSheet();
+  const { walkingGoal } = chartSelector()
 
   // 歩行数を取得する
   const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
@@ -54,7 +56,6 @@ const PedometerChart = () => {
         const pastStep = await Pedometer.getStepCountAsync(getLastDay(date, i), getLastDay(date, i - 1))
         pastSteps.unshift(pastStep.steps)
       }
-      console.log(pastSteps)
     }
     setPastSteps(pastSteps)
   }
@@ -158,7 +159,7 @@ const PedometerChart = () => {
   return (
     <Container>
       <ChartWrapper>
-        <GoalText>目標歩数 10000歩</GoalText>
+        <GoalText>{`目標歩数 ${walkingGoal === 0 ? '--' : walkingGoal}歩`}</GoalText>
         <CurrentStepText>{pastSteps.reduce((p, c) => p + c).toLocaleString()}歩</CurrentStepText>
         <DateRangeContainer>
           <DateRangeWrapper>

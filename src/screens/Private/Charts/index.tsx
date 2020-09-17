@@ -33,12 +33,12 @@ const ChartScreen = ({ navigation }) => {
     switch(index) {
       case 0: {
         return (
-          <WeightChart />
+          <PedometerChart />
         )
       }
       case 1: {
         return (
-          <PedometerChart />
+          <WeightChart />
         )
       }
     }
@@ -53,7 +53,7 @@ const ChartScreen = ({ navigation }) => {
       <Wrapper>
         {renderChart()}
       </Wrapper>
-      <AddButton navigation={navigation} />
+      { index === 0 ? <AddButton navigation={navigation} /> : null }
     </Container>
   )  
 }

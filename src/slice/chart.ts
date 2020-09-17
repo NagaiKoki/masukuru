@@ -14,6 +14,7 @@ const initialState: ChartState = {
   weights: [],
   error: '',
   weightGoal: 0,
+  walkingGoal: 0
 }
 
 const chartSlice = createSlice({
@@ -46,10 +47,8 @@ const chartSlice = createSlice({
       }
     },
     successPostWeight: (state, action: PayloadAction<UserWeightType>) => {
-      // const updateWeights = [action.payload, ...state.weights]
       return {
         ...state,
-        // weights: updateWeights
       }
     },
     failurePostWeight: (state, action: PayloadAction<string>) => {
@@ -64,10 +63,11 @@ const chartSlice = createSlice({
       }
     },
     successFetchChartSetting: (state, action: PayloadAction<ResponseChartSettingType>) => {
-      const { weightGoal } = action.payload
+      const { weightGoal, walkingGoal } = action.payload
       return {
         ...state,
         weightGoal,
+        walkingGoal
       }
     },
     failureFetchChartSetting: (state, action: PayloadAction<string>) => {

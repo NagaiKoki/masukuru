@@ -22,10 +22,10 @@ const ChartHeader = (props: ChartHeaderProps) => {
   return (
     <Container>
       <Item active={isActive(0)} onPress={() => handleOnSwitch(0)}>
-        <ItemText active={isActive(0)}>体重</ItemText>
+        <ItemText active={isActive(0)}>歩数計</ItemText>
       </Item>
       <Item active={isActive(1)} onPress={() => handleOnSwitch(1)}>
-        <ItemText active={isActive(1)}>歩数計</ItemText>
+        <ItemText active={isActive(1)}>体重</ItemText>
       </Item>
     </Container>
   )
@@ -36,14 +36,15 @@ export default ChartHeader
 const Container = styled.View`
   flex-direction: row;
   padding-top: 20px;
-  padding-left: 20px;
+  padding-left: 10px;
   background: ${COLORS.BASE_BACKGROUND};
   border-bottom-width: 1;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
 `
 
 const Item = styled.TouchableOpacity<{ active: boolean }>`
-  width: 70px;
+  width: 80px;
+  margin: 0 5px;
   border-bottom-width: ${props => props.active ? 3 : 0};
   border-bottom-color: ${props => props.active ? COLORS.BASE_BLACK : COLORS.BASE_MUSCLEW};
 `
