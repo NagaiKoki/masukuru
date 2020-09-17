@@ -41,4 +41,4 @@ export type ResponseChartSettingType = {
   updatedAt: FirestoreTimestamp
 }
 
-export type ChartTermType = 'week' | 'month' | 'year'
+export type ChartTermType = 'day' | 'week' | 'month' | 'year'

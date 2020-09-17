@@ -104,7 +104,7 @@ const WeightChart = () => {
 
   const diffWeight = (): string => {
     if (weightGoal === 0) return '0'
-    const diff = weightGoal - latestWeight
+    const diff = Math.round(((weightGoal - latestWeight) * 10)) / 10
     if (diff === 0) {
       return '0'
     } else if (diff < 0) {
