@@ -17,17 +17,27 @@ import {
   getDateLaterTime,
   getLastDay,
   convertTimeStampToStringOnlyDate,
+  convertTimeStampToStringOnlyMonthAndDate,
   isToday,
   isLastWeek
 } from '../../utilities/timestamp'
 import { hapticFeedBack } from '../../utilities/Haptic'
+
+const getLastWeekLabels = (): string[] => {
+  let days: string[] = []
+  for (let i = 0; i < 7; i++) {
+    const lastDay = getLastDay(new Date(), i)
+    days.unshift(convertTimeStampToStringOnlyMonthAndDate(undefined, lastDay))
+  }
+  return days;
+}
 
 const PedometerChart = () => {
   const [stepCount, setStepCount] = useState(0)
   const [pastSteps, setPastSteps] = useState<number[]>([])
   const [term, setTerm] = useState<Extract<ChartTermType, 'day' | 'week'>>('day')
   const [currentDate, setCurrentDate] = useState(getMidnightTime(new Date))
-  const LABELS = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00']
+  const LABELS = term === 'day' ? ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'] : getLastWeekLabels()
   const { showActionSheetWithOptions } = useActionSheet();
 
   // 歩行数を取得する
@@ -40,10 +50,11 @@ const PedometerChart = () => {
         pastSteps.push(pastStep.steps)
       }
     } else if (term === 'week') {
-      for (let i = 0; i < 7; i++ ) {
-        const pastStep = await Pedometer.getStepCountAsync(getDateLaterTime(date, i), getDateLaterTime(date, i + 1))
-        pastSteps.push(pastStep.steps)
+      for (let i = 7; i > 0; i--) {   
+        const pastStep = await Pedometer.getStepCountAsync(getLastDay(date, i), getLastDay(date, i - 1))
+        pastSteps.unshift(pastStep.steps)
       }
+      console.log(pastSteps)
     }
     setPastSteps(pastSteps)
   }
@@ -62,7 +73,7 @@ const PedometerChart = () => {
   }, [])
 
   useEffect(() => {
-    getPastSteps(currentDate)
+    getPastSteps(currentDate, 'day')
   }, [stepCount])
 
   if (!pastSteps.length) {
@@ -107,6 +118,7 @@ const PedometerChart = () => {
           setTerm('week')
           getPastSteps(today, 'week')
         }
+        setCurrentDate(new Date())
       }
     )
   }
@@ -119,21 +131,40 @@ const PedometerChart = () => {
     }
   }
 
+  const rangeDate = (): string => {
+    if (term === 'day') {
+      return convertTimeStampToStringOnlyDate(undefined, currentDate)
+    } else if (term === 'week') {
+      const lastWeekDays = convertTimeStampToStringOnlyDate(undefined, getLastDay(currentDate, 6))
+      const today = convertTimeStampToStringOnlyDate(undefined, new Date)
+      return `${lastWeekDays} ~ ${today}`
+    }
+  }
+
+  const disable = (bool: boolean) => {
+    return bool || term === 'week'
+  }
+
+  const renderBackwardBtn = term === 'day' ?
+    <IconButton onPress={handleGetBackward} disable={disable(isLastWeek(currentDate))} activeOpacity={ disable(isLastWeek(currentDate)) ? 1 : 0.6 } >
+      <Icon name="angle-left" size={25} />
+    </IconButton> : null
+  
+  const renderForwardBtn = term === 'day' ?
+    <IconButton onPress={handleGetForward} disable={disable(isToday(currentDate))} activeOpacity={ disable(isToday(currentDate)) ? 1 : 0.6 }>
+      <Icon name="angle-right" size={25} />
+    </IconButton> : null
+
   return (
     <Container>
       <ChartWrapper>
         <GoalText>目標歩数 10000歩</GoalText>
         <CurrentStepText>{pastSteps.reduce((p, c) => p + c).toLocaleString()}歩</CurrentStepText>
-
         <DateRangeContainer>
           <DateRangeWrapper>
-            <IconButton onPress={handleGetBackward} disable={isLastWeek(currentDate)}>
-              <Icon name="angle-left" size={25} />
-            </IconButton>
-            <DateRangeText>{convertTimeStampToStringOnlyDate(undefined, currentDate)}</DateRangeText>
-            <IconButton onPress={handleGetForward} disable={isToday(currentDate)} activeOpacity={ true ? 1 : 0.6 }>
-              <Icon name="angle-right" size={25} />
-            </IconButton>
+            {renderBackwardBtn}
+            <DateRangeText>{rangeDate()}</DateRangeText>
+            {renderForwardBtn}
           </DateRangeWrapper>
           <MonthButton onPress={handleOnClickTerm}>
             <MonthText>{termLabel()}</MonthText>
