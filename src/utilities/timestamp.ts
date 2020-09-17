@@ -121,10 +121,18 @@ export const getMidnightTime = (date: Date) => {
   return new Date(year, month, day)
 }
 
-export const getNextDay = (date: Date) => {
+export const getNextDay = (date: Date, increment: number = 1) => {
   const year = date.getFullYear()
   const month = date.getMonth()
-  const day = date.getDate() + 1
+  const day = date.getDate() + increment
+
+  return new Date(year, month, day)
+}
+
+export const getLastDay = (date: Date, decrease: number = 1) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate() - decrease
 
   return new Date(year, month, day)
 }
@@ -136,4 +144,12 @@ export const getHourLaterTime = (date: Date, h: number) => {
   const hour = date.getHours() + h
 
   return new Date(year, month, day, hour)
+}
+
+export const getDateLaterTime = (date: Date, d: number) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate() + d
+
+  return new Date(year, month, day)
 }

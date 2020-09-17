@@ -2,20 +2,47 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Pedometer } from 'expo-sensors'
 import Icon from 'react-native-vector-icons/FontAwesome'
-// import utils
-import { getMidnightTime, getHourLaterTime } from '../../utilities/timestamp'
 // import conponents
 import Chart from '../../common/Chart'
 // import constants
 import { COLORS } from '../../constants/Styles'
 // import types
 import { ChartTermType } from '../../types/Chart'
+// import utils
+import { 
+  getMidnightTime, 
+  getHourLaterTime, 
+  getNextDay, 
+  getDateLaterTime,
+  getLastDay,
+  convertTimeStampToStringOnlyDate
+} from '../../utilities/timestamp'
+import { hapticFeedBack } from '../../utilities/Haptic'
 
 const PedometerChart = () => {
   const [stepCount, setStepCount] = useState(0)
   const [pastSteps, setPastSteps] = useState<number[]>([])
   const [term, setTerm] = useState<Extract<ChartTermType, 'day' | 'week'>>('day')
+  const [currentDate, setCurrentDate] = useState(getMidnightTime(new Date))
   const LABELS = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00']
+
+  // 歩行数を取得する
+  const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
+    let pastSteps: number[] = []
+    
+    if (term === 'day') {
+      for (let i = 0; i < 24; i++ ) {
+        const pastStep = await Pedometer.getStepCountAsync(getHourLaterTime(date, i), getHourLaterTime(date, i + 1))
+        pastSteps.push(pastStep.steps)
+      }
+    } else if (term === 'week') {
+      for (let i = 0; i < 7; i++ ) {
+        const pastStep = await Pedometer.getStepCountAsync(getDateLaterTime(date, i), getDateLaterTime(date, i + 1))
+        pastSteps.push(pastStep.steps)
+      }
+    }
+    setPastSteps(pastSteps)
+  }
 
   useEffect(() => {
     const isPedometerAvailable = async () => {
@@ -31,22 +58,28 @@ const PedometerChart = () => {
   }, [])
 
   useEffect(() => {
-    const start = getMidnightTime(new Date())
-    const getPastSteps = async () => {
-      let pastSteps: number[] = []
-      
-      for (let i = 0; i < 24; i++ ) {
-        const pastStep = await Pedometer.getStepCountAsync(getHourLaterTime(start, i), getHourLaterTime(start, i + 1))
-        pastSteps.push(pastStep.steps)
-      }
-      
-      setPastSteps(pastSteps)
-    }
-    getPastSteps()
+    getPastSteps(currentDate)
   }, [stepCount])
 
   if (!pastSteps.length) {
     return <></>
+  }
+
+  const handleGetForward = () => {
+    // 週の場合はiosの仕様上、前後を取得できないためreturnさせる
+    if (term === 'week') return
+    hapticFeedBack('medium')
+    const nextDate = getNextDay(currentDate)
+    setCurrentDate(nextDate)
+    getPastSteps(nextDate)
+  }
+
+  const handleGetBackward = () => {
+    if (term === 'week') return
+    hapticFeedBack('medium')
+    const lastDate = getLastDay(currentDate)
+    setCurrentDate(lastDate)
+    getPastSteps(lastDate)
   }
 
   return (
@@ -57,11 +90,11 @@ const PedometerChart = () => {
 
         <DateRangeContainer>
           <DateRangeWrapper>
-            <IconButton onPress={() => {}}>
+            <IconButton onPress={handleGetBackward}>
               <Icon name="angle-left" size={25} />
             </IconButton>
-            <DateRangeText>{`今日`}</DateRangeText>
-            <IconButton onPress={() => {}} disable={false} activeOpacity={ true ? 1 : 0.6 }>
+            <DateRangeText>{convertTimeStampToStringOnlyDate(undefined, currentDate)}</DateRangeText>
+            <IconButton onPress={handleGetForward} disable={false} activeOpacity={ true ? 1 : 0.6 }>
               <Icon name="angle-right" size={25} />
             </IconButton>
           </DateRangeWrapper>

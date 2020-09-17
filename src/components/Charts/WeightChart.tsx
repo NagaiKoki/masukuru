@@ -19,6 +19,7 @@ import {
   getNextDay,
 } from '../../utilities/Chart'
 import { getMidnightTime } from '../../utilities/timestamp'
+import { hapticFeedBack } from '../../utilities/Haptic'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
@@ -53,6 +54,7 @@ const WeightChart = () => {
   const lastDate = datesWithYear[datesWithYear.length - 1]
 
   const handleFetchBackward = () => {
+    hapticFeedBack('medium')
     const lastDay = getLastDay(endDate, term)
     setendDate(lastDay)
     dispatch(requestFetchWeights({ date: lastDay, type: term }))
@@ -63,6 +65,7 @@ const WeightChart = () => {
 
   const handleFetchForward = () => {
     if (isTodayLastDay) return
+    hapticFeedBack('medium')
     const nextDay = getNextDay(endDate, term)
     setendDate(nextDay)
     dispatch(requestFetchWeights({ date: nextDay, type: term }))
@@ -71,6 +74,7 @@ const WeightChart = () => {
   const handleOnClickTerm = () => {
     const options = ['週', '月', '年', 'Cancel'];
     const cancelButtonIndex = 3;
+    hapticFeedBack('medium')
 
     showActionSheetWithOptions(
       {
