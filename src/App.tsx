@@ -14,13 +14,14 @@ YellowBox.ignoreWarnings([
   'Setting a timer'
 ])
 
+if (__DEV__) {
+  Clipboard.setString('')
+}
+
 const App = () => {
 // atobがないとのエラーがfirebaseで出るので、代入する
 if (!window.btoa) {  window.btoa = encode }
 if (!window.atob) { window.atob = decode }
-if (__DEV__) {
-  Clipboard.setString('')
-}
 
   return (
     <Container>

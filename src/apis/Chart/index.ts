@@ -109,9 +109,6 @@ export const requestFetchPostChartSetting = async (settings: RequestChartSetting
   let payload: ResponseChartSettingType
   Analytics.track('postChartSetting', { weightGoal: weightGoal, uid: currentUserId })
 
-  console.log(weightGoal)
-  console.log(walkingGoal)
-
   try {
     await settingRef.get().then(snap => {
       if (!snap.empty) {

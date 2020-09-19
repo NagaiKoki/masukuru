@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Pedometer } from 'expo-sensors'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 // import conponents
 import Chart from '../../common/Chart'
@@ -9,6 +9,8 @@ import SelectTermBtn from './Term/SelectTermBtn'
 import EmptyState from './EmptyState'
 // import constants
 import { COLORS } from '../../constants/Styles'
+// import slice
+import { requestFetchChartSetting } from '../../slice/chart'
 // import selectors
 import chartSelector from '../../selectors/chart'
 // import types
@@ -38,11 +40,13 @@ const getLastWeekLabels = (): string[] => {
 const PedometerChart = () => {
   const [stepCount, setStepCount] = useState(0)
   const [pastSteps, setPastSteps] = useState<number[]>([])
+  const [availableSensor, setAvailableSensor] = useState(false)
   const [term, setTerm] = useState<Extract<ChartTermType, 'day' | 'week'>>('day')
   const [currentDate, setCurrentDate] = useState(getMidnightTime(new Date))
   const LABELS = term === 'day' ? ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'] : getLastWeekLabels()
   const { showActionSheetWithOptions } = useActionSheet();
   const { walkingGoal } = chartSelector()
+  const dispatch = useDispatch()
 
   // 歩行数を取得する
   const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
@@ -65,6 +69,7 @@ const PedometerChart = () => {
   useEffect(() => {
     const isPedometerAvailable = async () => {
       const isAvailable = await Pedometer.isAvailableAsync()
+      setAvailableSensor(isAvailable)
       return isAvailable
     }
 
@@ -73,14 +78,22 @@ const PedometerChart = () => {
         setStepCount(result.steps)
       })
     }
+
+    dispatch(requestFetchChartSetting())
   }, [])
 
   useEffect(() => {
     getPastSteps(currentDate, 'day')
   }, [stepCount])
 
-  if (!pastSteps.length) {
-    return <></>
+  if (!availableSensor) {
+    return (
+      <EmptyState text="歩数の計測を許可する" />
+    )
+  } else if (!pastSteps.length) {
+    return (
+      <></>
+    )
   }
 
   const handleGetForward = () => {

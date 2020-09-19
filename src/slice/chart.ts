@@ -82,10 +82,11 @@ const chartSlice = createSlice({
       }
     },
     successPostChartSetting: (state, action: PayloadAction<ResponseChartSettingType>) => {
-      const { weightGoal } = action.payload
+      const { weightGoal, walkingGoal } = action.payload
       return {
         ...state,
-        weightGoal
+        weightGoal,
+        walkingGoal
       }
     },
     failurePostChartSetting: (state, action: PayloadAction<string>) => {

@@ -15,7 +15,7 @@ const SelectTermBtn = (props: Props) => {
   const { direction, disable, activeOpacity, handleOnClick } = props
   return (
     <IconButton onPress={handleOnClick} disable={disable} activeOpacity={activeOpacity}>
-      <Icon name={ direction === 'forward' ? "angle-left" : "angle-right" } size={25} />
+      <Icon name={ direction === 'backward' ? "angle-left" : "angle-right" } size={25} />
     </IconButton>
   )
 }

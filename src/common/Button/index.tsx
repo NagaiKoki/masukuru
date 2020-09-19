@@ -23,10 +23,11 @@ export default Button
 const Wrapper = styled.TouchableOpacity<{ background?: string }>`
   border-radius: 4px;
   background: ${props => props.background ? props.background : COLORS.BASE_MUSCLEW};
-  padding: 5px 15px;
+  padding: 10px 15px;
 `
 
 const ButtonText = styled.Text`
   color: ${COLORS.BASE_WHITE};
   font-size: 14px;
+  text-align: center;
 `
