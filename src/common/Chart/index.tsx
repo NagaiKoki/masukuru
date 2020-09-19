@@ -7,10 +7,11 @@ import { COLORS } from '../../constants/Styles'
 interface ChartProps {
   labels: string[]
   data: number[]
+  yAxisSuffix: string
 }
 
 const Chart = (props: ChartProps) => {
-  const { labels, data } = props
+  const { labels, data, yAxisSuffix } = props
   const chartConfig = {
     backgroundColor: '#fff',
     backgroundGradientFrom: '#fff',
@@ -44,7 +45,7 @@ const Chart = (props: ChartProps) => {
           marginVertical: 8,
         }}
         chartConfig={chartConfig}
-        yAxisSuffix={'kg'}
+        yAxisSuffix={yAxisSuffix}
         height={220}
         getDotColor={() => `${COLORS.BASE_MUSCLEW}`}
         width={Dimensions.get("window").width - 20}

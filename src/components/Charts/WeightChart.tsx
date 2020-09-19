@@ -19,6 +19,7 @@ import {
   getNextDay,
 } from '../../utilities/Chart'
 import { getMidnightTime } from '../../utilities/timestamp'
+import { hapticFeedBack } from '../../utilities/Haptic'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
@@ -28,7 +29,7 @@ const WeightChart = () => {
   const { weights, isLoading, weightGoal } = chartSelector()
   const [endDate, setendDate] = useState(new Date())
   const [latestWeight, setLatestWeight] = useState(0)
-  const [term, setTerm] = useState<ChartTermType>('week')
+  const [term, setTerm] = useState<Extract<ChartTermType, 'week' | 'month' | 'year'>>('week')
   const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
 
   useEffect(()  => {
@@ -53,6 +54,7 @@ const WeightChart = () => {
   const lastDate = datesWithYear[datesWithYear.length - 1]
 
   const handleFetchBackward = () => {
+    hapticFeedBack('medium')
     const lastDay = getLastDay(endDate, term)
     setendDate(lastDay)
     dispatch(requestFetchWeights({ date: lastDay, type: term }))
@@ -63,6 +65,7 @@ const WeightChart = () => {
 
   const handleFetchForward = () => {
     if (isTodayLastDay) return
+    hapticFeedBack('medium')
     const nextDay = getNextDay(endDate, term)
     setendDate(nextDay)
     dispatch(requestFetchWeights({ date: nextDay, type: term }))
@@ -71,6 +74,7 @@ const WeightChart = () => {
   const handleOnClickTerm = () => {
     const options = ['週', '月', '年', 'Cancel'];
     const cancelButtonIndex = 3;
+    hapticFeedBack('medium')
 
     showActionSheetWithOptions(
       {
@@ -104,7 +108,7 @@ const WeightChart = () => {
 
   const diffWeight = (): string => {
     if (weightGoal === 0) return '0'
-    const diff = weightGoal - latestWeight
+    const diff = Math.round(((weightGoal - latestWeight) * 10)) / 10
     if (diff === 0) {
       return '0'
     } else if (diff < 0) {
@@ -139,6 +143,7 @@ const WeightChart = () => {
           <Chart 
             labels={ isLoading ? [''] : dateArry }
             data={ isLoading ? [0] : weightArry }
+            yAxisSuffix="kg"
           />
         }
       </ChartWrapper>

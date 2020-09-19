@@ -11,9 +11,10 @@ import SpinnerOverlay from '../../../../common/Loading/SpinnerOverlay'
 import chartSelector from '../../../../selectors/chart'
 
 const GoalSetting = ({ navigation }) => {
-  const [weightGoalText, setWeightGoal] = useState<number>()
+  const { weightGoal, walkingGoal } = chartSelector()
+  const [weightGoalText, setWeightGoal] = useState<number>(weightGoal)
+  const [walkingGoalText, setWalkingGoal] = useState<number>(walkingGoal)
   const [isLoadingVisible, setIsLoadingVisible] = useState(false)
-  const { weightGoal } = chartSelector()
   const dispatch = useDispatch()
 
   useFocusEffect(
@@ -27,7 +28,7 @@ const GoalSetting = ({ navigation }) => {
           )
         }
       })
-    }, [weightGoalText])
+    }, [weightGoalText, walkingGoalText])
   )
 
   const handleInVisibleLoading = () => {
@@ -37,7 +38,7 @@ const GoalSetting = ({ navigation }) => {
   const handleOnSubmit = () => {
     setIsLoadingVisible(true)
     setTimeout(() => {
-      dispatch(requestPostChartSetting({ weightGoal: weightGoalText }))
+      dispatch(requestPostChartSetting({ weightGoal: weightGoalText, walkingGoal: walkingGoalText }))
       handleInVisibleLoading()
       navigation.goBack()
     }, 2000)
@@ -52,24 +53,45 @@ const GoalSetting = ({ navigation }) => {
     )
   }
 
+  const handleSetWeight = (text: number) => {
+    setWeightGoal(text)
+  }
+
+  const handleSetWalking = (text: number) => {
+    setWalkingGoal(text)
+  }
+
+  const renderItem = (
+    title: string, func: (text: number) => void, value: number, 
+    defaultValue: number, placeholder: string, unit: string,
+    maxLength: number = 3, width: string = '70px'
+  ) => {  
+    return (
+      <ItemWrapper>
+        <Wrapper>
+          <Label>{title}</Label>
+          <Form 
+            placeholder={placeholder}
+            autoCapitalize={'none'}
+            maxLength={maxLength}
+            value={value}
+            defaultValue={ defaultValue || defaultValue !== 0 ? defaultValue : '' }
+            onChangeText={ (value: number) => func(value) }
+            returnKeyType="done"
+            keyboardType={'numeric'}
+            autoCorrect={ false }
+            width={width}
+          />
+          <UnitText>{unit}</UnitText>
+        </Wrapper>
+      </ItemWrapper>
+    )
+  }
+
   return (
     <Container>
-      <Title>体重</Title>
-      <Wrapper>
-        <Label>目標値</Label>
-        <Form 
-          placeholder="50"
-          autoCapitalize={'none'}
-          maxLength={3}
-          value={weightGoalText}
-          defaultValue={weightGoal ? weightGoal : ''}
-          onChangeText={(value: number) => setWeightGoal(value)}
-          returnKeyType="done"
-          keyboardType={'numeric'}
-          autoCorrect={ false }
-        />
-        <UnitText>kg</UnitText>
-      </Wrapper>
+      {renderItem('体重', handleSetWeight, weightGoalText, weightGoal, '50', 'kg')}
+      {renderItem('歩行数', handleSetWalking, walkingGoalText, walkingGoal, '10000', '歩', 6, '100px')}
     </Container>
   )
 }
@@ -80,6 +102,10 @@ const Container = styled.View`
   flex: 1;
   padding: 40px 0;
   background: ${COLORS.BASE_BACKGROUND};
+`
+
+const ItemWrapper = styled.View`
+  margin-bottom: 40px;
 `
 
 const AddTextButton = styled.TouchableOpacity`
@@ -117,12 +143,12 @@ const Label = styled.Text`
   color: ${COLORS.BASE_BLACK};
 `
 
-const Form = styled.TextInput`
+const Form = styled.TextInput<{ width: string }>`
   align-self: center;
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
   height: 40px;
-  width: 70px;
+  width: ${props => props.width};
   margin: 10px 0;
   margin-right: 10px;
   padding: 5px 15px;

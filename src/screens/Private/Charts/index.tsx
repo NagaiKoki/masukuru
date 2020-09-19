@@ -4,6 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // import components
 import WeightChart from '../../../components/Charts/WeightChart'
+import PedometerChart from '../../../components/Charts/PedometerChart'
 import Header from '../../../components/Charts/Header'
 import AddButton from '../../../components/Charts/AddButton'
 // import constants
@@ -32,6 +33,11 @@ const ChartScreen = ({ navigation }) => {
     switch(index) {
       case 0: {
         return (
+          <PedometerChart />
+        )
+      }
+      case 1: {
+        return (
           <WeightChart />
         )
       }
@@ -47,7 +53,7 @@ const ChartScreen = ({ navigation }) => {
       <Wrapper>
         {renderChart()}
       </Wrapper>
-      <AddButton navigation={navigation} />
+      { index === 1 ? <AddButton navigation={navigation} /> : null }
     </Container>
   )  
 }

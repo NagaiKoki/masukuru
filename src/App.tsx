@@ -5,13 +5,18 @@ import Navigator from './navigations/index';
 import {decode, encode} from 'base-64'
 import store from './reducers'
 import { Provider } from 'react-redux'
-import { YellowBox } from 'react-native'
+import { YellowBox, Clipboard } from 'react-native'
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet'
+
 
 // シミュレーション上の Setting a timer エラーを非表示
 YellowBox.ignoreWarnings([
   'Setting a timer'
 ])
+
+if (__DEV__) {
+  Clipboard.setString('')
+}
 
 const App = () => {
 // atobがないとのエラーがfirebaseで出るので、代入する

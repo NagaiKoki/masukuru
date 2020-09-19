@@ -16,7 +16,7 @@ import Loading from '../../../../components/Loading'
 const ChartSettingScreen = ({ navigation }) => {
 
   const dispatch = useDispatch()
-  const { isLoading, weightGoal } = chartSelectors()
+  const { isLoading } = chartSelectors()
 
   useEffect(() => {
     dispatch(requestFetchChartSetting())
