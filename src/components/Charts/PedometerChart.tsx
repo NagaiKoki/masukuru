@@ -164,14 +164,16 @@ const PedometerChart = () => {
   const diffMessage = () => {
     if (term === 'week') return
     const diff = Number(pastSteps.reduce((p, c) => p + c)) - walkingGoal
-    if (isAchieved()) {
+    if (walkingGoal === 0) {
+      return '右上の設定から目標歩数を設定しよう♪'
+    } else if (isAchieved()) {
       return `+${diff}歩で目標達成しました♪`
     } else {
-      return `目標達成まで、あと${diff}歩です。`
+      return `目標達成まで、あと${Math.abs(diff)}歩です。`
     }
   }
-
-  if (!availableSensor) {
+  
+  if (!availableSensor || (!pastSteps.length && isMounted)) {
     return (
       <EmptyState text="歩数の計測を許可する" />
     )
