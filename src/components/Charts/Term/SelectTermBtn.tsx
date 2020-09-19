@@ -23,8 +23,8 @@ const SelectTermBtn = (props: Props) => {
 export default SelectTermBtn
 
 const IconButton = styled.TouchableOpacity<{ disable?: boolean }>`
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   justify-content: center;
   align-items: center;
   border-radius: 30;

@@ -64,7 +64,7 @@ const GoalSetting = ({ navigation }) => {
   const renderItem = (
     title: string, func: (text: number) => void, value: number, 
     defaultValue: number, placeholder: string, unit: string,
-    maxLength: number = 3, width: string = '70px'
+    maxLength: number = 5, width: string = '70px'
   ) => {  
     return (
       <ItemWrapper>
@@ -91,7 +91,7 @@ const GoalSetting = ({ navigation }) => {
   return (
     <Container>
       {renderItem('体重', handleSetWeight, weightGoalText, weightGoal, '50', 'kg')}
-      {renderItem('歩行数', handleSetWalking, walkingGoalText, walkingGoal, '10000', '歩', 6, '100px')}
+      {renderItem('歩行数', handleSetWalking, walkingGoalText, walkingGoal, '10000', '歩 / 日', 6, '100px')}
     </Container>
   )
 }
