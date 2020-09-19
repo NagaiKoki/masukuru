@@ -107,7 +107,7 @@ export const requestFetchPostChartSetting = async (settings: RequestChartSetting
   const currentUserId = firebase.auth().currentUser.uid
   const settingRef = db.collection('users').doc(currentUserId).collection('settings')
   let payload: ResponseChartSettingType
-  Analytics.track('postChartSetting', { weightGoal: weightGoal, uid: currentUserId })
+  Analytics.track('postChartSetting', { weightGoal: weightGoal, walkingGoal: walkingGoal, uid: currentUserId })
 
   try {
     await settingRef.get().then(snap => {

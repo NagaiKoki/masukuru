@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import * as Permissions from 'expo-permissions'
 import styled from 'styled-components'
 import { Pedometer } from 'expo-sensors'
 import { useActionSheet } from '@expo/react-native-action-sheet'
@@ -27,6 +28,7 @@ import {
   isLastWeek
 } from '../../utilities/timestamp'
 import { hapticFeedBack } from '../../utilities/Haptic'
+import Analytics from '../../config/amplitude'
 
 const getLastWeekLabels = (): string[] => {
   let days: string[] = []
@@ -40,6 +42,7 @@ const getLastWeekLabels = (): string[] => {
 const PedometerChart = () => {
   const [stepCount, setStepCount] = useState(0)
   const [pastSteps, setPastSteps] = useState<number[]>([])
+  const [isMounted, setIsMounted] = useState(false)
   const [availableSensor, setAvailableSensor] = useState(false)
   const [term, setTerm] = useState<Extract<ChartTermType, 'day' | 'week'>>('day')
   const [currentDate, setCurrentDate] = useState(getMidnightTime(new Date))
@@ -58,18 +61,21 @@ const PedometerChart = () => {
         pastSteps.push(pastStep.steps)
       }
     } else if (term === 'week') {
-      for (let i = 7; i > 0; i--) {   
+      for (let i = 6; i >= 0; i--) {   
         const pastStep = await Pedometer.getStepCountAsync(getLastDay(date, i), getLastDay(date, i - 1))
-        pastSteps.unshift(pastStep.steps)
+        pastSteps.push(pastStep.steps)
       }
     }
     setPastSteps(pastSteps)
   }
 
   useEffect(() => {
+    Analytics.track('visitPedometerChart')
     const isPedometerAvailable = async () => {
       const isAvailable = await Pedometer.isAvailableAsync()
-      setAvailableSensor(isAvailable)
+      const { status } = await Permissions.askAsync(Permissions.MOTION);
+      console.log(isAvailable)
+      setAvailableSensor(isAvailable && status === 'granted')
       return isAvailable
     }
 
@@ -80,21 +86,12 @@ const PedometerChart = () => {
     }
 
     dispatch(requestFetchChartSetting())
+    setIsMounted(true)
   }, [])
 
   useEffect(() => {
     getPastSteps(currentDate, 'day')
   }, [stepCount])
-
-  if (!availableSensor) {
-    return (
-      <EmptyState text="歩数の計測を許可する" />
-    )
-  } else if (!pastSteps.length) {
-    return (
-      <></>
-    )
-  }
 
   const handleGetForward = () => {
     // 週の場合はiosの仕様上、前後を取得できないためreturnさせる
@@ -161,11 +158,35 @@ const PedometerChart = () => {
     return bool || term === 'week'
   }
 
+  const isAchieved = (): boolean => {
+    const sum = pastSteps.reduce((p, c) => p + c)
+    return Number(sum) >= walkingGoal
+  }
+
+  const diffMessage = () => {
+    if (term === 'week') return
+    const diff = Number(pastSteps.reduce((p, c) => p + c)) - walkingGoal
+    if (isAchieved()) {
+      return `+${diff}歩で目標達成しました♪`
+    } else {
+      return `目標達成まで、あと${diff}歩です。`
+    }
+  }
+
+  // センサーを許可しておらず、歩数計もカウントがない場合
+  if (!availableSensor || (!pastSteps.length && !isMounted)) {
+    return (
+      <EmptyState text="歩数の計測を許可する" />
+    )
+  }
+
   return (
+    isMounted && pastSteps.length ?
     <Container>
       <ChartWrapper>
-        <GoalText>{`目標歩数 ${walkingGoal === 0 ? '--' : walkingGoal}歩`}</GoalText>
+        <GoalText>{ term === 'day' ? `目標歩数 ${walkingGoal === 0 ? '--' : walkingGoal}歩` : null }</GoalText>
         <CurrentStepText>{pastSteps.reduce((p, c) => p + c).toLocaleString()}歩</CurrentStepText>
+        <AchivedText>{diffMessage()}</AchivedText>
         <DateRangeContainer>
           <DateRangeWrapper>
             <SelectTermBtn 
@@ -192,7 +213,7 @@ const PedometerChart = () => {
           yAxisSuffix=""
         />
       </ChartWrapper>
-    </Container>
+    </Container> : null
   )
 }
 
@@ -209,6 +230,13 @@ const ChartWrapper = styled.View`
 
 const GoalText = styled.Text`
   margin-top: 15px;
+  text-align: center;
+  font-size: 15px;
+  color: ${COLORS.SUB_BLACK};
+`
+
+const AchivedText = styled.Text`
+  margin: 10px 0;
   text-align: center;
   font-size: 15px;
   color: ${COLORS.SUB_BLACK};

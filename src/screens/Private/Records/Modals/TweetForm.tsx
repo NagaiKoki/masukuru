@@ -83,7 +83,7 @@ const AddRecordWordScreen = ({ navigation, route }) => {
     <UploadImageView>
       { temporaryUrl ? <Image source={{ uri: temporaryUrl }} style={{ width: 200, height: 150, resizeMode: 'cover', borderRadius: 4 }} /> : null }
       { temporaryUrl ? 
-         <ImageCloseBtn onPress={handleOnDeleteImage}>
+        <ImageCloseBtn onPress={handleOnDeleteImage}>
           <Icon name="times-circle" size={20} style={{ color: COLORS.BASE_WHITE }} />
         </ImageCloseBtn> :
         null
@@ -98,7 +98,7 @@ const AddRecordWordScreen = ({ navigation, route }) => {
       <RecordImageUploadText>
         { !!temporaryUrl ? '画像を変更する' : '画像を追加する' }
       </RecordImageUploadText>
-   </RecordImageUpload>
+  </RecordImageUpload>
     
   return (
     <AddWordContainer>
