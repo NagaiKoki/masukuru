@@ -34,6 +34,9 @@
           "reservedClientId": "com.googleusercontent.apps.1023959623519-lrm0q0c294ptbvgj3knotjrk9ul0auir"
         },
         "googleMobileAdsAppId": "ca-app-pub-5276826909376331~2884029157"
+      },
+      "infoPlist": {
+        "NSMotionUsageDescription": "歩数を取得するために、モーション情報を取得します。"
       }
     },
     "android": {

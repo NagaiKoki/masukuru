@@ -74,7 +74,6 @@ const PedometerChart = () => {
     const isPedometerAvailable = async () => {
       const isAvailable = await Pedometer.isAvailableAsync()
       const { status } = await Permissions.askAsync(Permissions.MOTION);
-      console.log(isAvailable)
       setAvailableSensor(isAvailable && status === 'granted')
       return isAvailable
     }
@@ -84,7 +83,6 @@ const PedometerChart = () => {
         setStepCount(result.steps)
       })
     }
-
     dispatch(requestFetchChartSetting())
     setIsMounted(true)
   }, [])
@@ -173,8 +171,7 @@ const PedometerChart = () => {
     }
   }
 
-  // センサーを許可しておらず、歩数計もカウントがない場合
-  if (!availableSensor || (!pastSteps.length && !isMounted)) {
+  if (!availableSensor) {
     return (
       <EmptyState text="歩数の計測を許可する" />
     )
@@ -261,15 +258,6 @@ const DateRangeContainer = styled.View`
 const DateRangeWrapper = styled.View`
   flex-direction: row; 
   align-items: center;
-`
-
-const IconButton = styled.TouchableOpacity<{ disable?: boolean }>`
-  width: 25px;
-  height: 25px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 30;
-  background: ${props =>  props.disable ? COLORS.BASE_WHITE : COLORS.SUB_BACKGROUND};
 `
 
 const MonthButton = styled.TouchableOpacity`
