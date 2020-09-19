@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 // import conponents
 import Chart from '../../common/Chart'
+import SelectTermBtn from './Term/SelectTermBtn'
+import EmptyState from './EmptyState'
 // import constants
 import { COLORS } from '../../constants/Styles'
 // import selectors
@@ -146,16 +148,6 @@ const PedometerChart = () => {
     return bool || term === 'week'
   }
 
-  const renderBackwardBtn = term === 'day' ?
-    <IconButton onPress={handleGetBackward} disable={disable(isLastWeek(currentDate))} activeOpacity={ disable(isLastWeek(currentDate)) ? 1 : 0.6 } >
-      <Icon name="angle-left" size={25} />
-    </IconButton> : null
-  
-  const renderForwardBtn = term === 'day' ?
-    <IconButton onPress={handleGetForward} disable={disable(isToday(currentDate))} activeOpacity={ disable(isToday(currentDate)) ? 1 : 0.6 }>
-      <Icon name="angle-right" size={25} />
-    </IconButton> : null
-
   return (
     <Container>
       <ChartWrapper>
@@ -163,9 +155,19 @@ const PedometerChart = () => {
         <CurrentStepText>{pastSteps.reduce((p, c) => p + c).toLocaleString()}歩</CurrentStepText>
         <DateRangeContainer>
           <DateRangeWrapper>
-            {renderBackwardBtn}
+            <SelectTermBtn 
+              direction="backward"
+              disable={disable(isLastWeek(currentDate))}
+              activeOpacity={disable(isLastWeek(currentDate)) ? 1 : 0.6}
+              handleOnClick={handleGetBackward}
+            />
             <DateRangeText>{rangeDate()}</DateRangeText>
-            {renderForwardBtn}
+            <SelectTermBtn 
+              direction="forward"
+              disable={disable(isToday(currentDate))}
+              activeOpacity={disable(isToday(currentDate)) ? 1 : 0.6}
+              handleOnClick={handleGetForward}
+            />
           </DateRangeWrapper>
           <MonthButton onPress={handleOnClickTerm}>
             <MonthText>{termLabel()}</MonthText>

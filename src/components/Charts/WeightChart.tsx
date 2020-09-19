@@ -29,7 +29,7 @@ const WeightChart = () => {
   const { weights, isLoading, weightGoal } = chartSelector()
   const [endDate, setendDate] = useState(new Date())
   const [latestWeight, setLatestWeight] = useState(0)
-  const [term, setTerm] = useState<ChartTermType>('week')
+  const [term, setTerm] = useState<Extract<ChartTermType, 'week' | 'month' | 'year'>>('week')
   const { weightArry, dateArry, datesWithYear } = getRequireWeightData(weights, endDate, term)
 
   useEffect(()  => {

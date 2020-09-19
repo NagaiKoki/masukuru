@@ -53,7 +53,7 @@ const ChartScreen = ({ navigation }) => {
       <Wrapper>
         {renderChart()}
       </Wrapper>
-      { index === 0 ? <AddButton navigation={navigation} /> : null }
+      { index === 1 ? <AddButton navigation={navigation} /> : null }
     </Container>
   )  
 }
