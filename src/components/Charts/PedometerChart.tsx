@@ -28,6 +28,7 @@ import {
   isLastWeek
 } from '../../utilities/timestamp'
 import { hapticFeedBack } from '../../utilities/Haptic'
+import Analytics from '../../config/amplitude'
 
 const getLastWeekLabels = (): string[] => {
   let days: string[] = []
@@ -69,6 +70,7 @@ const PedometerChart = () => {
   }
 
   useEffect(() => {
+    Analytics.track('visitPedometerChart')
     const isPedometerAvailable = async () => {
       const isAvailable = await Pedometer.isAvailableAsync()
       const { status } = await Permissions.askAsync(Permissions.MOTION);
@@ -171,7 +173,8 @@ const PedometerChart = () => {
     }
   }
 
-  if (!availableSensor || !isMounted) {
+  // センサーを許可しておらず、歩数計もカウントがない場合
+  if (!availableSensor || (!pastSteps.length && !isMounted)) {
     return (
       <EmptyState text="歩数の計測を許可する" />
     )
