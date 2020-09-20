@@ -29,7 +29,7 @@ const Applause = () => {
   const hasSubMessage: boolean = !!applauseSubText(recordSize)
 
   return (
-    <Modal isVisible={true}>
+    <Modal isVisible={isOpenApplause}>
       <ApplauseWrapper hasSubMessage={hasSubMessage}>
         <Title>運営からのお知らせ</Title>
         <ApplauseImage  size={recordSize} />
