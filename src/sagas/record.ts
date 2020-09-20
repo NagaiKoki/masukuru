@@ -78,7 +78,7 @@ const recordSelector = (state: RootState) => state.records
 function* runRequestSubmitRecords(action: PayloadAction<RequestSubmitRecords>) {
   const { trainingDate } = yield select((state: RootState) => state.records)
   const { records, word, imageUrl } = action.payload
-  const { payload, error }: ResponseType<string> = yield call(
+  const { payload, error }: ResponseType<number> = yield call(
     requestPostRecords,
     records,
     word,

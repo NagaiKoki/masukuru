@@ -10,8 +10,10 @@ import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
 export const requestPostRecords = async (records: RecordItemType[], word: string, trainingDate: Date, imageUrl: string) => {
   const uid = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
+  const recordRef = db.collection('records').where('uid', '==', uid)
   const docId = factoryRandomCode(20)
   const groupIds = []
+  let size: number
   try {
     await db.collectionGroup('groupUsers').where('uid', '==', uid).get().then(snap => {
       snap.forEach(doc => {
@@ -29,7 +31,11 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
       createdAt: currentTime,
       updatedAt: currentTime
     })
-    return { payload: 'success' }
+
+    await recordRef.get().then(snap => {
+      size = snap.size
+    })
+    return { payload: size }
   } catch (error) {
     return { error: error }
   }

@@ -18,18 +18,19 @@ import { record } from '../constants/sliceName'
 import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
 
 const initialState: RecordState = {
-   recordItems: [],
-   trainingDate: new Date,
-   word: '',
-   imageUrl: '',
-   error: '',
-   isLoading: false,
-   recordData: [],
-   beforeRecordSize: 0,
-   userRecords: [],
-   beforeUserRecordSize: 0,
-   commentPostError: '',
-   comments: []
+  recordItems: [],
+  trainingDate: new Date,
+  word: '',
+  imageUrl: '',
+  error: '',
+  isLoading: false,
+  recordData: [],
+  beforeRecordSize: 0,
+  userRecords: [],
+  beforeUserRecordSize: 0,
+  commentPostError: '',
+  comments: [],
+  recordSize: 0
 }
 
 const recordSlice = createSlice({
@@ -102,14 +103,15 @@ const recordSlice = createSlice({
         isLoading: true
       }
     },
-    successSubmitRecords: (state) => {
+    successSubmitRecords: (state, action: PayloadAction<number>) => {
       return {
         ...state,
         recordItems: [],
         word: '',
         imageUrl: '',
         error: '',
-        isLoading: false
+        isLoading: false,
+        recordSize: action.payload
       }
     },
     failureSubmitRecords: (state, action: PayloadAction<string>) => {

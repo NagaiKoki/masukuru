@@ -13,6 +13,7 @@ export interface RecordState {
   beforeUserRecordSize: number
   commentPostError: string
   comments: RecordCommentType[]
+  recordSize: number
 }
 
 export type RecordItemType = {
