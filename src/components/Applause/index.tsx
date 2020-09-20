@@ -4,7 +4,6 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch } from 'react-redux'
 // import components
-import CloseButton from '../../common/Button/CloseButton'
 import ApplauseImage from './Image'
 // import constants
 import { COLORS } from '../../constants/Styles'
@@ -14,6 +13,7 @@ import { closeApplauseModal } from '../../slice/record'
 import recordSelector from '../../selectors/record'
 // import utils
 import { applauseSubText } from '../../utilities/Applause/subText'
+import * as StoreReview from 'expo-store-review';
 
 const Applause = () => {
   const dispatch = useDispatch()
@@ -21,12 +21,15 @@ const Applause = () => {
 
   const handleOnClose = () => {
     dispatch(closeApplauseModal())
+    setTimeout( async () => {
+      await StoreReview.requestReview()
+    }, 1000)
   }
 
   const hasSubMessage: boolean = !!applauseSubText(recordSize)
 
   return (
-    <Modal isVisible={isOpenApplause}>
+    <Modal isVisible={true}>
       <ApplauseWrapper hasSubMessage={hasSubMessage}>
         <Title>運営からのお知らせ</Title>
         <ApplauseImage  size={recordSize} />
