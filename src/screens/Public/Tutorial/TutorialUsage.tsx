@@ -44,7 +44,7 @@ const TutorialUsageScreen = ({navigation, userName}) => {
           <UsageImageWrapper2>
             <Image source={ require('../../../assets/tutorialScreen2.png')} resizeMode="cover" style={{width: '100%', height: 400, resizeMode: 'cover', alignSelf: 'center', borderRadius: 5 }} />
           </UsageImageWrapper2>
-       </UsageTextWrapper3>
+      </UsageTextWrapper3>
       </UsageWrapper3>
     </ScrollView>
 
