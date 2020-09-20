@@ -35,6 +35,7 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
     await recordRef.get().then(snap => {
       size = snap.size
     })
+    
     return { payload: size }
   } catch (error) {
     return { error: error }

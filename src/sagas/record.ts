@@ -98,7 +98,7 @@ function* runRequestSubmitRecords(action: PayloadAction<RequestSubmitRecords>) {
     yield delay(2000)
     yield requestPostRecordNamesForSuggest()
     yield call(requestSendRecordPostNotification)
-    yield put(successSubmitRecords())
+    yield put(successSubmitRecords(payload))
   } else {
     yield put(failureSubmitRecords(error))
   }

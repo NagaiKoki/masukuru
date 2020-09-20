@@ -30,7 +30,8 @@ const initialState: RecordState = {
   beforeUserRecordSize: 0,
   commentPostError: '',
   comments: [],
-  recordSize: 0
+  recordSize: 0,
+  isOpenApplause: false
 }
 
 const recordSlice = createSlice({
@@ -104,6 +105,7 @@ const recordSlice = createSlice({
       }
     },
     successSubmitRecords: (state, action: PayloadAction<number>) => {
+      const isOpenApplause = action.payload <= 31
       return {
         ...state,
         recordItems: [],
@@ -111,7 +113,8 @@ const recordSlice = createSlice({
         imageUrl: '',
         error: '',
         isLoading: false,
-        recordSize: action.payload
+        recordSize: action.payload,
+        isOpenApplause
       }
     },
     failureSubmitRecords: (state, action: PayloadAction<string>) => {
@@ -296,6 +299,12 @@ const recordSlice = createSlice({
         error: action.payload,
         isLoading: false
       }
+    },
+    closeApplauseModal: (state) => {
+      return {
+        ...state,
+        isOpenApplause: false
+      }
     }
   }
 })
@@ -333,7 +342,8 @@ export const {
   onChangeRecordDate,
   requestUpdateRecord,
   successUpdateRecord,
-  failureUpdateRecord
+  failureUpdateRecord,
+  closeApplauseModal
 } = recordSlice.actions
 
 export default recordSlice

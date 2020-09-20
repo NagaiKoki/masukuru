@@ -11,6 +11,7 @@ import UserImage from '../../../components/Image/userImage'
 import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
+import ApplauseModal from '../../../components/Applause'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
 import { UserPropertyType } from '../../../types/Analytics/amplitude'
@@ -121,7 +122,7 @@ const HomeScreen = (props: HomeProps) => {
 
   return (
     <Container refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />}>
-      {renderMemberList}
+    {renderMemberList}
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
@@ -129,23 +130,24 @@ const HomeScreen = (props: HomeProps) => {
           }
         }}
         scrollEventThrottle={400}
-        refreshControl={
-          <RefreshControl 
-            refreshing={isRefresh}
-            onRefresh={onRefresh}
-          />
-        }
-      >
-      <RecordList 
-        recordData={recordData} 
-        isLoading={isLoading} 
-        navigation={navigation}
-        requestDestroyRecord={requestDestroyRecord}
-      />
-     </ScrollView>
-     <RecordAddBtn onPress={() => navigation.navigate('recordModal')}>
+          refreshControl={
+            <RefreshControl 
+              refreshing={isRefresh}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+        <RecordList 
+          recordData={recordData} 
+          isLoading={isLoading} 
+          navigation={navigation}
+          requestDestroyRecord={requestDestroyRecord}
+        />
+      </ScrollView>
+      <RecordAddBtn onPress={() => navigation.navigate('recordModal')}>
         <Icon name="pencil" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </RecordAddBtn>
+      <ApplauseModal />
     </Container>
   );
 };

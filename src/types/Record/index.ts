@@ -13,7 +13,8 @@ export interface RecordState {
   beforeUserRecordSize: number
   commentPostError: string
   comments: RecordCommentType[]
-  recordSize: number
+  recordSize: number,
+  isOpenApplause: boolean
 }
 
 export type RecordItemType = {
