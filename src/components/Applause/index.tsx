@@ -12,6 +12,8 @@ import { COLORS } from '../../constants/Styles'
 import { closeApplauseModal } from '../../slice/record'
 // import selectors
 import recordSelector from '../../selectors/record'
+// import utils
+import { applauseSubText } from '../../utilities/Applause/subText'
 
 const Applause = () => {
   const dispatch = useDispatch()
@@ -21,12 +23,15 @@ const Applause = () => {
     dispatch(closeApplauseModal())
   }
 
+  const hasSubMessage: boolean = !!applauseSubText(recordSize)
+
   return (
-    <Modal isVisible={true}>
-      <ApplauseWrapper>
+    <Modal isVisible={isOpenApplause}>
+      <ApplauseWrapper hasSubMessage={hasSubMessage}>
         <Title>運営からのお知らせ</Title>
         <ApplauseImage  size={recordSize} />
         <SubTitle>{recordSize}回目のトレーニングお疲れ様でした♪</SubTitle>
+        { hasSubMessage ? <SubText>{applauseSubText(recordSize)}</SubText> : null }
         <CloseButtonWrapper>
           <CloseBtn onPress={handleOnClose}>
             <CloseText>閉じる</CloseText>
@@ -39,8 +44,8 @@ const Applause = () => {
 
 export default Applause
 
-const ApplauseWrapper = styled.View`
-  height: 300px;
+const ApplauseWrapper = styled.View<{ hasSubMessage: boolean }>`
+  height: ${props => props.hasSubMessage ? '370px' : '320px' };
   border-radius: 4px;
   background: ${COLORS.BASE_WHITE};
 `
@@ -58,6 +63,13 @@ const SubTitle = styled.Text`
   font-size: 14px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
+  text-align: center;
+`
+
+const SubText = styled.Text`
+  padding: 0 15px 20px 15px;
+  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
   text-align: center;
 `
 
