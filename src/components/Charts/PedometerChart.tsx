@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Permissions from 'expo-permissions'
 import styled from 'styled-components'
+import { captureRef } from "react-native-view-shot";
 import { Pedometer } from 'expo-sensors'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 // import conponents
@@ -50,6 +51,7 @@ const PedometerChart = () => {
   const { showActionSheetWithOptions } = useActionSheet();
   const { walkingGoal } = chartSelector()
   const dispatch = useDispatch()
+  const captureViewRef = useRef();
 
   // 歩行数を取得する
   const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
@@ -179,6 +181,24 @@ const PedometerChart = () => {
     )
   }
 
+  const renderChart =
+    <ChartRef ref={captureViewRef}>
+      <Chart
+        data={pastSteps}
+        labels={LABELS}
+        yAxisSuffix=""
+      />
+    </ChartRef>
+
+  const handleOnRef = () => {
+    captureRef(captureViewRef, {
+      format: "jpg",
+      quality: 0.9
+    }).then(
+      uri => alert(uri)
+    )
+  }
+
   return (
     isMounted && pastSteps.length ?
     <Container>
@@ -202,15 +222,11 @@ const PedometerChart = () => {
               handleOnClick={handleGetForward}
             />
           </DateRangeWrapper>
-          <MonthButton onPress={handleOnClickTerm}>
+          <MonthButton onPress={handleOnRef}>
             <MonthText>{termLabel()}</MonthText>
           </MonthButton>
         </DateRangeContainer>
-        <Chart 
-          data={pastSteps}
-          labels={LABELS}
-          yAxisSuffix=""
-        />
+        {renderChart}
       </ChartWrapper>
     </Container> : null
   )
@@ -282,3 +298,5 @@ const MonthText = styled.Text`
   font-weight: bold;
   font-size: 16px;
 `
+
+const ChartRef = styled.View``

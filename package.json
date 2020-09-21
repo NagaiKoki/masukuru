@@ -58,6 +58,7 @@
     "react-native-swiper": "^1.6.0",
     "react-native-twitter-signin": "^1.1.1",
     "react-native-unimodules": "^0.10.1",
+    "react-native-view-shot": "^3.1.2",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.2.2",
     "react-redux": "^7.2.0",
