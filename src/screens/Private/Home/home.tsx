@@ -126,20 +126,20 @@ const HomeScreen = (props: HomeProps) => {
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
-            requestNextRecords({ lastRecord: lastRecord, uid: null, groupId: currentGroupId })
+            requestNextRecords({ lastRecord, uid: null, groupId: currentGroupId })
           }
         }}
         scrollEventThrottle={400}
           refreshControl={
-            <RefreshControl 
+            <RefreshControl
               refreshing={isRefresh}
               onRefresh={onRefresh}
             />
           }
         >
-        <RecordList 
-          recordData={recordData} 
-          isLoading={isLoading} 
+        <RecordList
+          recordData={recordData}
+          isLoading={isLoading}
           navigation={navigation}
           requestDestroyRecord={requestDestroyRecord}
         />

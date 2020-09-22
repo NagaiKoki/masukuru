@@ -16,10 +16,10 @@ const MusclewSetBtn = (props: UnitFormProps) => {
     <AddSetWrapper>
       <AddSetText>セット数</AddSetText>
       <AddSetBtn onPress={handleAddSet}>
-        <Icon name="plus" size={20} style={{ color: COLORS.SUB_BLACK, marginRight: 10 }} />
+        <Icon name="plus" size={25} style={{ color: COLORS.SUB_BLACK, marginRight: 10 }} />
       </AddSetBtn>
       <AddSetBtn onPress={handleDeleteSet}>
-        <Icon name="minus" size={20} style={{ color: COLORS.SUB_BLACK }} />
+        <Icon name="minus" size={25} style={{ color: COLORS.SUB_BLACK }} />
       </AddSetBtn>
     </AddSetWrapper>
   )

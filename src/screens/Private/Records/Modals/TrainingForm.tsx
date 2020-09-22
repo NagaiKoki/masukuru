@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { StyleSheet } from 'react-native'
@@ -33,6 +33,7 @@ const AddRecordScreen = ({ navigation, route }) => {
   const [muscleName, setMuscleName] = useState('')
   const [error, setError] = useState('')
   const [isMuscleMenu, setIsMuscleMenu] = useState(true)
+  const scrollRef = useRef(null)
 
   React.useEffect(() => {
     if (isUpdate) {
@@ -143,7 +144,11 @@ const AddRecordScreen = ({ navigation, route }) => {
     />
 
   return (
-    <AddRecordContainer keyboardShouldPersistTaps="always">
+    <AddRecordContainer
+      keyboardShouldPersistTaps="always"
+      ref={scrollRef}
+      onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true })}
+    >
       <KeyboardAwareScrollView 
         resetScrollToCoords={{ x: 0, y: 0 }}
         extraHeight={120}
@@ -163,9 +168,10 @@ export default AddRecordScreen
 
 const style = StyleSheet.create({
   container: {
-    marginTop: 20
+    marginTop: 10
   }
 })
+
 
 const AddRecordContainer = styled.ScrollView`
   flex: 1;

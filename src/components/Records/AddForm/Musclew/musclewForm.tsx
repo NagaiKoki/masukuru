@@ -64,6 +64,9 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
   const handleDeleteCount = () => {
     if (count <= 1) return
     setCount(count - 1)
+    setAmounts(amounts.slice(0, amounts.length - 1))
+    setWeights(weights.slice(0, weights.length - 1))
+    setDurations(durations.slice(0, durations.length - 1))
   }
 
   const handleOnFocus = () => {
@@ -107,6 +110,7 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
         setWeights={setWeights}
         setAmounts={setAmounts}
         setDurations={setDurations}
+        handleAddCount={handleAddCount}
       />
       <SetBtn
         handleAddSet={handleAddCount}

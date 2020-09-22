@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 // import constants 
 import { COLORS } from '../../../../constants/Styles'
 // import types
@@ -13,6 +14,7 @@ interface UnitFormProps {
   setWeights: Dispatch<SetStateAction<UnitType[]>>
   setAmounts: Dispatch<SetStateAction<UnitType[]>>
   setDurations: Dispatch<SetStateAction<UnitType[]>>
+  handleAddCount: () => void
 }
 
 const MusclewRecordUnitForm = (props: UnitFormProps) => {
@@ -23,7 +25,8 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
     durations,
     setWeights,
     setAmounts,
-    setDurations
+    setDurations,
+    handleAddCount
   } = props
 
   const handleAddWeight = (size: number, weight: number) => {
@@ -57,6 +60,17 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
       durationArry[size - 1] = duration
       return setDurations(durationArry)
     }
+  }
+
+  const handleOnCopy = (countSize: number) => {
+    const amount = amounts[countSize - 1]
+    const weight = weights[countSize - 1]
+    const duration = durations[countSize - 1]
+
+    setAmounts([...amounts, amount])
+    setWeights([...weights, weight])
+    setDurations([...durations, duration])
+    handleAddCount()
   }
 
   const renderUnitForms = () => {
@@ -99,6 +113,13 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
               onChangeText={ (text: number) => handleAddDuration(size, text) }
             />
           <AddRecordUnitName>秒</AddRecordUnitName>
+          <CopyBtn activeOpacity={0.5} onPress={ () => handleOnCopy(size) }>
+            <Icon
+              name="content-copy"
+              size={25}
+              style={{ color: COLORS.SUB_BLACK, marginLeft: 10 }}
+            />
+          </CopyBtn>
         </FormWrapper>
       </AddRecordItem>
       )
@@ -121,7 +142,7 @@ const AddRecordItem = styled.View`
 `
 
 const AddRecordName = styled.Text`
-  margin-left: 5px;
+  margin: 0 0 5px 5px;
   color: ${COLORS.BASE_BLACK};
   font-size: 14px;
   font-weight: bold;
@@ -133,10 +154,10 @@ const AddUnitForm = styled.TextInput`
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
   width: 17%;
-  height: 50px;
+  height: 45px;
   margin: 10px 0;
-  margin-right: 5px;
-  padding: 15px;
+  margin-right: 8px;
+  padding: 10px;
   font-size: 17px;
   color: ${COLORS.BASE_BLACK};
 `
@@ -150,4 +171,8 @@ const AddRecordUnitName = styled.Text`
 const FormWrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-left: 5px;
+`
+
+const CopyBtn = styled.TouchableOpacity`
 `

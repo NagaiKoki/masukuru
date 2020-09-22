@@ -50,6 +50,7 @@ const AddRecordName = styled.Text`
 `
 const TrainingFormWrapper = styled.View`
   position: relative;
+  margin-left: 5px;
 `
 
 const TrainingNameForm = styled.TextInput`

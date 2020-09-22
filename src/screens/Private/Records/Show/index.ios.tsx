@@ -45,9 +45,9 @@ const RecordShowScreen = ({ navigation, route }) => {
     return <Loading size="small" />
   }
 
-  const renderCommentList = isLoading ? 
-    <Loading size="small" /> : 
-    <RecordCommentList 
+  const renderCommentList = isLoading ?
+    <Loading size="small" /> :
+    <RecordCommentList
       comments={comments}
       notificationGroupId={notificationGroupId}
       requestDeleteRecordComment={requestDeleteRecordComment}
@@ -55,19 +55,19 @@ const RecordShowScreen = ({ navigation, route }) => {
 
   return (
     <RecordShowContainer>
-      <RecordShowWrapper 
+      <RecordShowWrapper
         ref={scrollRef}
-        onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true})}>
-        <RecordItem 
+        onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true })}>
+        <RecordItem
           record={record}
           navigation={navigation}
-          isShowPage={true} 
-        /> 
-        {renderCommentList}    
+          isShowPage={true}
+        />
+        {renderCommentList}
       </RecordShowWrapper>
-      <RecordShowCommentFormWrapper 
-        style={{ flex: 1 }} 
-        behavior="padding" 
+      <RecordShowCommentFormWrapper
+        style={{ flex: 1 }}
+        behavior="padding"
         keyboardVerticalOffset={90}
       >
         <RecordCommentForm
