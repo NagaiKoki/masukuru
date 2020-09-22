@@ -14,11 +14,17 @@ const RecordData = (props: RecordDataProps) => {
 
   const components = () => {
     if (record.isMuscle) {
-      const amounts = record.amounts
-      const weights = record.weights
+      const { amounts, weights, durations } = record
+
       let components = []
       for(let size = 1; size <= amounts.length; size++) {
-         components.push(<UnitData key={size}>{ amounts[size - 1] ? amounts[size - 1] + '回' : null }{ weights[size - 1] ? '×' + weights[size - 1] + 'kg' : null}</UnitData>)
+        components.push(
+          <UnitData key={size}>
+            { amounts[size - 1] ? amounts[size - 1] + '回' : null }
+            { weights[size - 1] ? '×' + weights[size - 1] + 'kg' : null}
+            { durations && durations[size - 1] ? '×' + durations[size - 1] + '秒' : null }
+          </UnitData>
+        )
       }
       return components
     } else if (record.isMuscle === false) {

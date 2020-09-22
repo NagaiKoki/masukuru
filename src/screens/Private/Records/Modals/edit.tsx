@@ -55,7 +55,7 @@ const RecordModalScreen = ({ navigation, route }) => {
     if (!recordItems.length) {
       Alert.alert('トレーニングを追加してください。')
     } else {
-      navigation.navigate('tweetRecordModal', { isEdit: true, recordId: recordId })
+      navigation.navigate('tweetRecordModal', { isEdit: true, recordId })
     }
   }
   
@@ -94,7 +94,7 @@ const RecordModalScreen = ({ navigation, route }) => {
     const editableWeights = record.weights.map(weight => String(weight)).filter(Boolean)
     const editableAmounts = record.amounts.map(amount => String(amount)).filter(Boolean)
     const editableRecord = {
-      ...record, 
+      ...record,
       weights: editableWeights,
       amounts: editableAmounts
     }

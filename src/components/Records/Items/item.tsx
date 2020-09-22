@@ -33,7 +33,6 @@ const RecordItem = (props: RecordItemProps) => {
   const { record, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
   const currentUser = firebase.auth().currentUser
-  const dispatch = useDispatch()
 
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
@@ -92,7 +91,7 @@ const RecordItem = (props: RecordItemProps) => {
   
   return (
     <TouchableHighlight  
-      onPress={() => isShowPage ? {} : navigation.navigate('recordShow', { record: record })}
+      onPress={() => isShowPage ? {} : navigation.navigate('recordShow', { record })}
       underlayColor={COLORS.BASE_BACKGROUND}
       activeOpacity={ isShowPage ? 1 : 0.6}
     >

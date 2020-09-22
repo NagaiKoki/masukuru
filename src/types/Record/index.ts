@@ -23,6 +23,7 @@ export type RecordItemType = {
   set?: number
   amounts?: string[]
   weights?: string[]
+  durations?: string[]
   time?: number
   distance?: number
   isMuscle: boolean
@@ -49,9 +50,7 @@ export type RecordCommentType = {
   updatedAt: FirestoreTimestamp | Date
 }
 
-export type WeightType = number | string
-
-export type AmountType = number | string
+export type UnitType = number | string
 
 export type SuccessFetchRecordType = {
   payload: ResponseRecordType[]

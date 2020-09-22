@@ -20,14 +20,14 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
         groupIds.push(doc.ref.parent.parent.id)
       })
     })
-    
+
     await db.collection('records').doc(docId).set({
-      records: records,
-      uid: uid,
-      word: word,
-      trainingDate: trainingDate,
-      imageUrl: imageUrl,
-      groupIds: groupIds,
+      records,
+      uid,
+      word,
+      trainingDate,
+      imageUrl,
+      groupIds,
       createdAt: currentTime,
       updatedAt: currentTime
     })
@@ -35,10 +35,10 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
     await recordRef.get().then(snap => {
       size = snap.size
     })
-    
+
     return { payload: size }
   } catch (error) {
-    return { error: error }
+    return { error }
   }
 }
 
@@ -46,7 +46,7 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
 export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: string) => {
   const records = []
   let ref;
-  
+
   try {
     if (uid && startAt) {
       ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
@@ -66,7 +66,7 @@ export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: 
     })
     return { payload: records }
   } catch (error) {
-    return { error: error }
+    return { error }
   }
 }
 
@@ -123,15 +123,14 @@ export const requestUpdateRecordItem = async (recordId: string, records: RecordI
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   try {
     recordRef.update({
-      records: records,
-      word: word,
-      imageUrl: imageUrl,
-      trainingDate: trainingDate,
+      records,
+      word,
+      imageUrl,
+      trainingDate,
       updatedAt: currentTime
     })
     return { payload: 'success' }
   } catch(error) {
-    console.log(error)
-    return { error: error }
+    return { error }
   }
 }
