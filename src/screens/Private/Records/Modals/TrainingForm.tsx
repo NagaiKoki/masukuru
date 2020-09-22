@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { StyleSheet } from 'react-native'
@@ -23,15 +23,17 @@ const AddRecordScreen = ({ navigation, route }) => {
   const { recordItems } = recordSelector()
   const { recordItem, isUpdate }: RecordNavigationType = route.params
 
-  const [count, setCount] = useState(3)
-  const [weights, setWeights] = useState(['', '', ''])
-  const [amounts, setAmounts] = useState(['', '', ''])
+  const [count, setCount] = useState(1)
+  const [weights, setWeights] = useState([''])
+  const [amounts, setAmounts] = useState([''])
+  const [durations, setDurations] = useState([''])
   const [distance, setDistance] = useState('')
   const [time, setTime] = useState('')
   const [aeroName, setAeroName] = useState('')
   const [muscleName, setMuscleName] = useState('')
   const [error, setError] = useState('')
   const [isMuscleMenu, setIsMuscleMenu] = useState(true)
+  const scrollRef = useRef(null)
 
   React.useEffect(() => {
     if (isUpdate) {
@@ -40,11 +42,12 @@ const AddRecordScreen = ({ navigation, route }) => {
   }, [])
 
   const takeOverRecord = () => {
-    const { name, set, weights, amounts, distance, time, isMuscle } = recordItem
-    setCount(isMuscle ? set : 3)
+    const { name, set, weights, amounts, durations, distance, time, isMuscle } = recordItem
+    setCount(isMuscle ? set : 1)
     setIsMuscleMenu(isMuscle)
-    setWeights(isMuscle ? weights : ['', '', ''])
-    setAmounts(isMuscle ? amounts : ['', '', ''])
+    setWeights(isMuscle ? weights : [''])
+    setAmounts(isMuscle ? amounts : [''])
+    setDurations(isMuscle ? durations : [''])
     setDistance(!isMuscle ? String(distance) : '')
     setTime(!isMuscle ? String(time) : '')
     setAeroName(!isMuscle ? name : '')
@@ -70,7 +73,7 @@ const AddRecordScreen = ({ navigation, route }) => {
         },
       })
       // 初回マウント時点の変数がcallback関数内で使われるので、以下の変数に変更があるたびに関数を呼び出す
-    }, [count, weights, amounts, muscleName, aeroName, distance, time]
+    }, [count, weights, amounts, durations, muscleName, aeroName, distance, time]
   ))
 
   // エラーの削除
@@ -99,6 +102,7 @@ const AddRecordScreen = ({ navigation, route }) => {
       set: count || undefined,
       amounts: !!amounts.length ? amounts.filter(Boolean) : [],
       weights: !!weights.length ? weights.filter(Boolean) : [],
+      durations: !!durations.length ? durations.filter(Boolean) : [],
       time: Number(time),
       distance: Number(distance),
       isMuscle: isMuscleMenu
@@ -110,22 +114,24 @@ const AddRecordScreen = ({ navigation, route }) => {
   const renderSwitchBtn =
     <RecordSwitchWrapper>
       <RecordMuscleBtn isMuscle={isMuscleMenu} onPress={handleToggleRecord}>
-        <RecordMuscleText isMuscle={isMuscleMenu}>筋トレ</RecordMuscleText>
+        <RecordMuscleText isMuscle={isMuscleMenu}>無酸素運動</RecordMuscleText>
       </RecordMuscleBtn>
       <RecordAeroBtn isMuscle={isMuscleMenu} onPress={handleToggleRecord}>
         <RecordAeroText isMuscle={isMuscleMenu}>有酸素運動</RecordAeroText>
       </RecordAeroBtn>
     </RecordSwitchWrapper>
-  
+
   const renderForm = isMuscleMenu ?
-    <MuscleForm 
+    <MuscleForm
       muscleName={muscleName}
       count={count}
       weights={weights}
       amounts={amounts}
+      durations={durations}
       setCount={setCount}
       setWeights={setWeights}
       setAmounts={setAmounts}
+      setDurations={setDurations}
       setMuscleName={setMuscleName}
     /> :
     <AeroForm 
@@ -138,7 +144,11 @@ const AddRecordScreen = ({ navigation, route }) => {
     />
 
   return (
-    <AddRecordContainer keyboardShouldPersistTaps="always">
+    <AddRecordContainer
+      keyboardShouldPersistTaps="always"
+      ref={scrollRef}
+      onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true })}
+    >
       <KeyboardAwareScrollView 
         resetScrollToCoords={{ x: 0, y: 0 }}
         extraHeight={120}
@@ -149,7 +159,7 @@ const AddRecordScreen = ({ navigation, route }) => {
       <Toast message={error} onDismiss={handleErrorClear} />
       {renderSwitchBtn}
       {renderForm}
-      </KeyboardAwareScrollView>    
+      </KeyboardAwareScrollView>
     </AddRecordContainer>
   )
 }
@@ -158,9 +168,10 @@ export default AddRecordScreen
 
 const style = StyleSheet.create({
   container: {
-    marginTop: 20
+    marginTop: 10
   }
 })
+
 
 const AddRecordContainer = styled.ScrollView`
   flex: 1;

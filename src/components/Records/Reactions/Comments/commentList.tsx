@@ -40,10 +40,10 @@ const RecordCommentList = (props: RecordCommentListProps) => {
 
   const visibleCommnets = comments.filter(comment => comment.groupId === groupId)
 
-  const commentList = visibleCommnets.map(comment => ( 
-    <RecordCommentItem 
-      key={comment.id} 
-      comment={comment} 
+  const commentList = visibleCommnets.map(comment => (
+    <RecordCommentItem
+      key={comment.id}
+      comment={comment}
       requestDeleteRecordComment={requestDeleteRecordComment}
     />
   ))
@@ -51,7 +51,7 @@ const RecordCommentList = (props: RecordCommentListProps) => {
   return (
     <CommnetListWrapper commentPresent={visibleCommnets.length}>
       {
-        visibleCommnets.length ? 
+        visibleCommnets.length ?
         <CommentListTitle>コメント {visibleCommnets.length}件</CommentListTitle>
         : null
       }

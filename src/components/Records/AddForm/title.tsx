@@ -39,22 +39,18 @@ const RecordTitle = (props: RecordTitleProps) => {
 export default RecordTitle
 
 const AddRecordItem = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-top: 10px;
+  padding: 0 10px;
 `
 
 const AddRecordName = styled.Text`
-  width: 20%;
-  margin-right: 25px;
   color: ${COLORS.BASE_BLACK};
   font-size: 14px;
   font-weight: bold;
-  text-align: right;
+  margin-left: 5px;
 `
 const TrainingFormWrapper = styled.View`
-  width: 70%;
   position: relative;
+  margin-left: 5px;
 `
 
 const TrainingNameForm = styled.TextInput`

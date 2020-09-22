@@ -13,7 +13,6 @@ import { closeApplauseModal } from '../../slice/record'
 import recordSelector from '../../selectors/record'
 // import utils
 import { applauseSubText } from '../../utilities/Applause/subText'
-import * as StoreReview from 'expo-store-review';
 
 const Applause = () => {
   const dispatch = useDispatch()
@@ -21,9 +20,6 @@ const Applause = () => {
 
   const handleOnClose = () => {
     dispatch(closeApplauseModal())
-    setTimeout( async () => {
-      await StoreReview.requestReview()
-    }, 1000)
   }
 
   const hasSubMessage: boolean = !!applauseSubText(recordSize)
@@ -48,7 +44,7 @@ const Applause = () => {
 export default Applause
 
 const ApplauseWrapper = styled.View<{ hasSubMessage: boolean }>`
-  height: ${props => props.hasSubMessage ? '370px' : '320px' };
+  height: ${props => props.hasSubMessage ? '370px' : '310px' };
   border-radius: 4px;
   background: ${COLORS.BASE_WHITE};
 `

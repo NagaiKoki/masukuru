@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Permissions from 'expo-permissions'
 import styled from 'styled-components'
+import { captureRef } from "react-native-view-shot";
 import { Pedometer } from 'expo-sensors'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 // import conponents
@@ -17,10 +18,10 @@ import chartSelector from '../../selectors/chart'
 // import types
 import { ChartTermType } from '../../types/Chart'
 // import utils
-import { 
-  getMidnightTime, 
-  getHourLaterTime, 
-  getNextDay, 
+import {
+  getMidnightTime,
+  getHourLaterTime,
+  getNextDay,
   getLastDay,
   convertTimeStampToStringOnlyDate,
   convertTimeStampToStringOnlyMonthAndDate,
@@ -50,11 +51,11 @@ const PedometerChart = () => {
   const { showActionSheetWithOptions } = useActionSheet();
   const { walkingGoal } = chartSelector()
   const dispatch = useDispatch()
+  const captureViewRef = useRef();
 
   // 歩行数を取得する
   const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
     let pastSteps: number[] = []
-    
     if (term === 'day') {
       for (let i = 0; i < 24; i++ ) {
         const pastStep = await Pedometer.getStepCountAsync(getHourLaterTime(date, i), getHourLaterTime(date, i + 1))
@@ -172,12 +173,30 @@ const PedometerChart = () => {
       return `目標達成まで、あと${Math.abs(diff)}歩です。`
     }
   }
-  
+
   if (!availableSensor || (!pastSteps.length && isMounted)) {
     return (
       <EmptyState text="歩数の計測を許可する" />
     )
   }
+
+  const renderChart =
+    <ChartRef ref={captureViewRef}>
+      <Chart
+        data={pastSteps}
+        labels={LABELS}
+        yAxisSuffix=""
+      />
+    </ChartRef>
+
+  // const handleOnRef = () => {
+  //   captureRef(captureViewRef, {
+  //     format: "jpg",
+  //     quality: 0.9
+  //   }).then(
+  //     uri => alert(uri)
+  //   )
+  // }
 
   return (
     isMounted && pastSteps.length ?
@@ -206,11 +225,7 @@ const PedometerChart = () => {
             <MonthText>{termLabel()}</MonthText>
           </MonthButton>
         </DateRangeContainer>
-        <Chart 
-          data={pastSteps}
-          labels={LABELS}
-          yAxisSuffix=""
-        />
+        {renderChart}
       </ChartWrapper>
     </Container> : null
   )
@@ -282,3 +297,5 @@ const MonthText = styled.Text`
   font-weight: bold;
   font-size: 16px;
 `
+
+const ChartRef = styled.View``

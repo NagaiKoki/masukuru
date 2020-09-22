@@ -24,22 +24,22 @@ interface RecordCommentProps {
 }
 
 const RecordComment = (props: RecordCommentProps) => {
-  const { 
-    record, 
+  const {
+    record,
     notificationGroupId,
     currentUser,
     requestPostRecordComment,
     requestPostPushNotification
   } = props
-  
+
   const { id, uid } = record
   const [text, setText] = useState('')
   const dispatch = useDispatch()
-  
+
   const handleOnChangeText = (value: string) => {
     setText(value)
   }
-  
+
   const handleRequestPostComment = async () => {
     if (!text) return
     setText('')

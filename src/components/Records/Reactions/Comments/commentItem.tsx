@@ -86,17 +86,17 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
         <CommentContentWrapper>
           <CommentUserName>{user.name}</CommentUserName>
           <CommentItemContent>{content}</CommentItemContent>
-         </CommentContentWrapper>
-       </CommnetItemWrapper>
-       <CommentUnderWrapper>
+        </CommentContentWrapper>
+      </CommnetItemWrapper>
+      <CommentUnderWrapper>
         <CommentTimeStampText>{dateTime()}</CommentTimeStampText>
-        { uid !== currentUser.uid ? 
-          null : 
+        { uid !== currentUser.uid ?
+          null :
           <CommentDeleteBtn onPress={handleDeleteComment}>
             <CommentDeleteText>削除</CommentDeleteText>
           </CommentDeleteBtn>
         }
-       </CommentUnderWrapper>
+      </CommentUnderWrapper>
     </CommentItemContainer>
   )
 }

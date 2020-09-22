@@ -21,9 +21,11 @@ interface AddMusclewProps {
   count: number
   weights: string[]
   amounts: string[]
+  durations: string[]
   setCount: Dispatch<SetStateAction<number>>
   setWeights: Dispatch<SetStateAction<string[]>>
   setAmounts: Dispatch<SetStateAction<string[]>>
+  setDurations: Dispatch<SetStateAction<string[]>>
   setMuscleName: Dispatch<SetStateAction<string>>
 }
 
@@ -33,9 +35,11 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
     count,
     weights,
     amounts,
+    durations,
     setCount,
     setWeights,
     setAmounts,
+    setDurations,
     setMuscleName
   } = props
   const dispatch = useDispatch()
@@ -46,7 +50,7 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
   React.useEffect(() => {
     dispatch(requestFetchSuggestRecords(''))
   }, [])
- 
+
   const handleOnChange = (title: string) => {
     setMuscleName(title)
     dispatch(requestFetchSuggestRecords(title))
@@ -58,8 +62,11 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
   }
 
   const handleDeleteCount = () => {
-    if (count <= 3) return
+    if (count <= 1) return
     setCount(count - 1)
+    setAmounts(amounts.slice(0, amounts.length - 1))
+    setWeights(weights.slice(0, weights.length - 1))
+    setDurations(durations.slice(0, durations.length - 1))
   }
 
   const handleOnFocus = () => {
@@ -75,8 +82,8 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
   const renderSuggestList =
     <SuggestListWrapper
       isShow={visibleSuggest}
-      style={{ flex: 1 }} 
-      behavior="padding" 
+      style={{ flex: 1 }}
+      behavior="padding"
       keyboardVerticalOffset={suggestSize}
       keyboardShouldPersistTaps="always"
     >
@@ -95,14 +102,17 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
         handleOnFocus={handleOnFocus}
         handleOnBlur={handleOnBlur}
       />
-      <MusclewRecordUnitForm 
+      <MusclewRecordUnitForm
         count={count}
         amounts={amounts}
         weights={weights}
+        durations={durations}
         setWeights={setWeights}
         setAmounts={setAmounts}
+        setDurations={setDurations}
+        handleAddCount={handleAddCount}
       />
-      <SetBtn 
+      <SetBtn
         handleAddSet={handleAddCount}
         handleDeleteSet={handleDeleteCount}
       />

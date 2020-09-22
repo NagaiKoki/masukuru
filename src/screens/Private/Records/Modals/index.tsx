@@ -26,7 +26,7 @@ export type RecordNavigationType = {
 const RecordModalScreen = ({ navigation }) => {
   const dispatch = useDispatch()
   const { recordItems, trainingDate } = recordSelector()
-  
+
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
@@ -49,7 +49,7 @@ const RecordModalScreen = ({ navigation }) => {
       navigation.navigate('tweetRecordModal', { isEdit: false })
     }
   }
-  
+
   // 記録フォームへ遷移
   const handleNavigateAddForm = () => {
     const routeProps: RecordNavigationType = {
@@ -57,7 +57,7 @@ const RecordModalScreen = ({ navigation }) => {
     }
     navigation.navigate('trainingRecordModal', routeProps)
   }
-  
+
   // 記録の削除
   const handleDeleteRecordItem = (record: RecordItemType) => 
     Alert.alert(
@@ -75,7 +75,7 @@ const RecordModalScreen = ({ navigation }) => {
       ],
       { cancelable: false }
     )
-  
+
   // 記録の編集フォームへ移動
   const handleUpdateRecordItme = (record: RecordItemType) => {
     const routeProps: RecordNavigationType = {
