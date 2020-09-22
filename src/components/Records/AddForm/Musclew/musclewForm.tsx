@@ -63,10 +63,15 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
 
   const handleDeleteCount = () => {
     if (count <= 1) return
-    setCount(count - 1)
+    // セット数と実際に入力した値で換算されるセット数にズレがある場合、実際のセット数に合わせる
+    const length = Math.max.apply(null, [amounts.length, weights.length, durations.length])
+    if (count !== length) {
+      return setCount(length)
+    }
     setAmounts(amounts.slice(0, amounts.length - 1))
     setWeights(weights.slice(0, weights.length - 1))
     setDurations(durations.slice(0, durations.length - 1))
+    setCount(count - 1)
   }
 
   const handleOnFocus = () => {

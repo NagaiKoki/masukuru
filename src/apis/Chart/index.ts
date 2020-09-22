@@ -31,8 +31,7 @@ export const requestFetchWeights = async (date: Date, type: ChartTermType) => {
     })
     return { payload: weights }
   } catch(error) {
-    console.log(error)
-    return { error: error }
+    return { error }
   }
 }
 
@@ -44,18 +43,18 @@ export const requestPostWeight = async (weight: number, date: Date) => {
   const userRef = db.collection('users').doc(currentUserId).collection('weights').where('date', "==", startToday).get()
   let payload: UserWeightType
 
-  Analytics.track('postWeight', { weight: weight, uid: currentUserId })
+  Analytics.track('postWeight', { weight, uid: currentUserId })
 
   try {
     await userRef.then(snap => {
       if (!snap.empty) {
         snap.forEach(doc => {
-          doc.ref.update({ weight: weight, updatedAt: currentTime })
+          doc.ref.update({ weight, updatedAt: currentTime })
         })
         const weightObj: UserWeightType = {
           uid: currentUserId,
           date: startToday,
-          weight: weight,
+          weight,
           createdAt: convertFirebaseTimeStamp(new Date),
           updatedAt: convertFirebaseTimeStamp(new Date)
         }
@@ -63,14 +62,14 @@ export const requestPostWeight = async (weight: number, date: Date) => {
       } else {
         const userRef = db.collection('users').doc(currentUserId).collection('weights')
         userRef.add({ 
-          weight: weight, 
-          date: startToday, 
+          weight, 
+          date: startToday,
           uid: currentUserId,
           createdAt: currentTime,
           updatedAt: currentTime
         })
         const weightObj: UserWeightType = {
-          weight: weight,
+          weight,
           date: startToday,
           uid: currentUserId,
           createdAt: convertFirebaseTimeStamp(new Date),
@@ -81,7 +80,7 @@ export const requestPostWeight = async (weight: number, date: Date) => {
     })
     return { paload: payload }
   } catch(error) {
-    return { error: error }
+    return { error }
   }
 }
 
@@ -98,7 +97,7 @@ export const requestFetchGetChartSetting = async () => {
     })
     return { payload: settingArry[0] }
   } catch(error) {
-    return { error: error }
+    return { error }
   }
 }
 
@@ -107,18 +106,18 @@ export const requestFetchPostChartSetting = async (settings: RequestChartSetting
   const currentUserId = firebase.auth().currentUser.uid
   const settingRef = db.collection('users').doc(currentUserId).collection('settings')
   let payload: ResponseChartSettingType
-  Analytics.track('postChartSetting', { weightGoal: weightGoal, walkingGoal: walkingGoal, uid: currentUserId })
+  Analytics.track('postChartSetting', { weightGoal, walkingGoal, uid: currentUserId })
 
   try {
     await settingRef.get().then(snap => {
       if (!snap.empty) {
         snap.forEach(doc => {
-          doc.ref.update({ weightGoal: weightGoal, walkingGoal: walkingGoal })
+          doc.ref.update({ weightGoal, walkingGoal })
         })
         const settingObj: ResponseChartSettingType = {
           uid: currentUserId,
-          weightGoal: weightGoal,
-          walkingGoal: walkingGoal,
+          weightGoal,
+          walkingGoal,
           createdAt: convertFirebaseTimeStamp(new Date),
           updatedAt: convertFirebaseTimeStamp(new Date)
         }
@@ -126,8 +125,8 @@ export const requestFetchPostChartSetting = async (settings: RequestChartSetting
       } else {
         const settingObj: ResponseChartSettingType = {
           uid: currentUserId,
-          weightGoal: weightGoal,
-          walkingGoal: walkingGoal,
+          weightGoal,
+          walkingGoal,
           createdAt: convertFirebaseTimeStamp(new Date),
           updatedAt: convertFirebaseTimeStamp(new Date)
         }

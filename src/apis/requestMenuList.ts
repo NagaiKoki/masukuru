@@ -28,7 +28,6 @@ export const requestMenuList = async (setList?: any, setIsLoading?: any, user?: 
       setIsLoading(false)
       setList(listArray)
     } catch(error) {
-      console.log(error)
       alert('データの取得に失敗しました。時間をおいてから再度お試しください。')
     }
   }

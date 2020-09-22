@@ -24,7 +24,7 @@ export const requestPutSuggestRecord = async (name: string) => {
         })
       } else {
         const suggestObj: SuggestRecordType = {
-          name: name,
+          name,
           times: 1,
           createdAt: currentDateTime,
           updatedAt: currentDateTime
@@ -35,7 +35,6 @@ export const requestPutSuggestRecord = async (name: string) => {
 
     return { success: 'success' }
   } catch (error) {
-     console.log(error)
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
@@ -63,12 +62,11 @@ export const requestFetchSuggestRecord = async (keyword?: string) => {
       const defaultFilteredNames = findSuggestRecordByKeyword(keyword)
       const filterdNames = names.concat(defaultFilteredNames)
       const payload = Array.from(new Set(filterdNames.splice(0, 5)))
-      return { payload: payload }
+      return { payload }
     } else {
       return { payload: names }
     }
   } catch (error) {
-    console.log(error)
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }

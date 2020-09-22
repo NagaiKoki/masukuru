@@ -61,7 +61,6 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
 
     return { success: 'success' }
   } catch(error) {
-    console.log(error)
     return { error: 'プッシュ通知の送信に失敗しました。' }
   }
 }
@@ -112,7 +111,6 @@ const requestCheckPermissionRecordPushByUserIds = async (userIds: string[]) => {
 
     return { userIds: ids }
   } catch(error) {
-    console.log(error)
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
