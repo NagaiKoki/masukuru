@@ -68,13 +68,21 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
 
   const handleOnCopy = (countSize: number) => {
     if (count >= 10 || !hasSet(countSize)) return
+    const actualSet = Math.max.apply(null, [weights.length, amounts.length, durations.length])
     const amount = amounts[countSize - 1]
     const weight = weights[countSize - 1]
     const duration = durations[countSize - 1]
 
-    setAmounts([...amounts, amount])
-    setWeights([...weights, weight])
-    setDurations([...durations, duration])
+    const amountArray = amounts.concat()
+    const weightArray = weights.concat()
+    const durationArray = durations.concat()
+    amountArray[actualSet] = amount
+    weightArray[actualSet] = weight
+    durationArray[actualSet] = duration
+
+    setAmounts(amountArray)
+    setWeights(weightArray)
+    setDurations(durationArray)
     handleAddCount()
   }
 

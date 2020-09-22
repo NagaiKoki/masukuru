@@ -84,10 +84,10 @@ const HomeScreen = (props: HomeProps) => {
       }
       Analytics.identify(currentUserId, currentUserProperty)
     }
-  }, [currentUser])    
+  }, [currentUser])
 
   // メンバーリスト
-  const renderMemberList = 
+  const renderMemberList =
     <MemberView>
       <MemberListView>
         <MemberFlatList
@@ -95,7 +95,7 @@ const HomeScreen = (props: HomeProps) => {
           data={UserList}
           extraData={UserList}
           keyExtractor={item => item.uid.toString()}
-          renderItem={({item}) => 
+          renderItem={({item}) =>
           <MemberFlatListView onPress={() => navigation.navigate('UserPage', { user: item })}>
             <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={60} />
             <MemberFlatListName>
