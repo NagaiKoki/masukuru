@@ -18,7 +18,6 @@ const TutorialBodyInfoScreen = ({ navigation, userName }) => {
     db.collection('users').doc(currentUser.uid).update(updatedata).then(() => {
       navigation.navigate('TutorialUserImage', { userName: userName })
     }).catch((error) => {
-      console.log(error)
       Alert.alert('原因不明のエラーが発生しました。時間をおいてから再度お試しください。')
     })
   }

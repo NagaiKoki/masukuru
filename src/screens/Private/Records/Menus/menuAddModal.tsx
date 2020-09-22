@@ -129,7 +129,6 @@ const MenuAddModal = (props: MenuAddModalProps) => {
         }, 1000)
       })
     } catch(error) {
-      console.log(error)
       Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
   }

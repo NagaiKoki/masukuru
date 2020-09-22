@@ -39,7 +39,6 @@ export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>,
             let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             setProgress(progress + '%');
           }, (error) => {
-            console.log(error);
             alert(error);
           }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then(downLoadURL => {
@@ -49,7 +48,6 @@ export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>,
           })
         }
       } catch(error) {
-        console.log(error);
         alert(error);
       }
     }

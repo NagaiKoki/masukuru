@@ -63,6 +63,7 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
   }
 
   const handleOnCopy = (countSize: number) => {
+    if (count >= 10) return
     const amount = amounts[countSize - 1]
     const weight = weights[countSize - 1]
     const duration = durations[countSize - 1]
