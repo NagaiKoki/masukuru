@@ -18,10 +18,10 @@ import chartSelector from '../../selectors/chart'
 // import types
 import { ChartTermType } from '../../types/Chart'
 // import utils
-import { 
-  getMidnightTime, 
-  getHourLaterTime, 
-  getNextDay, 
+import {
+  getMidnightTime,
+  getHourLaterTime,
+  getNextDay,
   getLastDay,
   convertTimeStampToStringOnlyDate,
   convertTimeStampToStringOnlyMonthAndDate,
@@ -56,7 +56,6 @@ const PedometerChart = () => {
   // 歩行数を取得する
   const getPastSteps = async (date: Date, term: Extract<ChartTermType, 'day' | 'week'> = 'day') => {
     let pastSteps: number[] = []
-    
     if (term === 'day') {
       for (let i = 0; i < 24; i++ ) {
         const pastStep = await Pedometer.getStepCountAsync(getHourLaterTime(date, i), getHourLaterTime(date, i + 1))
@@ -174,7 +173,7 @@ const PedometerChart = () => {
       return `目標達成まで、あと${Math.abs(diff)}歩です。`
     }
   }
-  
+
   if (!availableSensor || (!pastSteps.length && isMounted)) {
     return (
       <EmptyState text="歩数の計測を許可する" />
@@ -190,14 +189,14 @@ const PedometerChart = () => {
       />
     </ChartRef>
 
-  const handleOnRef = () => {
-    captureRef(captureViewRef, {
-      format: "jpg",
-      quality: 0.9
-    }).then(
-      uri => alert(uri)
-    )
-  }
+  // const handleOnRef = () => {
+  //   captureRef(captureViewRef, {
+  //     format: "jpg",
+  //     quality: 0.9
+  //   }).then(
+  //     uri => alert(uri)
+  //   )
+  // }
 
   return (
     isMounted && pastSteps.length ?
@@ -222,7 +221,7 @@ const PedometerChart = () => {
               handleOnClick={handleGetForward}
             />
           </DateRangeWrapper>
-          <MonthButton onPress={handleOnRef}>
+          <MonthButton onPress={handleOnClickTerm}>
             <MonthText>{termLabel()}</MonthText>
           </MonthButton>
         </DateRangeContainer>
