@@ -6,7 +6,6 @@ import { COLORS } from '../../../constants/Styles'
 // import components
 import Loading from '../../../components/Loading'
 // import screen
-import MenuScreen from '../../../screens/Private/Records/Menus'
 import GroupInfoScreen from '../../../screens/Private/Groups/GroupInfo'
 import GroupEditScreen from '../../../screens/Private/Groups/GroupEdit'
 import SettingScreen from '../../../screens/Private/Setting'
@@ -124,19 +123,6 @@ const MainNavigator = () => {
         options={({route}) => ({
           headerBackTitleVisible: false,
           headerTitle: getHeaderUserTitle(route),
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-        })}
-      />
-
-      <MainStack.Screen
-        name="menu"
-        component={MenuScreen}
-        options={({route}) => ({
-          headerBackTitleVisible: false,
-          headerTitle: getHeaderMenuTitle(route),
           headerStyle: {
             backgroundColor: COLORS.BASE_MUSCLEW
           },

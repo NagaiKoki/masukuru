@@ -62,8 +62,12 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
     }
   }
 
+  const hasSet = (countSize: number) => {
+    return !!weights[countSize - 1] || !!amounts[countSize - 1] || durations[countSize - 1]
+  }
+
   const handleOnCopy = (countSize: number) => {
-    if (count >= 10) return
+    if (count >= 10 || !hasSet(countSize)) return
     const amount = amounts[countSize - 1]
     const weight = weights[countSize - 1]
     const duration = durations[countSize - 1]
@@ -114,11 +118,15 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
               onChangeText={ (text: number) => handleAddDuration(size, text) }
             />
           <AddRecordUnitName>秒</AddRecordUnitName>
-          <CopyBtn activeOpacity={0.5} onPress={ () => handleOnCopy(size) }>
+          <CopyBtn activeOpacity={ hasSet(size) ? 0.5 : 1 } onPress={ () => handleOnCopy(size) }>
             <Icon
               name="content-copy"
               size={25}
-              style={{ color: COLORS.SUB_BLACK, marginLeft: 10 }}
+              style={{
+                opacity: hasSet(size) ? 1 : 0.4,
+                color: COLORS.SUB_BLACK,
+                marginLeft: 10,
+              }}
             />
           </CopyBtn>
         </FormWrapper>
