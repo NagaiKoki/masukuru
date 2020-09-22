@@ -99,11 +99,11 @@ const AddRecordWordScreen = ({ navigation, route }) => {
         { !!temporaryUrl ? '画像を変更する' : '画像を追加する' }
       </RecordImageUploadText>
   </RecordImageUpload>
-    
+
   return (
     <AddWordContainer>
       { isLoading ? 
-        <Loading size="small" /> :  
+        <Loading size="small" /> :
         <AddWordFormWrapper>
           <AddWordForm
             placeholder="今日のトレーニングはどうでしたか？"

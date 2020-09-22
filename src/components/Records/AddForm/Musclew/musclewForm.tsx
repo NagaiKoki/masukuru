@@ -12,6 +12,7 @@ import SuggestList from '../../../../common/Search/Suggests/suggestList'
 import { requestFetchSuggestRecords } from '../../../../actions/Search/suggestRecord'
 // import utils
 import { lessThanIphoneEightHeight } from '../../../../utilities/Device'
+import { hapticFeedBack } from '../../../../utilities/Haptic'
 // import selectors
 import { suggestRecordSelector } from '../../../../selectors/suggest'
 
@@ -58,11 +59,13 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
 
   const handleAddCount = () => {
     if (count >= 10) return
+    hapticFeedBack('medium')
     setCount(count + 1)
   }
 
   const handleDeleteCount = () => {
     if (count <= 1) return
+    hapticFeedBack('medium')
     // セット数と実際に入力した値で換算されるセット数にズレがある場合、実際のセット数に合わせる
     const length = Math.max.apply(null, [amounts.length, weights.length, durations.length])
     if (count !== length) {
@@ -115,7 +118,7 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
         setWeights={setWeights}
         setAmounts={setAmounts}
         setDurations={setDurations}
-        handleAddCount={handleAddCount}
+        setCount={setCount}
       />
       <SetBtn
         handleAddSet={handleAddCount}

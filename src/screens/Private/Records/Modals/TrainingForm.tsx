@@ -23,9 +23,9 @@ const AddRecordScreen = ({ navigation, route }) => {
   const { recordItems } = recordSelector()
   const { recordItem, isUpdate }: RecordNavigationType = route.params
 
-  const [count, setCount] = useState(1)
-  const [weights, setWeights] = useState([''])
-  const [amounts, setAmounts] = useState([''])
+  const [count, setCount] = useState(2)
+  const [weights, setWeights] = useState(['', ''])
+  const [amounts, setAmounts] = useState(['', ''])
   const [durations, setDurations] = useState([''])
   const [distance, setDistance] = useState('')
   const [time, setTime] = useState('')
@@ -45,9 +45,9 @@ const AddRecordScreen = ({ navigation, route }) => {
     const { name, set, weights, amounts, durations, distance, time, isMuscle } = recordItem
     setCount(isMuscle ? set : 1)
     setIsMuscleMenu(isMuscle)
-    setWeights(isMuscle ? weights : [''])
-    setAmounts(isMuscle ? amounts : [''])
-    setDurations(isMuscle ? durations : [''])
+    setWeights(isMuscle ? weights : ['', ''])
+    setAmounts(isMuscle ? amounts : ['', ''])
+    setDurations(isMuscle ? durations : ['', ''])
     setDistance(!isMuscle ? String(distance) : '')
     setTime(!isMuscle ? String(time) : '')
     setAeroName(!isMuscle ? name : '')
@@ -149,7 +149,7 @@ const AddRecordScreen = ({ navigation, route }) => {
       ref={scrollRef}
       onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true })}
     >
-      <KeyboardAwareScrollView 
+      <KeyboardAwareScrollView
         resetScrollToCoords={{ x: 0, y: 0 }}
         extraHeight={120}
         contentContainerStyle={style.container}
@@ -175,7 +175,7 @@ const style = StyleSheet.create({
 
 const AddRecordContainer = styled.ScrollView`
   flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND}; 
+  background-color: ${COLORS.BASE_WHITE};
 `
 
 const HeaderSaveBtn = styled.TouchableOpacity`

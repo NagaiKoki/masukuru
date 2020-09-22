@@ -1,10 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Keyboard } from 'react-native'
 // import constants 
 import { COLORS } from '../../../../constants/Styles'
 // import types
 import { UnitType } from '../../../../types/Record'
+// import utils
+import { hapticFeedBack } from '../../../../utilities/Haptic'
 
 interface UnitFormProps {
   count: number
@@ -14,7 +17,7 @@ interface UnitFormProps {
   setWeights: Dispatch<SetStateAction<UnitType[]>>
   setAmounts: Dispatch<SetStateAction<UnitType[]>>
   setDurations: Dispatch<SetStateAction<UnitType[]>>
-  handleAddCount: () => void
+  setCount: Dispatch<SetStateAction<number>>
 }
 
 const MusclewRecordUnitForm = (props: UnitFormProps) => {
@@ -26,7 +29,7 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
     setWeights,
     setAmounts,
     setDurations,
-    handleAddCount
+    setCount
   } = props
 
   const handleAddWeight = (size: number, weight: number) => {
@@ -68,7 +71,8 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
 
   const handleOnCopy = (countSize: number) => {
     if (count >= 10 || !hasSet(countSize)) return
-    const actualSet = Math.max.apply(null, [weights.length, amounts.length, durations.length])
+    hapticFeedBack('medium')
+    const actualSet = Math.max.apply(null, [weights.filter(Boolean).length, amounts.filter(Boolean).length, durations.filter(Boolean).length])
     const amount = amounts[countSize - 1]
     const weight = weights[countSize - 1]
     const duration = durations[countSize - 1]
@@ -83,7 +87,8 @@ const MusclewRecordUnitForm = (props: UnitFormProps) => {
     setAmounts(amountArray)
     setWeights(weightArray)
     setDurations(durationArray)
-    handleAddCount()
+    setCount(actualSet + 1)
+    Keyboard.dismiss()
   }
 
   const renderUnitForms = () => {
@@ -167,7 +172,6 @@ const AddRecordName = styled.Text`
 
 const AddUnitForm = styled.TextInput`
   align-self: center;
-  align-items: baseline;
   background-color: ${COLORS.FORM_BACKGROUND};
   border-radius: 5px;
   width: 17%;
