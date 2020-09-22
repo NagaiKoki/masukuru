@@ -128,7 +128,6 @@ const RecordModalScreen = ({ navigation }) => {
       </RecordListContainer>
       :
       <RecordListContainer>
-        <TitleLabel>追加したトレーニング</TitleLabel>
         <RecordModalAddItemBtnForm onPress={handleNavigateAddForm}>
           <Icon name="pluscircleo" size={16} style={{ color: COLORS.SUB_BLACK }} />
           <RecordItemText>トレーニングを追加する</RecordItemText>
