@@ -52,14 +52,14 @@ const ApplauseWrapper = styled.View<{ hasSubMessage: boolean }>`
 const Title = styled.Text`
   padding: 15px 0;
   color: ${COLORS.BASE_BLACK};
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
 `
 
 const SubTitle = styled.Text`
   padding: 20px 0;
-  font-size: 14px;
+  font-size: 15px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
   text-align: center;
