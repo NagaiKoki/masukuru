@@ -7,6 +7,8 @@ import {
   requestPostEmojiReaction,
   toggleEmojiModalOpen
 } from '../../../../../slice/record'
+// import utils
+import { hapticFeedBack } from '../../../../../utilities/Haptic'
 
 interface PropsType {
   id: number
@@ -19,6 +21,7 @@ const EmojiItem = (props: PropsType) => {
   const dispatch = useDispatch()
 
   const handlePostEmojiReaction = () => {
+    hapticFeedBack('medium')
     dispatch(requestPostEmojiReaction({ emojiIndex: id }))
     dispatch(toggleEmojiModalOpen({ isOpen: false }))
   }

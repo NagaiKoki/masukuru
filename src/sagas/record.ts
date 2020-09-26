@@ -326,14 +326,14 @@ function* runRequestPostEmojiReaction(action: PayloadAction<RequestPostEmojiReac
   const { emojiIndex } = action.payload
   const { selectedEmojiRecordId }: ReturnType<typeof recordSelector> = yield select(recordSelector)
 
-  const { payload, error }: ResponseType<string> = yield call(
+  const { payload, error }: ResponseType<ResponseEmojiReactionType> = yield call(
     requestFetchPostEmojiReaction,
     selectedEmojiRecordId,
     emojiIndex
   )
 
   if (payload && !error) {
-    yield put(successPostEmojiReaction())
+    yield put(successPostEmojiReaction(payload))
   } else if (!error) {
     yield put(failurePostEmojiReaction(error))
   }

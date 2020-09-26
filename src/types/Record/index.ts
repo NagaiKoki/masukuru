@@ -114,8 +114,3 @@ export type ToggleEmojiModal = {
 export type RequestPostEmojiReaction = {
   emojiIndex: number
 }
-
-export type SuccessPostEmojiReaction = {
-  recordId: string
-  emoji: string
-}

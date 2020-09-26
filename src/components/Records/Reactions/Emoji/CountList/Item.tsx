@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 // import utils
 import { EMOJI_ITEMS } from '../../../../../utilities/Reaction/Emoji'
+// import constants
+import { COLORS } from '../../../../../constants/Styles';
 
 interface PropsType {
   id: number
@@ -29,8 +31,18 @@ export default EmojiItem
 const ItemWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
+  border-radius: 8px;
+  margin-right: 10px;
+  padding: 7px 10px;
+  background: ${COLORS.BASE_BACKGROUND2};
 `
 
-const EmojiText = styled.Text``
+const EmojiText = styled.Text`
+  font-size: 16px;
+  margin-right: 5px;
+`
 
-const CountText = styled.Text``
+const CountText = styled.Text`
+  font-size: 15px;
+  color: ${COLORS.BASE_BLACK};
+`

@@ -3,8 +3,9 @@ import firebase, { db } from '../../../config/firebase';
 import { ResponseEmojiReactionType, EmojiReactionType } from '../../../types/Record'
 // import constants
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
-// import lib
+// import utils
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
+import { convertFirebaseTimeStamp } from '../../../utilities/timestamp'
 // import apis
 import { requestCurrentGroupId } from '../../Groups/transfer'
 
@@ -100,10 +101,19 @@ export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex
     createdAt: new Date(),
     updatedAt: new Date()
   }
+  const ResponseEmojiReaction: ResponseEmojiReactionType = {
+    id: String(parseInt(`${new Date().getTime()}${recordId}, 10`)),
+    groupId: currentGroupId,
+    emojiIndex,
+    uid: currentUser.uid,
+    recordId,
+    createdAt: convertFirebaseTimeStamp(new Date()),
+    updatedAt: convertFirebaseTimeStamp(new Date()),
+  }
 
   try {
     await recordRef.collection('emoji').add(EmojiObj)
-    return { payload: 'success' }
+    return { payload: ResponseEmojiReaction }
   } catch(error) {
     return { error }
   }

@@ -13,8 +13,8 @@ import {
   RequestDeleteComment,
   ToggleEmojiModal,
   RequestPostEmojiReaction,
-  SuccessPostEmojiReaction,
-  EmojiReactionType
+  EmojiReactionType,
+  ResponseEmojiReactionType
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
@@ -342,9 +342,25 @@ const recordSlice = createSlice({
         ...state
       }
     },
-    successPostEmojiReaction: (state, action: PayloadAction<SuccessPostEmojiReaction>) => {
+    successPostEmojiReaction: (state, action: PayloadAction<ResponseEmojiReactionType>) => {
+      const recordId = action.payload.recordId
+      const { emojiReactions } = state
+      const newArray: EmojiReactionType[] = [].concat(emojiReactions)
+
+      const updateReactions = newArray.map((reaction, i) => {
+        if (reaction.recordId === recordId) {
+          newArray[i] = {
+            recordId,
+            emojiReactions: [...reaction.emojiReactions, action.payload]
+          }
+          return newArray[i]
+        }
+        return reaction
+      })
+
       return {
-        ...state
+        ...state,
+        emojiReactions: updateReactions
       }
     },
     failurePostEmojiReaction: (state, action: PayloadAction<string>) => {

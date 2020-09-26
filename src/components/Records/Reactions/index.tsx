@@ -10,6 +10,8 @@ import EmojiCountList from './Emoji/CountList'
 import { toggleEmojiModalOpen, requestFetchEmojiReaction } from '../../../slice/record'
 // import selectors
 import { selectEmojiReactions } from '../../../selectors/record'
+// import utils
+import { hapticFeedBack } from '../../../utilities/Haptic'
 
 interface RecordReactionProps {
   size: number
@@ -27,7 +29,13 @@ const RecordReaction = (props: RecordReactionProps) => {
   }, [])
 
   const handleOpenEmojiModal = () => {
+    hapticFeedBack('medium')
     dispatch(toggleEmojiModalOpen({ isOpen: true, selectedRecordId: id }))
+  }
+
+  const handleNavigateRecordShow = () => {
+    hapticFeedBack('medium')
+    handleOnNavigate()
   }
 
   return (
@@ -40,7 +48,7 @@ const RecordReaction = (props: RecordReactionProps) => {
             style={{ width: 30, height: 30, resizeMode: 'cover', alignSelf: 'center' }}
           />
         </EmojiBtn>
-        <CommentWrapper onPress={handleOnNavigate}>
+        <CommentWrapper onPress={handleNavigateRecordShow}>
           <Icon name="comment" size={20} style={{ color: COLORS.BASE_BORDER_COLOR }} />
           <RecordReactionSizeText>{size}</RecordReactionSizeText>
         </CommentWrapper>
@@ -71,8 +79,8 @@ const EmojiBtn = styled.TouchableOpacity`
 `
 
 const RecordReactionSizeText = styled.Text`
-  margin-left: 3px;
-  font-size: 14px;
+  margin-left: 5px;
+  font-size: 15px;
   font-weight: bold;
   color: ${COLORS.SUB_BLACK};
 `
