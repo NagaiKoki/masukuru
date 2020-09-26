@@ -15,6 +15,7 @@ export interface RecordState {
   comments: RecordCommentType[]
   recordSize: number,
   isOpenApplause: boolean
+  isEmojiModalOpen: boolean
 }
 
 export type RecordItemType = {

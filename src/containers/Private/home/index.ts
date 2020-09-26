@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { RootState } from '../../../reducers'
 import { 
   RecordState, 
-  ResponseRecordType, 
   RequestFetchRecordType,
   RequestNextRecords
 } from '../../../types/Record'
@@ -13,7 +12,7 @@ import { UserState } from '../../../types/User'
 import { 
   requestFetchRecords,
   requestNextRecords,
-  requestDestroyRecord
+  requestDestroyRecord,
 } from '../../../slice/record'
 import { requestFetchUserData } from '../../../actions/User'
 // import screens
@@ -45,7 +44,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       requestFetchRecords,
       requestNextRecords,
       requestDestroyRecord,
-      requestFetchUserData
+      requestFetchUserData,
     }
     , dispatch)
   }

@@ -19,7 +19,7 @@ import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
 
 const initialState: RecordState = {
   recordItems: [],
-  trainingDate: new Date,
+  trainingDate: new Date(),
   word: '',
   imageUrl: '',
   error: '',
@@ -31,7 +31,8 @@ const initialState: RecordState = {
   commentPostError: '',
   comments: [],
   recordSize: 0,
-  isOpenApplause: false
+  isOpenApplause: false,
+  isEmojiModalOpen: false
 }
 
 const recordSlice = createSlice({
@@ -305,6 +306,12 @@ const recordSlice = createSlice({
         ...state,
         isOpenApplause: false
       }
+    },
+    toggleEmojiModalOpen: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        isEmojiModalOpen: action.payload
+      }
     }
   }
 })
@@ -343,7 +350,8 @@ export const {
   requestUpdateRecord,
   successUpdateRecord,
   failureUpdateRecord,
-  closeApplauseModal
+  closeApplauseModal,
+  toggleEmojiModalOpen
 } = recordSlice.actions
 
 export default recordSlice

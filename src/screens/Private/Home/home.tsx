@@ -12,6 +12,7 @@ import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
 import ApplauseModal from '../../../components/Applause'
+import EmojiModal from '../../../components/Records/Reactions/Emoji/EmojiModal'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
 import { UserPropertyType } from '../../../types/Analytics/amplitude'
@@ -25,16 +26,16 @@ import { registerForPushNotificationsAsync } from '../../../utilities/Push/regis
 // import config
 import firebase from '../../../config/firebase'
 import Analytics from '../../../config/amplitude'
-  
+
 const HomeScreen = (props: HomeProps) => {
   const { navigation, route, records, users, actions } = props
-  const { 
-    requestFetchRecords, 
-    requestNextRecords, 
+  const {
+    requestFetchRecords,
+    requestNextRecords,
     requestDestroyRecord,
-    requestFetchUserData
+    requestFetchUserData,
   } = actions
-  const { recordData, isLoading } = records
+  const { recordData, isLoading, isEmojiModalOpen } = records
   const { currentUser } = users
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
@@ -148,6 +149,7 @@ const HomeScreen = (props: HomeProps) => {
         <Icon name="pencil" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </RecordAddBtn>
       <ApplauseModal />
+      <EmojiModal isOpen={isEmojiModalOpen} />
     </Container>
   );
 };

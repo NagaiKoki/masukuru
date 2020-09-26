@@ -1,8 +1,11 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Fontisto'
 import { COLORS } from '../../../constants/Styles'
+// import slices
+import { toggleEmojiModalOpen } from '../../../slice/record'
 
 interface RecordReactionProps {
   size: number
@@ -11,11 +14,16 @@ interface RecordReactionProps {
 
 const RecordReaction = (props: RecordReactionProps) => {
   const { size, handleOnNavigate } = props
+  const dispatch =  useDispatch()
+
+  const handleOpenEmojiModal = () => {
+    dispatch(toggleEmojiModalOpen(true))
+  }
 
   return (
     <RecordReactionWrapper>
       <RecordReactionUpper>
-        <EmojiBtn>
+        <EmojiBtn onPress={handleOpenEmojiModal}>
           <Image
             source={require('../../../assets/emoji/emojiDefault.png') }
             style={{ width: 30, height: 30, resizeMode: 'cover', alignSelf: 'center' }}
