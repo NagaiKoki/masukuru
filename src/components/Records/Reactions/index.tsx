@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Fontisto'
 import { COLORS } from '../../../constants/Styles'
-// import types
-import { ResponseRecordType } from '../../../types/Record'
 
 interface RecordReactionProps {
   size: number
@@ -14,7 +12,6 @@ interface RecordReactionProps {
 const RecordReaction = (props: RecordReactionProps) => {
   const { size, handleOnNavigate } = props
 
- 
   return (
     <RecordReactionWrapper>
       <RecordReactionUpper>
@@ -34,10 +31,9 @@ const RecordReaction = (props: RecordReactionProps) => {
 }
 
 const RecordReactionWrapper = styled.View`
-  background-color: ${COLORS.BASE_WHITE};
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 0.3px;
-  padding: 10px;
+  padding: 10px 10px 12px 10px;
 `
 
 const RecordReactionUpper = styled.View`

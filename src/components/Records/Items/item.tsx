@@ -147,12 +147,11 @@ const styles = StyleSheet.create({
 const RecordItenClickable = styled.TouchableOpacity``
 
 const RecordItemContainer = styled.View`
-  margin: 0px 0 8px 0;
-  padding: 15px 15px 0 15px;
-  width: 100%;
   align-self: center;
-  border-radius: 5px;
-  background-color: ${COLORS.BASE_WHITE}; 
+  margin: 0px 0 8px 0;
+  width: 100%;
+  padding: 15px 15px 0 15px;
+  background-color: ${COLORS.BASE_WHITE};
 `
 
 const RecordItemUpper = styled.View`

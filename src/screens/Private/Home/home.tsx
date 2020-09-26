@@ -155,7 +155,7 @@ const HomeScreen = (props: HomeProps) => {
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND};
+  background-color: #ebebeb;
 `
 
 const MemberView = styled.View`
