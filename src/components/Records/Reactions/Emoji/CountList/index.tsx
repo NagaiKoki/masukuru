@@ -20,15 +20,10 @@ const EmojiList = (props: PropsType) => {
   })
 
   return (
-    <Wrapper>
+    <React.Fragment>
       {renderEmojiCountList}
-    </Wrapper>
+    </React.Fragment>
   )
 }
 
 export default EmojiList
-
-const Wrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-`

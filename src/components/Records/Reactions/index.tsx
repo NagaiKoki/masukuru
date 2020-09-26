@@ -49,7 +49,7 @@ const RecordReaction = (props: RecordReactionProps) => {
           />
         </EmojiBtn>
         <CommentWrapper onPress={handleNavigateRecordShow}>
-          <Icon name="comment" size={20} style={{ color: COLORS.BASE_BORDER_COLOR }} />
+          <Icon name="comment" size={23} style={{ color: COLORS.BASE_BORDER_COLOR }} />
           <RecordReactionSizeText>{size}</RecordReactionSizeText>
         </CommentWrapper>
       </RecordReactionUpper>
@@ -60,22 +60,24 @@ const RecordReaction = (props: RecordReactionProps) => {
 const RecordReactionWrapper = styled.View`
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 0.3px;
-  padding: 10px 10px 12px 10px;
+  padding: 5px 0;
 `
 
 const RecordReactionUpper = styled.View`
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
 `
 
 const CommentWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin: 5px 15px 5px 5px;
 `
 
 const EmojiBtn = styled.TouchableOpacity`
-  margin-right: 15px;
+  margin: 5px 15px 5px 0px;
 `
 
 const RecordReactionSizeText = styled.Text`

@@ -32,7 +32,7 @@ const ItemWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   border-radius: 8px;
-  margin-right: 10px;
+  margin: 5px 10px 5px 0;
   padding: 7px 10px;
   background: ${COLORS.BASE_BACKGROUND2};
 `

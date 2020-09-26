@@ -32,7 +32,7 @@ export default BottomModal
 
 const CloseBar = styled.View`
   align-self: center;
-  margin-top: 5px;
+  margin-top: 7px;
   border-radius: 20px;
   width: 150px;
   height: 5px;

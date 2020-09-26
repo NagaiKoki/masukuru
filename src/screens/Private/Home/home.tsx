@@ -23,6 +23,7 @@ import { isSetExpoNotificationToken, requestPutExpoNotificationToken } from '../
 import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 import { updateModule } from '../../../utilities/OtaUpdate'
 import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
+import { hapticFeedBack } from '../../../utilities/Haptic'
 // import config
 import firebase from '../../../config/firebase'
 import Analytics from '../../../config/amplitude'
@@ -115,6 +116,11 @@ const HomeScreen = (props: HomeProps) => {
     setIsRefresh(false)
   }
 
+  const handleOpenRecordModal = () => {
+    hapticFeedBack('medium')
+    navigation.navigate('recordModal')
+  }
+
   if (isHomeLoading) {
     return (
       <Loading size='small' />
@@ -145,7 +151,7 @@ const HomeScreen = (props: HomeProps) => {
           requestDestroyRecord={requestDestroyRecord}
         />
       </ScrollView>
-      <RecordAddBtn onPress={() => navigation.navigate('recordModal')}>
+      <RecordAddBtn onPress={handleOpenRecordModal}>
         <Icon name="pencil" size={30} style={{ color: '#fff', marginTop: 4 }} />
       </RecordAddBtn>
       <ApplauseModal />
