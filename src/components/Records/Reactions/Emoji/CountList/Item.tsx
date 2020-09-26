@@ -31,18 +31,18 @@ export default EmojiItem
 const ItemWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 20px;
   margin: 5px 10px 5px 0;
   padding: 7px 10px;
-  background: ${COLORS.BASE_BACKGROUND2};
+  background: ${COLORS.BASE_BACKGROUND3};
 `
 
 const EmojiText = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   margin-right: 5px;
 `
 
 const CountText = styled.Text`
-  font-size: 15px;
+  font-size: 14px;
   color: ${COLORS.BASE_BLACK};
 `

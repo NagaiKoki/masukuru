@@ -163,12 +163,12 @@ const HomeScreen = (props: HomeProps) => {
 
 const Container = styled.View`
   flex: 1;
-  background-color: #ebebeb;
+  background-color: ${COLORS.BASE_BACKGROUND3};
 `
 
 const MemberView = styled.View`
   position: relative;
-  background-color: #FFF;
+  background-color: ${COLORS.BASE_WHITE};
   border-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 0.5px;
   height: 82px;
