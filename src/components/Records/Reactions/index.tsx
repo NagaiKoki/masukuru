@@ -1,23 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Fontisto'
 import { COLORS } from '../../../constants/Styles'
 // import slices
-import { toggleEmojiModalOpen } from '../../../slice/record'
+import { toggleEmojiModalOpen, requestFetchEmojiReaction } from '../../../slice/record'
+// import selectors
+import recordSelector from '../../../selectors/record'
 
 interface RecordReactionProps {
   size: number
+  id: string
   handleOnNavigate: () => void
 }
 
 const RecordReaction = (props: RecordReactionProps) => {
-  const { size, handleOnNavigate } = props
+  const { size, id, handleOnNavigate } = props
   const dispatch =  useDispatch()
+  const { emojiReactions } = recordSelector()
+
+  useEffect(() => {
+    dispatch(requestFetchEmojiReaction(id))
+  }, [])
 
   const handleOpenEmojiModal = () => {
-    dispatch(toggleEmojiModalOpen(true))
+    dispatch(toggleEmojiModalOpen({ isOpen: true, selectedRecordId: id }))
   }
 
   return (
@@ -58,7 +66,6 @@ const CommentWrapper = styled.TouchableOpacity`
 const EmojiBtn = styled.TouchableOpacity`
   margin-right: 15px;
 `
-
 
 const RecordReactionSizeText = styled.Text`
   margin-left: 3px;

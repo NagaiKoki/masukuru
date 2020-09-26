@@ -16,6 +16,8 @@ export interface RecordState {
   recordSize: number,
   isOpenApplause: boolean
   isEmojiModalOpen: boolean
+  selectedEmojiRecordId: string
+  emojiReactions: ResponseEmojiReactionType[]
 }
 
 export type RecordItemType = {
@@ -49,6 +51,16 @@ export type RecordCommentType = {
   groupId: string
   createdAt: FirestoreTimestamp | Date
   updatedAt: FirestoreTimestamp | Date
+}
+
+export type ResponseEmojiReactionType = {
+  id: string
+  recordId: string
+  groupId: string
+  uid: string
+  emojiIndex: number
+  createdAt: FirestoreTimestamp
+  updatedAt: FirestoreTimestamp
 }
 
 export type UnitType = number | string
@@ -87,4 +99,18 @@ export type RequestPostRecordComment = {
 export type RequestDeleteComment = {
   recordId: string
   commentId: string
+}
+
+export type ToggleEmojiModal = {
+  isOpen: boolean
+  selectedRecordId?: string
+}
+
+export type RequestPostEmojiReaction = {
+  emojiIndex: number
+}
+
+export type SuccessPostEmojiReaction = {
+  recordId: string
+  emoji: string
 }

@@ -7,8 +7,8 @@ import { EMOJI_ITEMS } from '../../../../utilities/Reaction/Emoji'
 
 const EmojiList = () => {
   const renderEmojiItem =
-  EMOJI_ITEMS.map((item, index) => {
-    return <EmojiItem emoji={item.emoji} text={item.text} key={index} />
+  EMOJI_ITEMS.map(item => {
+    return <EmojiItem id={item.id} emoji={item.emoji} text={item.text} key={item.id} />
   })
 
   return (

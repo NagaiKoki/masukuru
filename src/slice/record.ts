@@ -11,6 +11,10 @@ import {
   RequestNextRecords,
   RequestPostRecordComment,
   RequestDeleteComment,
+  ToggleEmojiModal,
+  RequestPostEmojiReaction,
+  SuccessPostEmojiReaction,
+  ResponseEmojiReactionType
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
@@ -32,12 +36,14 @@ const initialState: RecordState = {
   comments: [],
   recordSize: 0,
   isOpenApplause: false,
-  isEmojiModalOpen: false
+  isEmojiModalOpen: false,
+  selectedEmojiRecordId: '',
+  emojiReactions: []
 }
 
 const recordSlice = createSlice({
   name: record,
-  initialState: initialState,
+  initialState,
   reducers: {
     addRecord: (state, action: PayloadAction<RecordItemType>) => {
       const recordItems = [...state.recordItems, action.payload]
@@ -79,7 +85,7 @@ const recordSlice = createSlice({
       return {
         ...state,
         recordItems: [],
-        trainingDate: new Date,
+        trainingDate: new Date(),
         word: '',
         imageUrl: '',
         error: '',
@@ -125,7 +131,6 @@ const recordSlice = createSlice({
         isLoading: false
       }
     },
-    
     requestFetchRecords: (state, action: PayloadAction<RequestFetchRecordType>) => {
       return {
         ...state,
@@ -160,7 +165,7 @@ const recordSlice = createSlice({
     },
     successFetchRecords: (state, action: PayloadAction<SuccessFetchRecordType>) => {
       const { payload, uid, groupId } = action.payload
-      
+
       if (uid) {
         return {
           ...state,
@@ -307,10 +312,44 @@ const recordSlice = createSlice({
         isOpenApplause: false
       }
     },
-    toggleEmojiModalOpen: (state, action: PayloadAction<boolean>) => {
+    toggleEmojiModalOpen: (state, action: PayloadAction<ToggleEmojiModal>) => {
+      const { isOpen, selectedRecordId } = action.payload
       return {
         ...state,
-        isEmojiModalOpen: action.payload
+        isEmojiModalOpen: isOpen,
+        selectedEmojiRecordId: isOpen ? selectedRecordId : ''
+      }
+    },
+    requestFetchEmojiReaction: (state, action: PayloadAction<string>) => {
+      return {
+        ...state
+      }
+    },
+    successFetchEmojiReaction: (state, action: PayloadAction<ResponseEmojiReactionType[]>) => {
+      const emojiReactions = [...state.emojiReactions, ...action.payload]
+      return {
+        ...state,
+        emojiReactions
+      }
+    },
+    failureFetchEmojiReaction: (state, action: PayloadAction<string>) => {
+      return {
+        ...state
+      }
+    },
+    requestPostEmojiReaction: (state, action: PayloadAction<RequestPostEmojiReaction>) => {
+      return {
+        ...state
+      }
+    },
+    successPostEmojiReaction: (state, action: PayloadAction<SuccessPostEmojiReaction>) => {
+      return {
+        ...state
+      }
+    },
+    failurePostEmojiReaction: (state, action: PayloadAction<string>) => {
+      return {
+        ...state
       }
     }
   }
@@ -351,7 +390,13 @@ export const {
   successUpdateRecord,
   failureUpdateRecord,
   closeApplauseModal,
-  toggleEmojiModalOpen
+  toggleEmojiModalOpen,
+  requestFetchEmojiReaction,
+  successFetchEmojiReaction,
+  failureFetchEmojiReaction,
+  requestPostEmojiReaction,
+  successPostEmojiReaction,
+  failurePostEmojiReaction
 } = recordSlice.actions
 
 export default recordSlice

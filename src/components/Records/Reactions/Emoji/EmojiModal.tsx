@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
-import Modal from 'react-native-modalbox'
 // import constants
 import { COLORS } from '../../../../constants/Styles';
 // import slices
@@ -19,7 +18,7 @@ const EmojiModal = (props: PropsType) => {
   const dispatch = useDispatch()
 
   const handleOnClose = () => {
-    dispatch(toggleEmojiModalOpen(false))
+    dispatch(toggleEmojiModalOpen({ isOpen: false }))
   }
 
   const renderModalContent =

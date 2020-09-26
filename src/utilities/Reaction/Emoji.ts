@@ -1,7 +1,7 @@
 export const EMOJI_ITEMS = [
-  { emoji: '👏', text: '頑張ったね！！' },
-  { emoji: '👍', text: 'いいね！!' },
-  { emoji: '🔥', text: '私も頑張ろ！！' },
-  { emoji: '❤️', text: 'すごい！！' },
-  { emoji: '💪', text: 'マスクル、マスクル！' }
+  { id: 1, emoji: '👏', text: '頑張ったね！！' },
+  { id: 2, emoji: '👍', text: 'いいね！!' },
+  { id: 3, emoji: '🔥', text: '私も頑張ろ！！' },
+  { id: 4, emoji: '❤️', text: 'すごい！！' },
+  { id: 5, emoji: '💪', text: 'マスクル、マスクル！' }
 ]

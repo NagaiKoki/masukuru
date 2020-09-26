@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from 'react-native-modalbox'
 import styled from 'styled-components'
+// import constants
 import { COLORS } from '../../constants/Styles';
 
 interface PropsType {

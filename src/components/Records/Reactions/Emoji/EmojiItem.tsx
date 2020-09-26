@@ -1,18 +1,31 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles';
+// import slices
+import {
+  requestPostEmojiReaction,
+  toggleEmojiModalOpen
+} from '../../../../slice/record'
 
 interface PropsType {
+  id: number
   emoji: string
   text: string
 }
 
 const EmojiItem = (props: PropsType) => {
-  const { emoji, text } = props
+  const { id, emoji, text } = props
+  const dispatch = useDispatch()
+
+  const handlePostEmojiReaction = () => {
+    dispatch(requestPostEmojiReaction({ emojiIndex: id }))
+    dispatch(toggleEmojiModalOpen({ isOpen: false }))
+  }
 
   return (
     <Wrapper>
-      <EmojiBtn>
+      <EmojiBtn onPress={handlePostEmojiReaction}>
         <EmojiText>{emoji}</EmojiText>
       </EmojiBtn>
       <EmojiName>{text}</EmojiName>

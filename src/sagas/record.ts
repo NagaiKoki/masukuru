@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { fork, select, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
 // import slice
-import {  
+import {
   requestFetchRecords,
   successFetchRecords,
   requestFetchRecord as requestFetchGetRecord,
@@ -17,23 +17,27 @@ import {
   RequestSubmitRecords,
   RequestNextRecords,
   RequestPostRecordComment,
-  RequestDeleteComment
+  RequestDeleteComment,
+  RequestPostEmojiReaction,
+  ResponseEmojiReactionType
 } from '../types/Record'
 import { ResponseType } from '../types'
 import { RequestPostCommentNotification } from '../types/Notification'
 import { RootState } from '../reducers'
 // import apis
-import { 
-  requestPostRecords, 
-  requestFetchRecord, 
+import {
+  requestPostRecords,
+  requestFetchRecord,
   requestFetchDestroyRecord,
   requestFetchRecordItem,
   requestUpdateRecordItem
 } from '../apis/Records'
-import { 
-  requestPostRecordPost, 
+import {
+  requestPostRecordPost,
   requestGetRecordComments,
-  requestFetchDeleteRecordComment
+  requestFetchDeleteRecordComment,
+  requestFetchGetEmojiReaction,
+  requestFetchPostEmojiReaction
  } from '../apis/Records/Reaction'
  import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
  import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
@@ -41,7 +45,7 @@ import {
 // import actions
 import {
   requestSubmitRecords,
-  successSubmitRecords, 
+  successSubmitRecords,
   failureSubmitRecords,
   failureFetchRecords,
   requestNextRecords,
@@ -62,6 +66,12 @@ import {
   requestDeleteRecordComment,
   successDeleteRecordComment,
   failureDeleteRecordComment,
+  requestFetchEmojiReaction,
+  successFetchEmojiReaction,
+  failureFetchEmojiReaction,
+  requestPostEmojiReaction,
+  successPostEmojiReaction,
+  failurePostEmojiReaction,
 } from '../slice/record'
 import { 
   requestPostCommentNotification,
@@ -159,7 +169,7 @@ function* runRequestNextFetchRecords(action: PayloadAction<RequestNextRecords>) 
   )
 
   if (payload && !error) {
-    yield put(successFetchNextRecords({ payload: payload, uid: uid, groupId: groupId }))
+    yield put(successFetchNextRecords({ payload, uid, groupId }))
   } else {
     yield put(failureFetchNextRecords(error))
   }
@@ -310,6 +320,45 @@ function* handleRequestDeleteRecordComment() {
   yield takeEvery(requestDeleteRecordComment.type, runRequestDeleteRecordComment)
 }
 
+/////////////////////// 絵文字リアクション ///////////////////////
+function* runRequestPostEmojiReaction(action: PayloadAction<RequestPostEmojiReaction>) {
+  const { emojiIndex } = action.payload
+  const { selectedEmojiRecordId }: ReturnType<typeof recordSelector> = yield select(recordSelector)
+
+  const { payload, error }: ResponseType<string> = yield call(
+    requestFetchPostEmojiReaction,
+    selectedEmojiRecordId,
+    emojiIndex
+  )
+
+  if (payload && !error) {
+    yield put(successPostEmojiReaction())
+  } else if (!error) {
+    yield put(failurePostEmojiReaction(error))
+  }
+}
+
+function* handleRequestPostEmojiReaction() {
+  yield takeEvery(requestPostEmojiReaction.type, runRequestPostEmojiReaction)
+}
+
+function* runRequestFetchEmojiReaction(action: PayloadAction<string>) {
+  const { payload, error }: ResponseType<ResponseEmojiReactionType[]> = yield call(
+    requestFetchGetEmojiReaction,
+    action.payload
+  )
+  
+  if (payload && !error) {
+    yield put(successFetchEmojiReaction(payload))
+  } else if (!error) {
+    yield put(failureFetchEmojiReaction(error))
+  }
+}
+
+function* handleRequestFetchEmojiReaction() {
+  yield takeLatest(requestFetchEmojiReaction.type, runRequestFetchEmojiReaction)
+}
+
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)
@@ -321,4 +370,6 @@ export default function* recordSaga() {
   yield fork(handleRequestFetchRecordComments)
   yield fork(handleRequestDeleteRecordComment)
   yield fork(handleRequestPostCommentNotification)
+  yield fork(handleRequestPostEmojiReaction)
+  yield fork(handleRequestFetchEmojiReaction)
 }
