@@ -19,7 +19,8 @@ import {
   RequestPostRecordComment,
   RequestDeleteComment,
   RequestPostEmojiReaction,
-  ResponseEmojiReactionType
+  ResponseEmojiReactionType,
+  EmojiReactionType
 } from '../types/Record'
 import { ResponseType } from '../types'
 import { RequestPostCommentNotification } from '../types/Notification'
@@ -343,11 +344,11 @@ function* handleRequestPostEmojiReaction() {
 }
 
 function* runRequestFetchEmojiReaction(action: PayloadAction<string>) {
-  const { payload, error }: ResponseType<ResponseEmojiReactionType[]> = yield call(
+  const { payload, error }: ResponseType<EmojiReactionType> = yield call(
     requestFetchGetEmojiReaction,
     action.payload
   )
-  
+
   if (payload && !error) {
     yield put(successFetchEmojiReaction(payload))
   } else if (!error) {
@@ -356,7 +357,7 @@ function* runRequestFetchEmojiReaction(action: PayloadAction<string>) {
 }
 
 function* handleRequestFetchEmojiReaction() {
-  yield takeLatest(requestFetchEmojiReaction.type, runRequestFetchEmojiReaction)
+  yield takeEvery(requestFetchEmojiReaction.type, runRequestFetchEmojiReaction)
 }
 
 export default function* recordSaga() {

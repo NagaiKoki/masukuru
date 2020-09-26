@@ -12,7 +12,7 @@ import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
 import ApplauseModal from '../../../components/Applause'
-import EmojiModal from '../../../components/Records/Reactions/Emoji/EmojiModal'
+import EmojiModal from '../../../components/Records/Reactions/Emoji/Modal/EmojiModal'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
 import { UserPropertyType } from '../../../types/Analytics/amplitude'

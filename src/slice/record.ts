@@ -14,7 +14,7 @@ import {
   ToggleEmojiModal,
   RequestPostEmojiReaction,
   SuccessPostEmojiReaction,
-  ResponseEmojiReactionType
+  EmojiReactionType
 } from '../types/Record'
 // import constants
 import { record } from '../constants/sliceName'
@@ -325,11 +325,11 @@ const recordSlice = createSlice({
         ...state
       }
     },
-    successFetchEmojiReaction: (state, action: PayloadAction<ResponseEmojiReactionType[]>) => {
-      const emojiReactions = [...state.emojiReactions, ...action.payload]
+    successFetchEmojiReaction: (state, action: PayloadAction<EmojiReactionType>) => {
+      const emojiReactions = state.emojiReactions.filter(reaction => reaction.recordId !== action.payload.recordId)
       return {
         ...state,
-        emojiReactions
+        emojiReactions: [...emojiReactions, action.payload]
       }
     },
     failureFetchEmojiReaction: (state, action: PayloadAction<string>) => {

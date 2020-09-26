@@ -3,7 +3,7 @@ import styled from 'styled-components'
 // import components
 import EmojiItem from './EmojiItem'
 // import utils
-import { EMOJI_ITEMS } from '../../../../utilities/Reaction/Emoji'
+import { EMOJI_ITEMS } from '../../../../../utilities/Reaction/Emoji'
 
 const EmojiList = () => {
   const renderEmojiItem =

@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 // import constants
-import { COLORS } from '../../../../constants/Styles';
+import { COLORS } from '../../../../../constants/Styles';
 // import slices
-import { toggleEmojiModalOpen } from '../../../../slice/record'
+import { toggleEmojiModalOpen } from '../../../../../slice/record'
 // import components
-import BottomModal from '../../../../common/Modal/BottomModal'
+import BottomModal from '../../../../../common/Modal/BottomModal'
 import EmojiList from './EmojiList'
 
 interface PropsType {

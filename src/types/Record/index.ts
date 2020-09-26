@@ -17,7 +17,7 @@ export interface RecordState {
   isOpenApplause: boolean
   isEmojiModalOpen: boolean
   selectedEmojiRecordId: string
-  emojiReactions: ResponseEmojiReactionType[]
+  emojiReactions: EmojiReactionType[]
 }
 
 export type RecordItemType = {
@@ -61,6 +61,11 @@ export type ResponseEmojiReactionType = {
   emojiIndex: number
   createdAt: FirestoreTimestamp
   updatedAt: FirestoreTimestamp
+}
+
+export type EmojiReactionType = {
+  recordId: string
+  emojiReactions: ResponseEmojiReactionType[]
 }
 
 export type UnitType = number | string

@@ -1,6 +1,6 @@
 import firebase, { db } from '../../../config/firebase';
 // import types
-import { ResponseEmojiReactionType } from '../../../types/Record'
+import { ResponseEmojiReactionType, EmojiReactionType } from '../../../types/Record'
 // import constants
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 // import lib
@@ -125,7 +125,13 @@ export const requestFetchGetEmojiReaction = async (recordId: string) => {
         payload.push(data)
       })
     })
-    return { payload }
+
+    const emojiPayload: EmojiReactionType = {
+      recordId,
+      emojiReactions: payload
+    }
+
+    return { payload: emojiPayload }
   } catch(error) {
     return { error }
   }

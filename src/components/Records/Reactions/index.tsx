@@ -4,10 +4,12 @@ import styled from 'styled-components'
 import { Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Fontisto'
 import { COLORS } from '../../../constants/Styles'
+// import components
+import EmojiCountList from './Emoji/CountList'
 // import slices
 import { toggleEmojiModalOpen, requestFetchEmojiReaction } from '../../../slice/record'
 // import selectors
-import recordSelector from '../../../selectors/record'
+import { selectEmojiReactions } from '../../../selectors/record'
 
 interface RecordReactionProps {
   size: number
@@ -18,7 +20,7 @@ interface RecordReactionProps {
 const RecordReaction = (props: RecordReactionProps) => {
   const { size, id, handleOnNavigate } = props
   const dispatch =  useDispatch()
-  const { emojiReactions } = recordSelector()
+  const emojiReactionObj = selectEmojiReactions(id)
 
   useEffect(() => {
     dispatch(requestFetchEmojiReaction(id))
@@ -31,6 +33,7 @@ const RecordReaction = (props: RecordReactionProps) => {
   return (
     <RecordReactionWrapper>
       <RecordReactionUpper>
+        { !!emojiReactionObj ? <EmojiCountList emojiReaction={emojiReactionObj} /> : null }
         <EmojiBtn onPress={handleOpenEmojiModal}>
           <Image
             source={require('../../../assets/emoji/emojiDefault.png') }

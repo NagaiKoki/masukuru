@@ -1,12 +1,12 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { COLORS } from '../../../../constants/Styles';
+import { COLORS } from '../../../../../constants/Styles';
 // import slices
 import {
   requestPostEmojiReaction,
   toggleEmojiModalOpen
-} from '../../../../slice/record'
+} from '../../../../../slice/record'
 
 interface PropsType {
   id: number

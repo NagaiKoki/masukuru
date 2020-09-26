@@ -124,7 +124,7 @@ const RecordItem = (props: RecordItemProps) => {
         />
         {renderRecordData}
       </RecordItenClickable>
-        { isShowPage ? null : <RecordReaction size={commentSize} id={record.id} handleOnNavigate={handleOnNavigate} /> }
+        <RecordReaction size={commentSize} id={record.id} handleOnNavigate={handleOnNavigate} />
       <SettingModal 
         recordId={record.id}
         visibleModal={visibleModal}
