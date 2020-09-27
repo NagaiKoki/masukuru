@@ -36,8 +36,9 @@ const HomeScreen = (props: HomeProps) => {
     requestNextRecords,
     requestDestroyRecord,
     requestFetchUserData,
+    toggleReflesh
   } = actions
-  const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen } = records
+  const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
   const { currentUser } = users
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
@@ -89,6 +90,10 @@ const HomeScreen = (props: HomeProps) => {
     }
   }, [currentUser])
 
+  useEffect(() => {
+    toggleReflesh(false)
+  }, [onFreshLoading])
+
   // メンバーリスト
   const renderMemberList =
     <MemberView>
@@ -112,6 +117,7 @@ const HomeScreen = (props: HomeProps) => {
 
   const onRefresh = async () => {
     hapticFeedBack('medium')
+    toggleReflesh(true)
     setIsRefresh(true)
     await getMemberList(currentGroupId, setUserList)
     requestFetchRecords({ uid: null, groupId: currentGroupId})
@@ -146,12 +152,15 @@ const HomeScreen = (props: HomeProps) => {
             />
           }
         >
-        <RecordList
-          recordData={recordData}
-          isLoading={isLoading}
-          navigation={navigation}
-          requestDestroyRecord={requestDestroyRecord}
-        />
+          { onFreshLoading ? 
+            <Loading size="small" /> :
+            <RecordList
+              recordData={recordData}
+              isLoading={isLoading}
+              navigation={navigation}
+              requestDestroyRecord={requestDestroyRecord}
+            />
+          }
       </ScrollView>
       <RecordAddBtn onPress={handleOpenRecordModal}>
         <Icon name="pencil" size={30} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />

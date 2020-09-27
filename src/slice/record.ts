@@ -25,6 +25,7 @@ import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
 
 const initialState: RecordState = {
   recordItems: [],
+  onFreshLoading: false,
   trainingDate: new Date(),
   word: '',
   imageUrl: '',
@@ -64,6 +65,12 @@ const recordSlice = createSlice({
       return {
         ...state,
         recordItems: updateRecordItems
+      }
+    },
+    toggleReflesh: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        onFreshLoading: action.payload
       }
     },
     requestDestroyRecord: (state, action: PayloadAction<string>) => {
@@ -443,6 +450,7 @@ const recordSlice = createSlice({
 export const {
   addRecord,
   deleteRecord,
+  toggleReflesh,
   requestDestroyRecord,
   successDestroyRecord,
   failureDestroyRecord,
@@ -488,7 +496,7 @@ export const {
   failurePostEmojiReaction,
   requestDeleteEmojiReaction,
   successDeleteEmojiReaction,
-  failureDeleteEmojiReaction
+  failureDeleteEmojiReaction,
 } = recordSlice.actions
 
 export default recordSlice

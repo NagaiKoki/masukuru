@@ -35,18 +35,18 @@ const EmojiItem = (props: PropsType) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper onPress={handlePostEmojiReaction} activeOpacity={1}>
       <EmojiBtn onPress={handlePostEmojiReaction} hasPosted={hasPosted}>
         <EmojiText>{emoji}</EmojiText>
       </EmojiBtn>
-      <EmojiName>{text}</EmojiName>
+      <EmojiName hasPosted={hasPosted}>{text}</EmojiName>
     </Wrapper>
   )
 }
 
 export default EmojiItem
 
-const Wrapper = styled.View`
+const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding: 10px 0;
@@ -68,8 +68,9 @@ const EmojiText = styled.Text`
   font-size: 30px;
 `
 
-const EmojiName = styled.Text`
+const EmojiName = styled.Text<{ hasPosted: boolean }>`
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
   font-weight: bold;
+  opacity: ${props => props.hasPosted ? 0.2 : 1};
 `

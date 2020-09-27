@@ -62,7 +62,7 @@ const Wrapper = styled.View`
 `
 
 const ImageWrapper = styled.View`
-  margin-right: 10px;
+  margin-right: 15px;
 `
 
 const UserName = styled.Text`

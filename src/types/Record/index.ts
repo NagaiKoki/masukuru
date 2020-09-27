@@ -4,6 +4,7 @@ import { UserType } from '../User'
 export type FirestoreTimestamp = import("firebase").firestore.Timestamp;
 
 export interface RecordState {
+  onFreshLoading: boolean
   recordItems: RecordItemType[]
   trainingDate: Date
   word: string
