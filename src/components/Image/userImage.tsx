@@ -15,26 +15,26 @@ const UserImage = (props: UserImageProps) => {
   const { uri, user, width, height, borderRadius, forProfile } = props;
   if (uri) {
     return (
-      <Image source={{ uri: uri }}
-           style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'cover' }}
+      <Image source={{ uri }}
+        style={{ width, height, borderRadius, resizeMode: 'cover' }}
       />
     )
   } else if (user && user.photoURL) {
     return (
       <Image source={{ uri: user.photoURL }}
-             style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'cover' }}
+        style={{ width, height, borderRadius, resizeMode: 'cover' }}
       />
     )
   } else if (forProfile) {
     return (
       <Image source={require('../../assets/profileImageRegister.png')}
-             style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'contain' }}
+        style={{ width, height, borderRadius, resizeMode: 'contain' }}
       />
     )
   } else {
     return (
       <Image source={require('../../assets/profileDefaultImage.png')}
-             style={{ width: width, height: height, borderRadius: borderRadius, resizeMode: 'contain' }}
+        style={{ width, height, borderRadius, resizeMode: 'contain' }}
       />
     )
   }

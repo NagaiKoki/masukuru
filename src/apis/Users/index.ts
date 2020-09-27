@@ -1,4 +1,5 @@
 import firebase, { db } from '../../config/firebase'
+import { UserType } from '../../types/User';
 
 export const requestFetchUser = async (uid: string) => {
   let user;
@@ -11,9 +12,26 @@ export const requestFetchUser = async (uid: string) => {
         user = snap.data()
       }
     })
-    return { user: user }
+    return { user }
   } catch (error) {
-    return { error: error }
+    return { error }
+  }
+}
+
+export const requestFetchUsers = async (userIds: string[]) => {
+  const userRef = db.collection('users')
+  const uids: UserType[] = []
+
+  try {
+    await Promise.all(userIds.map(async uid => {
+      await userRef.doc(uid).get().then(snap => {
+        const data = snap.data() as UserType
+        uids.push(data)
+      })
+    }))
+    return { payload: uids }
+  } catch(error) {
+    return { error }
   }
 }
 
@@ -24,12 +42,12 @@ export const requestUpdateUser = async (name: string, imageUrl: string, user: fi
   let batch = db.batch()
   try {
     await user.updateProfile({ displayName: name, photoURL: imageUrl })
-    await batch.update(userRef, { imageUrl: imageUrl, name: name })
+    await batch.update(userRef, { imageUrl, name })
     await groupUserRef.get().then(snap => {
       snap.forEach(doc => {
         batch.update(doc.ref, {
-          name: name, 
-          imageUrl: imageUrl
+          name, 
+          imageUrl
         })
       })
     })
@@ -37,6 +55,6 @@ export const requestUpdateUser = async (name: string, imageUrl: string, user: fi
 
     return { payload: 'success' }
   } catch(error) {
-    return { error: error }
+    return { error }
   }
 }

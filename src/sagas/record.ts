@@ -1,16 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { fork, select, takeEvery, call, put, delay, takeLatest } from 'redux-saga/effects'
-// import slice
-import {
-  requestFetchRecords,
-  successFetchRecords,
-  requestFetchRecord as requestFetchGetRecord,
-  successFetchRecord,
-  failureFetchRecord
-} from '../slice/record'
 // import types
 import { REQUEST_POST_COMMENT_NOTIFICATION } from '../actions/actionTypes'
-import { 
+import {
   ResponseRecordType,
   RecordCommentType,
   RequestFetchRecordType,
@@ -25,6 +17,7 @@ import {
 import { ResponseType } from '../types'
 import { RequestPostCommentNotification } from '../types/Notification'
 import { RootState } from '../reducers'
+import { UserType } from '../types/User';
 // import apis
 import {
   requestPostRecords,
@@ -43,8 +36,14 @@ import {
  import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
  import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
  import { requestSendRecordPostNotification } from '../apis/Push'
+ import { requestFetchUsers } from '../apis/Users'
 // import actions
 import {
+  requestFetchRecords,
+  successFetchRecords,
+  requestFetchRecord as requestFetchGetRecord,
+  successFetchRecord,
+  failureFetchRecord,
   requestSubmitRecords,
   successSubmitRecords,
   failureSubmitRecords,
@@ -73,8 +72,11 @@ import {
   requestPostEmojiReaction,
   successPostEmojiReaction,
   failurePostEmojiReaction,
+  requestFetchPostedEmojiUsers,
+  successFetchPostedEmojiUsers,
+  failureFetchPostedEmojiUsers
 } from '../slice/record'
-import { 
+import {
   requestPostCommentNotification,
   addNotificationRetryCount,
 } from '../actions/notifications'
@@ -360,6 +362,23 @@ function* handleRequestFetchEmojiReaction() {
   yield takeEvery(requestFetchEmojiReaction.type, runRequestFetchEmojiReaction)
 }
 
+function* runRequestFetchPostedEmojiUsers(action: PayloadAction<string[]>) {
+  const { payload, error }: ResponseType<UserType[]> = yield call(
+    requestFetchUsers,
+    action.payload
+  )
+
+  if (payload && !error) {
+    yield put(successFetchPostedEmojiUsers(payload))
+  } else if (error) {
+    yield put(failureFetchPostedEmojiUsers(error))
+  }
+}
+
+function* handleRequestFetchPostedEmojiUsers() {
+  yield takeEvery(requestFetchPostedEmojiUsers.type, runRequestFetchPostedEmojiUsers)
+}
+
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)
@@ -373,4 +392,5 @@ export default function* recordSaga() {
   yield fork(handleRequestPostCommentNotification)
   yield fork(handleRequestPostEmojiReaction)
   yield fork(handleRequestFetchEmojiReaction)
+  yield fork(handleRequestFetchPostedEmojiUsers)
 }

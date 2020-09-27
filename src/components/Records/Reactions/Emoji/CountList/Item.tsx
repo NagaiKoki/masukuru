@@ -7,17 +7,23 @@ import { toggleEmojiPostUserModal, requestFetchPostedEmojiUsers } from '../../..
 import { EMOJI_ITEMS } from '../../../../../utilities/Reaction/Emoji'
 // import constants
 import { COLORS } from '../../../../../constants/Styles';
+// import types
+import { EmojiReactionType } from '../../../../../types/Record';
 
 interface PropsType {
   id: number
   size: number
-  userIds: string[]
+  emojiReaction: EmojiReactionType
 }
 
 const EmojiItem = (props: PropsType) => {
-  const { id, size, userIds } = props
+  const { id, size, emojiReaction } = props
   const dispatch = useDispatch()
   const item = EMOJI_ITEMS.filter(emoji => emoji.id === id)[0]
+  const reactions = emojiReaction.emojiReactions.filter(reaction => {
+    return reaction.emojiIndex === id
+  })
+  const userIds = reactions.map(reaction => reaction.uid)
 
   if (!size) {
     return null
@@ -25,7 +31,7 @@ const EmojiItem = (props: PropsType) => {
 
   const handleOpenPostedEmojiUserModal = () => {
     dispatch(toggleEmojiPostUserModal({ isOpen: true, emojiIndex: id }))
-    requestFetchPostedEmojiUsers(userIds)
+    dispatch(requestFetchPostedEmojiUsers(userIds))
   }
 
   return (

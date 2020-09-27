@@ -331,7 +331,8 @@ const recordSlice = createSlice({
       return {
         ...state,
         isPostedEmojiUsersModalOpen: isOpen,
-        selectedEmojiIndex: isOpen ? emojiIndex : 0
+        selectedEmojiIndex: isOpen ? emojiIndex : 0,
+        postedEmojiUsers: isOpen ? state.postedEmojiUsers : []
       }
     },
     requestFetchPostedEmojiUsers: (state, action: PayloadAction<string[]>) => {

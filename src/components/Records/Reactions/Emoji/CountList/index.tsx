@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 // import types
 import { EmojiReactionType } from '../../../../../types/Record'
 // import components
@@ -15,14 +14,8 @@ const EmojiList = (props: PropsType) => {
   const { emojiReaction } = props
   const countList = reactionCount(emojiReaction)
 
-  const userIds = emojiReaction.emojiReactions.map(reaction => {
-    return reaction.uid
-  })
-
-  const uniqUserIds = Array.from(new Set(userIds))
-
   const renderEmojiCountList = countList.map(item => {
-    return <EmojiCountItem key={item.index} id={item.index} size={item.size} userIds={uniqUserIds} />
+    return <EmojiCountItem key={item.index} id={item.index} size={item.size} emojiReaction={emojiReaction} />
   })
 
   return (
