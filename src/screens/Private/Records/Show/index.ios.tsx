@@ -31,7 +31,7 @@ const RecordShowScreen = ({ navigation, route }) => {
   const { currentUser } = userSelector()
   const { record, notificationGroupId }: { record: ResponseRecordType, notificationGroupId?: string } = route.params
   const scrollRef = useRef(null)
-  
+
   useFocusEffect(
     useCallback(() => {
       dispatch(requestFetchRecordComments(record.id))

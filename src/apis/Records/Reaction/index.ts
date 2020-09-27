@@ -1,8 +1,11 @@
 import firebase, { db } from '../../../config/firebase';
+// import types
+import { ResponseEmojiReactionType, EmojiReactionType } from '../../../types/Record'
 // import constants
 import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
-// import lib
+// import utils
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
+import { convertFirebaseTimeStamp } from '../../../utilities/timestamp'
 // import apis
 import { requestCurrentGroupId } from '../../Groups/transfer'
 
@@ -11,14 +14,14 @@ export const requestPostRecordPost = async (recordId: string, text: string, noti
   const currentUser = firebase.auth().currentUser
   const currentGroupId = notificationGroupId || await requestCurrentGroupId()
   const currentFirestoreTime = firebase.firestore.FieldValue.serverTimestamp()
-  const currentDateTime = new Date
+  const currentDateTime = new Date()
   const docId = factoryRandomCode(20)
-  
+
   try {
     const recordRef = db.collection('records').doc(recordId)
     await recordRef.collection('comments').add({
       uid: currentUser.uid,
-      recordId: recordId,
+      recordId,
       content: text,
       groupId: currentGroupId,
       createdAt: currentFirestoreTime,
@@ -27,7 +30,7 @@ export const requestPostRecordPost = async (recordId: string, text: string, noti
     const commentPayload = {
       id: docId,
       uid: currentUser.uid,
-      recordId: recordId,
+      recordId,
       content: text,
       groupId: currentGroupId,
       createdAt: currentDateTime,
@@ -79,8 +82,79 @@ export const requestFetchDeleteRecordComment = async (recordId: string, commnetI
   try {
     const commentRef = db.collection('records').doc(recordId).collection('comments').doc(commnetId)
     await commentRef.delete()
-    return { payload: 'success' } 
+    return { payload: 'success' }
   } catch (error){
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
+}
+
+export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex: number) => {
+  const currentUser = firebase.auth().currentUser
+  const recordRef = db.collection('records').doc(recordId)
+  const currentGroupId = await requestCurrentGroupId()
+
+  const EmojiObj = {
+    groupId: currentGroupId,
+    emojiIndex,
+    uid: currentUser.uid,
+    recordId,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+  const responseEmojiReaction: ResponseEmojiReactionType = {
+    id: '',
+    groupId: currentGroupId,
+    emojiIndex,
+    uid: currentUser.uid,
+    recordId,
+    createdAt: convertFirebaseTimeStamp(new Date()),
+    updatedAt: convertFirebaseTimeStamp(new Date()),
+  }
+
+  try {
+    const emojiRef = await recordRef.collection('emoji').add(EmojiObj)
+    responseEmojiReaction.id = emojiRef.id
+    return { payload: responseEmojiReaction }
+  } catch(error) {
+    return { error }
+  }
+}
+
+export const requestFetchGetEmojiReaction = async (recordId: string) => {
+  const currentGroupId = await requestCurrentGroupId()
+  const recordRef = db.collection('records').doc(recordId)
+  const emojiRef = recordRef.collection('emoji').where('groupId', '==', currentGroupId).get()
+  const payload: ResponseEmojiReactionType[] = []
+
+  try {
+    await emojiRef.then(snap => {
+      if (snap.empty) {
+        return { payload: [] }
+      }
+      snap.forEach(doc => {
+        const data = doc.data() as ResponseEmojiReactionType
+        data.id = doc.id
+        payload.push(data)
+      })
+    })
+
+    const emojiPayload: EmojiReactionType = {
+      recordId,
+      emojiReactions: payload
+    }
+
+    return { payload: emojiPayload }
+  } catch(error) {
+    return { error }
+  }
+}
+
+export const requestFetchDeleteEmojiReaction = async (recordId: string, id: string) => {
+  const emojiRef = db.collection('records').doc(recordId).collection('emoji').doc(id)
+  try {
+    await emojiRef.delete()
+    return { payload: 'success' }
+  } catch(error) {
+    return { error }
   }
 }

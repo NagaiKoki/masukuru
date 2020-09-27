@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
-import { TouchableHighlight, Image, StyleSheet, Dimensions, Alert } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import moment from '../../../config/moment'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -68,6 +67,10 @@ const RecordItem = (props: RecordItemProps) => {
     setIsCommentLoading(false)
   }
 
+  const handleOnNavigate = () => {
+    return navigation.navigate('recordShow', { record })
+  }
+
   if (isUserLoading || isCommentLoading) {
     return (
       <React.Fragment/>
@@ -88,41 +91,40 @@ const RecordItem = (props: RecordItemProps) => {
       </RecordDataWrapper>
     )
   })
-  
+
   return (
-    <TouchableHighlight  
-      onPress={() => isShowPage ? {} : navigation.navigate('recordShow', { record })}
-      underlayColor={COLORS.BASE_BACKGROUND}
-      activeOpacity={ isShowPage ? 1 : 0.6}
-    >
       <RecordItemContainer>
-      <RecordItemUpper>
-        <RecordUser
-          currentUser={currentUser}
-          user={user}
-          uid={uid}
-          navigation={navigation}
+        <RecordItenClickable
+          onPress={() => isShowPage ? {} : handleOnNavigate() }
+        >
+        <RecordItemUpper>
+          <RecordUser
+            currentUser={currentUser}
+            user={user}
+            uid={uid}
+            navigation={navigation}
+          />
+          <RecordRightUpper>
+          { currentUser.uid === uid && !isShowPage ? 
+              <IconWrapper onPress={ () => setVisibleModal(true) }>
+                <Icon name='ellipsis1' size={25} style={{ color: COLORS.BASE_BLACK, fontWeight: 'bold', marginTop: -10, marginRight: 5 }}/>
+              </IconWrapper> : null
+            }
+            <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
+          </RecordRightUpper>
+        </RecordItemUpper>
+        { !!word ? <RecordWordText>{word}</RecordWordText> : null }
+        <RecordImageWrapper>
+          { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
+        </RecordImageWrapper>
+        <TrainingDate 
+          date={record.trainingDate}
+          createdAt={record.createdAt}
+          hasWord={!!word}
         />
-        <RecordRightUpper>
-        { currentUser.uid === uid && !isShowPage ? 
-            <IconWrapper onPress={ () => setVisibleModal(true) }>
-              <Icon name='ellipsis1' size={25} style={{ color: COLORS.BASE_BLACK, fontWeight: 'bold', marginTop: -10, marginRight: 5 }}/>
-            </IconWrapper> : null
-          }
-          <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
-        </RecordRightUpper>
-      </RecordItemUpper>
-      { !!word ? <RecordWordText>{word}</RecordWordText> : null }
-      <RecordImageWrapper>
-        { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
-      </RecordImageWrapper>
-      <TrainingDate 
-        date={record.trainingDate}
-        createdAt={record.createdAt}
-        hasWord={!!word}
-      />
-      {renderRecordData}
-      { isShowPage ? null : <RecordReaction size={commentSize} /> }
+        {renderRecordData}
+      </RecordItenClickable>
+      <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
       <SettingModal 
         recordId={record.id}
         visibleModal={visibleModal}
@@ -130,11 +132,8 @@ const RecordItem = (props: RecordItemProps) => {
         setVisibleModal={setVisibleModal}
       />
     </RecordItemContainer>
-    </TouchableHighlight>
   )
 }
-
-const win = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   image: {
@@ -145,13 +144,14 @@ const styles = StyleSheet.create({
   }
 });
 
+const RecordItenClickable = styled.TouchableOpacity``
+
 const RecordItemContainer = styled.View`
-  margin: 0px 0 8px 0;
-  padding: 15px 15px 0 15px;
-  width: 100%;
   align-self: center;
-  border-radius: 5px;
-  background-color: ${COLORS.BASE_WHITE}; 
+  margin: 0px 0 8px 0;
+  width: 100%;
+  padding: 15px 15px 0 15px;
+  background-color: ${COLORS.BASE_WHITE};
 `
 
 const RecordItemUpper = styled.View`

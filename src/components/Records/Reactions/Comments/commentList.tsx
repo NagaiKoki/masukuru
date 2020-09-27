@@ -62,7 +62,7 @@ const RecordCommentList = (props: RecordCommentListProps) => {
 
 const CommnetListWrapper = styled.View<{ commentPresent: boolean }>`
   background-color: ${props => props.commentPresent ? COLORS.BASE_WHITE : COLORS.BASE_BACKGROUND}; 
-  margin-top: ${props => props.commentPresent ? '-20px' : '-10px'};
+  margin-top: -10px;
   border-top-color: ${COLORS.BASE_BORDER_COLOR};
   border-top-width: 0.3px;
   padding: 15px 0 30px 0;

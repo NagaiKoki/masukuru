@@ -12,6 +12,8 @@ import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
 import ApplauseModal from '../../../components/Applause'
+import EmojiModal from '../../../components/Records/Reactions/Emoji/Modal/EmojiModal'
+import PostedUserEmojiModal from '../../../components/Records/Reactions/Emoji/Modal/PostedEmojiUsersModal'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
 import { UserPropertyType } from '../../../types/Analytics/amplitude'
@@ -22,19 +24,21 @@ import { isSetExpoNotificationToken, requestPutExpoNotificationToken } from '../
 import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
 import { updateModule } from '../../../utilities/OtaUpdate'
 import { registerForPushNotificationsAsync } from '../../../utilities/Push/registerForPushNotifications'
+import { hapticFeedBack } from '../../../utilities/Haptic'
 // import config
 import firebase from '../../../config/firebase'
 import Analytics from '../../../config/amplitude'
-  
+
 const HomeScreen = (props: HomeProps) => {
   const { navigation, route, records, users, actions } = props
-  const { 
-    requestFetchRecords, 
-    requestNextRecords, 
+  const {
+    requestFetchRecords,
+    requestNextRecords,
     requestDestroyRecord,
-    requestFetchUserData
+    requestFetchUserData,
+    toggleReflesh
   } = actions
-  const { recordData, isLoading } = records
+  const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
   const { currentUser } = users
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
@@ -43,7 +47,7 @@ const HomeScreen = (props: HomeProps) => {
   const { params } = route;
   const { currentGroupId } = params;
   const currentUserId = firebase.auth().currentUser.uid
-  
+
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -62,6 +66,7 @@ const HomeScreen = (props: HomeProps) => {
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
       isSetExpoNotificationToken()
+      Analytics.track('home')
     },[currentGroupId])
   );
 
@@ -86,6 +91,10 @@ const HomeScreen = (props: HomeProps) => {
     }
   }, [currentUser])
 
+  useEffect(() => {
+    toggleReflesh(false)
+  }, [onFreshLoading])
+
   // メンバーリスト
   const renderMemberList =
     <MemberView>
@@ -108,10 +117,17 @@ const HomeScreen = (props: HomeProps) => {
     </MemberView>
 
   const onRefresh = async () => {
+    hapticFeedBack('medium')
+    toggleReflesh(true)
     setIsRefresh(true)
     await getMemberList(currentGroupId, setUserList)
     requestFetchRecords({ uid: null, groupId: currentGroupId})
     setIsRefresh(false)
+  }
+
+  const handleOpenRecordModal = () => {
+    hapticFeedBack('medium')
+    navigation.navigate('recordModal')
   }
 
   if (isHomeLoading) {
@@ -137,17 +153,22 @@ const HomeScreen = (props: HomeProps) => {
             />
           }
         >
-        <RecordList
-          recordData={recordData}
-          isLoading={isLoading}
-          navigation={navigation}
-          requestDestroyRecord={requestDestroyRecord}
-        />
+          { onFreshLoading ? 
+            <Loading size="small" /> :
+            <RecordList
+              recordData={recordData}
+              isLoading={isLoading}
+              navigation={navigation}
+              requestDestroyRecord={requestDestroyRecord}
+            />
+          }
       </ScrollView>
-      <RecordAddBtn onPress={() => navigation.navigate('recordModal')}>
-        <Icon name="pencil" size={30} style={{ color: '#fff', marginTop: 4 }} />
+      <RecordAddBtn onPress={handleOpenRecordModal}>
+        <Icon name="pencil" size={30} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />
       </RecordAddBtn>
       <ApplauseModal />
+      <EmojiModal isOpen={isEmojiModalOpen} />
+      <PostedUserEmojiModal isOpen={isPostedEmojiUsersModalOpen} />
     </Container>
   );
 };
@@ -155,12 +176,12 @@ const HomeScreen = (props: HomeProps) => {
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND};
+  background-color: ${COLORS.BASE_BACKGROUND3};
 `
 
 const MemberView = styled.View`
   position: relative;
-  background-color: #FFF;
+  background-color: ${COLORS.BASE_WHITE};
   border-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 0.5px;
   height: 82px;

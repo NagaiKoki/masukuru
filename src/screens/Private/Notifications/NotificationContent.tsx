@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
 import { ScrollView } from 'react-native';
 import { COLORS } from '../../../constants/Styles';
 import styled from 'styled-components'
 // import types
 import { NotificationContenTypes } from './notificationItem'
-import { NotificationType } from '../../../types/Notification';
 // import lib
 import { convertTimestampToString } from '../../../utilities/timestamp'
+// import components
+import Image from '../../../components/Image/userImage'
 
 interface NotificationContentProps {
   route: {
@@ -18,7 +18,7 @@ interface NotificationContentProps {
 const NotificationContentScreen = (props: NotificationContentProps) => {
   const { route } = props
   const { item } = route.params
-  const { title, createdAt, contents } = item
+  const { title, createdAt, contents, imageUrl } = item
   const time = convertTimestampToString(createdAt, undefined)
 
   return (
@@ -27,6 +27,10 @@ const NotificationContentScreen = (props: NotificationContentProps) => {
         <ContentTitle>{title}</ContentTitle>
         <ContentTimestamp>{time}</ContentTimestamp>
         <ContentMain>{contents.replace(/\s\s/g, '\n')}</ContentMain>
+        { imageUrl ? 
+        <ImageWrapper>
+          <Image uri={imageUrl} width={300} height={200} borderRadius={8} />
+        </ImageWrapper> : null }
       </ContentWrapper>
     </ScrollView>
   )
@@ -46,7 +50,6 @@ const ContentTitle = styled.Text`
   font-weight: bold;
   text-align: center;
   padding: 10px;
-  
 `
 
 const ContentTimestamp = styled.Text`
@@ -60,4 +63,9 @@ const ContentMain = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 15px;
   padding: 20px 0;
+`
+
+const ImageWrapper = styled.View`
+  flex-direction: row;
+  justify-content: center;
 `

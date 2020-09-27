@@ -1,6 +1,10 @@
+// import types
+import { UserType } from '../User'
+
 export type FirestoreTimestamp = import("firebase").firestore.Timestamp;
 
 export interface RecordState {
+  onFreshLoading: boolean
   recordItems: RecordItemType[]
   trainingDate: Date
   word: string
@@ -15,6 +19,14 @@ export interface RecordState {
   comments: RecordCommentType[]
   recordSize: number,
   isOpenApplause: boolean
+  isEmojiModalOpen: boolean
+  isPostedEmojiUsersModalOpen: boolean
+  isPostEmojiUsersLoading: boolean
+  selectedEmojiRecordId: string
+  selectedEmojiIndex: number
+  selectedEmojiId: string
+  emojiReactions: EmojiReactionType[]
+  postedEmojiUsers: UserType[]
 }
 
 export type RecordItemType = {
@@ -48,6 +60,21 @@ export type RecordCommentType = {
   groupId: string
   createdAt: FirestoreTimestamp | Date
   updatedAt: FirestoreTimestamp | Date
+}
+
+export type ResponseEmojiReactionType = {
+  id: string
+  recordId: string
+  groupId: string
+  uid: string
+  emojiIndex: number
+  createdAt: FirestoreTimestamp
+  updatedAt: FirestoreTimestamp
+}
+
+export type EmojiReactionType = {
+  recordId: string
+  emojiReactions: ResponseEmojiReactionType[]
 }
 
 export type UnitType = number | string
@@ -86,4 +113,20 @@ export type RequestPostRecordComment = {
 export type RequestDeleteComment = {
   recordId: string
   commentId: string
+}
+
+export type ToggleEmojiModal = {
+  isOpen: boolean
+  selectedRecordId?: string
+}
+
+export type TogglePostedUserEmojiModal = {
+  isOpen: boolean
+  emojiIndex?: number
+  selectedRecordId?: string
+  selectedEmojiId?: string
+}
+
+export type RequestPostEmojiReaction = {
+  emojiIndex: number
 }

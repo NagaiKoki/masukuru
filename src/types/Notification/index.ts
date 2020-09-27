@@ -31,6 +31,7 @@ export type NotificationType = {
   recordId?: string,
   title?: string
   groupId?: string,
+  imageUrl?: string
   read?: boolean,
   contents?: string
   readUserIds?: string[],
