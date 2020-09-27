@@ -43,6 +43,7 @@ const initialState: RecordState = {
   isPostEmojiUsersLoading: false,
   selectedEmojiRecordId: '',
   selectedEmojiIndex: 0,
+  selectedEmojiId: '',
   emojiReactions: [],
   postedEmojiUsers: []
 }
@@ -327,12 +328,14 @@ const recordSlice = createSlice({
       }
     },
     toggleEmojiPostUserModal: (state, action: PayloadAction<TogglePostedUserEmojiModal>) => {
-      const { isOpen, emojiIndex } = action.payload
+      const { isOpen, emojiIndex, selectedRecordId, selectedEmojiId } = action.payload
       return {
         ...state,
         isPostedEmojiUsersModalOpen: isOpen,
         selectedEmojiIndex: isOpen ? emojiIndex : 0,
-        postedEmojiUsers: isOpen ? state.postedEmojiUsers : []
+        postedEmojiUsers: isOpen ? state.postedEmojiUsers : [],
+        selectedEmojiRecordId: isOpen ? selectedRecordId : '',
+        selectedEmojiId: isOpen ? selectedEmojiId : ''
       }
     },
     requestFetchPostedEmojiUsers: (state, action: PayloadAction<string[]>) => {
@@ -401,6 +404,39 @@ const recordSlice = createSlice({
         ...state
       }
     },
+    requestDeleteEmojiReaction: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+      }
+    },
+    successDeleteEmojiReaction: (state, action: PayloadAction<{ recordId: string, emojiId: string }>) => {
+      const { recordId, emojiId } = action.payload
+      const newArray: EmojiReactionType[] = [].concat(state.emojiReactions)
+      const reactions = newArray.filter(item => item.recordId === recordId)[0]
+      const updateReactions = reactions.emojiReactions.filter(reaction => {
+        return reaction.id !== emojiId
+      })
+      const updateEmojiReactions = newArray.map((item, i) => {
+        if (item.recordId === recordId) {
+          newArray[i] = {
+            recordId,
+            emojiReactions: updateReactions
+          }
+          return newArray[i]
+        }
+        return item
+      })
+
+      return {
+        ...state,
+        emojiReactions: updateEmojiReactions
+      }
+    },
+    failureDeleteEmojiReaction: (state, action: PayloadAction<string>) => {
+      return {
+        ...state
+      }
+    }
   }
 })
 
@@ -450,6 +486,9 @@ export const {
   requestPostEmojiReaction,
   successPostEmojiReaction,
   failurePostEmojiReaction,
+  requestDeleteEmojiReaction,
+  successDeleteEmojiReaction,
+  failureDeleteEmojiReaction
 } = recordSlice.actions
 
 export default recordSlice

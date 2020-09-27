@@ -10,17 +10,16 @@ import EmojiCountList from './Emoji/CountList'
 import { toggleEmojiModalOpen, requestFetchEmojiReaction } from '../../../slice/record'
 // import selectors
 import { selectEmojiReactions } from '../../../selectors/record'
-// import utils
-import { hapticFeedBack } from '../../../utilities/Haptic'
 
 interface RecordReactionProps {
   size: number
   id: string
+  isShowPage?: boolean
   handleOnNavigate: () => void
 }
 
 const RecordReaction = (props: RecordReactionProps) => {
-  const { size, id, handleOnNavigate } = props
+  const { size, id, isShowPage, handleOnNavigate } = props
   const dispatch =  useDispatch()
   const emojiReactionObj = selectEmojiReactions(id)
 
@@ -29,29 +28,29 @@ const RecordReaction = (props: RecordReactionProps) => {
   }, [])
 
   const handleOpenEmojiModal = () => {
-    hapticFeedBack('medium')
     dispatch(toggleEmojiModalOpen({ isOpen: true, selectedRecordId: id }))
   }
 
   const handleNavigateRecordShow = () => {
-    hapticFeedBack('medium')
     handleOnNavigate()
   }
 
   return (
     <RecordReactionWrapper>
       <RecordReactionUpper>
-        { !!emojiReactionObj ? <EmojiCountList emojiReaction={emojiReactionObj} /> : null }
+        { !!emojiReactionObj ? <EmojiCountList emojiReaction={emojiReactionObj} recordId={id} /> : null }
         <EmojiBtn onPress={handleOpenEmojiModal}>
           <Image
             source={require('../../../assets/emoji/emojiDefault.png') }
             style={{ width: 30, height: 30, resizeMode: 'cover', alignSelf: 'center' }}
           />
         </EmojiBtn>
-        <CommentWrapper onPress={handleNavigateRecordShow}>
-          <Icon name="comment" size={21} style={{ color: COLORS.BASE_BORDER_COLOR }} />
-          <RecordReactionSizeText>{size}</RecordReactionSizeText>
-        </CommentWrapper>
+        { isShowPage ? null : 
+          <CommentWrapper onPress={handleNavigateRecordShow}>
+            <Icon name="comment" size={21} style={{ color: COLORS.BASE_BORDER_COLOR }} />
+            <RecordReactionSizeText>{size}</RecordReactionSizeText>
+          </CommentWrapper>
+        }
       </RecordReactionUpper>
     </RecordReactionWrapper>
   )

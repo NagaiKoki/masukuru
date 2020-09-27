@@ -8,14 +8,15 @@ import { reactionCount } from '../../../../../utilities/Reaction/reactionCount'
 
 interface PropsType {
   emojiReaction: EmojiReactionType
+  recordId: string
 }
 
 const EmojiList = (props: PropsType) => {
-  const { emojiReaction } = props
+  const { emojiReaction, recordId } = props
   const countList = reactionCount(emojiReaction)
 
   const renderEmojiCountList = countList.map(item => {
-    return <EmojiCountItem key={item.index} id={item.index} size={item.size} emojiReaction={emojiReaction} />
+    return <EmojiCountItem key={item.index} id={item.index} size={item.size} emojiReaction={emojiReaction} recordId={recordId} />
   })
 
   return (

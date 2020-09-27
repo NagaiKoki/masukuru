@@ -101,8 +101,8 @@ export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex
     createdAt: new Date(),
     updatedAt: new Date()
   }
-  const ResponseEmojiReaction: ResponseEmojiReactionType = {
-    id: String(parseInt(`${new Date().getTime()}${recordId}, 10`)),
+  const responseEmojiReaction: ResponseEmojiReactionType = {
+    id: '',
     groupId: currentGroupId,
     emojiIndex,
     uid: currentUser.uid,
@@ -112,8 +112,9 @@ export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex
   }
 
   try {
-    await recordRef.collection('emoji').add(EmojiObj)
-    return { payload: ResponseEmojiReaction }
+    const emojiRef = await recordRef.collection('emoji').add(EmojiObj)
+    responseEmojiReaction.id = emojiRef.id
+    return { payload: responseEmojiReaction }
   } catch(error) {
     return { error }
   }
@@ -132,6 +133,7 @@ export const requestFetchGetEmojiReaction = async (recordId: string) => {
       }
       snap.forEach(doc => {
         const data = doc.data() as ResponseEmojiReactionType
+        data.id = doc.id
         payload.push(data)
       })
     })
@@ -142,6 +144,16 @@ export const requestFetchGetEmojiReaction = async (recordId: string) => {
     }
 
     return { payload: emojiPayload }
+  } catch(error) {
+    return { error }
+  }
+}
+
+export const requestFetchDeleteEmojiReaction = async (recordId: string, id: string) => {
+  const emojiRef = db.collection('records').doc(recordId).collection('emoji').doc(id)
+  try {
+    await emojiRef.delete()
+    return { payload: 'success' }
   } catch(error) {
     return { error }
   }

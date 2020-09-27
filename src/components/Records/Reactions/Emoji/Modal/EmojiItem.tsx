@@ -60,7 +60,7 @@ const EmojiBtn = styled.TouchableOpacity<{ hasPosted: boolean }>`
   width: 50px;
   height: 50px;
   margin-right: 10px;
-  background: ${COLORS.BASE_BACKGROUND2};
+  background: ${COLORS.BASE_BACKGROUND3};
   opacity: ${props => props.hasPosted ? 0.2 : 1};
 `
 

@@ -31,12 +31,13 @@ import {
   requestGetRecordComments,
   requestFetchDeleteRecordComment,
   requestFetchGetEmojiReaction,
-  requestFetchPostEmojiReaction
- } from '../apis/Records/Reaction'
- import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
- import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
- import { requestSendRecordPostNotification } from '../apis/Push'
- import { requestFetchUsers } from '../apis/Users'
+  requestFetchPostEmojiReaction,
+  requestFetchDeleteEmojiReaction
+} from '../apis/Records/Reaction'
+import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
+import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
+import { requestSendRecordPostNotification } from '../apis/Push'
+import { requestFetchUsers } from '../apis/Users'
 // import actions
 import {
   requestFetchRecords,
@@ -74,7 +75,10 @@ import {
   failurePostEmojiReaction,
   requestFetchPostedEmojiUsers,
   successFetchPostedEmojiUsers,
-  failureFetchPostedEmojiUsers
+  failureFetchPostedEmojiUsers,
+  requestDeleteEmojiReaction,
+  successDeleteEmojiReaction,
+  failureDeleteEmojiReaction
 } from '../slice/record'
 import {
   requestPostCommentNotification,
@@ -133,7 +137,7 @@ function* runRequestFetchRecords(action: PayloadAction<RequestFetchRecordType>) 
   )
 
   if (payload && !error) {
-    yield put(successFetchRecords({ payload: payload, uid: uid, groupId: groupId}))
+    yield put(successFetchRecords({ payload, uid, groupId }))
   } else {
     yield put(failureFetchRecords(error))
   }
@@ -324,6 +328,7 @@ function* handleRequestDeleteRecordComment() {
 }
 
 /////////////////////// 絵文字リアクション ///////////////////////
+// 絵文字ポスト処理
 function* runRequestPostEmojiReaction(action: PayloadAction<RequestPostEmojiReaction>) {
   const { emojiIndex } = action.payload
   const { selectedEmojiRecordId }: ReturnType<typeof recordSelector> = yield select(recordSelector)
@@ -345,6 +350,7 @@ function* handleRequestPostEmojiReaction() {
   yield takeEvery(requestPostEmojiReaction.type, runRequestPostEmojiReaction)
 }
 
+// 絵文字フェッチ処理
 function* runRequestFetchEmojiReaction(action: PayloadAction<string>) {
   const { payload, error }: ResponseType<EmojiReactionType> = yield call(
     requestFetchGetEmojiReaction,
@@ -362,6 +368,7 @@ function* handleRequestFetchEmojiReaction() {
   yield takeEvery(requestFetchEmojiReaction.type, runRequestFetchEmojiReaction)
 }
 
+// ポストしたユーザーの取得
 function* runRequestFetchPostedEmojiUsers(action: PayloadAction<string[]>) {
   const { payload, error }: ResponseType<UserType[]> = yield call(
     requestFetchUsers,
@@ -379,6 +386,25 @@ function* handleRequestFetchPostedEmojiUsers() {
   yield takeEvery(requestFetchPostedEmojiUsers.type, runRequestFetchPostedEmojiUsers)
 }
 
+// 絵文字の削除処理
+function* runRequestDeleteEmojiReaction() {
+  const { selectedEmojiRecordId, selectedEmojiId }: ReturnType<typeof recordSelector> = yield select(recordSelector)
+  const { payload, error }: ResponseType<string> = yield call(
+    requestFetchDeleteEmojiReaction,
+    selectedEmojiRecordId,
+    selectedEmojiId
+  )
+  if (payload && !error) {
+    yield put(successDeleteEmojiReaction({ recordId: selectedEmojiRecordId, emojiId: selectedEmojiId }))
+  } else if (error) {
+    yield put(failureDeleteEmojiReaction(error))
+  }
+}
+
+function* handleRequestDeleteEmojiReaction() {
+  yield takeEvery(requestDeleteEmojiReaction.type, runRequestDeleteEmojiReaction)
+}
+
 export default function* recordSaga() {
   yield fork(handleRequestSubmitRecords)
   yield fork(handleRequestFetchRecords)
@@ -393,4 +419,5 @@ export default function* recordSaga() {
   yield fork(handleRequestPostEmojiReaction)
   yield fork(handleRequestFetchEmojiReaction)
   yield fork(handleRequestFetchPostedEmojiUsers)
+  yield fork(handleRequestDeleteEmojiReaction)
 }

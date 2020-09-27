@@ -20,6 +20,8 @@ const UserList = () => {
 
   if (isPostEmojiUsersLoading) {
     return <Loading size="small" />
+  } else if (!emojiItem) {
+    return null
   }
 
   return (
