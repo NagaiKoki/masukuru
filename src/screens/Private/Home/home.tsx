@@ -36,7 +36,7 @@ const HomeScreen = (props: HomeProps) => {
     requestDestroyRecord,
     requestFetchUserData,
   } = actions
-  const { recordData, isLoading, isEmojiModalOpen } = records
+  const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen } = records
   const { currentUser } = users
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
@@ -152,7 +152,7 @@ const HomeScreen = (props: HomeProps) => {
         />
       </ScrollView>
       <RecordAddBtn onPress={handleOpenRecordModal}>
-        <Icon name="pencil" size={30} style={{ color: '#fff', marginTop: 4 }} />
+        <Icon name="pencil" size={30} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />
       </RecordAddBtn>
       <ApplauseModal />
       <EmojiModal isOpen={isEmojiModalOpen} />

@@ -14,8 +14,10 @@ import {
   ToggleEmojiModal,
   RequestPostEmojiReaction,
   EmojiReactionType,
-  ResponseEmojiReactionType
+  ResponseEmojiReactionType,
+  TogglePostedUserEmojiModal
 } from '../types/Record'
+import { UserType } from '../types/User'
 // import constants
 import { record } from '../constants/sliceName'
 // import utils
@@ -37,8 +39,11 @@ const initialState: RecordState = {
   recordSize: 0,
   isOpenApplause: false,
   isEmojiModalOpen: false,
+  isPostedEmojiUsersModalOpen: false,
+  isPostEmojiUsersLoading: false,
   selectedEmojiRecordId: '',
-  emojiReactions: []
+  emojiReactions: [],
+  postedEmojiUsers: []
 }
 
 const recordSlice = createSlice({
@@ -320,6 +325,31 @@ const recordSlice = createSlice({
         selectedEmojiRecordId: isOpen ? selectedRecordId : ''
       }
     },
+    toggleEmojiPostUserModal: (state, action: PayloadAction<TogglePostedUserEmojiModal>) => {
+      const { isOpen } = action.payload
+      return {
+        ...state,
+        isPostedEmojiUsersModalOpen: isOpen
+      }
+    },
+    requestFetchPostedEmojiUsers: (state, action: PayloadAction<string[]>) => {
+      return {
+        ...state,
+        isPostedEmojiUsersModalOpen: true
+      }
+    },
+    successFetchPostedEmojiUsers: (state, action: PayloadAction<UserType[]>) => {
+      return {
+        ...state,
+        postedEmojiUsers: action.payload,
+        isPostEmojiUsersLoading: false
+      }
+    },
+    failureFetchPostedEmojiUsers: (state, action: PayloadAction<string>) => {
+      return {
+        ...state
+      }
+    },
     requestFetchEmojiReaction: (state, action: PayloadAction<string>) => {
       return {
         ...state
@@ -367,7 +397,7 @@ const recordSlice = createSlice({
       return {
         ...state
       }
-    }
+    },
   }
 })
 
@@ -407,12 +437,16 @@ export const {
   failureUpdateRecord,
   closeApplauseModal,
   toggleEmojiModalOpen,
+  toggleEmojiPostUserModal,
+  requestFetchPostedEmojiUsers,
+  successFetchPostedEmojiUsers,
+  failureFetchPostedEmojiUsers,
   requestFetchEmojiReaction,
   successFetchEmojiReaction,
   failureFetchEmojiReaction,
   requestPostEmojiReaction,
   successPostEmojiReaction,
-  failurePostEmojiReaction
+  failurePostEmojiReaction,
 } = recordSlice.actions
 
 export default recordSlice

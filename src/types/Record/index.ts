@@ -1,3 +1,6 @@
+// import types
+import { UserType } from '../User'
+
 export type FirestoreTimestamp = import("firebase").firestore.Timestamp;
 
 export interface RecordState {
@@ -16,8 +19,11 @@ export interface RecordState {
   recordSize: number,
   isOpenApplause: boolean
   isEmojiModalOpen: boolean
+  isPostedEmojiUsersModalOpen: boolean
+  isPostEmojiUsersLoading: boolean
   selectedEmojiRecordId: string
   emojiReactions: EmojiReactionType[]
+  postedEmojiUsers: UserType[]
 }
 
 export type RecordItemType = {
@@ -109,6 +115,10 @@ export type RequestDeleteComment = {
 export type ToggleEmojiModal = {
   isOpen: boolean
   selectedRecordId?: string
+}
+
+export type TogglePostedUserEmojiModal = {
+  isOpen: boolean
 }
 
 export type RequestPostEmojiReaction = {

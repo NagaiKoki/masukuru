@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+// import slices 
+import { toggleEmojiModalOpen, requestFetchPostedEmojiUsers } from '../../../../../slice/record'
 // import utils
 import { EMOJI_ITEMS } from '../../../../../utilities/Reaction/Emoji'
 // import constants
@@ -8,18 +11,25 @@ import { COLORS } from '../../../../../constants/Styles';
 interface PropsType {
   id: number
   size: number
+  userIds: string[]
 }
 
 const EmojiItem = (props: PropsType) => {
-  const { id, size } = props
+  const { id, size, userIds } = props
+  const dispatch = useDispatch()
   const item = EMOJI_ITEMS.filter(emoji => emoji.id === id)[0]
 
   if (!size) {
     return null
   }
 
+  const handleOpenPostedEmojiUserModal = () => {
+    dispatch(toggleEmojiModalOpen({ isOpen: true }))
+    requestFetchPostedEmojiUsers(userIds)
+  }
+
   return (
-    <ItemWrapper>
+    <ItemWrapper onPress={handleOpenPostedEmojiUserModal}>
       <EmojiText>{item.emoji}</EmojiText>
       <CountText>{size}</CountText>
     </ItemWrapper>
