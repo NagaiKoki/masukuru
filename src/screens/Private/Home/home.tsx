@@ -13,6 +13,7 @@ import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
 import ApplauseModal from '../../../components/Applause'
 import EmojiModal from '../../../components/Records/Reactions/Emoji/Modal/EmojiModal'
+import PostedUserEmojiModal from '../../../components/Records/Reactions/Emoji/Modal/PostedEmojiUsersModal'
 // import types
 import { HomeProps } from '../../../containers/Private/home'
 import { UserPropertyType } from '../../../types/Analytics/amplitude'
@@ -45,7 +46,7 @@ const HomeScreen = (props: HomeProps) => {
   const { params } = route;
   const { currentGroupId } = params;
   const currentUserId = firebase.auth().currentUser.uid
-  
+
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -156,6 +157,7 @@ const HomeScreen = (props: HomeProps) => {
       </RecordAddBtn>
       <ApplauseModal />
       <EmojiModal isOpen={isEmojiModalOpen} />
+      <PostedUserEmojiModal isOpen={isPostedEmojiUsersModalOpen} />
     </Container>
   );
 };

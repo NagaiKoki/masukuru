@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 // import slices 
-import { toggleEmojiModalOpen, requestFetchPostedEmojiUsers } from '../../../../../slice/record'
+import { toggleEmojiPostUserModal, requestFetchPostedEmojiUsers } from '../../../../../slice/record'
 // import utils
 import { EMOJI_ITEMS } from '../../../../../utilities/Reaction/Emoji'
 // import constants
@@ -24,7 +24,7 @@ const EmojiItem = (props: PropsType) => {
   }
 
   const handleOpenPostedEmojiUserModal = () => {
-    dispatch(toggleEmojiModalOpen({ isOpen: true }))
+    dispatch(toggleEmojiPostUserModal({ isOpen: true, emojiIndex: id }))
     requestFetchPostedEmojiUsers(userIds)
   }
 

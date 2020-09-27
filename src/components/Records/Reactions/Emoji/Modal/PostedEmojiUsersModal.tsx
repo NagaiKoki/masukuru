@@ -7,7 +7,7 @@ import { COLORS } from '../../../../../constants/Styles';
 import { toggleEmojiPostUserModal } from '../../../../../slice/record'
 // import components
 import BottomModal from '../../../../../common/Modal/BottomModal'
-import EmojiList from './EmojiList'
+import UserList from './PostedEmojiUserList'
 
 interface PropsType {
   isOpen: boolean
@@ -23,7 +23,7 @@ const EmojiModal = (props: PropsType) => {
 
   const renderModalContent =
     <Container>
-      <EmojiList />
+      <UserList />
     </Container>
 
   return (

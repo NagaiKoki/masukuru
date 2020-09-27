@@ -22,6 +22,7 @@ export interface RecordState {
   isPostedEmojiUsersModalOpen: boolean
   isPostEmojiUsersLoading: boolean
   selectedEmojiRecordId: string
+  selectedEmojiIndex: number
   emojiReactions: EmojiReactionType[]
   postedEmojiUsers: UserType[]
 }
@@ -119,6 +120,7 @@ export type ToggleEmojiModal = {
 
 export type TogglePostedUserEmojiModal = {
   isOpen: boolean
+  emojiIndex?: number
 }
 
 export type RequestPostEmojiReaction = {

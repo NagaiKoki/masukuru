@@ -42,6 +42,7 @@ const initialState: RecordState = {
   isPostedEmojiUsersModalOpen: false,
   isPostEmojiUsersLoading: false,
   selectedEmojiRecordId: '',
+  selectedEmojiIndex: 0,
   emojiReactions: [],
   postedEmojiUsers: []
 }
@@ -326,10 +327,11 @@ const recordSlice = createSlice({
       }
     },
     toggleEmojiPostUserModal: (state, action: PayloadAction<TogglePostedUserEmojiModal>) => {
-      const { isOpen } = action.payload
+      const { isOpen, emojiIndex } = action.payload
       return {
         ...state,
-        isPostedEmojiUsersModalOpen: isOpen
+        isPostedEmojiUsersModalOpen: isOpen,
+        selectedEmojiIndex: isOpen ? emojiIndex : 0
       }
     },
     requestFetchPostedEmojiUsers: (state, action: PayloadAction<string[]>) => {
