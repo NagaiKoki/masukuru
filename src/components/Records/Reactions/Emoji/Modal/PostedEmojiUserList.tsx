@@ -49,10 +49,10 @@ const TitleWrapper = styled.View`
 
 const EmojiWrapper = styled.Text`
   font-size: 20px;
-  margin-right: 10px;
 `
 
 const Title = styled.Text`
+  margin-left: 10px;
   font-size: 16px;
   font-weight: bold;
   color: ${COLORS.BASE_BLACK};

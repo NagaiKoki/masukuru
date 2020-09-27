@@ -9,6 +9,9 @@ import {
 } from '../../../../../slice/record'
 // import utils
 import { hapticFeedBack } from '../../../../../utilities/Haptic'
+import recordSelector, { selectEmojiReactions } from '../../../../../selectors/record'
+// import confing
+import firebase from '../../../../../config/firebase' 
 
 interface PropsType {
   id: number
@@ -18,9 +21,14 @@ interface PropsType {
 
 const EmojiItem = (props: PropsType) => {
   const { id, emoji, text } = props
+  const { selectedEmojiRecordId } = recordSelector()
+  const reaction = selectEmojiReactions(selectedEmojiRecordId)
   const dispatch = useDispatch()
 
+  const hasPosted = !!reaction && reaction.emojiReactions.some(item => item.emojiIndex === id && item.uid === firebase.auth().currentUser.uid)
+
   const handlePostEmojiReaction = () => {
+    if (hasPosted) return
     hapticFeedBack('medium')
     dispatch(requestPostEmojiReaction({ emojiIndex: id }))
     dispatch(toggleEmojiModalOpen({ isOpen: false }))
@@ -28,7 +36,7 @@ const EmojiItem = (props: PropsType) => {
 
   return (
     <Wrapper>
-      <EmojiBtn onPress={handlePostEmojiReaction}>
+      <EmojiBtn onPress={handlePostEmojiReaction} hasPosted={hasPosted}>
         <EmojiText>{emoji}</EmojiText>
       </EmojiBtn>
       <EmojiName>{text}</EmojiName>
@@ -44,7 +52,7 @@ const Wrapper = styled.View`
   padding: 10px 0;
 `
 
-const EmojiBtn = styled.TouchableOpacity`
+const EmojiBtn = styled.TouchableOpacity<{ hasPosted: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -53,6 +61,7 @@ const EmojiBtn = styled.TouchableOpacity`
   height: 50px;
   margin-right: 10px;
   background: ${COLORS.BASE_BACKGROUND2};
+  opacity: ${props => props.hasPosted ? 0.2 : 1};
 `
 
 const EmojiText = styled.Text`

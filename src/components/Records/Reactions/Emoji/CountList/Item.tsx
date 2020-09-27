@@ -25,7 +25,7 @@ const EmojiItem = (props: PropsType) => {
   })
   const userIds = reactions.map(reaction => reaction.uid)
 
-  if (!size) {
+  if (!size || !item) {
     return null
   }
 

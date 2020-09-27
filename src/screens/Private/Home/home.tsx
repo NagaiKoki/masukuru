@@ -111,6 +111,7 @@ const HomeScreen = (props: HomeProps) => {
     </MemberView>
 
   const onRefresh = async () => {
+    hapticFeedBack('medium')
     setIsRefresh(true)
     await getMemberList(currentGroupId, setUserList)
     requestFetchRecords({ uid: null, groupId: currentGroupId})
