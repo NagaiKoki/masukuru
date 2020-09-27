@@ -36,8 +36,8 @@ const NotificationItem = (props: ItemProps) => {
   const [isFetching, setIsFetching] = useState(true)
 
   const ContentProps: NotificationContenTypes = {
-    item: item, 
-    requestReadNotification: requestReadNotification
+    item, 
+    requestReadNotification
   }
   
   useEffect(() => {

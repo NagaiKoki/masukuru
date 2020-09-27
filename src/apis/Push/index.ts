@@ -124,7 +124,7 @@ export const requestSendRecordPostNotification = async () => {
   const { userIds } = await requestCheckPermissionRecordPushByUserIds(payload)
 
   if (userIds && !error) {
-   await Promise.all(userIds.map( async id => {
+    await Promise.all(userIds.map( async id => {
       await requestSendPushNotification(id, title, body)
     }))
   }

@@ -20,7 +20,7 @@ const BottomModal = (props: PropsType) => {
       onClosed={onClose}
       position='bottom'
       coverScreen
-      style={{ height: height || 460 }}
+      style={{ height: height || 500 }}
     >
       <CloseBar />
       {children}
