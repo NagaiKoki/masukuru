@@ -66,6 +66,7 @@ const HomeScreen = (props: HomeProps) => {
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
       isSetExpoNotificationToken()
+      Analytics.track('home')
     },[currentGroupId])
   );
 

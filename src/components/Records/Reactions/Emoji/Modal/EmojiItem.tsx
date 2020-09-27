@@ -12,6 +12,7 @@ import { hapticFeedBack } from '../../../../../utilities/Haptic'
 import recordSelector, { selectEmojiReactions } from '../../../../../selectors/record'
 // import confing
 import firebase from '../../../../../config/firebase' 
+import Analytics from '../../../../../config/amplitude'
 
 interface PropsType {
   id: number
@@ -30,6 +31,7 @@ const EmojiItem = (props: PropsType) => {
   const handlePostEmojiReaction = () => {
     if (hasPosted) return
     hapticFeedBack('medium')
+    Analytics.track('emojiReaction', { emojiIndex: id })
     dispatch(requestPostEmojiReaction({ emojiIndex: id }))
     dispatch(toggleEmojiModalOpen({ isOpen: false }))
   }

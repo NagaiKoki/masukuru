@@ -27,7 +27,7 @@ const EmojiModal = (props: PropsType) => {
     </Container>
 
   return (
-    <BottomModal isOpen={isOpen} onClose={handleOnClose}>
+    <BottomModal isOpen={isOpen} onClose={handleOnClose} height={400}>
       {renderModalContent}
     </BottomModal>
   )
