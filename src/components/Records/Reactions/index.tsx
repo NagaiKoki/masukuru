@@ -10,6 +10,8 @@ import EmojiCountList from './Emoji/CountList'
 import { toggleEmojiModalOpen, requestFetchEmojiReaction } from '../../../slice/record'
 // import selectors
 import { selectEmojiReactions } from '../../../selectors/record'
+// import config
+import Analytics from '../../../config/amplitude'
 
 interface RecordReactionProps {
   size: number
@@ -28,6 +30,7 @@ const RecordReaction = (props: RecordReactionProps) => {
   }, [])
 
   const handleOpenEmojiModal = () => {
+    Analytics.track('OpenEmojiModal')
     dispatch(toggleEmojiModalOpen({ isOpen: true, selectedRecordId: id }))
   }
 
