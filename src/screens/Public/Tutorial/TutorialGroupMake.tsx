@@ -55,8 +55,8 @@ const TutorialGroupMakeScreen = ({ navigation, route }) => {
         await groupUsersRef.get().then(snap => {
           groupUsersLength = snap.size
         })
-        if (groupUsersLength >= 5) {
-          return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_USERS)
+        if (groupUsersLength >= 11) {
+          return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
         } else {
           await currentUser.updateProfile({ displayName: userName })
           groupUsersRef.doc(currentUser.uid).set({
