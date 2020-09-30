@@ -5,13 +5,13 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // import components
 import WeightChart from '../../../components/Charts/WeightChart'
 import PedometerChart from '../../../components/Charts/PedometerChart'
-import Header from '../../../components/Charts/Header'
+import Header from '../../../components/Charts/Header/index'
 import AddButton from '../../../components/Charts/AddButton'
 // import constants
 import { COLORS } from '../../../constants/Styles'
 
 const ChartScreen = ({ navigation }) => {
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(1)
 
   useFocusEffect(
     useCallback(() => {
