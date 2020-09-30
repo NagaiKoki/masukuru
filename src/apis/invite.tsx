@@ -21,16 +21,18 @@ export const joinInvitedGroup = async (invitedCode: string, currentGroupId: stri
       let groupUsersLength: number;
       let groupsLength: number
 
+      // 招待先のグループに所属するユーザーの数
       await snapShotGroupUsers.get().then( async snap => {
         groupUsersLength = snap.size
       })
 
+      // 現在所属しているグループの数
       await groupUsersRef.get().then(async snap => {
         groupsLength = snap.size
       })
 
-      if (groupUsersLength >= 5) {
-        return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_USERS)
+      if (groupUsersLength >= 11) {
+        return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
       } else if (groupsLength >= 5 && !isDeveloper(currentUser.uid)) {
         return Alert.alert(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
       } else {

@@ -37,7 +37,7 @@ const InvitedCodeModal = (props: InvitedCodeModalProps) => {
           />
         </InvitedModalFormWrapper>
         <InvitedSubText>※ 所属できるグループ数は5つまでです。</InvitedSubText>
-        <InvitedSubText>※ 招待先のグループが5人以上の場合、参加できません。</InvitedSubText>
+        <InvitedSubText>※ 招待先のグループが11人以上の場合、参加できません。</InvitedSubText>
 
         <InvitedModalSubmitBtn block onPress={replaceGroup} disabled={disableSubmit} disableSubmit={disableSubmit}>
           <InvitedModalSubmitText>招待されたグループに参加する</InvitedModalSubmitText>

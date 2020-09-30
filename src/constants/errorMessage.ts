@@ -42,7 +42,7 @@ export const COMMON_ERROR_MESSSAGE = {
 }
 
 export const INVITE_ERROR_MESSAGE = {
-  MORE_THAN_5_USERS: '招待されたグループの人数が5人以上のため、参加することができません。',
+  MORE_THAN_11_USERS: '招待されたグループの人数が11人以上のため、参加することができません。',
   MORE_THAN_5_GROUPS: '所属できるグループは5つまです。',
   SAME_GROUP_CODE: 'この招待コードは、現在所属するグループの招待コードです。',
   EMPTY_GROUP: '入力した招待コードは存在しません。今一度、招待コードをお確かめください。'
