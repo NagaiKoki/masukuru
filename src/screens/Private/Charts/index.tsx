@@ -11,7 +11,7 @@ import AddButton from '../../../components/Charts/AddButton'
 import { COLORS } from '../../../constants/Styles'
 
 const ChartScreen = ({ navigation }) => {
-  const [index, setIndex] = useState(1)
+  const [index, setIndex] = useState(0)
 
   useFocusEffect(
     useCallback(() => {
