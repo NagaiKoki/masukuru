@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from 'react-redux'
 import * as Permissions from 'expo-permissions'
 import styled from 'styled-components'
-import { captureRef } from "react-native-view-shot";
 import { Pedometer } from 'expo-sensors'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 // import conponents
@@ -70,23 +70,25 @@ const PedometerChart = () => {
     setPastSteps(pastSteps)
   }
 
-  useEffect(() => {
-    Analytics.track('visitPedometerChart')
-    const isPedometerAvailable = async () => {
-      const isAvailable = await Pedometer.isAvailableAsync()
-      const { status } = await Permissions.askAsync(Permissions.MOTION);
-      setAvailableSensor(isAvailable && status === 'granted')
-      return isAvailable
-    }
+  useFocusEffect(
+    useCallback(() => {
+      Analytics.track('visitPedometerChart')
+      const isPedometerAvailable = async () => {
+        const isAvailable = await Pedometer.isAvailableAsync()
+        const { status } = await Permissions.askAsync(Permissions.MOTION);
+        setAvailableSensor(isAvailable && status === 'granted')
+        return isAvailable
+      }
 
-    if (isPedometerAvailable()) {
-      Pedometer.watchStepCount(result => {
-        setStepCount(result.steps)
-      })
-    }
-    dispatch(requestFetchChartSetting())
-    setIsMounted(true)
-  }, [])
+      if (isPedometerAvailable()) {
+        Pedometer.watchStepCount(result => {
+          setStepCount(result.steps)
+        })
+      }
+      dispatch(requestFetchChartSetting())
+      setIsMounted(true)
+    }, []
+  ))
 
   useEffect(() => {
     getPastSteps(currentDate, 'day')
@@ -188,15 +190,6 @@ const PedometerChart = () => {
         yAxisSuffix=""
       />
     </ChartRef>
-
-  // const handleOnRef = () => {
-  //   captureRef(captureViewRef, {
-  //     format: "jpg",
-  //     quality: 0.9
-  //   }).then(
-  //     uri => alert(uri)
-  //   )
-  // }
 
   return (
     isMounted && pastSteps.length ?
