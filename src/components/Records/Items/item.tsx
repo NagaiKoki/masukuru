@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import Hyperlink from 'react-native-hyperlink'
 import { Image, StyleSheet } from 'react-native'
 import moment from '../../../config/moment'
 import styled from 'styled-components'
@@ -92,10 +93,16 @@ const RecordItem = (props: RecordItemProps) => {
     )
   })
 
+  const renderTweet =
+    <Hyperlink linkDefault={true} linkStyle={{ color: COLORS.LINK_COLOR, fontSize: 16 }}>
+      <RecordWordText>{word}</RecordWordText>
+    </Hyperlink>
+
   return (
       <RecordItemContainer>
         <RecordItenClickable
           onPress={() => isShowPage ? {} : handleOnNavigate() }
+          activeOpacity={ isShowPage ? 1 : 0.8 }
         >
         <RecordItemUpper>
           <RecordUser
@@ -113,7 +120,7 @@ const RecordItem = (props: RecordItemProps) => {
             <RecordTimestampText>{moment(convertTimestampToString(createdAt, undefined)).fromNow()}</RecordTimestampText>
           </RecordRightUpper>
         </RecordItemUpper>
-        { !!word ? <RecordWordText>{word}</RecordWordText> : null }
+        { !!word ? renderTweet : null }
         <RecordImageWrapper>
           { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
         </RecordImageWrapper>
