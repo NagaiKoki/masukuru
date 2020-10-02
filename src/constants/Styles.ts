@@ -28,6 +28,7 @@ export const COLORS = {
 
   LINE_COLOR: "#00B900",
   TWITTER_COLOR: "#1DA1F2",
+  LINK_COLOR: '#3399ff',
 
   IMAGE_BACKGROUND: "#d1d1cf"
 }
