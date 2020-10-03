@@ -1,28 +1,40 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import styled from 'styled-components'
 import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch } from 'react-redux'
 // import components
 import ApplauseImage from './Image'
+import ReviewButton from './ReviewButton'
 // import constants
 import { COLORS } from '../../constants/Styles'
 // import slices
 import { closeApplauseModal } from '../../slice/record'
 // import selectors
 import recordSelector from '../../selectors/record'
+import userSelector from '../../selectors/user'
 // import utils
 import { applauseSubText } from '../../utilities/Applause/subText'
 
 const Applause = () => {
   const dispatch = useDispatch()
   const { isOpenApplause, recordSize } = recordSelector()
+  const { currentUser }  = userSelector()
 
   const handleOnClose = () => {
     dispatch(closeApplauseModal())
   }
 
   const hasSubMessage: boolean = !!applauseSubText(recordSize)
+  const displayReviewBtn = Platform.OS === 'ios' && currentUser && !currentUser.isApplausedReviewed
+
+  const renderBottomButtons = displayReviewBtn ? 
+    <ReviewButton /> :
+    <CloseButtonWrapper>
+      <CloseBtn onPress={handleOnClose}>
+        <CloseText>閉じる</CloseText>
+      </CloseBtn>
+    </CloseButtonWrapper>
 
   return (
     <Modal isVisible={isOpenApplause}>
@@ -31,11 +43,7 @@ const Applause = () => {
         <ApplauseImage  size={recordSize} />
         <SubTitle>{recordSize}回目のトレーニングお疲れ様でした♪</SubTitle>
         { hasSubMessage ? <SubText>{applauseSubText(recordSize)}</SubText> : null }
-        <CloseButtonWrapper>
-          <CloseBtn onPress={handleOnClose}>
-            <CloseText>閉じる</CloseText>
-          </CloseBtn>
-        </CloseButtonWrapper>
+        {renderBottomButtons}
       </ApplauseWrapper>
     </Modal>
   )

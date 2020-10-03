@@ -28,18 +28,20 @@ import { hapticFeedBack } from '../../../utilities/Haptic'
 // import config
 import firebase from '../../../config/firebase'
 import Analytics from '../../../config/amplitude'
+// selectors
+import userSelectors from '../../../selectors/user'
 
 const HomeScreen = (props: HomeProps) => {
-  const { navigation, route, records, users, actions } = props
+  const { navigation, route, records, actions } = props
   const {
     requestFetchRecords,
     requestNextRecords,
     requestDestroyRecord,
-    requestFetchUserData,
+    requestFetchCurrentUserData,
     toggleReflesh
   } = actions
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
-  const { currentUser } = users
+  const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)
@@ -62,7 +64,7 @@ const HomeScreen = (props: HomeProps) => {
       setIsHomeLoading(true)
       getMemberList(currentGroupId, setUserList)
       requestFetchRecords({ uid: null, groupId: currentGroupId})
-      requestFetchUserData(currentUserId)
+      requestFetchCurrentUserData(currentUserId)
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
       isSetExpoNotificationToken()
@@ -185,11 +187,11 @@ const MemberView = styled.View`
   border-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 0.5px;
   height: 82px;
-  padding: 10px 10px 0 10px;
+  padding: 10px 0 0 10px;
 `
 
 const MemberListView = styled.View`
-  width: 95%;
+  width: 100%;
 `
 
 const MemberFlatList = styled.FlatList`
