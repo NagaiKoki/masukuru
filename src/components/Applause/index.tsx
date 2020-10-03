@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch } from 'react-redux'
 // import components
 import ApplauseImage from './Image'
+import ReviewButton from './ReviewButton'
 // import constants
 import { COLORS } from '../../constants/Styles'
 // import slices
@@ -25,17 +25,18 @@ const Applause = () => {
   const hasSubMessage: boolean = !!applauseSubText(recordSize)
 
   return (
-    <Modal isVisible={isOpenApplause}>
+    <Modal isVisible={true}>
       <ApplauseWrapper hasSubMessage={hasSubMessage}>
         <Title>運営からのお知らせ</Title>
         <ApplauseImage  size={recordSize} />
         <SubTitle>{recordSize}回目のトレーニングお疲れ様でした♪</SubTitle>
         { hasSubMessage ? <SubText>{applauseSubText(recordSize)}</SubText> : null }
-        <CloseButtonWrapper>
+        {/* <CloseButtonWrapper>
           <CloseBtn onPress={handleOnClose}>
             <CloseText>閉じる</CloseText>
           </CloseBtn>
-        </CloseButtonWrapper>
+        </CloseButtonWrapper> */}
+        <ReviewButton />
       </ApplauseWrapper>
     </Modal>
   )

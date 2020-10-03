@@ -6,14 +6,15 @@ import { COLORS } from '../../constants/Styles'
 interface ButtonProps {
   text: string
   background?: string
+  textColor?: string
   handleOnClick: () => void
 }
 
 const Button = (props: ButtonProps) => {
-  const { background, text, handleOnClick } = props
+  const { background, text, textColor, handleOnClick } = props
   return (
     <Wrapper background={background} activeOpacity={0.8} onPress={handleOnClick}>
-      <ButtonText>{text}</ButtonText>
+      <ButtonText textColor={textColor}>{text}</ButtonText>
     </Wrapper>
   )
 }
@@ -26,8 +27,8 @@ const Wrapper = styled.TouchableOpacity<{ background?: string }>`
   padding: 10px 15px;
 `
 
-const ButtonText = styled.Text`
-  color: ${COLORS.BASE_WHITE};
+const ButtonText = styled.Text<{ textColor?: string }>`
+  color: ${props => props.textColor ? props.textColor : COLORS.BASE_WHITE};
   font-size: 14px;
   text-align: center;
 `
