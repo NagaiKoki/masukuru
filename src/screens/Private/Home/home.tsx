@@ -187,11 +187,11 @@ const MemberView = styled.View`
   border-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 0.5px;
   height: 82px;
-  padding: 10px 10px 0 10px;
+  padding: 10px 0 0 10px;
 `
 
 const MemberListView = styled.View`
-  width: 95%;
+  width: 100%;
 `
 
 const MemberFlatList = styled.FlatList`
