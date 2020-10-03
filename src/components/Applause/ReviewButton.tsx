@@ -43,6 +43,8 @@ export default ReviewButton
 
 const Container = styled.View`
   margin-top: 20px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   background: ${COLORS.BASE_WHITE};
 `
 
@@ -52,6 +54,8 @@ const ButtonWrapper = styled.TouchableOpacity<{ isClose?: boolean }>`
   justify-content: center;
   border-top-width: ${props => props.isClose ? 1 : 0 };
   border-top-color: ${props => props.isClose ? COLORS.BASE_BORDER_COLOR : 0 };
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   padding: 15px 0;
   background: ${props => props.isClose ? COLORS.BASE_WHITE : COLORS.BASE_MUSCLEW};
 `
