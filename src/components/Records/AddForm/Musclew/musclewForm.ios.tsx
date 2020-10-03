@@ -99,6 +99,7 @@ const AddRMuscleecord = (props: AddMusclewProps) => {
         names={recordNames}
         isLoading={isLoading}
         handleOnChange={handleOnChange}
+        handleOnBlur={handleOnBlur}
       />
     </SuggestListWrapper>
 

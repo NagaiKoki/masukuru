@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Keyboard } from 'react-native'
+import { Keyboard, TouchableHighlight } from 'react-native'
 // import components
 import SuggestItem from  './suggestItem'
 // import constants
@@ -11,19 +11,25 @@ interface SearchSuggestProps {
   names: string[]
   isLoading: boolean
   handleOnChange: (keyword: string) => void
+  handleOnBlur: () => void
 }
 
 const SearchSuggestList = (props: SearchSuggestProps) => {
-  const { names, handleOnChange } = props
+  const { names, handleOnChange, handleOnBlur } = props
 
   const suggests = names.map((name: string, index: number) => (
-    <SuggestItem key={index} name={name} handleOnChange={handleOnChange} />
+    <SuggestItem key={index} name={name} handleOnChange={handleOnChange}/>
   ))
+
+  const handleOnClick = () => {
+    Keyboard.dismiss()
+    handleOnBlur
+  }
 
   return (
     <ListWrapper>
       <CloseItemWrapper>
-        <CloseItemTextWrapper onPress={ () => Keyboard.dismiss() }>
+        <CloseItemTextWrapper onPress={handleOnClick}>
           <CloseItemText>閉じる</CloseItemText>
         </CloseItemTextWrapper>
       </CloseItemWrapper>
