@@ -15,7 +15,7 @@ import {
   requestDestroyRecord,
   toggleReflesh
 } from '../../../slice/record'
-import { requestFetchUserData } from '../../../actions/User'
+import { requestFetchCurrentUserData } from '../../../slice/user'
 // import screens
 import HomeScreen from '../../../screens/Private/Home'
 
@@ -28,7 +28,7 @@ export interface HomeProps {
     requestFetchRecords: (arg: RequestFetchRecordType) => void
     requestNextRecords: (arg: RequestNextRecords) => void
     requestDestroyRecord: (id: string) => void
-    requestFetchUserData: (uid: string) => void
+    requestFetchCurrentUserData: (uid: string) => void
     toggleReflesh: (bool: boolean) => void
   }
 }
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       requestFetchRecords,
       requestNextRecords,
       requestDestroyRecord,
-      requestFetchUserData,
+      requestFetchCurrentUserData,
       toggleReflesh
     }
     , dispatch)

@@ -10,11 +10,11 @@ import { ChartState } from '../types/Chart'
 // import reducers
 import notificationReducer from './Private/notificationReducer'
 import groupReducer from './Private/groupReducer'
-import userReducer from './Private/userReducer'
 import suggestRecordReducer from '../reducers/Private/Search/suggestRecord'
 // import slice
 import recordSlice from '../slice/record'
 import chartSlice from '../slice/chart'
+import userSlice from '../slice/user'
 // import saga
 import rootSaga from '../sagas/'
 
@@ -35,7 +35,7 @@ const store = createStore(
     records: recordSlice.reducer,
     notifications: notificationReducer,
     groups: groupReducer,
-    users: userReducer,
+    users: userSlice.reducer,
     suggestRecords: suggestRecordReducer,
     charts: chartSlice.reducer
   }),

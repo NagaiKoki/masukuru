@@ -22,7 +22,7 @@ import {
   requestDeleteRecordComment,
 } from '../../../../slice/record'
 // import actions
-import { requestFetchUserData } from '../../../../actions/User'
+import { requestFetchCurrentUserData } from '../../../../slice/user'
 import { requestPostPushNotification } from '../../../../actions/notifications'
 
 const RecordShowScreen = ({ navigation, route }) => {
@@ -36,7 +36,7 @@ const RecordShowScreen = ({ navigation, route }) => {
     useCallback(() => {
       dispatch(requestFetchRecordComments(record.id))
       if (!currentUser) {
-        dispatch(requestFetchUserData(firebase.auth().currentUser.uid))
+        dispatch(requestFetchCurrentUserData(firebase.auth().currentUser.uid))
       }
     }, [])
   )

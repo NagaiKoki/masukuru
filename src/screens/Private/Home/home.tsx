@@ -35,7 +35,7 @@ const HomeScreen = (props: HomeProps) => {
     requestFetchRecords,
     requestNextRecords,
     requestDestroyRecord,
-    requestFetchUserData,
+    requestFetchCurrentUserData,
     toggleReflesh
   } = actions
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
@@ -62,7 +62,7 @@ const HomeScreen = (props: HomeProps) => {
       setIsHomeLoading(true)
       getMemberList(currentGroupId, setUserList)
       requestFetchRecords({ uid: null, groupId: currentGroupId})
-      requestFetchUserData(currentUserId)
+      requestFetchCurrentUserData(currentUserId)
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
       isSetExpoNotificationToken()
