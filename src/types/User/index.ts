@@ -29,7 +29,7 @@ export type UserType = {
   isReviewed: boolean
   isCommentPush: boolean | undefined
   isRecordPostPush: boolean | undefined
-  isApplausedRevied: boolean | undefined
+  isApplausedReviewed: boolean | undefined
 }
 
 export interface RequestFetchUserData {

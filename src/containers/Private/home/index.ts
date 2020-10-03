@@ -7,7 +7,6 @@ import {
   RequestFetchRecordType,
   RequestNextRecords
 } from '../../../types/Record'
-import { UserState } from '../../../types/User'
 // import actions
 import { 
   requestFetchRecords,
@@ -23,7 +22,6 @@ export interface HomeProps {
   navigation: any
   route: any
   records: RecordState
-  users: UserState
   actions: {
     requestFetchRecords: (arg: RequestFetchRecordType) => void
     requestNextRecords: (arg: RequestNextRecords) => void
@@ -36,7 +34,6 @@ export interface HomeProps {
 const mapStateToProps = (state: RootState) => {
   return {
     records: state.records,
-    users: state.users
   }
 }
 

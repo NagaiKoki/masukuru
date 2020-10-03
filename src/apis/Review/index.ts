@@ -7,7 +7,7 @@ export const requestPatchApplausedReviewed = async () => {
   const userRef = db.collection('users').doc(currentUserId)
 
   try {
-    await userRef.update({ isApplausedRevied: true })
+    await userRef.update({ isApplausedReviewed: true })
     return { payload: 'success' }
   } catch {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }

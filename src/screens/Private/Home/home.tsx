@@ -28,9 +28,11 @@ import { hapticFeedBack } from '../../../utilities/Haptic'
 // import config
 import firebase from '../../../config/firebase'
 import Analytics from '../../../config/amplitude'
+// selectors
+import userSelectors from '../../../selectors/user'
 
 const HomeScreen = (props: HomeProps) => {
-  const { navigation, route, records, users, actions } = props
+  const { navigation, route, records, actions } = props
   const {
     requestFetchRecords,
     requestNextRecords,
@@ -39,7 +41,7 @@ const HomeScreen = (props: HomeProps) => {
     toggleReflesh
   } = actions
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
-  const { currentUser } = users
+  const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)

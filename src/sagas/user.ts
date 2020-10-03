@@ -1,29 +1,31 @@
-import { fork, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
-// import action types
-import { REQUEST_FETCH_USER_DATA } from '../actions/actionTypes'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { fork, takeEvery, put, call } from 'redux-saga/effects'
 // import types
 import { UserType, RequestFetchUserData } from '../types/User'
 // import actions
-import { successFetchUserData, failureFetchUserData } from '../actions/User'
+import { 
+  requestFetchCurrentUserData,
+  successFetchCurrentUserData, 
+  failureFetchCurrentUserData 
+} from '../slice/user'
 // import apis
 import { requestFetchUser } from '../apis/Users'
 
-function* runRequestUserData(action: RequestFetchUserData) {
-  const { uid } = action
+function* runRequestUserData(action: PayloadAction<string>) {
   const { user, error }: { user?: UserType, error?: string } = yield call(
     requestFetchUser,
-    uid
+    action.payload
   )
 
   if (user && !error) {
-    yield put(successFetchUserData(user))
+    yield put(successFetchCurrentUserData(user))
   } else if (error) {
-    yield put(failureFetchUserData(error))
+    yield put(failureFetchCurrentUserData(error))
   }
 }
 
 function* handleRequestCurrentUser() {
-  yield takeEvery(REQUEST_FETCH_USER_DATA, runRequestUserData)
+  yield takeEvery(requestFetchCurrentUserData.type, runRequestUserData)
 }
 
 export default function* userSaga() {
