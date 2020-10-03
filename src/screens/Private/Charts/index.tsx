@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { Platform } from 'react-native'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -11,7 +12,7 @@ import AddButton from '../../../components/Charts/AddButton'
 import { COLORS } from '../../../constants/Styles'
 
 const ChartScreen = ({ navigation }) => {
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = Platform.OS === 'ios' ? useState(0) : useState(1)
 
   useFocusEffect(
     useCallback(() => {
