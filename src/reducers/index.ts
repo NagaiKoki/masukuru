@@ -7,6 +7,7 @@ import { GroupState } from '../types/Group'
 import { UserState } from '../types/User'
 import { SuggestRecordState } from '../types/Search/Record/suggest'
 import { ChartState } from '../types/Chart'
+import { AuthState } from '../types/auth'
 // import reducers
 import notificationReducer from './Private/notificationReducer'
 import groupReducer from './Private/groupReducer'
@@ -15,6 +16,7 @@ import suggestRecordReducer from '../reducers/Private/Search/suggestRecord'
 import recordSlice from '../slice/record'
 import chartSlice from '../slice/chart'
 import userSlice from '../slice/user'
+import authSlice from '../slice/auth'
 // import saga
 import rootSaga from '../sagas/'
 
@@ -25,6 +27,7 @@ export interface RootState {
   users: UserState
   suggestRecords: SuggestRecordState
   charts: ChartState
+  auth: AuthState
 }
 
 const sagaMiddleware = createSagaMiddleware()
@@ -37,7 +40,8 @@ const store = createStore(
     groups: groupReducer,
     users: userSlice.reducer,
     suggestRecords: suggestRecordReducer,
-    charts: chartSlice.reducer
+    charts: chartSlice.reducer,
+    auth: authSlice.reducer
   }),
   middleware
 )
