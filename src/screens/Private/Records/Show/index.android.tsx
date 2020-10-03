@@ -22,7 +22,7 @@ import {
   requestDeleteRecordComment,
 } from '../../../../slice/record'
 // import actions
-import { requestFetchCurrentUserData } from '../../../../slice/User'
+import { requestFetchCurrentUserData } from '../../../../slice/user'
 
 const RecordShowScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
