@@ -7,7 +7,6 @@ import {
   RequestFetchRecordType,
   RequestNextRecords
 } from '../../../types/Record'
-import { UserState } from '../../../types/User'
 // import actions
 import { 
   requestFetchRecords,
@@ -15,7 +14,7 @@ import {
   requestDestroyRecord,
   toggleReflesh
 } from '../../../slice/record'
-import { requestFetchUserData } from '../../../actions/User'
+import { requestFetchCurrentUserData } from '../../../slice/user'
 // import screens
 import HomeScreen from '../../../screens/Private/Home'
 
@@ -23,12 +22,11 @@ export interface HomeProps {
   navigation: any
   route: any
   records: RecordState
-  users: UserState
   actions: {
     requestFetchRecords: (arg: RequestFetchRecordType) => void
     requestNextRecords: (arg: RequestNextRecords) => void
     requestDestroyRecord: (id: string) => void
-    requestFetchUserData: (uid: string) => void
+    requestFetchCurrentUserData: (uid: string) => void
     toggleReflesh: (bool: boolean) => void
   }
 }
@@ -36,7 +34,6 @@ export interface HomeProps {
 const mapStateToProps = (state: RootState) => {
   return {
     records: state.records,
-    users: state.users
   }
 }
 
@@ -46,7 +43,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       requestFetchRecords,
       requestNextRecords,
       requestDestroyRecord,
-      requestFetchUserData,
+      requestFetchCurrentUserData,
       toggleReflesh
     }
     , dispatch)
