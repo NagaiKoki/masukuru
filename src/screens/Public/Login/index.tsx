@@ -26,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const handleSubmit = () => {
-    requestFetchEmailSignIn({ email, password, isLogin: true })
+    requestFetchEmailSignIn({ email, password, method: 'signin' })
   }
 
   return (

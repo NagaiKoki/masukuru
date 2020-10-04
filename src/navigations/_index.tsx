@@ -1,0 +1,85 @@
+import React, { useState, useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+// import selectors
+import { useAuthSelectors } from '../selectors/auth'
+// import utils
+import { useUserStatus } from '../utilities/hooks/checkUserStatus'
+// import navigators
+import MainTabNavigator from './Private/TabNavigators/MainTabNavigator';
+import TutorialNavigator from './Public/TutorialNavigator'
+import AuthenticationNavigator from './Public/AuthentificationNavigator';
+// import screens
+import DrawerContent from '../screens/Private/Drawers/DrawerContents';
+// import confing
+import firebase from '../config/firebase'
+
+const RootNavigator = () => {
+  const { userStatus, setUserStatus } = useAuthSelectors()
+  const [isMouted, setIsMouted] = useState(false)
+  const status = useUserStatus()
+  const Stack = createStackNavigator();
+  const Drawer = createDrawerNavigator();
+
+  useEffect(() => {
+    setUserStatus(status)
+    setIsMouted(true)
+  }, [])
+
+  if (!isMouted || !status) {
+    return <></>
+  }
+
+  const renderNavigator = () => {
+    switch (userStatus) {
+      case 'unauthorized': {
+        return (
+          <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+            <Stack.Screen
+              name='AuthenticationNavigator'
+              component={AuthenticationNavigator}
+              options={{
+                headerShown: false
+              }}
+            />
+          </Stack.Navigator>
+        )
+      }
+      case 'tutorial': {
+        return (
+          <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+            <Stack.Screen 
+              name="Tutorial"
+              component={TutorialNavigator}
+              options={{
+                headerShown: false
+              }}
+            />
+          </Stack.Navigator>
+        )
+      }
+      case 'authorized': {
+        return (
+          <Drawer.Navigator 
+            drawerStyle={{ width: 330 }} 
+            drawerContent={ (props) => <DrawerContent user={firebase.auth().currentUser} {...props}/>}
+          >
+            <Drawer.Screen 
+              name="MainTabNavigator"
+              component={MainTabNavigator}
+            />
+          </Drawer.Navigator>
+        )
+      }
+    }
+  }
+
+  return (
+    <NavigationContainer>
+      {renderNavigator()}
+    </NavigationContainer>
+  )
+}
+
+export default RootNavigator

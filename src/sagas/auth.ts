@@ -4,14 +4,17 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects'
 import {  
   requestFetchEmailSignIn,
   successFetchEmailSignIn,
-  failureFetchEmailSignIn
+  failureFetchEmailSignIn,
 } from '../slice/auth'
 // import apis
 import { requestEmailSingIn } from '../apis/auth/index'
 // import types
 import { EmailSignInType } from '../types/auth'
 import { ResponseType } from '../types'
+// import config
+import firebase from '../config/firebase'
 
+// サインアップ or サインイン
 function* runRequestFetchEmailSignIn(action: PayloadAction<EmailSignInType>) {
   const { payload, error }: ResponseType<string> = yield call(
     requestEmailSingIn,
@@ -19,7 +22,7 @@ function* runRequestFetchEmailSignIn(action: PayloadAction<EmailSignInType>) {
   )
 
   if (payload && !error) {
-    yield put(successFetchEmailSignIn())
+    yield put(successFetchEmailSignIn(action.payload.method))
   } else if (error) {
     yield put(failureFetchEmailSignIn(error))
   }

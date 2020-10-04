@@ -84,6 +84,7 @@ const Navigator = (props: any) => {
         >
           {defaultSignedInScreen()}
         </Drawer.Navigator>
+        
       )
     } else if (currentUser && !currentUser.displayName) {
       return (

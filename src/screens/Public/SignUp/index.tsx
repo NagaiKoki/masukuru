@@ -28,7 +28,7 @@ const SignupScreen = () => {
   }
 
   const handleSubmit = () => {
-    requestFetchEmailSignIn({ email, password, isLogin: false })
+    requestFetchEmailSignIn({ email, password, method: 'signup' })
   }
 
   const handleLink = () => {

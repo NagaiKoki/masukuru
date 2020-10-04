@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { AuthState, EmailSignInType } from '../types/auth'
+import { 
+  AuthState, 
+  EmailSignInType,
+  AuthMethodType,
+  UserStatusType
+} from '../types/auth'
 
 const initialState: AuthState = {
   isLoading: false,
   error: '',
-  isLogggedIn: false
+  userStatus: 'unauthorized'
 }
 
 const authSlice = createSlice({
@@ -18,11 +23,11 @@ const authSlice = createSlice({
         isLoading: true
       }
     },
-    successFetchEmailSignIn: (state) => {
+    successFetchEmailSignIn: (state, action: PayloadAction<AuthMethodType>) => {
       return {
         ...state,
-        isLogggedIn: true,
-        isLoading: false
+        isLoading: false,
+        userStatus: action.payload === 'signin' ? 'authorized' : 'tutorial'
       }
     },
     failureFetchEmailSignIn: (state, action: PayloadAction<string>) => {
@@ -30,6 +35,12 @@ const authSlice = createSlice({
         ...state,
         error: action.payload,
         isLoading: false
+      }
+    },
+    setUserStatus: (state, action: PayloadAction<UserStatusType>) => {
+      return {
+        ...state,
+        userStatus: action.payload
       }
     },
     clearError: (state) => {
@@ -47,5 +58,6 @@ export const {
   requestFetchEmailSignIn,
   successFetchEmailSignIn,
   failureFetchEmailSignIn,
+  setUserStatus,
   clearError
 } = authSlice.actions

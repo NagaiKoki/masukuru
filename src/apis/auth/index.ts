@@ -15,10 +15,11 @@ import {
 import { EmailSignInType } from '../../types/auth'
 
 export const requestEmailSingIn = async (args: EmailSignInType) => {
-  const { email, password, isLogin } = args
-  return await isLogin ? requestEmailLogin(email, password) : requestEmailSignUp(email, password)
+  const { email, password, method } = args
+  return await method === 'signin' ? requestEmailLogin(email, password) : requestEmailSignUp(email, password)
 }
 
+// メール認証ログイン
 const requestEmailLogin = async (email: string, password: string) => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
@@ -52,6 +53,7 @@ const requestEmailLogin = async (email: string, password: string) => {
   }
 }
 
+// メール認証サインアップ
 const requestEmailSignUp = async (email: string, password: string) => {
   try {
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -88,6 +90,7 @@ const requestEmailSignUp = async (email: string, password: string) => {
   }
 }
 
+// ログアウト
 export const logout = async () => {
   try {
     await firebase.auth().signOut()

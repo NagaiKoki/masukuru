@@ -26,7 +26,6 @@ const AuthentificationNavigator = ({ route }) => {
     <AuthenticateStack.Screen 
       name="SignupHome" 
       component={SignupHomeScreen} 
-      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         headerShown: false,
       }}
@@ -36,7 +35,6 @@ const AuthentificationNavigator = ({ route }) => {
     <AuthenticateStack.Screen 
       name="Signup" 
       component={SignupScreen} 
-      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         title: "アカウントを登録する",
         headerTintColor: COLORS.BASE_MUSCLEW
@@ -47,7 +45,6 @@ const AuthentificationNavigator = ({ route }) => {
     <AuthenticateStack.Screen 
       name="Login" 
       component={LoginScreen}
-      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         title: "ログイン",
         headerTintColor: COLORS.BASE_MUSCLEW,
@@ -57,7 +54,6 @@ const AuthentificationNavigator = ({ route }) => {
     <AuthenticateStack.Screen 
       name="ResetPassword" 
       component={ResetPasswordScreen}
-      initialParams={{ setIsChange: route.params.setIsChange }}
       options={{
         title: "パスワード再設定",
         headerTintColor: COLORS.BASE_MUSCLEW,

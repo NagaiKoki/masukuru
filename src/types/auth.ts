@@ -1,11 +1,14 @@
 export interface AuthState {
   isLoading: boolean
   error: string
-  isLogggedIn: boolean
+  userStatus: UserStatusType
 }
 
 export type EmailSignInType = {
   email: string
   password: string
-  isLogin: boolean 
+  method: AuthMethodType
 }
+
+export type UserStatusType = 'unauthorized' | 'authorized' | 'tutorial' | ''
+export type AuthMethodType = 'signup' | 'signin'
