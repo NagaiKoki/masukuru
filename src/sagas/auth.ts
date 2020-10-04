@@ -5,14 +5,15 @@ import {
   requestFetchEmailSignIn,
   successFetchEmailSignIn,
   failureFetchEmailSignIn,
+  requestFetchLogout,
+  successFetchLogout,
+  failureFetchLogout
 } from '../slice/auth'
 // import apis
-import { requestEmailSingIn } from '../apis/auth/index'
+import { requestEmailSingIn, requestLogout } from '../apis/auth/index'
 // import types
 import { EmailSignInType } from '../types/auth'
 import { ResponseType } from '../types'
-// import config
-import firebase from '../config/firebase'
 
 // サインアップ or サインイン
 function* runRequestFetchEmailSignIn(action: PayloadAction<EmailSignInType>) {
@@ -32,6 +33,24 @@ function* handleRequestFetchEmailSignIn() {
   yield takeEvery(requestFetchEmailSignIn.type, runRequestFetchEmailSignIn)
 }
 
+// ログアウト
+function* runRequestFetchLogout() {
+  const { payload, error }: ResponseType<string> = yield call(
+    requestLogout
+  )
+  
+  if (payload && !error) {
+    yield put(successFetchLogout())
+  } else if (error) {
+    yield put(failureFetchLogout(error))
+  }
+}
+
+function* handleRequestFetchLogout() {
+  yield takeEvery(requestFetchLogout.type, runRequestFetchLogout)
+}
+
 export default function* authSaga() {
   yield fork(handleRequestFetchEmailSignIn)
+  yield fork(handleRequestFetchLogout)
 }

@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 
 const LoadingContainer = styled.View`
   flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND}
+  background-color: ${COLORS.BASE_BACKGROUND};
 `
 
 export default Navigator;

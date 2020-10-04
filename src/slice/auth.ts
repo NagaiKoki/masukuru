@@ -37,6 +37,26 @@ const authSlice = createSlice({
         isLoading: false
       }
     },
+    requestFetchLogout: (state) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successFetchLogout: (state) => {
+      return {
+        ...state,
+        isLoading: false,
+        userStatus: 'unauthorized'
+      }
+    },
+    failureFetchLogout: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload
+      }
+    },
     setUserStatus: (state, action: PayloadAction<UserStatusType>) => {
       return {
         ...state,
@@ -58,6 +78,9 @@ export const {
   requestFetchEmailSignIn,
   successFetchEmailSignIn,
   failureFetchEmailSignIn,
+  requestFetchLogout,
+  successFetchLogout,
+  failureFetchLogout,
   setUserStatus,
   clearError
 } = authSlice.actions

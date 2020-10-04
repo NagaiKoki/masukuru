@@ -14,6 +14,7 @@ import {
 // import types
 import { EmailSignInType } from '../../types/auth'
 
+// メール認証ログイン or signup
 export const requestEmailSingIn = async (args: EmailSignInType) => {
   const { email, password, method } = args
   return await method === 'signin' ? requestEmailLogin(email, password) : requestEmailSignUp(email, password)
@@ -91,13 +92,13 @@ const requestEmailSignUp = async (email: string, password: string) => {
 }
 
 // ログアウト
-export const logout = async () => {
+export const requestLogout = async () => {
   try {
     await firebase.auth().signOut()
-    return;
-  } catch { (error) => {
-    alert(error)
-  }}
+    return { payload: 'success' }
+  } catch(error) {
+    return { error }
+  }
 };
 
 // google 認証
