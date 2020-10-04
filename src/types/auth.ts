@@ -7,4 +7,5 @@ export interface AuthState {
 export type EmailSignInType = {
   email: string
   password: string
+  isLogin: boolean 
 }

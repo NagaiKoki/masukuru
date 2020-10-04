@@ -6,7 +6,7 @@ import HomeScreen from '../../screens/Private/Home';
 import SignupScreen from '../../screens/Public/SignUp';
 import SignupHomeScreen from '../../screens/Public/SignUp/SignupHome';
 import SignupLoadingScreen from '../../screens/Public/SignUp/SignupLoading';
-import LoginScreen from '../../screens/Public/Login/Login';
+import LoginScreen from '../../screens/Public/Login/index';
 import LoginLoadingScreen from '../../screens/Public/Login/LoginLoading';
 import ResetPasswordScreen from '../../screens/Public/Login/ResetPassword';
 

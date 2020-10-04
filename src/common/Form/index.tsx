@@ -7,11 +7,12 @@ interface FormProps {
   placeholder?: string
   maxLength?: number
   value?: string
+  secureTextEntry?: boolean
   onChange: (text: string) => void
 }
 
 const Form = (props: FormProps) => {
-  const { placeholder, maxLength, value, onChange } = props
+  const { placeholder, maxLength, secureTextEntry, value, onChange } = props
 
   return (
     <TextInput
@@ -20,6 +21,7 @@ const Form = (props: FormProps) => {
       autoCorrect={false}
       maxLength={maxLength}
       value={value}
+      secureTextEntry={!!secureTextEntry}
       onChangeText={text => onChange(text)}
     />
   )

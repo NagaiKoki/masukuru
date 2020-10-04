@@ -8,8 +8,16 @@ import {
   SIGNUP_ERROR_CODE, 
   SIGNUP_ERROR_MESSAGE 
 } from '../../constants/errorMessage';
+// import types
+import { EmailSignInType } from '../../types/auth'
 
-export const requestLogin = async (email: string, password: string) => {
+export const requestEmailSingIn = async (args: EmailSignInType) => {
+  const { email, password, isLogin } = args
+  return await isLogin ? requestLogin(email, password) : requestLogin(email, password)
+}
+
+const requestLogin = async (email: string, password: string) => {
+  console.log(email)
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
       Analytics.getUserId(user.user.uid);
