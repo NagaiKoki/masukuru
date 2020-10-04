@@ -1,3 +1,6 @@
-import SignupScreen from './Signup';
+import React from 'react'
+import styled from 'styled-components'
 
-export default SignupScreen;
+const SignupScreen = ({ navigation }) => {
+  
+}

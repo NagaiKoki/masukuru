@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 // import components
-import Form from '../../../common/Form'
+import EmailAuthForm from '../../../components/Auth/EmailAuthForm'
 import Toaster from '../../../components/Toaster'
 // import selectors
 import { useAuthSelectors } from '../../../selectors/auth'
@@ -33,23 +33,12 @@ const LoginScreen = ({ navigation }) => {
     <Container>
       <Wrapper>
         <Toaster message={error} onDismiss={handleErrorClear} />
-        <FormWrapper>
-          <FormLabel>メールアドレス</FormLabel>
-          <Form
-            placeholder="メールアドレスを入力する"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </FormWrapper>
-        <FormWrapper>
-          <FormLabel>パスワード</FormLabel>
-          <Form 
-            placeholder="パスワードを入力する"
-            value={password}
-            secureTextEntry={true}
-            onChange={handlePasswordChange}
-          />
-        </FormWrapper>
+        <EmailAuthForm 
+          email={email}
+          password={password}
+          onEmailChange={handleEmailChange}
+          onPasswordChange={handlePasswordChange}
+        />
         <PasswordResetBtn block onPress={ () => navigation.navigate('ResetPassword') }>
           <PasswordResetText>パスワードをお忘れですか？</PasswordResetText>
         </PasswordResetBtn>

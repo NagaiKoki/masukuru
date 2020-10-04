@@ -3,11 +3,10 @@ import { View } from 'react-native';
 import { COLORS } from '../../constants/Styles';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/Private/Home';
-import SignupScreen from '../../screens/Public/SignUp';
+import SignupScreen from '../../screens/Public/SignUp/Signup';
 import SignupHomeScreen from '../../screens/Public/SignUp/SignupHome';
 import SignupLoadingScreen from '../../screens/Public/SignUp/SignupLoading';
 import LoginScreen from '../../screens/Public/Login/index';
-import LoginLoadingScreen from '../../screens/Public/Login/LoginLoading';
 import ResetPasswordScreen from '../../screens/Public/Login/ResetPassword';
 
 const AuthentificationNavigator = ({ route }) => {
@@ -66,10 +65,6 @@ const AuthentificationNavigator = ({ route }) => {
         headerTintColor: COLORS.BASE_MUSCLEW,
       }}
     />
-
-
-    <AuthenticateStack.Screen name="LoginLoading" component={LoginLoadingScreen} />
-
   </AuthenticateStack.Navigator>
 
   );
