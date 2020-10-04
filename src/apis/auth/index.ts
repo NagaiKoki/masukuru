@@ -1,7 +1,11 @@
 import { Alert } from 'react-native'
+import * as Google from 'expo-google-app-auth';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import Constants from 'expo-constants'
 import firebase, { db } from '../../config/firebase'
 import Analytics from '../../config/amplitude'
 import {
+  COMMON_ERROR_MESSSAGE,
   LOGIN_ERROR_CODE, 
   LOGIN_ERROR_MESSAGE, 
   SIGNUP_ERROR_CODE, 
@@ -81,5 +85,102 @@ const requestEmailSignUp = async (email: string, password: string) => {
           error: SIGNUP_ERROR_MESSAGE.DEFAULT_MESSAGE
         };
     };
+  }
+}
+
+export const logout = async () => {
+  try {
+    await firebase.auth().signOut()
+    return;
+  } catch { (error) => {
+    alert(error)
+  }}
+};
+
+// google 認証
+export const GoogleLogin = (route) => {
+  try {
+    Google.logInAsync({
+      behavior: 'web',
+      iosClientId: Constants.manifest.extra.googleConfig.clientId,
+      iosStandaloneAppClientId: Constants.manifest.extra.googleConfig.strageClientId,
+      androidClientId: Constants.manifest.extra.googleConfig.androidClientId,
+      androidStandaloneAppClientId: Constants.manifest.extra.googleConfig.androidStrageClientId,
+      scopes: ['profile', 'email']
+    }).then((result) => {
+      if (result.type === 'success') {
+        const { idToken, accessToken, user } = result;
+        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        firebase.auth().signInWithCredential(credential).then( async () => {
+          const currentUser = firebase.auth().currentUser
+          Analytics.getUserId(currentUser.uid);
+          Analytics.track('login')
+          // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
+          db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
+            if (snapshot.empty) {
+              // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
+              await currentUser.updateProfile({ displayName: null })
+              route.params.setIsChange(true)
+              await db.collection('users').doc(currentUser.uid).set({
+                uid: currentUser.uid,
+                email: currentUser.email
+              })
+              route.params.setIsChange(false)
+            }
+          })
+        })
+      }
+    })
+  } catch (error) {
+    Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+  }
+}
+
+// apple認証
+export const AppleLogin = (route) => {
+  const nonceGen = (length) => {
+    let result = ''
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let charactersLength = characters.length
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    }
+    return result
+  }
+  const nonceString = nonceGen(32)
+  try {
+    AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL
+      ],
+      state: nonceString
+    }).then(result => {
+      let provider = new firebase.auth.OAuthProvider("apple.com");
+      let credential = provider.credential({
+        idToken: result.identityToken,
+        rawNonce: nonceString
+      });
+      firebase.auth().signInWithCredential(credential).then( async () => {
+        const currentUser = firebase.auth().currentUser
+        Analytics.getUserId(currentUser.uid);
+        Analytics.track('login')
+        // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
+        db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
+          if (snapshot.empty) {
+            // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
+            await currentUser.updateProfile({ displayName: null })
+            route.params.setIsChange(true)
+            await db.collection('users').doc(currentUser.uid).set({
+              uid: currentUser.uid,
+              email: currentUser.email
+            })
+            route.params.setIsChange(false)
+          }
+        })
+      })
+    })
+  } catch {
+    Alert.alert(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
   }
 }
