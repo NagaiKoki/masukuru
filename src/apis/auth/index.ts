@@ -1,8 +1,7 @@
 import { Alert } from 'react-native'
-import firebase from '../../config/firebase'
+import firebase, { db } from '../../config/firebase'
 import Analytics from '../../config/amplitude'
-import { 
-  COMMON_ERROR_MESSSAGE, 
+import {
   LOGIN_ERROR_CODE, 
   LOGIN_ERROR_MESSAGE, 
   SIGNUP_ERROR_CODE, 
@@ -13,11 +12,10 @@ import { EmailSignInType } from '../../types/auth'
 
 export const requestEmailSingIn = async (args: EmailSignInType) => {
   const { email, password, isLogin } = args
-  return await isLogin ? requestLogin(email, password) : requestLogin(email, password)
+  return await isLogin ? requestEmailLogin(email, password) : requestEmailSignUp(email, password)
 }
 
-const requestLogin = async (email: string, password: string) => {
-  console.log(email)
+const requestEmailLogin = async (email: string, password: string) => {
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
       Analytics.getUserId(user.user.uid);
@@ -47,5 +45,41 @@ const requestLogin = async (email: string, password: string) => {
           error: LOGIN_ERROR_MESSAGE.DEFAULT_MESSAGE
         }
     }
+  }
+}
+
+const requestEmailSignUp = async (email: string, password: string) => {
+  try {
+    const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    if (response.user.uid) {
+      const uid = response.user.uid
+      await db.collection('users').doc(uid).set({ uid: response.user.uid })
+      Analytics.getUserId(uid);
+      Analytics.track('email register')
+    } 
+    return { payload: 'success' }
+  } catch(error) {
+    switch(error.code) {
+      case SIGNUP_ERROR_CODE.EMAIL_DUPLICATED:
+        return {
+          error: SIGNUP_ERROR_MESSAGE.EMAIL_DUPLICATED
+        }
+      case SIGNUP_ERROR_CODE.INVALID_EMAIL:
+        return {
+          error: SIGNUP_ERROR_MESSAGE.INVALID_EMAIL
+        }
+      case SIGNUP_ERROR_CODE.TOO_MANY_REQUEST:
+        return {
+          error: SIGNUP_ERROR_MESSAGE.TOO_MANY_REQUEST
+        };
+      case SIGNUP_ERROR_CODE.TOO_WEAK_PASSWORD:
+        return {
+          error: SIGNUP_ERROR_MESSAGE.TOO_WEAK_PASSWORD
+        };
+      default: 
+        return {
+          error: SIGNUP_ERROR_MESSAGE.DEFAULT_MESSAGE
+        };
+    };
   }
 }

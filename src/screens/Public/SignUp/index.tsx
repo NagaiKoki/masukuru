@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Linking } from 'expo';
+import Constants from 'expo-constants'
 import styled from 'styled-components'
 // import components
 import EmailAuthForm from '../../../components/Auth/EmailAuthForm'
@@ -8,7 +10,7 @@ import { useAuthSelectors } from '../../../selectors/auth'
 // import constants
 import { COLORS } from '../../../constants/Styles'
 
-const LoginScreen = ({ navigation }) => {
+const SignupScreen = () => {
   const { error, requestFetchEmailSignIn, clearError } = useAuthSelectors()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -26,9 +28,22 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const handleSubmit = () => {
-    requestFetchEmailSignIn({ email, password, isLogin: true })
+    requestFetchEmailSignIn({ email, password, isLogin: false })
   }
 
+  const handleLink = () => {
+    Linking.openURL(Constants.manifest.extra.policyUrl)
+  }
+
+  const disabled = !email || !password || password.length < 6
+
+  const renderPrivacy =
+    <PrivacyWrapper>
+      <PrivacyPolicySub>利用を開始することで、</PrivacyPolicySub>
+      <PrivacyPolicyLink onPress={handleLink}>プライバシーポリシー</PrivacyPolicyLink>
+      <PrivacyPolicySub>に同意することとします。</PrivacyPolicySub>
+    </PrivacyWrapper>
+    
   return (
     <Container>
       <Wrapper>
@@ -36,22 +51,20 @@ const LoginScreen = ({ navigation }) => {
         <EmailAuthForm 
           email={email}
           password={password}
-          type="login"
+          type="signup"
           onEmailChange={handleEmailChange}
           onPasswordChange={handlePasswordChange}
         />
-        <PasswordResetBtn block onPress={ () => navigation.navigate('ResetPassword') }>
-          <PasswordResetText>パスワードをお忘れですか？</PasswordResetText>
-        </PasswordResetBtn>
-        <SubmitBtn onPress={handleSubmit} disabled={!email || !password}>
-          <SubmitText>ログインする</SubmitText>
+        {renderPrivacy}
+        <SubmitBtn onPress={handleSubmit} disabled={disabled}>
+          <SubmitText>登録する</SubmitText>
         </SubmitBtn>
       </Wrapper>
     </Container>
   )
 }
 
-export default LoginScreen
+export default SignupScreen
 
 const Container = styled.View`
   flex: 1;
@@ -68,22 +81,18 @@ const Wrapper = styled.View`
   background-color: ${COLORS.BASE_WHITE};
 `
 
-const FormLabel = styled.Text`
+const PrivacyWrapper = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  width: 100%;
-  margin: 5px auto;
-  margin-top: 10px;
-  font-weight: bold;
+  padding-top: 20px;
 `
 
-const PasswordResetBtn = styled.TouchableOpacity``
+const PrivacyPolicySub = styled.Text`
+  color: ${COLORS.SUB_BLACK};
+`
 
-const PasswordResetText = styled.Text`
+const PrivacyPolicyLink = styled.Text`
   text-decoration: underline;
-  text-align: center;
-  padding-top: 10px;
-  color: ${COLORS.BASE_BLACK};
-  font-size: 14px;
+  color: ${COLORS.SUB_BLACK};
 `
 
 const SubmitBtn = styled.TouchableOpacity<{ disabled: boolean }>`
@@ -92,8 +101,8 @@ const SubmitBtn = styled.TouchableOpacity<{ disabled: boolean }>`
   background-color: ${COLORS.BASE_MUSCLEW};
   padding: 15px 0;
   border-radius: 60px;
-  margin-top: 40px;
-  opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
+  margin-top: 30px;
+  opacity: ${ props => ( props.disabled ? 0.5 : 1 ) };
 `
 
 const SubmitText = styled.Text`

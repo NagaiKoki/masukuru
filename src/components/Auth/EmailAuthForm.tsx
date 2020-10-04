@@ -8,12 +8,13 @@ import { COLORS } from '../../constants/Styles'
 type PropsType = {
   email: string
   password: string
+  type: 'signup' | 'login'
   onEmailChange: (value: string) => void
   onPasswordChange: (value: string) => void
 }
 
 const EmailAuthForm = (props: PropsType) => {
-  const { email, password, onEmailChange, onPasswordChange } = props
+  const { email, password, type, onEmailChange, onPasswordChange } = props
 
   return (
     <Container>
@@ -33,6 +34,7 @@ const EmailAuthForm = (props: PropsType) => {
           secureTextEntry={true}
           onChange={onPasswordChange}
         />
+        { type === 'signup' && <FormSubText>※ 6文字以上</FormSubText> }
       </FormWrapper>
     </Container>
   )
@@ -50,4 +52,10 @@ const FormLabel = styled.Text`
   margin: 5px auto;
   margin-top: 10px;
   font-weight: bold;
+`
+
+const FormSubText = styled.Text`
+  color: ${COLORS.SUB_BLACK};
+  width: 100%;
+  margin: 5px auto;
 `
