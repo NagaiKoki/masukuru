@@ -36,6 +36,6 @@ const EmojiModal = (props: PropsType) => {
 export default EmojiModal
 
 const Container = styled.View`
-  height: 200px;
+  height: 500px;
   background: ${COLORS.BASE_WHITE};
 `
