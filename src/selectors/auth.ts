@@ -6,6 +6,7 @@ import { RootState } from '../reducers'
 // import slices
 import { 
   requestFetchEmailSignIn,
+  requestFetchLogout,
   setUserStatus,
   clearError
 } from '../slice/auth'
@@ -19,6 +20,7 @@ export const useAuthSelectors = () => {
   } = useSelector<RootState, AuthState>(state => state.auth, shallowEqual)
 
   const _requestFetchEmailSignIn = useCallback((args: EmailSignInType) => dispatch(requestFetchEmailSignIn(args)), [dispatch])
+  const _requestFetchLogout = useCallback(() => dispatch(requestFetchLogout()), [dispatch])
   const _clearError = useCallback(() => dispatch(clearError()), [dispatch])
   const _setUserStatus = useCallback((status: UserStatusType) => dispatch(setUserStatus(status)), [dispatch])
 
@@ -27,6 +29,7 @@ export const useAuthSelectors = () => {
     error,
     userStatus,
     requestFetchEmailSignIn: _requestFetchEmailSignIn,
+    requestFetchLogout: _requestFetchLogout,
     setUserStatus: _setUserStatus,
     clearError: _clearError
   } 

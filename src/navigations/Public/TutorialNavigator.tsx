@@ -66,7 +66,6 @@ const TutorialNavigator = ({ route }) => {
       <TotorialStack.Screen
         name="TutorialGroupMake"
         component={TutorialGroupMakeScreen}
-        initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false,
           headerShown: false,
@@ -78,7 +77,6 @@ const TutorialNavigator = ({ route }) => {
       <TotorialStack.Screen
         name="TutorialUsage"
         component={TutorialUsageScreen}
-        initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false,
           gestureEnabled: false,

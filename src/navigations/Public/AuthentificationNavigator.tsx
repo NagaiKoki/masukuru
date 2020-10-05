@@ -8,7 +8,7 @@ import SignupHomeScreen from '../../screens/Public/SignUp/SignupHome';
 import LoginScreen from '../../screens/Public/Login/index';
 import ResetPasswordScreen from '../../screens/Public/Login/ResetPassword';
 
-const AuthentificationNavigator = ({ route }) => {
+const AuthentificationNavigator = () => {
   const AuthenticateStack = createStackNavigator();
 
   return (    

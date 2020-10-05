@@ -21,7 +21,7 @@ import firebase from '../config/firebase'
 import { COLORS } from '../constants/Styles';
 
 const RootNavigator = () => {
-  const { userStatus, setUserStatus } = useAuthSelectors()
+  const { userStatus, isLoading, setUserStatus } = useAuthSelectors()
   const [isMouted, setIsMouted] = useState(false)
   const status = useUserStatus()
   const Stack = createStackNavigator();

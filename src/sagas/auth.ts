@@ -38,7 +38,7 @@ function* runRequestFetchLogout() {
   const { payload, error }: ResponseType<string> = yield call(
     requestLogout
   )
-  
+
   if (payload && !error) {
     yield put(successFetchLogout())
   } else if (error) {
