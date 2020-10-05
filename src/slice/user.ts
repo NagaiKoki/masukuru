@@ -3,7 +3,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UserState, UserType } from '../types/User'
 
 const initialState: UserState = {
-  currentUser: null,
+  currentUser: {
+    uid: '',
+    name: '',
+    sex: '',
+    age: '',
+    height: '',
+    imageUrl: '',
+    weight: '',
+    expoNotificationToken: '',
+    isReviewed: false,
+    isCommentPush: false,
+    isRecordPostPush: false,
+    isApplausedReviewed: false,
+  },
   error: ''
 }
 
@@ -27,6 +40,27 @@ const userSlice = createSlice({
         ...state,
         error: action.payload
       }
+    },
+    requestUpdateUser: (state, action: PayloadAction<UserType>) => {
+      return {
+        ...state
+      }
+    },
+    successUpdateUser: (state, action: PayloadAction<UserType>) => {
+      const currentUser = { 
+        ...state.currentUser,
+        ...action.payload
+      }
+      return {
+        ...state,
+        currentUser
+      }
+    },
+    failureUpdateUser: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
     }
   }
 })
@@ -36,5 +70,8 @@ export default userSlice
 export const {
   requestFetchCurrentUserData,
   successFetchCurrentUserData,
-  failureFetchCurrentUserData
+  failureFetchCurrentUserData,
+  requestUpdateUser,
+  successUpdateUser,
+  failureUpdateUser,
 } = userSlice.actions

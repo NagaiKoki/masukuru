@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native'
-import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
-import TutorialUserNameScreen from '../../screens/Public/Tutorial/TutorialUserName';
+import { createStackNavigator } from '@react-navigation/stack';
+import TutorialUserNameScreen from '../../screens/Public/Tutorial/UserName';
 import TutorialBodyInfoScreen from '../../screens/Public/Tutorial/TutorialBodyInfo';
 import TutorialUserImageScreen from '../../screens/Public/Tutorial/TutorialUserImage';
 import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/TutorialGroupMake';
