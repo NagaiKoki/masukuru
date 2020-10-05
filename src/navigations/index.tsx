@@ -1,125 +1,99 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import AuthenticationNavigator from './Public/AuthentificationNavigator';
-import TutorialNavigator from './Public/TutorialNavigator'
-import MainTabNavigator from './Private/TabNavigators/MainTabNavigator';
 import styled from 'styled-components';
-import { ActivityIndicator, StyleSheet, View,  Text } from 'react-native'
+// import selectors
+import { useAuthSelectors } from '../selectors/auth'
+// import utils
+import { useUserStatus } from '../utilities/hooks/useUserStatus'
+// import navigators
+import MainTabNavigator from './Private/TabNavigators/MainTabNavigator';
+import TutorialNavigator from './Public/TutorialNavigator'
+import AuthenticationNavigator from './Public/AuthentificationNavigator';
+// import screens
 import DrawerContent from '../screens/Private/Drawers/DrawerContents';
-import firebase, { db } from '../config/firebase';
+// import components
+import Loading from '../components/Loading'
+// import confing
+import firebase from '../config/firebase'
+// import constants
 import { COLORS } from '../constants/Styles';
 
-const Navigator = (props: any) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [currentUser, setUser] = useState(null);
-  const [isChange, setIsChange] = useState(false)
+const RootNavigator = () => {
+  const { userStatus, setUserStatus } = useAuthSelectors()
+  const [isMouted, setIsMouted] = useState(false)
+  const status = useUserStatus()
+  const Stack = createStackNavigator();
+  const Drawer = createDrawerNavigator();
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setUser(user)
-        setIsChange(false)
-        setIsLoading(false);
-      } else {
-        setUser(null)
-        setIsLoading(false);
-      }
-    })
-  }, [])
+    setUserStatus(status)
+    setIsMouted(true)
+  }, [status])
 
-  if (isLoading) {
+  if (!isMouted || !status) {
     return (
       <LoadingContainer>
-        <ActivityIndicator size='large' style={[ styles.loading ]} />
+        <Loading size="small" />
       </LoadingContainer>
     )
   }
 
-  const Stack = createStackNavigator();
-  const Drawer = createDrawerNavigator();
-
-  const defaultSignedInScreen = () => {
-    return (
-      <Drawer.Screen 
-        name="MainTabNavigator" 
-        component={MainTabNavigator}
-     />
-    )
-  }
-
-  const defaultTutorialScreen = () => {
-    return (
-      <Stack.Screen
-        name="Tutorial"
-        component={TutorialNavigator}
-        initialParams={{ setIsChange: setIsChange }}
-        options={{
-          headerShown: false
-        }}
-      />
-    )
-  }
-
-  const defaultSignedOutScreen = () => {
-    return (
-      <Stack.Screen 
-      name="AuthenticationNavigator" 
-      initialParams={{ setIsChange: setIsChange }}
-      component={AuthenticationNavigator}
-      options={{
-        headerShown: false
-      }}
-    />
-    )
-  }
-
-  const RootStackNavigator = () => {
-    if (currentUser && currentUser.displayName) {
-      return (
-        <Drawer.Navigator 
-          drawerStyle={{ width: 330 }} 
-          drawerContent={ (props) => <DrawerContent user={currentUser} {...props}/>}
-        >
-          {defaultSignedInScreen()}
-        </Drawer.Navigator>
-        
-      )
-    } else if (currentUser && !currentUser.displayName) {
-      return (
-        <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
-          {defaultTutorialScreen()}
-        </Stack.Navigator>
-      )
-    } else {
-      return (
-        <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
-          {defaultSignedOutScreen()}
-        </Stack.Navigator>
-      )
+  const renderNavigator = () => {
+    switch (userStatus) {
+      case 'unauthorized': {
+        return (
+          <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+            <Stack.Screen
+              name='AuthenticationNavigator'
+              component={AuthenticationNavigator}
+              options={{
+                headerShown: false
+              }}
+            />
+          </Stack.Navigator>
+        )
+      }
+      case 'tutorial': {
+        return (
+          <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+            <Stack.Screen 
+              name="Tutorial"
+              component={TutorialNavigator}
+              options={{
+                headerShown: false
+              }}
+            />
+          </Stack.Navigator>
+        )
+      }
+      case 'authorized': {
+        return (
+          <Drawer.Navigator 
+            drawerStyle={{ width: 330 }} 
+            drawerContent={ (props) => <DrawerContent user={firebase.auth().currentUser} {...props}/>}
+          >
+            <Drawer.Screen 
+              name="MainTabNavigator"
+              component={MainTabNavigator}
+            />
+          </Drawer.Navigator>
+        )
+      }
     }
   }
 
   return (
     <NavigationContainer>
-      {RootStackNavigator()}
+      {renderNavigator()}
     </NavigationContainer>
   )
-};
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.BASE_BACKGROUND
-  }
-})
+}
 
 const LoadingContainer = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
 `
 
-export default Navigator;
+export default RootNavigator
