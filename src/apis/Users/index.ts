@@ -51,8 +51,31 @@ export const requestUpdateUser = async (name: string, imageUrl: string, user: fi
         })
       })
     })
-    batch.commit()
+    await batch.commit()
 
+    return { payload: 'success' }
+  } catch(error) {
+    return { error }
+  }
+}
+
+export const requestFetchUpdateUser = async (currentUser: UserType) => {
+  const firebaseUser = firebase.auth().currentUser
+  const userRef = db.collection('users').doc(firebaseUser.uid)
+  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', firebaseUser.uid)
+  const { name, imageUrl } = currentUser
+  let batch = db.batch()
+
+  try {
+    await firebaseUser.updateProfile({ displayName: name, photoURL: imageUrl })
+    batch.update(userRef, { ...currentUser })
+    await groupUserRef.get().then(snap => {
+      snap.forEach(doc => {
+        batch.update(doc.ref, { ...currentUser })
+      })
+    })
+
+    await batch.commit()
     return { payload: 'success' }
   } catch(error) {
     return { error }

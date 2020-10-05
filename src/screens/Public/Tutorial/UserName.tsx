@@ -15,7 +15,7 @@ const TutorialUserName = ({ navigation }) => {
   const { requestFetchCurrentUserData, requestUpdateUser, currentUser } = useUserSelectors()
   const { name } = currentUser
   const [userName, setUserName] = useState(name)
-
+  
   useEffect(() => {
     requestFetchCurrentUserData(firebase.auth().currentUser.uid)
   }, [])
@@ -49,7 +49,6 @@ const TutorialUserName = ({ navigation }) => {
         </FormWrapper>
         <Button 
           text='次へ'
-          isRound={true}
           fontSize={16}
           bold={true}
           disabled={disabled}

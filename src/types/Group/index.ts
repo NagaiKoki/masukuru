@@ -13,6 +13,8 @@ import {
 // state
 export interface GroupState {
   currentGroupid: string
+  isLoading: boolean
+  error: string
 }
 
 // 所属グループIDの設定
