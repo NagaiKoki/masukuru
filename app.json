@@ -46,7 +46,8 @@
           "apiKey": "AIzaSyCKEcOxkSR43djmYtcNQ8yhdpKtXBFlkxA",
           "certificateHash": "01EFAFF5C9F96CC845BE339E1EF855ABCD7BC01C"
         }
-      }
+      },
+      "versionCode": "2"
     },
     "extra": {
       "policyUrl": "https://nagaikoki.github.io/masukuru_privacy/",
