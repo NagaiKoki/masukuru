@@ -106,23 +106,27 @@ export const requestPatchJoinGroup = async (code: string, currentUser: UserType)
   }
 }
 
+// グループに所属できるかのチェック処理
 const requestCheckEnableJoinGroup = async (groupId: string) => {
   const groupUserRef = db.collection('groups').doc(groupId).collection('groupUsers')
   const collectionGroupUserRef = db.collectionGroup('groupUsers').where('uid', '==', firebase.auth().currentUser.uid)
 
   try {
+    // 招待先のグループが11人以上の場合
     await groupUserRef.get().then(snap => {
       if (snap.size > 11) {
         throw Error(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
       }
     })
 
+    // 現在所属しているグループが5つ以上の場合
     await collectionGroupUserRef.get().then(snap => {
-      if (snap.size > 5) {
+      if (snap.size >= 5) {
         throw Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
       }
     })
 
+    // すでに招待コードのグループに所属している場合
     await groupUserRef.get().then(snap => {
       snap.forEach(doc => {
         const data = doc.data() as GroupUserType
