@@ -8,24 +8,20 @@ import { COLORS } from '../../constants/Styles';
 import NotificationBatchIcon from '../../containers/Private/notifications/batch'
 // import navigators
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainNavigator from '.';
+import HomeNavigator from './Home';
 import ChartNavigator from './Chart'
 import NotificationNavigator from './Notification';
 import MyPageNavigator from './MyPage';
 // import actions
 import { requestFetchNotReadNotificationNumber } from '../../actions/notifications'
-// import selectors
-import { useGroupSelector } from '../../selectors/group'
 
+const Tab = createBottomTabNavigator();
 const MainTabNavigator = () => {
-  const dispatch = useDispatch()
-  const { currentGroupid, setCurrentGroupId } = useGroupSelector()
-  const Tab = createBottomTabNavigator();
+  const dispatch = useDispatch()  
 
   useFocusEffect(
     useCallback(() => {
       dispatch(requestFetchNotReadNotificationNumber())
-      setCurrentGroupId()
     }, [])
   )
 
@@ -60,7 +56,7 @@ const MainTabNavigator = () => {
     >
       <Tab.Screen 
         name='ホーム' 
-        component={MainNavigator}
+        component={HomeNavigator}
         options={{
           tabBarLabel: '' 
         }}

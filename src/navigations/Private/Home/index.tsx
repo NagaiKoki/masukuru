@@ -1,8 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import firebase, { db } from '../../../config/firebase'
 import { COLORS } from '../../../constants/Styles'
 // import components
 import Loading from '../../../components/Loading'
@@ -17,41 +15,21 @@ import HomeNavigator from './Timeline'
 // import container
 import UserPageContainer from '../../../containers/Private/users/userPage'
 import RecordShowScreen from '../../../screens/Private/Records/Show'
+// import selectors
+import { useGroupSelector } from '../../../selectors/group'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
-  const [currentGroupId, setCurrentGroupId] = useState('');
-  const [loading, setloading] = useState(true)
+  const { currentGroupId, setCurrentGroupId } = useGroupSelector()
 
-  useFocusEffect(
-    useCallback(() => {
-      firebase.auth().onAuthStateChanged( async user => {
-        if (user) {
-          await db.collectionGroup("groupUsers").where('uid', '==', user.uid).get()
-          .then(function(querySnapshot) {
-            querySnapshot.forEach(doc => {
-              // TODO: currentGroupIdをcurrentGroupドキュメントに含めるにあたり、カラムない場合は所属するグループが一つしかないようにする
-              if (doc.data().currentGroupId) {
-                setCurrentGroupId(doc.data().currentGroupId);
-              } else {
-                setCurrentGroupId(doc.ref.parent.parent.id);
-              }
-            });
-          })
-          setloading(false);
-        }
-      })
-    }, [])
-  )
+  useEffect(() => {
+    setCurrentGroupId()
+  }, [])
 
-  if (loading || currentGroupId === "") {
-    return (
-      <LoadingContainer>
-        <Loading size="small" />
-      </LoadingContainer>
-    )
+  if (!currentGroupId) {
+    return <Loading size="small" />
   }
-  
+
   const getHeaderUserTitle = (route) => {
     return route.params.user.name
   }
@@ -61,7 +39,6 @@ const MainNavigator = () => {
       <MainStack.Screen 
         name="main" 
         component={HomeNavigator}
-        initialParams={{ currentGroupId: currentGroupId }}
         options={{
           headerShown: false
         }}
@@ -143,7 +120,7 @@ const MainNavigator = () => {
       <MainStack.Screen
         name="settingPush"
         component={SettingPushScreen}
-        options={({}) => ({
+        options={() => ({
           headerBackTitleVisible: false,
           headerTitle: '通知',
           headerStyle: {
@@ -155,10 +132,5 @@ const MainNavigator = () => {
    </MainStack.Navigator>
   );
 }
-
-const LoadingContainer = styled.View`
-  flex: 1;
-  background-color: ${COLORS.BASE_BACKGROUND};
-`
 
 export default MainNavigator;

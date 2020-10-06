@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { GroupState, GroupType } from '../types/Group'
+import { GroupState, GroupType, GroupUserType } from '../types/Group'
 
 const initialState: GroupState = {
-  currentGroupid: '',
+  currentGroupId: '',
+  currentGroupUsers: [],
   isLoading: false,
   error: ''
 }
@@ -22,7 +23,7 @@ const groupSlice = createSlice({
       return {
         ...state,
         isLoading: false,
-        currentGroupid: action.payload
+        currentGroupId: action.payload
       }
     },
     failureJoinGroup: (state, action: PayloadAction<string>) => {
@@ -43,7 +44,7 @@ const groupSlice = createSlice({
       return {
         ...state,
         isLoading: false,
-        currentGroupid: id
+        currentGroupId: id
       }
     },
     failureCreateGroup: (state, action: PayloadAction<string>) => {
@@ -63,13 +64,30 @@ const groupSlice = createSlice({
       return {
         ...state,
         isLoading: false,
-        currentGroupid: action.payload
+        currentGroupId: action.payload
       }
     },
     failureSetCurrentGroupId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
         isLoading: false,
+        error: action.payload
+      }
+    },
+    requestFetchCurrentGroupUsers: (state) => {
+      return {
+        ...state
+      }
+    },
+    successFetchCurrentGroupUsers: (state, action: PayloadAction<GroupUserType[]>) => {
+      return {
+        ...state,
+        currentGroupUsers: action.payload
+      }
+    },
+    failureFetchCurrentGroupUsers: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
         error: action.payload
       }
     }
@@ -87,5 +105,8 @@ export const {
   failureCreateGroup,
   setCurrentGroupId,
   successSetCurrentGroupId,
-  failureSetCurrentGroupId
+  failureSetCurrentGroupId,
+  requestFetchCurrentGroupUsers,
+  successFetchCurrentGroupUsers,
+  failureFetchCurrentGroupUsers
 } = groupSlice.actions

@@ -10,7 +10,8 @@ import {
 
 // state
 export interface GroupState {
-  currentGroupid: string
+  currentGroupId: string
+  currentGroupUsers: GroupUserType[]
   isLoading: boolean
   error: string
 }

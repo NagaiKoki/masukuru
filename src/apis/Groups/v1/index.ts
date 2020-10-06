@@ -161,7 +161,7 @@ export const requestFetchCurrentGroupId = async () => {
       }
     })
     
-    return { payload: currentUserId }
+    return { payload: currentGroupId }
   } catch(error) {
     return { error: error.message }
   }

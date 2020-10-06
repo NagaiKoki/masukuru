@@ -8,17 +8,15 @@ import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 // import containers
 import HomeContainer from '../../../containers/Private/home'
 
-const HomeNavigator = ({ navigation, route }) => { 
+const HomeNavigator = ({ navigation }) => { 
   const HomeStack = createStackNavigator()
-  const { currentGroupId } = route.params
-  
+
   return (
     <HomeStack.Navigator initialRouteName="main" mode="modal">
       <HomeStack.Screen 
         name="mainContainer" 
         component={HomeContainer}
-        initialParams={{ currentGroupId: currentGroupId }}
-        options={({route}) => ({
+        options={() => ({
           headerLeft: () => (
             <Icon name="bars" 
                   size={24} 

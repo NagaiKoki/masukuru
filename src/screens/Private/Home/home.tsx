@@ -4,13 +4,14 @@ import * as Device from 'expo-device'
 import { useFocusEffect } from '@react-navigation/native';
 import { RefreshControl, ScrollView, Platform } from 'react-native';
 import styled from 'styled-components';
-import { COLORS } from '../../../constants/Styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+// import constants
+import { COLORS } from '../../../constants/Styles';
 // import components
 import UserImage from '../../../components/Image/userImage'
 import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
-import { getHeaderNav } from './headerNav'
+import { getHeaderNav } from '../../../components/Home/HeaderNav'
 import ApplauseModal from '../../../components/Applause'
 import Toaster from '../../../common/Toaster'
 import EmojiModal from '../../../components/Records/Reactions/Emoji/Modal/EmojiModal'
@@ -32,6 +33,7 @@ import Analytics from '../../../config/amplitude'
 // selectors
 import userSelectors from '../../../selectors/user'
 import { useUiSelector } from '../../../selectors/ui'
+import { useGroupSelector } from '../../../selectors/group';
 
 const HomeScreen = (props: HomeProps) => {
   const { navigation, route, records, actions } = props
@@ -45,12 +47,11 @@ const HomeScreen = (props: HomeProps) => {
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
   const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
   const { toastMessage } = useUiSelector()
+  const { currentGroupId } = useGroupSelector()
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)
   const [isHomeLoading, setIsHomeLoading] = useState(false)
-  const { params } = route;
-  const { currentGroupId } = params;
   const currentUserId = firebase.auth().currentUser.uid
 
   Notifications.setNotificationHandler({

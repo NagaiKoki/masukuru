@@ -13,7 +13,7 @@ import { GroupState } from '../types/Group'
 export const useGroupSelector = () => {
   const dispatch = useDispatch()
   const {  
-    currentGroupid,
+    currentGroupId,
     isLoading,
     error
   } = useSelector<RootState, GroupState>(state => state.groups)
@@ -23,7 +23,7 @@ export const useGroupSelector = () => {
   const _setCurrentGroupId = useCallback(() => dispatch(setCurrentGroupId()), [dispatch])
 
   return {
-    currentGroupid,
+    currentGroupId,
     isLoading,
     error,
     requestCreateGroup: _requestCreateGroup,

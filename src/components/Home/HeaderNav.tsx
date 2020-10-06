@@ -1,7 +1,7 @@
 import React from 'react'
-import { COLORS } from '../../../constants/Styles';
+import { COLORS } from '../../constants/Styles';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { db } from '../../../config/firebase'
+import { db } from '../../config/firebase'
 
 export const getHeaderNav= async (currentGroupId: string, navigation: any) => {
   let groupName;
