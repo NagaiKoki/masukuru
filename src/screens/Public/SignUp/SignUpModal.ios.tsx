@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
 import { COLORS } from '../../../constants/Styles';
 import { AppleLogin, GoogleLogin } from '../../../apis/auth'
-import Icon from 'react-native-vector-icons/AntDesign';
 
 interface SignUpModalProps {
   isSignUp: boolean

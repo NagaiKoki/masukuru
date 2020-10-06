@@ -6,6 +6,8 @@ import notificationSaga from './notification'
 import userSaga from './user'
 import suggestRecord from './suggestRecord'
 import ChartSaga from './chart'
+import AuthSaga from './auth'
+import groupSaga from './group'
 
 export default function* rootSaga() {
   yield fork(recordSaga)
@@ -13,6 +15,8 @@ export default function* rootSaga() {
   yield fork(userSaga)
   yield fork(suggestRecord)
   yield fork(ChartSaga)
+  yield fork(AuthSaga)
+  yield fork(groupSaga)
 }
 
 export const createLazily = (msec = 1000) => {

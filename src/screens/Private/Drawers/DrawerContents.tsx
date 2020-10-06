@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import { Alert } from 'react-native';
@@ -14,8 +15,10 @@ import Loading from '../../../components/Loading'
 // import apis
 import { joinInvitedGroup } from '../../../apis/invite';
 import { requestUpdateRecordGroupIds } from '../../../apis/Records'
-import { logout } from '../../../apis/auth';
+import { requestLogout } from '../../../apis/auth';
 import firebase, { db } from '../../../config/firebase';
+// import selectors
+import { useAuthSelectors } from '../../../selectors/auth'
 
 type DrawerProps = {
   user: firebase.User
@@ -32,6 +35,7 @@ const DrawerContent = (props: DrawerProps) => {
   const [codeText, setCodeText] = useState<string>('')
   const [ownCode, setOwnCode] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
+  const { requestFetchLogout } = useAuthSelectors()
   const { user, navigation } = props;
   const groupRef = db.collection('groups')
 
@@ -48,7 +52,7 @@ const DrawerContent = (props: DrawerProps) => {
     })
   }, [])
 
-  if (isLoading) {
+  if (isLoading || !user) {
     return (
       <Loading size='large' />
     )
@@ -77,7 +81,7 @@ const DrawerContent = (props: DrawerProps) => {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-      logout()
+      requestFetchLogout()
     }, 1000)
   }
   

@@ -36,7 +36,7 @@ export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>,
     
           const uploadTask = storageRef.put(localBlob);
           uploadTask.on('state_changed', (snapshot) => {
-            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            let progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) / 10;
             setProgress(progress + '%');
           }, (error) => {
             alert(error);

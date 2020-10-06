@@ -15,7 +15,7 @@ export const COLORS = {
   SUB_BLACK: '#898D8C',
 
   ERROR_MESSAGE: '#ea5532',
-  SUCCESS_MESSAGE: '#66ff33',
+  SUCCESS_MESSAGE: '#00C851',
 
   TOGGLE_ON_COLOR: '#33cc00',
 

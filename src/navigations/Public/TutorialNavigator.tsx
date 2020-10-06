@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native'
-import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
-import TutorialUserNameScreen from '../../screens/Public/Tutorial/TutorialUserName';
-import TutorialBodyInfoScreen from '../../screens/Public/Tutorial/TutorialBodyInfo';
-import TutorialUserImageScreen from '../../screens/Public/Tutorial/TutorialUserImage';
-import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/TutorialGroupMake';
+import { createStackNavigator } from '@react-navigation/stack';
+import TutorialUserNameScreen from '../../screens/Public/Tutorial/UserName';
+import TutorialBodyInfoScreen from '../../screens/Public/Tutorial/BasicInfo';
+import TutorialUserImageScreen from '../../screens/Public/Tutorial/UserImage';
+import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/SelectGroup';
 import TutorialUsageScreen from '../../screens/Public/Tutorial/TutorialUsage';
 import HomeScreen from '../../screens/Private/Home';
 import { COLORS } from '../../constants/Styles';
@@ -66,10 +66,8 @@ const TutorialNavigator = ({ route }) => {
       <TotorialStack.Screen
         name="TutorialGroupMake"
         component={TutorialGroupMakeScreen}
-        initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false,
-          headerShown: false,
           headerTitle: "グループを作る",
           headerTintColor: COLORS.BASE_MUSCLEW
         }}
@@ -78,7 +76,6 @@ const TutorialNavigator = ({ route }) => {
       <TotorialStack.Screen
         name="TutorialUsage"
         component={TutorialUsageScreen}
-        initialParams={{ setIsChange: route.params.setIsChange }}
         options={{
           headerBackTitleVisible: false,
           gestureEnabled: false,

@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import firebase, { db } from '../../../config/firebase'
@@ -45,7 +46,9 @@ const MainNavigator = () => {
 
   if (loading || currentGroupId === "") {
     return (
-      <Loading size="large" />
+      <LoadingContainer>
+        <Loading size="small" />
+      </LoadingContainer>
     )
   }
 
@@ -158,5 +161,10 @@ const MainNavigator = () => {
    </MainStack.Navigator>
   );
 }
+
+const LoadingContainer = styled.View`
+  flex: 1;
+  background-color: ${COLORS.BASE_BACKGROUND};
+`
 
 export default MainNavigator;

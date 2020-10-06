@@ -1,3 +1,5 @@
+export type FirestoreTimestamp = import("firebase").firestore.Timestamp;
+
 // import action types
 import { 
   REQUEST_FETCH_GROUP_USERS,
@@ -5,14 +7,31 @@ import {
   FAILURE_FETCH_GROUP_USERS,
   SET_CURRENT_GROUP_ID
 } from '../../actions/actionTypes'
-// import types
-import { 
-  GroupUserType
-} from '../User/'
 
 // state
 export interface GroupState {
   currentGroupid: string
+  isLoading: boolean
+  error: string
+}
+
+export type GroupType = {
+  id: string
+  inviteCode: string
+  groupName: string
+  imageUrl: string
+  ownerId: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type GroupUserType = {
+  currentGroupId: string
+  imageUrl: string
+  name: string
+  uid: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 // 所属グループIDの設定

@@ -1,29 +1,34 @@
 import { Alert } from 'react-native'
-import firebase, { db } from '../config/firebase';
 import * as Google from 'expo-google-app-auth';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { COMMON_ERROR_MESSSAGE, LOGIN_ERROR_CODE, LOGIN_ERROR_MESSAGE, SIGNUP_ERROR_CODE, SIGNUP_ERROR_MESSAGE } from '../constants/errorMessage';
 import Constants from 'expo-constants'
-import Analytics from '../config/amplitude'
+import firebase, { db } from '../../config/firebase'
+import Analytics from '../../config/amplitude'
+import {
+  COMMON_ERROR_MESSSAGE,
+  LOGIN_ERROR_CODE, 
+  LOGIN_ERROR_MESSAGE, 
+  SIGNUP_ERROR_CODE, 
+  SIGNUP_ERROR_MESSAGE 
+} from '../../constants/errorMessage';
+// import types
+import { EmailSignInType } from '../../types/auth'
 
-export const logout = async () => {
-  try {
-    await firebase.auth().signOut()
-    return;
-  } catch { (error) => {
-    alert(error)
-  }}
-};
+// メール認証ログイン or signup
+export const requestEmailSingIn = async (args: EmailSignInType) => {
+  const { email, password, method } = args
+  return await method === 'signin' ? requestEmailLogin(email, password) : requestEmailSignUp(email, password)
+}
 
-// ログイン
-export const LoginUser = async ({ email, password }) => {
+// メール認証ログイン
+const requestEmailLogin = async (email: string, password: string) => {
   try {
-    await firebase.auth().signInWithEmailAndPassword(email, password).then( (user) => {
+    await firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
       Analytics.getUserId(user.user.uid);
-      Analytics.track('login')
-    }); 
-    return {};
-  } catch(error) {
+      Analytics.track(`email login`)
+    })
+    return { payload: 'success' }
+  } catch (error) {
     switch (error.code) {
       case LOGIN_ERROR_CODE.INVALID_EMAIL:
         return {
@@ -49,17 +54,17 @@ export const LoginUser = async ({ email, password }) => {
   }
 }
 
-// 登録
-export const RegisterUser = async ({ email, password }) => {
+// メール認証サインアップ
+const requestEmailSignUp = async (email: string, password: string) => {
   try {
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
     if (response.user.uid) {
       const uid = response.user.uid
       await db.collection('users').doc(uid).set({ uid: response.user.uid })
       Analytics.getUserId(uid);
-      Analytics.track('register')
-      return {};
+      Analytics.track('email register')
     } 
+    return { payload: 'success' }
   } catch(error) {
     switch(error.code) {
       case SIGNUP_ERROR_CODE.EMAIL_DUPLICATED:
@@ -84,8 +89,17 @@ export const RegisterUser = async ({ email, password }) => {
         };
     };
   }
-} 
+}
 
+// ログアウト
+export const requestLogout = async () => {
+  try {
+    await firebase.auth().signOut()
+    return { payload: 'success' }
+  } catch(error) {
+    return { error }
+  }
+};
 
 // google 認証
 export const GoogleLogin = (route) => {

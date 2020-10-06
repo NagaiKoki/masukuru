@@ -12,6 +12,7 @@ import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
 import { getHeaderNav } from './headerNav'
 import ApplauseModal from '../../../components/Applause'
+import Toaster from '../../../common/Toaster'
 import EmojiModal from '../../../components/Records/Reactions/Emoji/Modal/EmojiModal'
 import PostedUserEmojiModal from '../../../components/Records/Reactions/Emoji/Modal/PostedEmojiUsersModal'
 // import types
@@ -30,6 +31,7 @@ import firebase from '../../../config/firebase'
 import Analytics from '../../../config/amplitude'
 // selectors
 import userSelectors from '../../../selectors/user'
+import { useUiSelector } from '../../../selectors/ui'
 
 const HomeScreen = (props: HomeProps) => {
   const { navigation, route, records, actions } = props
@@ -42,6 +44,7 @@ const HomeScreen = (props: HomeProps) => {
   } = actions
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
   const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
+  const { toastMessage } = useUiSelector()
   const lastRecord = recordData[recordData.length - 1]
   const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)
@@ -171,6 +174,7 @@ const HomeScreen = (props: HomeProps) => {
       <ApplauseModal />
       <EmojiModal isOpen={isEmojiModalOpen} />
       <PostedUserEmojiModal isOpen={isPostedEmojiUsersModalOpen} />
+      { toastMessage ? <Toaster toastMessage={toastMessage} /> : null }
     </Container>
   );
 };

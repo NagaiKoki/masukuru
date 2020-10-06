@@ -27,7 +27,7 @@ const UserImage = (props: UserImageProps) => {
     )
   } else if (forProfile) {
     return (
-      <Image source={require('../../assets/profileImageRegister.png')}
+      <Image source={require('../../assets/addUserImage.png')}
         style={{ width, height, borderRadius, resizeMode: 'contain' }}
       />
     )

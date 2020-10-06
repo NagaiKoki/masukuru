@@ -3,40 +3,38 @@ import styled from 'styled-components'
 // import constants
 import { COLORS } from '../../constants/Styles'
 
-interface FormProps {
+type FormProps = {
   placeholder?: string
   maxLength?: number
-  value?: string
-  secureTextEntry?: boolean
-  onChange: (text: string) => void
+  onChange: (text: number) => void
 }
 
-const Form = (props: FormProps) => {
-  const { placeholder, maxLength, secureTextEntry, value, onChange } = props
+const NumberForm = (props: FormProps) => {
+  const { placeholder, maxLength, onChange } = props
 
   return (
     <TextInput
       placeholder={placeholder}
       autoCapitalize={'none'}
-      autoCorrect={false}
       maxLength={maxLength}
-      value={value}
-      secureTextEntry={!!secureTextEntry}
-      onChangeText={text => onChange(text)}
+      keyboardType={'numeric'}
+      returnKeyType="done"
+      autoCorrect={false}
+      onChangeText={(value: number) => onChange(value)}
     />
   )
 }
 
+export default NumberForm
+
 const TextInput = styled.TextInput`
   align-self: center;
   width: 100%;
-  height: 50px;
+  height: 45px;
   margin: 10px 0;
   border-radius: 5px;
-  padding: 15px 15px;
+  padding: 10px;
   font-size: 17px;
   background-color: ${COLORS.FORM_BACKGROUND};
   color: ${COLORS.BASE_BLACK};
 `
-
-export default Form

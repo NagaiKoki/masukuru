@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { COLORS } from './constants/Styles';
-import Navigator from './navigations/index';
+import Navigator from './navigations';
 import {decode, encode} from 'base-64'
 import store from './reducers'
 import { Provider } from 'react-redux'
