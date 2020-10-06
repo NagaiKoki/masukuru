@@ -55,11 +55,11 @@ const RootNavigator = () => {
           </Stack.Navigator>
         )
       }
-      case 'authorized': {
+      case 'tutorial': {
         return (
           <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
             <Stack.Screen 
-              name="Tutorial"
+              name="authorized"
               component={TutorialNavigator}
               options={{
                 headerShown: false

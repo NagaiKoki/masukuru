@@ -15,10 +15,11 @@ import {
   successJoinGroup,
   failureJoinGroup
 } from '../slice/group'
+import { setUserStatus } from '../slice/auth'
 
 const userSelector = (state: RootState) => state.users
 
-function* runRequestCreateGroup(action: PayloadAction<string>) {
+function* runRequestCreateGroup() {
   const { currentUser }: ReturnType<typeof userSelector> = yield select(userSelector)
   const { payload, error }: ResponseType<GroupType> = yield call(
     requestPostCreateGroup,
@@ -26,7 +27,8 @@ function* runRequestCreateGroup(action: PayloadAction<string>) {
   )
 
   if (payload && !error) {
-    yield put(successCreateGroup())
+    yield put(successCreateGroup(payload))
+    yield put(setUserStatus('authorized'))
   } else if (error) {
     yield put(failureCreateGroup(error))
   }

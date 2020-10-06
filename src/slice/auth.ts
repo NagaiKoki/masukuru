@@ -44,10 +44,9 @@ const authSlice = createSlice({
       }
     },
     successFetchLogout: (state) => {
-      console.log('slices')
       return {
         ...state,
-        // isLoading: false,
+        isLoading: false,
         userStatus: 'unauthorized'
       }
     },

@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TutorialUserNameScreen from '../../screens/Public/Tutorial/UserName';
 import TutorialBodyInfoScreen from '../../screens/Public/Tutorial/BasicInfo';
 import TutorialUserImageScreen from '../../screens/Public/Tutorial/UserImage';
-import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/TutorialGroupMake';
+import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/SelectGroup';
 import TutorialUsageScreen from '../../screens/Public/Tutorial/TutorialUsage';
 import HomeScreen from '../../screens/Private/Home';
 import { COLORS } from '../../constants/Styles';
@@ -68,7 +68,6 @@ const TutorialNavigator = ({ route }) => {
         component={TutorialGroupMakeScreen}
         options={{
           headerBackTitleVisible: false,
-          headerShown: false,
           headerTitle: "グループを作る",
           headerTintColor: COLORS.BASE_MUSCLEW
         }}

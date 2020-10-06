@@ -16,6 +16,8 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   const { imageUrl, name } = currentUser
   let batch = db.batch()
 
+  console.log(temporaryGroupId)
+
   const groupObj: GroupType = {
     id: temporaryGroupId,
     ownerId: currentUserId,
