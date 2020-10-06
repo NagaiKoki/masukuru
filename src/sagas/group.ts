@@ -54,7 +54,6 @@ function* runRequestJoinGroup(action: PayloadAction<string>) {
     yield put(setToastMessage({ message: 'グループに参加しました', type: 'success' }))
   } else if (error) {
     yield put(failureJoinGroup(error))
-    yield put(setToastMessage({ message: error, type: 'error' }))
   }
 }
 
