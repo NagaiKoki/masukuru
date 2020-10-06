@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { GroupState } from '../types/Group'
+import { GroupState, GroupType } from '../types/Group'
 
 const initialState: GroupState = {
   currentGroupid: '',
@@ -38,11 +38,12 @@ const groupSlice = createSlice({
         isLoading: true
       }
     },
-    successCreateGroup: (state, action: PayloadAction<string>) => {
+    successCreateGroup: (state, action: PayloadAction<GroupType>) => {
+      const { id } = action.payload
       return {
         ...state,
         isLoading: false,
-        currentGroupid: action.payload
+        currentGroupid: id
       }
     },
     failureCreateGroup: (state, action: PayloadAction<string>) => {
