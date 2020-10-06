@@ -1,11 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
-import { COLORS } from '../../constants/Styles';
 import { createStackNavigator } from '@react-navigation/stack';
+// import constants
+import { COLORS } from '../../constants/Styles';
+// import screens
 import HomeScreen from '../../screens/Private/Home';
 import SignupScreen from '../../screens/Public/SignUp';
 import SignupHomeScreen from '../../screens/Public/SignUp/SignupHome';
-import LoginScreen from '../../screens/Public/Login/index';
+import LoginScreen from '../../screens/Public/Login';
 import ResetPasswordScreen from '../../screens/Public/Login/ResetPassword';
 
 const AuthentificationNavigator = () => {

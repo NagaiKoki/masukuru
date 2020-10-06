@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+// import constants
 import { COLORS } from '../../constants/Styles';
 // import containers
 import NotificationBatchIcon from '../../containers/Private/notifications/batch'

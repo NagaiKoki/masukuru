@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native'
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+// import screens
 import TutorialUserNameScreen from '../../screens/Public/Tutorial/UserName';
 import TutorialBodyInfoScreen from '../../screens/Public/Tutorial/BasicInfo';
 import TutorialUserImageScreen from '../../screens/Public/Tutorial/UserImage';
 import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/SelectGroup';
 import HomeScreen from '../../screens/Private/Home';
+// import constants
 import { COLORS } from '../../constants/Styles';
-// import container
 
 const TutorialNavigator = () => {
   const TotorialStack = createStackNavigator();
@@ -70,13 +70,5 @@ const TutorialNavigator = () => {
     </TotorialStack.Navigator>
   )
 }
-
-const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center'
-  }
-})
 
 export default TutorialNavigator;
