@@ -15,7 +15,7 @@ export const useGroupSelector = () => {
   } = useSelector<RootState, GroupState>(state => state.groups)
 
   const _requestCreateGroup = useCallback(() => dispatch(requestCreateGroup()), [dispatch])
-  const _requestJoinGroup = useCallback(() => dispatch(requestJoinGroup()), [dispatch])
+  const _requestJoinGroup = useCallback((code: string) => dispatch(requestJoinGroup(code)), [dispatch])
 
   return {
     currentGroupid,
