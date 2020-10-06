@@ -3,10 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UiState, ToastMessageType } from '../types/ui'
 
 const initialState: UiState = {
-  toastMessage: {
-    type: 'success',
-    message: 'test'
-  }
+  toastMessage: null
 }
 
 const uiSlice = createSlice({

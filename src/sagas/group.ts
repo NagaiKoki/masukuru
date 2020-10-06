@@ -16,6 +16,7 @@ import {
   failureJoinGroup
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
+import { setToastMessage } from '../slice/ui'
 
 const userSelector = (state: RootState) => state.users
 
@@ -29,6 +30,7 @@ function* runRequestCreateGroup() {
   if (payload && !error) {
     yield put(successCreateGroup(payload))
     yield put(setUserStatus('authorized'))
+    yield put(setToastMessage({ message: 'グループを作成しました', type: 'success' }))
   } else if (error) {
     yield put(failureCreateGroup(error))
   }
@@ -49,6 +51,7 @@ function* runRequestJoinGroup(action: PayloadAction<string>) {
   if (payload && !error) {
     yield put(successJoinGroup(payload.id))
     yield put(setUserStatus('authorized'))
+    yield put(setToastMessage({ message: 'グループに参加しました', type: 'success' }))
   } else if (error) {
     yield put(failureJoinGroup(error))
   }

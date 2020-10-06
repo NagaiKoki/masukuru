@@ -9,6 +9,7 @@ import {
   successFetchLogout,
   failureFetchLogout
 } from '../slice/auth'
+import { setToastMessage } from '../slice/ui'
 // import apis
 import { requestEmailSingIn, requestLogout } from '../apis/auth/index'
 // import types
@@ -24,6 +25,9 @@ function* runRequestFetchEmailSignIn(action: PayloadAction<EmailSignInType>) {
 
   if (payload && !error) {
     yield put(successFetchEmailSignIn(action.payload.method))
+    if (action.payload.method === 'signin') {
+      yield put(setToastMessage({ message: 'ログインしました', type: 'success' }))
+    }
   } else if (error) {
     yield put(failureFetchEmailSignIn(error))
   }
