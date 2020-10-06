@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { COLORS } from '../../../../constants/Styles'
+import { COLORS } from '../../../constants/Styles'
 // import navigator
 import ChartGraphNavigator from './ChartNavigator'
 // import screens
-import ChartSettingScreen from '../../../../screens/Private/Charts/Setting'
-import GoalSettingScreen from '../../../../screens/Private/Charts/Setting/GoalSetting'
+import ChartSettingScreen from '../../../screens/Private/Charts/Setting'
+import GoalSettingScreen from '../../../screens/Private/Charts/Setting/GoalSetting'
 
 const ChartNavigator = () => {
   const ChartStack = createStackNavigator();

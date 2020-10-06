@@ -1,19 +1,19 @@
 import React, { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import { COLORS } from '../../../constants/Styles';
+import { COLORS } from '../../constants/Styles';
 // import containers
-import NotificationBatchIcon from '../../../containers/Private/notifications/batch'
+import NotificationBatchIcon from '../../containers/Private/notifications/batch'
 // import navigators
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainNavigator from '../Home/MainNavigator';
+import MainNavigator from './Home/MainNavigator';
 import ChartNavigator from './Chart'
-import NotificationNavigator from './NotificationNavigator';
-import MyPageNavigator from './MyPageNavigator';
+import NotificationNavigator from './Notification';
+import MyPageNavigator from './MyPage';
 // import store
-import store from '../../../reducers'
+import store from '../../reducers'
 // import actions
-import { requestFetchNotReadNotificationNumber } from '../../../actions/notifications'
+import { requestFetchNotReadNotificationNumber } from '../../actions/notifications'
 
 const Tab = createBottomTabNavigator();
 

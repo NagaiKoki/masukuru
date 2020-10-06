@@ -8,9 +8,9 @@ import { useAuthSelectors } from '../selectors/auth'
 // import utils
 import { useUserStatus } from '../utilities/hooks/useUserStatus'
 // import navigators
-import MainTabNavigator from './Private/TabNavigators/MainTabNavigator';
-import TutorialNavigator from './Public/TutorialNavigator'
-import AuthenticationNavigator from './Public/AuthentificationNavigator';
+import AuthorizedNavigator from './Private';
+import TutorialNavigator from './Public/Tutorial'
+import AuthenticationNavigator from './Public/Unauthorized';
 // import screens
 import DrawerContent from '../screens/Private/Drawers/DrawerContents';
 // import components
@@ -76,7 +76,7 @@ const RootNavigator = () => {
           >
             <Drawer.Screen 
               name="MainTabNavigator"
-              component={MainTabNavigator}
+              component={AuthorizedNavigator}
             />
           </Drawer.Navigator>
         )
