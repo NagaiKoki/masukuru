@@ -67,7 +67,6 @@ const requestCheckInviteCode = async (code: string): Promise<string> => {
 
 // グループに参加する
 export const requestPatchJoinGroup = async (code: string, currentUser: UserType) => {
-  console.log(`code:${code}`)
   const groupRef = db.collection('groups').where('inviteCode', '==', code)
   const { uid, imageUrl, name } = currentUser
   let invitedGroup: GroupType
@@ -87,7 +86,6 @@ export const requestPatchJoinGroup = async (code: string, currentUser: UserType)
     })
 
     // 参加できるかチェックを行う
-    console.log(`invitedGroup.id:${invitedGroup.id}`)
     const { error } = await requestCheckEnableJoinGroup(invitedGroup.id)
     if (error) {
       throw new Error(error)
@@ -101,7 +99,6 @@ export const requestPatchJoinGroup = async (code: string, currentUser: UserType)
         createdAt: new Date(),
         updatedAt: new Date()
       }
-      console.log(`uid:${uid}`)
       await invitedGroupUserRef.doc(uid).set(groupUserObj)
     }
     return { payload: invitedGroup }
@@ -112,7 +109,6 @@ export const requestPatchJoinGroup = async (code: string, currentUser: UserType)
 
 // グループに所属できるかのチェック処理
 const requestCheckEnableJoinGroup = async (groupId: string) => {
-  console.log(`groupId:${groupId}`)
   const groupUserRef = db.collection('groups').doc(groupId).collection('groupUsers')
   const collectionGroupUserRef = db.collectionGroup('groupUsers').where('uid', '==', firebase.auth().currentUser.uid)
 
