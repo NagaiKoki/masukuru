@@ -6,10 +6,12 @@ import { COLORS } from '../../../constants/Styles'
 const TutorialSelectGroup = () => {
   return (
     <Container>
-      
+
     </Container>
   )
 }
+
+export default TutorialSelectGroup
 
 const Container = styled.View`
   flex: 1;
