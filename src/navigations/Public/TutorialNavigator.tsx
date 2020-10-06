@@ -5,25 +5,12 @@ import TutorialUserNameScreen from '../../screens/Public/Tutorial/UserName';
 import TutorialBodyInfoScreen from '../../screens/Public/Tutorial/BasicInfo';
 import TutorialUserImageScreen from '../../screens/Public/Tutorial/UserImage';
 import TutorialGroupMakeScreen from '../../screens/Public/Tutorial/SelectGroup';
-import TutorialUsageScreen from '../../screens/Public/Tutorial/TutorialUsage';
 import HomeScreen from '../../screens/Private/Home';
 import { COLORS } from '../../constants/Styles';
 // import container
 
-const TutorialNavigator = ({ route }) => {
+const TutorialNavigator = () => {
   const TotorialStack = createStackNavigator();
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    setIsLoading(false)
-  }, []) 
-
-  if (isLoading) {
-    return (
-      <ActivityIndicator size="large" style={[styles.loading]} />
-    )
-  }
-
   return (
     <TotorialStack.Navigator
       initialRouteName="TutorialUserName"
@@ -32,7 +19,6 @@ const TutorialNavigator = ({ route }) => {
         gestureEnabled: false
       }}
     >
-
       <TotorialStack.Screen
         name="TutorialUserName"
         component={TutorialUserNameScreen}
@@ -73,18 +59,6 @@ const TutorialNavigator = ({ route }) => {
         }}
       />
 
-      <TotorialStack.Screen
-        name="TutorialUsage"
-        component={TutorialUsageScreen}
-        options={{
-          headerBackTitleVisible: false,
-          gestureEnabled: false,
-          headerShown: false,
-          headerTitle: "マスクルの使い方",
-          headerTintColor: COLORS.BASE_MUSCLEW
-        }}
-      />
-
       <TotorialStack.Screen 	
         name="home" 	
         component={HomeScreen}	
@@ -93,7 +67,6 @@ const TutorialNavigator = ({ route }) => {
           gestureEnabled: false	
         }}	
       />
-
     </TotorialStack.Navigator>
   )
 }
