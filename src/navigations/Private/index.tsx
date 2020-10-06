@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 // import constants
@@ -7,21 +8,24 @@ import { COLORS } from '../../constants/Styles';
 import NotificationBatchIcon from '../../containers/Private/notifications/batch'
 // import navigators
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainNavigator from './Home/MainNavigator';
+import MainNavigator from '.';
 import ChartNavigator from './Chart'
 import NotificationNavigator from './Notification';
 import MyPageNavigator from './MyPage';
-// import store
-import store from '../../reducers'
 // import actions
 import { requestFetchNotReadNotificationNumber } from '../../actions/notifications'
-
-const Tab = createBottomTabNavigator();
+// import selectors
+import { useGroupSelector } from '../../selectors/group'
 
 const MainTabNavigator = () => {
+  const dispatch = useDispatch()
+  const { currentGroupid, setCurrentGroupId } = useGroupSelector()
+  const Tab = createBottomTabNavigator();
+
   useFocusEffect(
     useCallback(() => {
-      store.dispatch(requestFetchNotReadNotificationNumber())
+      dispatch(requestFetchNotReadNotificationNumber())
+      setCurrentGroupId()
     }, [])
   )
 

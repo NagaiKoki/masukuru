@@ -13,7 +13,7 @@ import SettingScreen from '../../../screens/Private/Setting'
 import SettingPushScreen from '../../../screens/Private/Setting/Push'
 // import navigator
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
-import HomeNavigator from './HomeNavigator'
+import HomeNavigator from './Timeline'
 // import container
 import UserPageContainer from '../../../containers/Private/users/userPage'
 import RecordShowScreen from '../../../screens/Private/Records/Show'
@@ -51,13 +51,7 @@ const MainNavigator = () => {
       </LoadingContainer>
     )
   }
-
   
-  // ヘッダータイトル関数
-  const getHeaderMenuTitle = (route) => {
-    return route.params.item.name + 'の記録'
-  }
-
   const getHeaderUserTitle = (route) => {
     return route.params.user.name
   }

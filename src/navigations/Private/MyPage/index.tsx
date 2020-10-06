@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import UserContainer from '../../../containers/Private/users/myPage'
 // import screens
 import ProfileChangeScreen from '../../../screens/Private/MyPage/ProfileChange';
-import RecordShowScreen from '../../screens/Private/Records/Show'
+import RecordShowScreen from '../../../screens/Private/Records/Show'
 import { COLORS } from '../../../constants/Styles'
 
 const MyPageNavigator = () => { 
