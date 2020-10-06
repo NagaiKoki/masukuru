@@ -5,7 +5,7 @@ import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 import { GroupType, GroupUserType } from '../../../types/Group'
 import { UserType } from '../../../types/User'
 // import constants
-import { INVITE_ERROR_MESSAGE } from '../../../constants/errorMessage'
+import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 
 // 1人のグループを作成
 export const requestPostCreateGroup = async (currentUser: UserType) => {
@@ -139,6 +139,30 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
     })
     return { payload: 'success' }
   } catch (error) {
+    return { error: error.message }
+  }
+}
+
+// 現在所属しているグループIDをフェッチ
+export const requestFetchCurrentGroupId = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
+  let currentGroupId: string
+
+  try {
+    await groupUserRef.get().then(snap => {
+      if (snap.empty) {
+        throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+      } else {
+        snap.forEach(doc => {
+          const data = doc.data() as GroupUserType
+          currentGroupId = data.currentGroupId
+        })
+      }
+    })
+    
+    return { payload: currentUserId }
+  } catch(error) {
     return { error: error.message }
   }
 }
