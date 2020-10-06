@@ -27,8 +27,6 @@ const JoinGroupModal = (props: PropsType) => {
     requestJoinGroup(code)
   }
 
-  console.log(error)
-
   return (
     <BottomModal isOpen={isOpen} onClose={handleCloseModal}>
       <Container>
