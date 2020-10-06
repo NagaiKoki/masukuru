@@ -1,7 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { takeEvery, call, put, fork, select } from 'redux-saga/effects'
 // import apis
-import { requestPostCreateGroup, requestPatchJoinGroup } from '../apis/Groups/v1/'
+import { 
+  requestPostCreateGroup, 
+  requestPatchJoinGroup,
+  requestFetchCurrentGroupId
+} from '../apis/Groups/v1/'
 // import types
 import { GroupType } from '../types/Group'
 import { ResponseType } from '../types'
@@ -13,13 +17,17 @@ import {
   failureCreateGroup,
   requestJoinGroup,
   successJoinGroup,
-  failureJoinGroup
+  failureJoinGroup,
+  setCurrentGroupId,
+  successSetCurrentGroupId,
+  failureSetCurrentGroupId
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
 
 const userSelector = (state: RootState) => state.users
 
+// １人のグループを作成
 function* runRequestCreateGroup() {
   const { currentUser }: ReturnType<typeof userSelector> = yield select(userSelector)
   const { payload, error }: ResponseType<GroupType> = yield call(
@@ -40,6 +48,7 @@ function* handleRequestCreateGroup() {
   yield takeEvery(requestCreateGroup.type, runRequestCreateGroup)
 }
 
+// 招待先のグループに参加する
 function* runRequestJoinGroup(action: PayloadAction<string>) {
   const { currentUser }: ReturnType<typeof userSelector> = yield select(userSelector)
   const { payload, error }: ResponseType<GroupType> = yield call(
@@ -61,7 +70,25 @@ function* handleRequestJoinGroup() {
   yield takeEvery(requestJoinGroup.type, runRequestJoinGroup)
 }
 
+// 現在いるグループのidを取得
+function* runRequestFetchCurrentGroupId() {
+  const { payload, error }: ResponseType<string> = yield call(
+    requestFetchCurrentGroupId
+  )
+
+  if (payload && !error) {
+    yield put(successSetCurrentGroupId(payload))
+  } else if (error) {
+    yield put(failureSetCurrentGroupId(error))
+  }
+}
+
+function* handleRequestFetchCurrentGroupId() {
+  yield takeEvery(setCurrentGroupId.type, runRequestFetchCurrentGroupId)
+}
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
+  yield fork(handleRequestFetchCurrentGroupId)
 }
