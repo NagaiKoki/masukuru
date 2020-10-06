@@ -17,7 +17,7 @@ type PropsType = {
 const JoinGroupModal = (props: PropsType) => {
   const { isOpen, handleCloseModal } = props
   const [code, setCode] = useState('')
-  const { requestJoinGroup } = useGroupSelector()
+  const { error, requestJoinGroup } = useGroupSelector()
 
   const handleChangeCode = (value: string) => {
     setCode(value)
@@ -26,6 +26,8 @@ const JoinGroupModal = (props: PropsType) => {
   const handleOnSubmit = () => {
     requestJoinGroup(code)
   }
+
+  console.log(error)
 
   return (
     <BottomModal isOpen={isOpen} onClose={handleCloseModal}>
@@ -37,6 +39,7 @@ const JoinGroupModal = (props: PropsType) => {
             maxLength={6}
             onChange={handleChangeCode}
           />
+          <SubText>{}</SubText>
         </FormWrapper>
         <ButtonWrapper>
           <Button 
@@ -68,8 +71,14 @@ const Title = styled.Text`
 `
 
 const FormWrapper = styled.View`
-  padding: 20px 0;
+  padding: 20px 0 30px 0;
 `
 
 const ButtonWrapper = styled.View`
+`
+
+const SubText = styled.Text`
+  padding: 5px 0 0 5px;
+  color: ${COLORS.SUB_BLACK};
+  font-size: 14px;
 `

@@ -35,6 +35,7 @@ export const requestFetchUsers = async (userIds: string[]) => {
   }
 }
 
+// 今後使わない
 export const requestUpdateUser = async (name: string, imageUrl: string, user: firebase.User) => {
   const uid = user.uid
   const userRef = db.collection('users').doc(uid)
@@ -59,6 +60,7 @@ export const requestUpdateUser = async (name: string, imageUrl: string, user: fi
   }
 }
 
+// 今後使用する
 export const requestFetchUpdateUser = async (currentUser: UserType) => {
   const firebaseUser = firebase.auth().currentUser
   const userRef = db.collection('users').doc(firebaseUser.uid)

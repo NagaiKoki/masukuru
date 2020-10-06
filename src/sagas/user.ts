@@ -38,8 +38,6 @@ function* runRequestUpdateUser(action: PayloadAction<UserType>) {
     action.payload
   )
 
-  console.log(payload)
-
   if (payload && !error) {
     yield put(successUpdateUser(action.payload))
   } else if (error) {

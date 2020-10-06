@@ -72,7 +72,7 @@ const ButtonWrapper = styled.View`
 `
 
 const SubText = styled.Text`
-  padding-top: 5px;
+  padding: 5px 0 0 5px;
   color: ${COLORS.SUB_BLACK};
   font-size: 14px;
 `

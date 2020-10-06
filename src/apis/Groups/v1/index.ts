@@ -4,6 +4,8 @@ import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 // import types
 import { GroupType, GroupUserType } from '../../../types/Group'
 import { UserType } from '../../../types/User'
+// import constants
+import { INVITE_ERROR_MESSAGE } from '../../../constants/errorMessage'
 
 // 1人のグループを作成
 export const requestPostCreateGroup = async (currentUser: UserType) => {
@@ -15,8 +17,6 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   const groupUserRef = db.collection('groups').doc(temporaryGroupId).collection('groupUsers').doc(currentUserId)
   const { imageUrl, name } = currentUser
   let batch = db.batch()
-
-  console.log(temporaryGroupId)
 
   const groupObj: GroupType = {
     id: temporaryGroupId,
@@ -62,5 +62,78 @@ const requestCheckInviteCode = async (code: string): Promise<string> => {
     return newCode || code
   } catch(error) {
     return code
+  }
+}
+
+// グループに参加する
+export const requestPatchJoinGroup = async (code: string, currentUser: UserType) => {
+  const groupRef = db.collection('groups').where('inviteCode', '==', code)
+  const { uid, imageUrl, name } = currentUser
+  let invitedGroup: GroupType
+
+  try {
+    // グループの取得
+    await groupRef.get().then(snap => {
+      if (snap.empty) {
+        throw new Error(INVITE_ERROR_MESSAGE.EMPTY_GROUP)
+      } else {
+        snap.forEach(doc => {
+          const data = doc.data() as GroupType
+          invitedGroup = data
+        })
+      }
+    })
+
+    // 参加できるかチェックを行う
+    const { error } = await requestCheckEnableJoinGroup(invitedGroup.id)
+    if (error) {
+      throw new Error(error)
+    } else {
+      const invitedGroupUserRef = db.collection('groups').doc(invitedGroup.id).collection('groupUsers')
+      const groupUserObj: GroupUserType = {
+        name,
+        imageUrl,
+        uid,
+        currentGroupId: invitedGroup.id,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+      await invitedGroupUserRef.doc(uid).set(groupUserObj)
+    }
+    return { payload: invitedGroup }
+  } catch(error) {
+    return { error }
+  }
+}
+
+const requestCheckEnableJoinGroup = async (groupId: string) => {
+  const groupUserRef = db.collection('groups').doc(groupId).collection('groupUsers')
+  const collectionGroupUserRef = db.collectionGroup('groupUsers').where('uid', '==', firebase.auth().currentUser.uid)
+
+  try {
+    await groupUserRef.get().then(snap => {
+      if (snap.size > 11) {
+        throw Error(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
+      }
+    })
+
+    await collectionGroupUserRef.get().then(snap => {
+      if (snap.size > 5) {
+        throw Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
+      }
+    })
+
+    await groupUserRef.get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data() as GroupUserType
+        const currentUserId = firebase.auth().currentUser.uid
+        if (data.uid === currentUserId) {
+          throw Error(INVITE_ERROR_MESSAGE.SAME_GROUP_CODE)
+        }
+      })
+    })
+    return { payload: 'success' }
+  } catch (error) {
+    return { error: error.message }
   }
 }
