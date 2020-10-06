@@ -37,7 +37,8 @@ const JoinGroupModal = (props: PropsType) => {
             maxLength={6}
             onChange={handleChangeCode}
           />
-          <SubText>{}</SubText>
+          { error ? <ErrorText>{error}</ErrorText> : null }
+          <SubText>※ 招待先のグループが11人以上の場合、参加できません。</SubText>
         </FormWrapper>
         <ButtonWrapper>
           <Button 
@@ -73,6 +74,12 @@ const FormWrapper = styled.View`
 `
 
 const ButtonWrapper = styled.View`
+`
+
+const ErrorText = styled.Text`
+  color: ${COLORS.ERROR_MESSAGE};
+  font-size: 14px;
+  padding: 10px 0;
 `
 
 const SubText = styled.Text`

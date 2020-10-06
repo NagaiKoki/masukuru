@@ -103,7 +103,7 @@ export const requestPatchJoinGroup = async (code: string, currentUser: UserType)
     }
     return { payload: invitedGroup }
   } catch(error) {
-    return { error }
+    return { error: error.message }
   }
 }
 
@@ -115,15 +115,15 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
   try {
     // 招待先のグループが11人以上の場合
     await groupUserRef.get().then(snap => {
-      if (snap.size > 11) {
-        throw Error(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
+      if (snap.size > 2) {
+        throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
       }
     })
 
     // 現在所属しているグループが5つ以上の場合
     await collectionGroupUserRef.get().then(snap => {
       if (snap.size >= 5) {
-        throw Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
+        throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
       }
     })
 
@@ -133,7 +133,7 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
         const data = doc.data() as GroupUserType
         const currentUserId = firebase.auth().currentUser.uid
         if (data.uid === currentUserId) {
-          throw Error(INVITE_ERROR_MESSAGE.SAME_GROUP_CODE)
+          throw new Error(INVITE_ERROR_MESSAGE.SAME_GROUP_CODE)
         }
       })
     })

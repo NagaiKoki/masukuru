@@ -41,6 +41,7 @@ const Wrapper = styled.TouchableOpacity<{ type: ToastType }>`
   top: 0;
   width: 100%;
   height: 50px;
+  padding: 0 15px;
   justify-content: center;
   align-items: center;
   background: ${props => props.type === 'success' ? COLORS.SUCCESS_MESSAGE : COLORS.ERROR_MESSAGE };

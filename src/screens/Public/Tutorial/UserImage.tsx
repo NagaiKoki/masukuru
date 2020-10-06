@@ -46,7 +46,7 @@ const TutorialUserImage = ({ navigation }) => {
           <ImageTextBtn onPress={handleUpload}>
             <ImageText>{PROFILE_TEXT}</ImageText>
           </ImageTextBtn>
-          <ImageText>{progress}</ImageText>
+          { progress ? <ImageText>{progress}</ImageText> : null }
         </ImageContainer>
         <Button 
           text='次へ'
