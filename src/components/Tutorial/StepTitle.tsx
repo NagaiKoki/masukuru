@@ -11,10 +11,13 @@ type PropsType = {
 const StepTitle = (props: PropsType) => {
   const { stepCount, title } = props
 
+  const renderStep = 
+    <SubTitle>{ stepCount === 4 ?  `-- 最後のステップです！ --` : `-- ステップ${stepCount} --` }</SubTitle>
+
   return (
     <Wrapper>
       <Title>{title}</Title>
-      <SubTitle>{`-- ステップ${stepCount} --`}</SubTitle>
+      <SubTitle>{renderStep}</SubTitle>
     </Wrapper>
   )
 }
