@@ -52,6 +52,26 @@ const groupSlice = createSlice({
         isLoading: false,
         error: action.payload
       }
+    },
+    setCurrentGroupId: (state) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successSetCurrentGroupId: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        isLoading: false,
+        currentGroupid: action.payload
+      }
+    },
+    failureSetCurrentGroupId: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload
+      }
     }
   }
 })
@@ -65,4 +85,7 @@ export const {
   requestCreateGroup,
   successCreateGroup,
   failureCreateGroup,
+  setCurrentGroupId,
+  successSetCurrentGroupId,
+  failureSetCurrentGroupId
 } = groupSlice.actions
