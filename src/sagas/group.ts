@@ -48,6 +48,7 @@ function* runRequestJoinGroup(action: PayloadAction<string>) {
 
   if (payload && !error) {
     yield put(successJoinGroup(payload.id))
+    yield put(setUserStatus('authorized'))
   } else if (error) {
     yield put(failureJoinGroup(error))
   }
