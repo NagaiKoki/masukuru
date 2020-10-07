@@ -7,7 +7,8 @@ import {
   requestFetchCurrentGroupId,
   requestFetchGetCurrentGroupUsers,
   requestFetchGetBelongGroups,
-  requestPatchCurrentGroupId
+  requestPatchCurrentGroupId,
+  requestFetchCurrentGroup as requestFetchGetCurrentGroup
 } from '../apis/Groups/v1/'
 // import types
 import { GroupType, GroupUserType } from '../types/Group'
@@ -32,7 +33,10 @@ import {
   failureFetchBelongGroups,
   requestSwitchGroup,
   successSwitchGroup,
-  failureSwitchGroup
+  failureSwitchGroup,
+  requestFetchCurrentGroup,
+  successFetchCurrentGroup,
+  failureFetchCurrentGroup
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
@@ -85,7 +89,7 @@ function* handleRequestJoinGroup() {
 
 // 現在いるグループのidを取得
 function* runRequestFetchCurrentGroupId() {
-  const { payload, error }: ResponseType<GroupType> = yield call(
+  const { payload, error }: ResponseType<string> = yield call(
     requestFetchCurrentGroupId
   )
 
@@ -157,6 +161,25 @@ function* handleRequestSwitchGroup() {
   yield takeEvery(requestSwitchGroup.type, runRequestSwitchGroup)
 }
 
+// 現在のグループをフェッチする
+function* runRequestFetchCurrentGroup() {
+  const { currentGroupId }: ReturnType<typeof groupSelector> = yield select(groupSelector)
+  const { payload, error }: ResponseType<GroupType> = yield call(
+    requestFetchGetCurrentGroup,
+    currentGroupId
+  )
+
+  if (payload && !error) {
+    yield put(successFetchCurrentGroup(payload))
+  } else if (error) {
+    yield put(failureFetchCurrentGroup(error))
+  }
+}
+
+function* handleRequestFetchCurrentUGroup() {
+  yield takeEvery(requestFetchCurrentGroup.type, runRequestFetchCurrentGroup)
+}
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
@@ -164,4 +187,5 @@ export default function* groupSaga() {
   yield fork(handleRequestFetchCurrentGroupUsers)
   yield fork(handleRequestFetchBelongGroups)
   yield fork(handleRequestSwitchGroup)
+  yield fork(handleRequestFetchCurrentUGroup)
 }

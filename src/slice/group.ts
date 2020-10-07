@@ -62,12 +62,11 @@ const groupSlice = createSlice({
         isLoading: true
       }
     },
-    successSetCurrentGroupId: (state, action: PayloadAction<GroupType>) => {
+    successSetCurrentGroupId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
         isLoading: false,
-        currentGroupId: action.payload.id,
-        currentGroup: action.payload
+        currentGroupId: action.payload
       }
     },
     failureSetCurrentGroupId: (state, action: PayloadAction<string>) => {
@@ -139,7 +138,13 @@ const groupSlice = createSlice({
     successFetchCurrentGroup: (state, action: PayloadAction<GroupType>) => {
       return {
         ...state,
-        
+        currentGroup: action.payload
+      }
+    },
+    failureFetchCurrentGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
       }
     }
   }
@@ -165,5 +170,8 @@ export const {
   failureFetchBelongGroups,
   requestSwitchGroup,
   successSwitchGroup,
-  failureSwitchGroup
+  failureSwitchGroup,
+  requestFetchCurrentGroup,
+  successFetchCurrentGroup,
+  failureFetchCurrentGroup,
 } = groupSlice.actions
