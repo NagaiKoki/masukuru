@@ -5,6 +5,7 @@ import { GroupState, GroupType, GroupUserType } from '../types/Group'
 const initialState: GroupState = {
   currentGroupId: '',
   currentGroupUsers: [],
+  belongGroups: [],
   isLoading: false,
   error: ''
 }
@@ -93,6 +94,26 @@ const groupSlice = createSlice({
         error: action.payload,
         isLoading: false
       }
+    },
+    requestFetchBelongGroups: (state) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    successFetchBelongGroups: (state, action: PayloadAction<GroupType[]>) => {
+      return {
+        ...state,
+        belongGroups: action.payload,
+        isLoading: false
+      }
+    },
+    failureFetchBelongGroups: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false
+      }
     }
   }
 })
@@ -111,5 +132,8 @@ export const {
   failureSetCurrentGroupId,
   requestFetchCurrentGroupUsers,
   successFetchCurrentGroupUsers,
-  failureFetchCurrentGroupUsers
+  failureFetchCurrentGroupUsers,
+  requestFetchBelongGroups,
+  successFetchBelongGroups,
+  failureFetchBelongGroups
 } = groupSlice.actions
