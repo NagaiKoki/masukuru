@@ -4,7 +4,8 @@ import { useCallback } from 'react'
 import { 
   requestCreateGroup, 
   requestJoinGroup,
-  setCurrentGroupId
+  setCurrentGroupId,
+  requestFetchCurrentGroupUsers
 } from '../slice/group'
 // import types
 import { RootState } from '../reducers'
@@ -14,6 +15,7 @@ export const useGroupSelector = () => {
   const dispatch = useDispatch()
   const {  
     currentGroupId,
+    currentGroupUsers,
     isLoading,
     error
   } = useSelector<RootState, GroupState>(state => state.groups)
@@ -21,13 +23,16 @@ export const useGroupSelector = () => {
   const _requestCreateGroup = useCallback(() => dispatch(requestCreateGroup()), [dispatch])
   const _requestJoinGroup = useCallback((code: string) => dispatch(requestJoinGroup(code)), [dispatch])
   const _setCurrentGroupId = useCallback(() => dispatch(setCurrentGroupId()), [dispatch])
+  const _requestFetchCurrentGroupUsers = useCallback(() => dispatch(requestFetchCurrentGroupUsers()), [dispatch])
 
   return {
     currentGroupId,
+    currentGroupUsers,
     isLoading,
     error,
     requestCreateGroup: _requestCreateGroup,
     requestJoinGroup: _requestJoinGroup,
-    setCurrentGroupId: _setCurrentGroupId
+    setCurrentGroupId: _setCurrentGroupId,
+    requestFetchCurrentGroupUsers: _requestFetchCurrentGroupUsers
   }
 }

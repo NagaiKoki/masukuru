@@ -166,3 +166,21 @@ export const requestFetchCurrentGroupId = async () => {
     return { error: error.message }
   }
 }
+
+// 現在所属しているグループのユーザーを取得
+export const requestFetchGetCurrentGroupUsers = async (groupId: string) => {
+  const groupUserRef = db.collection('groups').doc(groupId).collection('groupUsers')
+  let groupUsers: GroupUserType[] = []
+
+  try {
+    await groupUserRef.get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data() as GroupUserType
+        groupUsers.push(data)
+      })
+    })
+    return { payload: groupUsers }
+  } catch(error) {
+    return { error }
+  }
+}

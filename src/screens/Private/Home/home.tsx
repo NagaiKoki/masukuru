@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import components
-import UserImage from '../../../components/Image/userImage'
+import MemberList from '../../../components/Home/Member/List'
 import RecordList from '../../../components/Records/recordList'
 import Loading from '../../../components/Loading';
 import { getHeaderNav } from '../../../components/Home/HeaderNav'
@@ -20,7 +20,6 @@ import PostedUserEmojiModal from '../../../components/Records/Reactions/Emoji/Mo
 import { HomeProps } from '../../../containers/Private/home'
 import { UserPropertyType } from '../../../types/Analytics/amplitude'
 // import apis
-import { getMemberList } from '../../../apis/Home/menber'
 import { isSetExpoNotificationToken, requestPutExpoNotificationToken } from '../../../apis/Push'
 // import utils
 import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
@@ -36,7 +35,7 @@ import { useUiSelector } from '../../../selectors/ui'
 import { useGroupSelector } from '../../../selectors/group';
 
 const HomeScreen = (props: HomeProps) => {
-  const { navigation, route, records, actions } = props
+  const { navigation, records, actions } = props
   const {
     requestFetchRecords,
     requestNextRecords,
@@ -49,7 +48,6 @@ const HomeScreen = (props: HomeProps) => {
   const { toastMessage } = useUiSelector()
   const { currentGroupId } = useGroupSelector()
   const lastRecord = recordData[recordData.length - 1]
-  const [UserList, setUserList] = useState([]);
   const [isRefresh, setIsRefresh] = useState(false)
   const [isHomeLoading, setIsHomeLoading] = useState(false)
   const currentUserId = firebase.auth().currentUser.uid
@@ -66,7 +64,6 @@ const HomeScreen = (props: HomeProps) => {
     useCallback(() => {
       updateModule()
       setIsHomeLoading(true)
-      getMemberList(currentGroupId, setUserList)
       requestFetchRecords({ uid: null, groupId: currentGroupId})
       requestFetchCurrentUserData(currentUserId)
       getHeaderNav(currentGroupId, navigation)
@@ -101,32 +98,10 @@ const HomeScreen = (props: HomeProps) => {
     toggleReflesh(false)
   }, [onFreshLoading])
 
-  // メンバーリスト
-  const renderMemberList =
-    <MemberView>
-      <MemberListView>
-        <MemberFlatList
-          horizontal
-          data={UserList}
-          extraData={UserList}
-          keyExtractor={item => item.uid.toString()}
-          renderItem={({item}) =>
-          <MemberFlatListView onPress={() => navigation.navigate('UserPage', { user: item })}>
-            <UserImage uri={item.imageUrl} width={50} height={50} borderRadius={60} />
-            <MemberFlatListName>
-              {item.name}
-            </MemberFlatListName>
-          </MemberFlatListView>
-          }
-        />
-      </MemberListView>
-    </MemberView>
-
   const onRefresh = async () => {
     hapticFeedBack('medium')
     toggleReflesh(true)
     setIsRefresh(true)
-    await getMemberList(currentGroupId, setUserList)
     requestFetchRecords({ uid: null, groupId: currentGroupId})
     setIsRefresh(false)
   }
@@ -144,7 +119,7 @@ const HomeScreen = (props: HomeProps) => {
 
   return (
     <Container refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />}>
-    {renderMemberList}
+      <MemberList onClick={() => {}}/>
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
@@ -177,41 +152,13 @@ const HomeScreen = (props: HomeProps) => {
       <PostedUserEmojiModal isOpen={isPostedEmojiUsersModalOpen} />
       { toastMessage ? <Toaster toastMessage={toastMessage} /> : null }
     </Container>
-  );
-};
+  )
+}
 
 
 const Container = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND3};
-`
-
-const MemberView = styled.View`
-  position: relative;
-  background-color: ${COLORS.BASE_WHITE};
-  border-color: ${COLORS.BASE_BORDER_COLOR};
-  border-bottom-width: 0.5px;
-  height: 82px;
-  padding: 10px 0 0 10px;
-`
-
-const MemberListView = styled.View`
-  width: 100%;
-`
-
-const MemberFlatList = styled.FlatList`
-`
-
-const MemberFlatListView = styled.TouchableOpacity`
-  margin-right: 12px;
-  padding-bottom: 5px;
-`
-
-const MemberFlatListName = styled.Text`
-  padding-top: 4px;
-  font-size: 10px;
-  text-align: center;
-  color: ${COLORS.BASE_BLACK};
 `
 
 const RecordAddBtn = styled.TouchableOpacity`

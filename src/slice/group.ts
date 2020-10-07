@@ -76,19 +76,22 @@ const groupSlice = createSlice({
     },
     requestFetchCurrentGroupUsers: (state) => {
       return {
-        ...state
+        ...state,
+        isLoading: true
       }
     },
     successFetchCurrentGroupUsers: (state, action: PayloadAction<GroupUserType[]>) => {
       return {
         ...state,
-        currentGroupUsers: action.payload
+        currentGroupUsers: action.payload,
+        isLoading: false
       }
     },
     failureFetchCurrentGroupUsers: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        isLoading: false
       }
     }
   }

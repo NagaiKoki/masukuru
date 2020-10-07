@@ -4,10 +4,11 @@ import { takeEvery, call, put, fork, select } from 'redux-saga/effects'
 import { 
   requestPostCreateGroup, 
   requestPatchJoinGroup,
-  requestFetchCurrentGroupId
+  requestFetchCurrentGroupId,
+  requestFetchGetCurrentGroupUsers
 } from '../apis/Groups/v1/'
 // import types
-import { GroupType } from '../types/Group'
+import { GroupType, GroupUserType } from '../types/Group'
 import { ResponseType } from '../types'
 import { RootState } from '../reducers'
 // import slices
@@ -20,12 +21,16 @@ import {
   failureJoinGroup,
   setCurrentGroupId,
   successSetCurrentGroupId,
-  failureSetCurrentGroupId
+  failureSetCurrentGroupId,
+  requestFetchCurrentGroupUsers,
+  successFetchCurrentGroupUsers,
+  failureFetchCurrentGroupUsers
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
 
 const userSelector = (state: RootState) => state.users
+const groupSelector = (state: RootState) => state.groups
 
 // １人のグループを作成
 function* runRequestCreateGroup() {
@@ -87,8 +92,28 @@ function* handleRequestFetchCurrentGroupId() {
   yield takeEvery(setCurrentGroupId.type, runRequestFetchCurrentGroupId)
 }
 
+// 現在所属しているグループのユーザーを取得
+function* runRequestFetchCurrentGroupUsers() {
+  const { currentGroupId }: ReturnType<typeof groupSelector> = yield select(groupSelector)
+  const { payload, error }: ResponseType<GroupUserType[]> = yield call(
+    requestFetchGetCurrentGroupUsers,
+    currentGroupId
+  )
+
+  if (payload && !error) {
+    yield put(successFetchCurrentGroupUsers(payload))
+  } else if (error) {
+    yield put(failureFetchCurrentGroupUsers(error))
+  }
+}
+
+function* handleRequestFetchCurrentGroupUsers() {
+  yield takeEvery(requestFetchCurrentGroupUsers.type, runRequestFetchCurrentGroupUsers)
+}
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
   yield fork(handleRequestFetchCurrentGroupId)
+  yield fork(handleRequestFetchCurrentGroupUsers)
 }
