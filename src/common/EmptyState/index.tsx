@@ -14,7 +14,7 @@ const EmptyState = (props: PropsType) => {
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image source={require('../../assets/emptyState.png')} resizeMode="cover" style={{ width: '100%', height: 100, resizeMode: 'cover', alignSelf: 'center' }} />
+        <Image source={require('../../assets/emptyState.png')} resizeMode="cover" style={{ width: '100%', height: 80, resizeMode: 'cover', alignSelf: 'center' }} />
       </ImageWrapper>
       <Text>{text}</Text>
     </Wrapper>
@@ -30,7 +30,7 @@ const Wrapper = styled.View`
 `
 
 const ImageWrapper = styled.View`
-  width: 100px;
+  width: 80px;
 `
 
 const Text = styled.Text`

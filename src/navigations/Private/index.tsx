@@ -33,7 +33,7 @@ const MainTabNavigator = () => {
           let iconName: string;
           if (route.name === 'ホーム') {
             iconName = 'people'
-          } else if (route.name === 'マイページ') {
+          } else if (route.name === 'MyPage') {
             iconName = 'user'
           } else if (route.name === 'きろく') {
             iconName = 'chart'
@@ -88,7 +88,7 @@ const MainTabNavigator = () => {
       />
 
       <Tab.Screen 
-        name='マイページ' 
+        name='MyPage' 
         component={MyPageNavigator} 
         options={{
           tabBarLabel: '' 

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 // import components
 import User from '../../../components/Drawer/User'
+import DrawerList from '../../../components/Drawer/List'
 // selectors
 import { useUserSelectors } from '../../../selectors/user'
 
@@ -14,9 +15,14 @@ const Drawer = ({ navigation }) => {
     return <></>
   }
 
+  const handleNaivgateUser = () => {
+    navigation.navigate('MyPage')
+  }
+
   return (
     <Container>
-      <User currentUser={currentUser} />
+      <User currentUser={currentUser} onClick={handleNaivgateUser} />
+      <DrawerList navigation={navigation} />
     </Container>
   )
 }

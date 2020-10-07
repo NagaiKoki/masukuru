@@ -44,7 +44,7 @@ const ProfileChangeScreen = ({ route, navigation }) => {
     // ユーザーの更新処理
     const updateUserProfile = async () => {
       await requestUpdateUser(userName, uri, user)
-      navigation.goBack('マイページ', { user: user })
+      navigation.goBack('MyPage', { user: user })
     };
 
   return (

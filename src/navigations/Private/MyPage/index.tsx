@@ -11,9 +11,9 @@ const MyPageNavigator = () => {
   const MyPageStack = createStackNavigator()
   
   return (
-    <MyPageStack.Navigator initialRouteName='マイページ'>
+    <MyPageStack.Navigator initialRouteName='MyPage'>
        <MyPageStack.Screen
-        name="マイページ"
+        name="MyPage"
         component={UserContainer}
         options={{
           headerStyle: {
