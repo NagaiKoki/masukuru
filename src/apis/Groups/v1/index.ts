@@ -198,7 +198,7 @@ export const requestFetchGetBelongGroups = async () => {
         groupIds.push(doc.ref.parent.parent.id)
       })
     })
-    
+
     await Promise.all(groupIds.map(async id => {
       await db.collection('groups').doc(id).get().then(snap => {
         const data = snap.data() as GroupType
@@ -210,5 +210,28 @@ export const requestFetchGetBelongGroups = async () => {
     return { payload: groups }
   } catch(error) {
     return { error }
+  }
+}
+
+// もしグループ画像 or 名前がない場合に、叩く
+// local stateに格納する
+export const requestGroupUsers = async (groupId: string) => {
+  const groupRef = db.collection('groups').doc(groupId)
+  let groupUsers: GroupUserType[] = []
+
+  try {
+    await groupRef.collection('groupUsers').get().then(snap => {
+      if (snap.empty) {
+        throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+      } else {
+        snap.docs.forEach(user => {
+          const data = user.data() as GroupUserType
+          groupUsers.push(data)
+        })
+      }
+    })
+    return { payload: groupUsers }
+  } catch(error) {
+    return { error: error.message }
   }
 }

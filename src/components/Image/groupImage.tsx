@@ -141,6 +141,10 @@ export const UnSettingGroupImage = (props: UnsettingGroupImage) => {
         </Wrapper>
       </MeshWrapper>
     )
+  } else {
+    return (
+      <></>
+    )
   }
 }
 

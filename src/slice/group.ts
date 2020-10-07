@@ -98,23 +98,20 @@ const groupSlice = createSlice({
     requestFetchBelongGroups: (state) => {
       return {
         ...state,
-        isLoading: true
       }
     },
     successFetchBelongGroups: (state, action: PayloadAction<GroupType[]>) => {
       return {
         ...state,
         belongGroups: action.payload,
-        isLoading: false
       }
     },
     failureFetchBelongGroups: (state, action: PayloadAction<string>) => {
       return {
         ...state,
         error: action.payload,
-        isLoading: false
       }
-    }
+    },
   }
 })
 
