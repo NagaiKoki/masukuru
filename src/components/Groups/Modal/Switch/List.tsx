@@ -9,14 +9,15 @@ import { COLORS } from '../../../../constants/Styles'
 
 type PropsType = {
   groups: GroupType[]
-  currentGroupId: string
+  handleOnNavigate: () => void
+  handleOnClose: () => void
 }
 
 const GroupSwtichModalList = (props: PropsType) => {
-  const { groups, currentGroupId } = props
+  const { groups, handleOnNavigate, handleOnClose } = props
 
   const renderList = groups.map((item, i) => (
-    <Item key={i} group={item} currentGroupId={currentGroupId} />
+    <Item key={i} group={item} handleOnNavigate={handleOnNavigate} handleOnClose={handleOnClose} />
   ))
 
   return (

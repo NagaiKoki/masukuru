@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
+import { Alert } from 'react-native'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/Feather'
 // import components
 import BottomModal from '../../../../common/Modal/BottomModal'
 import List from './List'
-import Loading from '../../../Loading'
 // import selectors
 import { useGroupSelector } from '../../../../selectors/group'
 import { COLORS } from '../../../../constants/Styles'
-// import utils
-import { lazyFunction } from '../../../../utilities/Function/lazyFunction'
 
 type PropsType = {
   isOpen: boolean
@@ -23,7 +21,6 @@ const GroupSwitchModal = (props: PropsType) => {
     belongGroups, 
     requestFetchBelongGroups, 
     requestCreateGroup,
-    currentGroupId
   } = useGroupSelector()
 
   useEffect(() => {
@@ -40,6 +37,23 @@ const GroupSwitchModal = (props: PropsType) => {
     requestCreateGroup()
   }
 
+  const handleAddGroup = () => 
+    Alert.alert(
+      "グループを作成しますか？",
+      "※ 所属できるグループは5つまでです。",
+      [
+        {
+          text: "キャンセル",
+          style: 'cancel'
+        },
+        {
+          text: '作成する',
+          onPress: () => handleOnCreateGroup()
+        }
+      ],
+      { cancelable: false }
+    )
+
   if (!belongGroups.length) {
     return <></>
   }
@@ -48,8 +62,8 @@ const GroupSwitchModal = (props: PropsType) => {
     <BottomModal isOpen={isOpen} onClose={handleOnClose}>
       <Container>
         <Title>所属グループ</Title>
-        <List groups={belongGroups} currentGroupId={currentGroupId} />
-        <AddNewGroupButton onPress={handleOnCreateGroup}>
+        <List groups={belongGroups} handleOnNavigate={handleOnNavigate} handleOnClose={handleOnClose} />
+        <AddNewGroupButton onPress={handleAddGroup} activeOpacity={0.8}>
           <Icon name="plus" size={20} style={{ color: COLORS.BASE_MUSCLEW, marginRight: 5 }}/>
           <AddNewGroupText>新しくグループを作成する</AddNewGroupText>
         </AddNewGroupButton>

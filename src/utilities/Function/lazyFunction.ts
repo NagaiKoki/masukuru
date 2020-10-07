@@ -1,7 +1,7 @@
 let timeId: NodeJS.Timeout
-export const lazyFunction = (func: Function, ms: number) => (...args: any) => {
+export const lazyFunction = (func: Function, ms: number) => (arg: any) => {
   clearTimeout(timeId)
   timeId = setTimeout(() => {
-    func(args)
+    func(arg)
   }, ms);
 }

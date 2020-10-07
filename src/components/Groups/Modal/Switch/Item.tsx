@@ -9,15 +9,21 @@ import { GroupImage, UnSettingGroupImage } from '../../../Image/groupImage'
 import { GroupType } from '../../../../types/Group'
 // import constants
 import { COLORS } from '../../../../constants/Styles'
+// import selectors
+import { useGroupSelector } from '../../../../selectors/group'
+// import utils
+import { lazyFunction } from '../../../../utilities/Function/lazyFunction'
 
 type PropsType = {
   group: GroupType
-  currentGroupId: string
+  handleOnNavigate: () => void
+  handleOnClose: () => void
 }
 
 const GroupSwtichModalItem = (props: PropsType) => {
-  const { group, currentGroupId } = props
+  const { group, handleOnNavigate, handleOnClose } = props
   const { id, imageUrl, groupName } = group
+  const { currentGroupId, requestSwitchGroup } = useGroupSelector()
   const [urls, setUrls] = useState([])
   const [names, setNames] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -47,6 +53,12 @@ const GroupSwtichModalItem = (props: PropsType) => {
     return <></>
   }
 
+  const handleSwitchGroup = () => {
+    handleOnClose()
+    handleOnNavigate()
+    lazyFunction(requestSwitchGroup, 300)(id)
+  }
+
   const renderImage = imageUrl ?
     <GroupImage url={imageUrl} width={35} height={35} /> :
     <UnSettingGroupImage urls={urls} width={35} height={35} />
@@ -60,7 +72,7 @@ const GroupSwtichModalItem = (props: PropsType) => {
     <Icon name="checkcircle" size={20} style={{ color: COLORS.SUCCESS_MESSAGE }} />
 
   return (
-    <Wrapper activeOpacity={0.8}>
+    <Wrapper activeOpacity={0.8} onPress={handleSwitchGroup}>
       <GroupWrapper>
         {renderImage}
         {renderGroupName}
