@@ -42,11 +42,11 @@ const DrawerList = (props: PropsType) => {
   }
 
   const handleOpenSnsModal = () => {
-    setInviteModalOpen(true)
+    setSnsModalOpen(true)
   }
 
   const handleCloseSnsModal = () => {
-    setInviteModalOpen(false)
+    setSnsModalOpen(false)
   }
 
   const handleRequestLogout = () => {
