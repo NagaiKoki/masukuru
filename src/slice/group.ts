@@ -5,6 +5,7 @@ import { GroupState, GroupType, GroupUserType } from '../types/Group'
 const initialState: GroupState = {
   currentGroupId: '',
   currentGroupUsers: [],
+  currentGroup: null,
   belongGroups: [],
   isLoading: false,
   error: ''
@@ -61,11 +62,12 @@ const groupSlice = createSlice({
         isLoading: true
       }
     },
-    successSetCurrentGroupId: (state, action: PayloadAction<string>) => {
+    successSetCurrentGroupId: (state, action: PayloadAction<GroupType>) => {
       return {
         ...state,
         isLoading: false,
-        currentGroupId: action.payload
+        currentGroupId: action.payload.id,
+        currentGroup: action.payload
       }
     },
     failureSetCurrentGroupId: (state, action: PayloadAction<string>) => {
@@ -127,6 +129,17 @@ const groupSlice = createSlice({
       return {
         ...state,
         error: action.payload
+      }
+    },
+    requestFetchCurrentGroup: (state)  => {
+      return {
+        ...state
+      }
+    },
+    successFetchCurrentGroup: (state, action: PayloadAction<GroupType>) => {
+      return {
+        ...state,
+        
       }
     }
   }

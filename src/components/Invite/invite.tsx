@@ -1,20 +1,24 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
-import Modal from 'react-native-modal';
+import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Clipboard, Alert } from 'react-native'
 import styled from 'styled-components';
 // import constants
 import { COLORS } from '../../constants/Styles';
+// import components
+import BottomModal from '../../common/Modal/BottomModal'
+// import selectors
+import { useGroupSelector } from '../../selectors/group'
 
 interface InviteCodeModalProps {
-  showInviteCodeModal: boolean
-  setShowInviteCodeModal: any
-  ownCode: string
-  setShowSnsModal: Dispatch<SetStateAction<boolean>>
+  isOpen: boolean
+  handleOnCloseInviteModal: () => void
+  handleOpenSnsShareModal: () => void
 }
 
 const InviteCodeModal = (props: InviteCodeModalProps) => {
-  const { showInviteCodeModal, setShowInviteCodeModal, ownCode, setShowSnsModal } = props
+  const { isOpen, handleOnCloseInviteModal, handleOpenSnsShareModal } = props
+  const { currentGroup } = useGroupSelector()
+  const { inviteCode } = currentGroup
 
   const copyInviteCode = (code) => {
     Clipboard.setString(code)
@@ -22,9 +26,9 @@ const InviteCodeModal = (props: InviteCodeModalProps) => {
   }
 
   const handleShowShareModal = () => {
-    setShowInviteCodeModal(false)
+    handleOnCloseInviteModal()
     setTimeout(() => {
-      setShowSnsModal(true)
+      handleOpenSnsShareModal()
     }, 500)
   }
 
@@ -37,18 +41,18 @@ const InviteCodeModal = (props: InviteCodeModalProps) => {
     </ShareWrapper>
 
   return (
-    <Modal isVisible={showInviteCodeModal} swipeDirection='down' onSwipeComplete={() => setShowInviteCodeModal(false)}>
+    <BottomModal isOpen={isOpen} onClose={handleOnCloseInviteModal} >
       <InviteModalView>
         <InviteCloseBar />
-        <InviteCodeWrapper onPress={() => copyInviteCode(ownCode)}>
-          <InviteCodeText>{ownCode}</InviteCodeText>
+        <InviteCodeWrapper onPress={() => copyInviteCode(inviteCode)}>
+          <InviteCodeText>{inviteCode}</InviteCodeText>
         </InviteCodeWrapper>
         <InviteSubText>タップするとコピーされます</InviteSubText>
         {ShareButtons}
         <InviteModalTitle>この招待コードを招待したい友達に教えてあげよう！</InviteModalTitle>
         <InviteSubText>※ グループに参加できる人数は最大で10人までです</InviteSubText>
       </InviteModalView>
-    </Modal> 
+    </BottomModal> 
   )
 }
 

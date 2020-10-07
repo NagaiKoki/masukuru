@@ -144,11 +144,13 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
   }
 }
 
-// 現在所属しているグループIDをフェッチ
+// 現在所属しているグループをフェッチ
 export const requestFetchCurrentGroupId = async () => {
   const currentUserId = firebase.auth().currentUser.uid
   const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
+  const groupRef = db.collection('groups')
   let currentGroupId: string
+  let currentGroup: GroupType
 
   try {
     await groupUserRef.get().then(snap => {
@@ -161,8 +163,14 @@ export const requestFetchCurrentGroupId = async () => {
         })
       }
     })
+
+    await groupRef.doc(currentGroupId).get().then(snap => {
+      const data = snap.data() as GroupType
+      data.id = snap.id
+      currentGroup = data
+    })
     
-    return { payload: currentGroupId }
+    return { payload: currentGroup }
   } catch(error) {
     return { error: error.message }
   }

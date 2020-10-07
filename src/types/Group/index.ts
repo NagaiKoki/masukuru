@@ -11,6 +11,7 @@ import {
 // state
 export interface GroupState {
   currentGroupId: string
+  currentGroup: GroupType
   currentGroupUsers: GroupUserType[]
   belongGroups: GroupType[]
   isLoading: boolean

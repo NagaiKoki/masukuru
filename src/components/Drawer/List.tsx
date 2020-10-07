@@ -15,6 +15,7 @@ type PropsType = {
 const DrawerList = (props: PropsType) => {
   const { navigation } = props
   const [switchGroupModalOpen, setSwitchGroupModalOpen] = useState(false)
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
   const { requestFetchLogout } = useAuthSelectors()
 
   const handlePressMyPage = () => {
@@ -27,6 +28,14 @@ const DrawerList = (props: PropsType) => {
 
   const handleCloseSwitchModal = () => {
     setSwitchGroupModalOpen(false)
+  }
+
+  const handleOpenInviteModal = () => {
+    setInviteModalOpen(true)
+  }
+
+  const handleCloseInviteModal = () => {
+    setInviteModalOpen(false)
   }
 
   const handleRequestLogout = () => {

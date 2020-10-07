@@ -85,7 +85,7 @@ function* handleRequestJoinGroup() {
 
 // 現在いるグループのidを取得
 function* runRequestFetchCurrentGroupId() {
-  const { payload, error }: ResponseType<string> = yield call(
+  const { payload, error }: ResponseType<GroupType> = yield call(
     requestFetchCurrentGroupId
   )
 

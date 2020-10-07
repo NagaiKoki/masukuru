@@ -17,6 +17,7 @@ export const useGroupSelector = () => {
   const dispatch = useDispatch()
   const {  
     currentGroupId,
+    currentGroup,
     currentGroupUsers,
     belongGroups,
     isLoading,
@@ -33,6 +34,7 @@ export const useGroupSelector = () => {
   return {
     currentGroupId,
     currentGroupUsers,
+    currentGroup,
     belongGroups,
     isGroupLoading: isLoading,
     error,
