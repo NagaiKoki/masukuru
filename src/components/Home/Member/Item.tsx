@@ -11,15 +11,19 @@ import truncateText from '../../../utilities/truncateText'
 
 type PropsType = {
   groupUser: GroupUserType
-  onClick: () => void
+  navigation: any
 }
 
 const MemberItem = (props: PropsType) => {
-  const { groupUser, onClick } = props
+  const { groupUser, navigation } = props
   const { imageUrl, name } = groupUser
 
+  const handleOnClick = () => {
+    navigation.navigate('UserPage', { user: groupUser })
+  }
+
   return (
-    <Wrapper onPress={onClick}>
+    <Wrapper onPress={handleOnClick}>
       <UserImage uri={imageUrl} width={45} height={45} borderRadius={60} />
       <NameText>{truncateText(name, 8)}</NameText>
     </Wrapper>

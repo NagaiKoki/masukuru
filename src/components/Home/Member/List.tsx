@@ -10,17 +10,18 @@ import MemberItem from './Item'
 type PropsType = {
   currentGroupUsers: GroupUserType[]
   isLoading: boolean
+  navigation: any
 }
 
 const MemberList = (props: PropsType) => {
-  const { currentGroupUsers, isLoading } = props
+  const { currentGroupUsers, isLoading, navigation } = props
   
   if (isLoading) {
     return <></>
   }
 
   const renderUserList = currentGroupUsers.map(user => (
-    <MemberItem key={user.uid} groupUser={user} onClick={() => {}} />
+    <MemberItem key={user.uid} groupUser={user} navigation={navigation} />
   ))
 
   return (

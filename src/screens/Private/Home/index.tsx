@@ -61,19 +61,17 @@ const HomeScreen = (props: HomeProps) => {
     }),
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      updateModule()
-      setIsHomeLoading(true)
-      requestFetchRecords({ uid: null, groupId: currentGroupId})
-      requestFetchCurrentGroupUsers()
-      requestFetchCurrentUserData(currentUserId)
-      getHeaderNav(currentGroupId, navigation)
-      setIsHomeLoading(false)
-      isSetExpoNotificationToken()
-      Analytics.track('home')
-    }, [currentGroupId])
-  );
+  useEffect(() => {
+    updateModule()
+    setIsHomeLoading(true)
+    requestFetchRecords({ uid: null, groupId: currentGroupId})
+    requestFetchCurrentGroupUsers()
+    requestFetchCurrentUserData(currentUserId)
+    getHeaderNav(currentGroupId, navigation)
+    setIsHomeLoading(false)
+    isSetExpoNotificationToken()
+    Analytics.track('home')
+  }, [currentGroupId])
 
   useEffect(() => {
     const putNotificationToken = async () => {
@@ -121,7 +119,7 @@ const HomeScreen = (props: HomeProps) => {
 
   return (
     <Container refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />}>
-      <MemberList currentGroupUsers={currentGroupUsers} isLoading={isGroupLoading} />
+      <MemberList currentGroupUsers={currentGroupUsers} isLoading={isGroupLoading} navigation={navigation} />
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
