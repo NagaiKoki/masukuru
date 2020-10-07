@@ -43,6 +43,7 @@ const HomeScreen = (props: HomeProps) => {
     requestFetchCurrentUserData,
     toggleReflesh
   } = actions
+  
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
   const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
   const { toastMessage } = useUiSelector()
@@ -70,7 +71,7 @@ const HomeScreen = (props: HomeProps) => {
       setIsHomeLoading(false)
       isSetExpoNotificationToken()
       Analytics.track('home')
-    },[currentGroupId])
+    }, [currentGroupId])
   );
 
   useEffect(() => {

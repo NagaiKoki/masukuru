@@ -12,11 +12,9 @@ import AuthorizedNavigator from './Private';
 import TutorialNavigator from './Public/Tutorial'
 import AuthenticationNavigator from './Public/Unauthorized';
 // import screens
-import DrawerContent from '../screens/Private/Drawers/DrawerContents';
+import DrawerContent from '../screens/Private/Drawers';
 // import components
 import Loading from '../components/Loading'
-// import confing
-import firebase from '../config/firebase'
 // import constants
 import { COLORS } from '../constants/Styles';
 
@@ -72,7 +70,7 @@ const RootNavigator = () => {
         return (
           <Drawer.Navigator 
             drawerStyle={{ width: 330 }} 
-            drawerContent={ (props) => <DrawerContent user={firebase.auth().currentUser} {...props}/>}
+            drawerContent={ (props) => <DrawerContent {...props}/>}
           >
             <Drawer.Screen 
               name="MainTabNavigator"
