@@ -67,11 +67,9 @@ function* handleRequestCreateGroup() {
 
 // 招待先のグループに参加する
 function* runRequestJoinGroup(action: PayloadAction<string>) {
-  const { currentUser }: ReturnType<typeof userSelector> = yield select(userSelector)
   const { payload, error }: ResponseType<GroupType> = yield call(
     requestPatchJoinGroup,
-    action.payload,
-    currentUser
+    action.payload
   )
 
   if (payload && !error) {
@@ -79,6 +77,7 @@ function* runRequestJoinGroup(action: PayloadAction<string>) {
     yield put(setUserStatus('authorized'))
     yield put(setToastMessage({ message: 'グループに参加しました', type: 'success' }))
   } else if (error) {
+    yield put(setToastMessage({ message: error, type: 'error' }))
     yield put(failureJoinGroup(error))
   }
 }

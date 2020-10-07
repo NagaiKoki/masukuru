@@ -16,6 +16,7 @@ export interface GroupState {
   belongGroups: GroupType[]
   isLoading: boolean
   error: string
+  isJoinModalOpen: boolean
 }
 
 export type GroupType = {

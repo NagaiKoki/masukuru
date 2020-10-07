@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 // import selectors
-import { useGroupSelector } from '../../selectors/group'
+import { useGroupSelector } from '../../../../selectors/group'
 // import components
-import BottomModal from '../../common/Modal/BottomModal'
-import Form from '../../common/Form'
-import Button from '../../common/Button'
+import BottomModal from '../../../../common/Modal/BottomModal'
+import Form from '../../../../common/Form'
+import Button from '../../../../common/Button'
 // import constants
-import { COLORS } from '../../constants/Styles'
+import { COLORS } from '../../../../constants/Styles'
 
 type PropsType = {
   isOpen: boolean
+  authorized?: boolean
+  navigation?: any
   handleCloseModal: () => void
 }
 
 const JoinGroupModal = (props: PropsType) => {
-  const { isOpen, handleCloseModal } = props
+  const { isOpen, authorized, navigation, handleCloseModal } = props
   const [code, setCode] = useState('')
   const { error, requestJoinGroup } = useGroupSelector()
 
@@ -24,6 +26,10 @@ const JoinGroupModal = (props: PropsType) => {
   }
 
   const handleOnSubmit = () => {
+    if (authorized) {
+      handleCloseModal()
+      navigation.navigate('mainContainer')
+    }
     requestJoinGroup(code)
   }
 
@@ -37,7 +43,7 @@ const JoinGroupModal = (props: PropsType) => {
             maxLength={6}
             onChange={handleChangeCode}
           />
-          { error ? <ErrorText>{error}</ErrorText> : null }
+          { error && !authorized ? <ErrorText>{error}</ErrorText> : null }
           <SubText>※ 招待先のグループが11人以上の場合、参加できません。</SubText>
         </FormWrapper>
         <ButtonWrapper>

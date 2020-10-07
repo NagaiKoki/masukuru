@@ -1,4 +1,6 @@
 import firebase, { db } from '../../../config/firebase'
+// import apis
+import { requestFetchUser } from '../../Users'
 // import utils
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 // import types
@@ -67,9 +69,11 @@ const requestCheckInviteCode = async (code: string): Promise<string> => {
 }
 
 // グループに参加する
-export const requestPatchJoinGroup = async (code: string, currentUser: UserType) => {
+export const requestPatchJoinGroup = async (code: string) => {
+  const currentUserId = firebase.auth().currentUser.uid
   const groupRef = db.collection('groups').where('inviteCode', '==', code)
-  const { uid, imageUrl, name } = currentUser
+  const { user }: { user?: UserType, error?: string } = await requestFetchUser(currentUserId)
+  const { imageUrl, uid, name } = user
   let invitedGroup: GroupType
 
   try {
@@ -116,7 +120,7 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
   try {
     // 招待先のグループが11人以上の場合
     await groupUserRef.get().then(snap => {
-      if (snap.size > 2) {
+      if (snap.size > 11) {
         throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
       }
     })

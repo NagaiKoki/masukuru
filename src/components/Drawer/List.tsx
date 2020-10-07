@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Item from './Item'
 import GroupSwitchModal from '../Groups/Modal/Switch'
 import GroupInviteModal from '../Groups/Modal/Invite'
+import GroupJoinModal from '../Groups/Modal/Join/JoinGroupModal'
 import SnsShareModal from '../Groups/Modal/Invite/SnsShare'
 // import types
 import { DrawerItemType } from './Item'
@@ -19,10 +20,15 @@ const DrawerList = (props: PropsType) => {
   const [switchGroupModalOpen, setSwitchGroupModalOpen] = useState(false)
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
   const [snsModalOpen, setSnsModalOpen] = useState(false)
+  const [joinModalOpen, setJoinModalOpen] = useState(false)
   const { requestFetchLogout } = useAuthSelectors()
 
-  const handlePressMyPage = () => {
+  const handleNavigateMyPage = () => {
     navigation.navigate('MyPage')
+  }
+
+  const handleNavigateSetting = () => {
+    navigation.navigate('setting')
   }
 
   const handleOpenSwitchModal = () => {
@@ -49,14 +55,25 @@ const DrawerList = (props: PropsType) => {
     setSnsModalOpen(false)
   }
 
+  const handleOpenJoinModal = () => {
+    setJoinModalOpen(true)
+  }
+
+  const handleCloseJoinModal = () => {
+    setJoinModalOpen(false)
+  }
+
   const handleRequestLogout = () => {
     requestFetchLogout()
   }
 
   const listMapObj: DrawerItemType[] = [
-    { text: 'マイページ', iconName: 'user', onClick: handlePressMyPage },
+    { text: 'マイページ', iconName: 'user', onClick: handleNavigateMyPage },
     { text: 'グループを切り替える', iconName: 'people', onClick: handleOpenSwitchModal },
     { text: 'グループに招待する', iconName: 'people', onClick: handleOpenInviteModal },
+    { text: 'グループに参加する', iconName: 'envelope-open', onClick: handleOpenJoinModal },
+    { text: 'フィードバック', iconName: 'question', onClick: () => {} },
+    { text: '設定', iconName: 'settings', onClick: handleNavigateSetting },
     { text: 'ログアウト', iconName: 'logout', onClick: handleRequestLogout },
   ]
 
@@ -70,6 +87,7 @@ const DrawerList = (props: PropsType) => {
       <GroupSwitchModal isOpen={switchGroupModalOpen} navigation={navigation} handleOnClose={handleCloseSwitchModal} />
       <GroupInviteModal isOpen={inviteModalOpen} handleOnCloseInviteModal={handleCloseInviteModal} handleOpenSnsShareModal={handleOpenSnsModal} />
       <SnsShareModal isOpen={snsModalOpen} handleCloseModal={handleCloseSnsModal} />
+      <GroupJoinModal isOpen={joinModalOpen} authorized={true} navigation={navigation} handleCloseModal={handleCloseJoinModal} />
     </Wrapper>
   )
 }

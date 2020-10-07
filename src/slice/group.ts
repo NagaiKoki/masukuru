@@ -16,7 +16,8 @@ const initialState: GroupState = {
   },
   belongGroups: [],
   isLoading: false,
-  error: ''
+  error: '',
+  isJoinModalOpen: false
 }
 
 const groupSlice = createSlice({
@@ -25,21 +26,18 @@ const groupSlice = createSlice({
   reducers: {
     requestJoinGroup: (state, action: PayloadAction<string>) => {
       return {
-        ...state,
-        isLoading: true
+        ...state
       }
     },
     successJoinGroup: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        isLoading: false,
         currentGroupId: action.payload
       }
     },
     failureJoinGroup: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        isLoading: false,
         error: action.payload      
       }
     },
@@ -154,6 +152,12 @@ const groupSlice = createSlice({
         ...state,
         error: action.payload
       }
+    },
+    toggleOpenJoinModal: (state) => {
+      return {
+        ...state,
+        isJoinModalOpen: !state.isJoinModalOpen
+      }
     }
   }
 })
@@ -182,4 +186,5 @@ export const {
   requestFetchCurrentGroup,
   successFetchCurrentGroup,
   failureFetchCurrentGroup,
+  toggleOpenJoinModal
 } = groupSlice.actions

@@ -21,7 +21,7 @@ const MemberItem = (props: PropsType) => {
   return (
     <Wrapper onPress={onClick}>
       <UserImage uri={imageUrl} width={45} height={45} borderRadius={60} />
-      <NameText>{truncateText(name, 10)}</NameText>
+      <NameText>{truncateText(name, 8)}</NameText>
     </Wrapper>
   )
 }
@@ -29,11 +29,12 @@ const MemberItem = (props: PropsType) => {
 export default MemberItem
 
 const Wrapper = styled.TouchableOpacity`
-  padding: 0 10px;
+  padding: 0 5px;
 `
 
 const NameText = styled.Text`
+  padding-top: 3px;
   color: ${COLORS.BASE_BLACK};
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
 `
