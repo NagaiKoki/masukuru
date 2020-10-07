@@ -16,7 +16,7 @@ const ChartNavigator = () => {
         name="chartGraph"
         component={ChartGraphNavigator}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
 

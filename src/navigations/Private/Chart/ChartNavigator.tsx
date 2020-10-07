@@ -1,11 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../../../constants/Styles'
 // import screens
 import WeightChartScreen from '../../../screens/Private/Charts'
 import AddWeightScreen from '../../../screens/Private/Charts/AddWeight'
 
-const ChartNavigator = () => {
+const ChartNavigator = ({ navigation }) => {
   const RecordStack = createStackNavigator();
 
   return (
@@ -20,6 +21,13 @@ const ChartNavigator = () => {
             backgroundColor: COLORS.BASE_MUSCLEW
           },
           headerTintColor: COLORS.BASE_WHITE,
+          headerLeft: () => (
+            <Icon name="bars" 
+                  size={24} 
+                  onPress={() => { navigation.openDrawer() }} 
+                  style={{ paddingLeft: 20, color: COLORS.BASE_WHITE }}
+            />
+          ),
         }}
       />
 

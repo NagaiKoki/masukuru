@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device'
-import { useFocusEffect } from '@react-navigation/native';
 import { RefreshControl, ScrollView, Platform } from 'react-native';
 import styled from 'styled-components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
