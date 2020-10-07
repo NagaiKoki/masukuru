@@ -5,7 +5,7 @@ import { ResponseRecordType } from '../../types/Record'
 // import components
 import RecordItem from './Items/item'
 import Loading from '../Loading'
-import { COLORS } from '../../constants/Styles'
+import EmptyState from '../../common/EmptyState'
 
 interface RecordListProps {
   recordData: ResponseRecordType[]
@@ -15,21 +15,22 @@ interface RecordListProps {
 }
 
 const RecordList = (props: RecordListProps) => {
-  const { recordData, isLoading, navigation, requestDestroyRecord } = props
+  const { recordData, isLoading, navigation } = props
+
+  const EMPTY_TEXT = 'まだ記録がありません。\n\右下のボタンから、トレーニングの記録を付けてみよう！'
 
   const renderRecordList = recordData.map((record: ResponseRecordType, i: number) => {
     return <RecordItem 
               key={i} 
               record={record} 
               navigation={navigation} 
-              requestDestroyRecord={requestDestroyRecord}
             />
   })
 
   return (
     <RecordListContainer>
       { !isLoading && !recordData.length ? (
-        <RecordEmptyState>表示するトレーニングはまだありません。{"\n"}{"\n"}右下のボタンからトレーニングの記録を共有しよう！</RecordEmptyState>
+        <EmptyState text={EMPTY_TEXT} />
       ) : renderRecordList
       }
       { isLoading ? <Loading size="small" /> : null }
