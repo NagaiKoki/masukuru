@@ -6,6 +6,8 @@ import UserImage from '../../../components/Image/userImage'
 import { COLORS } from '../../../constants/Styles'
 // import types
 import { GroupUserType } from '../../../types/Group/'
+// import utils
+import truncateText from '../../../utilities/truncateText'
 
 type PropsType = {
   groupUser: GroupUserType
@@ -19,7 +21,7 @@ const MemberItem = (props: PropsType) => {
   return (
     <Wrapper onPress={onClick}>
       <UserImage uri={imageUrl} width={45} height={45} borderRadius={60} />
-      <NameText>{name}</NameText>
+      <NameText>{truncateText(name, 10)}</NameText>
     </Wrapper>
   )
 }

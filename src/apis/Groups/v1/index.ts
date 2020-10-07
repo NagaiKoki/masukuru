@@ -40,6 +40,7 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   try {
     batch.set(groupRef, groupObj)
     batch.set(groupUserRef, groupUserType)
+    await requestPatchCurrentGroupId(temporaryGroupId, currentUser, batch)
     await batch.commit()
 
     return { payload: groupObj }
@@ -231,6 +232,31 @@ export const requestGroupUsers = async (groupId: string) => {
       }
     })
     return { payload: groupUsers }
+  } catch(error) {
+    return { error: error.message }
+  }
+}
+
+// グループ移動後に、groupUsersのCurrentGroupIdを上書きする
+const requestPatchCurrentGroupId = async (currentGroupId: string, currentUser: UserType, batch?: firebase.firestore.WriteBatch) => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
+
+  try {
+    await groupUserRef.get().then(snap => {
+      if (snap.empty) {
+        throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+      } else [
+        snap.forEach(doc => {
+          if (batch) {
+            batch.set(doc.ref, { ...currentUser, currentGroupId })
+          } else {
+            doc.ref.update({ ...currentUser, currentGroupId })
+          }
+        })
+      ]
+    })
+    return { payload: 'success' }
   } catch(error) {
     return { error: error.message }
   }

@@ -32,7 +32,7 @@ export const useGroupSelector = () => {
     currentGroupId,
     currentGroupUsers,
     belongGroups,
-    isLoading,
+    isGroupLoading: isLoading,
     error,
     requestCreateGroup: _requestCreateGroup,
     requestJoinGroup: _requestJoinGroup,

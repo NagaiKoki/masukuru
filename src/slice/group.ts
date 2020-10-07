@@ -112,6 +112,17 @@ const groupSlice = createSlice({
         error: action.payload,
       }
     },
+    requestSwitchGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state
+      }
+    },
+    successSwitchGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        currentGroupId: action.payload
+      }
+    }
   }
 })
 

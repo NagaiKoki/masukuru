@@ -47,7 +47,7 @@ const HomeScreen = (props: HomeProps) => {
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
   const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
   const { toastMessage } = useUiSelector()
-  const { currentGroupId } = useGroupSelector()
+  const { currentGroupId, currentGroupUsers, isGroupLoading, requestFetchCurrentGroupUsers } = useGroupSelector()
   const lastRecord = recordData[recordData.length - 1]
   const [isRefresh, setIsRefresh] = useState(false)
   const [isHomeLoading, setIsHomeLoading] = useState(false)
@@ -66,6 +66,7 @@ const HomeScreen = (props: HomeProps) => {
       updateModule()
       setIsHomeLoading(true)
       requestFetchRecords({ uid: null, groupId: currentGroupId})
+      requestFetchCurrentGroupUsers()
       requestFetchCurrentUserData(currentUserId)
       getHeaderNav(currentGroupId, navigation)
       setIsHomeLoading(false)
@@ -120,7 +121,7 @@ const HomeScreen = (props: HomeProps) => {
 
   return (
     <Container refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />}>
-      <MemberList onClick={() => {}}/>
+      <MemberList currentGroupUsers={currentGroupUsers} isLoading={isGroupLoading} />
       <ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {

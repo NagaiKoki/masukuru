@@ -5,7 +5,7 @@ import { GroupType } from '../../../../types/Group'
 // import components
 import Item from './Item'
 // import constants
-import { COLORS } from '../../../../constants/Styles';
+import { COLORS } from '../../../../constants/Styles'
 
 type PropsType = {
   groups: GroupType[]

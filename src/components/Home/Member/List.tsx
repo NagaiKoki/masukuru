@@ -1,30 +1,26 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+// import types
+import { GroupUserType } from '../../../types/Group'
 // import constants
 import { COLORS } from '../../../constants/Styles'
-// import selectors
-import { useGroupSelector } from '../../../selectors/group'
 // import components
 import MemberItem from './Item'
 
 type PropsType = {
-  onClick: () => void
+  currentGroupUsers: GroupUserType[]
+  isLoading: boolean
 }
 
 const MemberList = (props: PropsType) => {
-  const { onClick } = props
-  const { currentGroupUsers, isLoading, requestFetchCurrentGroupUsers } = useGroupSelector()
-
-  useEffect(() => {
-    requestFetchCurrentGroupUsers()
-  }, [])
-
+  const { currentGroupUsers, isLoading } = props
+  
   if (isLoading) {
     return <></>
   }
 
   const renderUserList = currentGroupUsers.map(user => (
-    <MemberItem key={user.uid} groupUser={user} onClick={onClick} />
+    <MemberItem key={user.uid} groupUser={user} onClick={() => {}} />
   ))
 
   return (

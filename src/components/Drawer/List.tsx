@@ -5,6 +5,8 @@ import Item from './Item'
 import GroupSwitchModal from '../Groups/Modal/Switch'
 // import types
 import { DrawerItemType } from './Item'
+// import selectors
+import { useAuthSelectors } from '../../selectors/auth'
 
 type PropsType = {
   navigation: any
@@ -13,18 +15,28 @@ type PropsType = {
 const DrawerList = (props: PropsType) => {
   const { navigation } = props
   const [switchGroupModalOpen, setSwitchGroupModalOpen] = useState(false)
+  const { requestFetchLogout } = useAuthSelectors()
 
   const handlePressMyPage = () => {
     navigation.navigate('MyPage')
   }
 
-  const handleToggleSwitchGroup = () => {
+  const handleOpenSwitchModal = () => {
     setSwitchGroupModalOpen(!switchGroupModalOpen)
+  }
+
+  const handleCloseSwitchModal = () => {
+    setSwitchGroupModalOpen(false)
+  }
+
+  const handleRequestLogout = () => {
+    requestFetchLogout()
   }
 
   const listMapObj: DrawerItemType[] = [
     { text: 'マイページ', iconName: 'user', onClick: handlePressMyPage },
-    { text: 'グループを切り替える', iconName: 'people', onClick: handleToggleSwitchGroup }
+    { text: 'グループを切り替える', iconName: 'people', onClick: handleOpenSwitchModal },
+    { text: 'ログアウト', iconName: 'logout', onClick: handleRequestLogout }
   ]
 
   const renderList = listMapObj.map((item, i) => (
@@ -34,7 +46,7 @@ const DrawerList = (props: PropsType) => {
   return (
     <Wrapper>
       {renderList}
-      <GroupSwitchModal isOpen={switchGroupModalOpen} handleOnClose={handleToggleSwitchGroup} />
+      <GroupSwitchModal isOpen={switchGroupModalOpen} navigation={navigation} handleOnClose={handleCloseSwitchModal} />
     </Wrapper>
   )
 }

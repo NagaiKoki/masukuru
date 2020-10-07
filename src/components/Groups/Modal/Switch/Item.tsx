@@ -21,6 +21,7 @@ const GroupSwtichModalItem = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true)
 
   const requestFetchGetGroupUsers = async () => {
+    console.log(id)
     let nameArray: string[] = []
     let urlArray: string[] = []
     const { payload, error } = await requestGroupUsers(id)
