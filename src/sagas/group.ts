@@ -24,7 +24,10 @@ import {
   failureSetCurrentGroupId,
   requestFetchCurrentGroupUsers,
   successFetchCurrentGroupUsers,
-  failureFetchCurrentGroupUsers
+  failureFetchCurrentGroupUsers,
+  requestFetchBelongGroups,
+  successFetchBelongGroups,
+  failureFetchBelongGroups
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
@@ -111,9 +114,19 @@ function* handleRequestFetchCurrentGroupUsers() {
   yield takeEvery(requestFetchCurrentGroupUsers.type, runRequestFetchCurrentGroupUsers)
 }
 
+// 所属しているグループを取得
+function* runRequestFetchBelongGroups() {
+  
+}
+
+function* handleRequestFetchBelongGroups() {
+  yield takeEvery(requestFetchBelongGroups.type, runRequestFetchBelongGroups)
+}
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
   yield fork(handleRequestFetchCurrentGroupId)
   yield fork(handleRequestFetchCurrentGroupUsers)
+  yield fork(handleRequestFetchBelongGroups)
 }

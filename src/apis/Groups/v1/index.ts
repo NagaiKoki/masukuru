@@ -184,3 +184,30 @@ export const requestFetchGetCurrentGroupUsers = async (groupId: string) => {
     return { error }
   }
 }
+
+// 所属しているグループ一覧を取得
+export const requestFetchGetBelongGroups = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const groupUserRef = db.collection('groupUsers').where('uid', '==', currentUserId)
+  let groupIds: string[] = []
+  let groups: GroupType[] = []
+
+  try {
+    await groupUserRef.get().then(snap => {
+      snap.forEach(doc => {
+        groupIds.push(doc.ref.parent.id)
+      })
+    })
+    await Promise.all(groupIds.map(async id => {
+      await db.collection('groups').doc(id).get().then(snap => {
+        const data = snap.data() as GroupType
+        data.id = id
+        groups.push(data)
+      })
+    }))
+
+    return { payload: groups }
+  } catch(error) {
+    return { error }
+  }
+}
