@@ -238,7 +238,7 @@ export const requestGroupUsers = async (groupId: string) => {
 }
 
 // グループ移動後に、groupUsersのCurrentGroupIdを上書きする
-const requestPatchCurrentGroupId = async (currentGroupId: string, currentUser: UserType, batch?: firebase.firestore.WriteBatch) => {
+export const requestPatchCurrentGroupId = async (currentGroupId: string, currentUser: UserType, batch?: firebase.firestore.WriteBatch) => {
   const currentUserId = firebase.auth().currentUser.uid
   const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
 

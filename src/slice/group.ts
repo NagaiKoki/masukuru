@@ -122,6 +122,12 @@ const groupSlice = createSlice({
         ...state,
         currentGroupId: action.payload
       }
+    },
+    failureSwitchGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
     }
   }
 })
@@ -143,5 +149,8 @@ export const {
   failureFetchCurrentGroupUsers,
   requestFetchBelongGroups,
   successFetchBelongGroups,
-  failureFetchBelongGroups
+  failureFetchBelongGroups,
+  requestSwitchGroup,
+  successSwitchGroup,
+  failureSwitchGroup
 } = groupSlice.actions

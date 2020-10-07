@@ -6,7 +6,8 @@ import {
   requestPatchJoinGroup,
   requestFetchCurrentGroupId,
   requestFetchGetCurrentGroupUsers,
-  requestFetchGetBelongGroups
+  requestFetchGetBelongGroups,
+  requestPatchCurrentGroupId
 } from '../apis/Groups/v1/'
 // import types
 import { GroupType, GroupUserType } from '../types/Group'
@@ -28,7 +29,10 @@ import {
   failureFetchCurrentGroupUsers,
   requestFetchBelongGroups,
   successFetchBelongGroups,
-  failureFetchBelongGroups
+  failureFetchBelongGroups,
+  requestSwitchGroup,
+  successSwitchGroup,
+  failureSwitchGroup
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
@@ -132,10 +136,32 @@ function* handleRequestFetchBelongGroups() {
   yield takeEvery(requestFetchBelongGroups.type, runRequestFetchBelongGroups)
 }
 
+// グループを切り替える
+function* runRequestSwitchGroup(action: PayloadAction<string>) {
+  const { currentGroupId }: ReturnType<typeof groupSelector> = yield select(groupSelector)
+  const { currentUser }: ReturnType<typeof userSelector> = yield select(userSelector)
+  const { payload, error }: ResponseType<string> = yield call(
+    requestPatchCurrentGroupId,
+    currentGroupId,
+    currentUser
+  )
+  if (payload && !error) {
+    yield put(successSwitchGroup(action.payload))
+    yield put(setToastMessage({ message: 'グループを切り替えました', type: 'success' }))
+  } else if (error) {
+    yield put(failureSwitchGroup(error))
+  }
+}
+
+function* handleRequestSwitchGroup() {
+  yield takeEvery(requestSwitchGroup.type, runRequestSwitchGroup)
+}
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
   yield fork(handleRequestFetchCurrentGroupId)
   yield fork(handleRequestFetchCurrentGroupUsers)
   yield fork(handleRequestFetchBelongGroups)
+  yield fork(handleRequestSwitchGroup)
 }

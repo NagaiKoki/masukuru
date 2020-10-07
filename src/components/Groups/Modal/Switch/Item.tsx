@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import Icon from 'react-native-vector-icons/AntDesign'
 // import apis
 import { requestGroupUsers } from '../../../../apis/Groups/v1'
 // import components
@@ -11,17 +12,17 @@ import { COLORS } from '../../../../constants/Styles'
 
 type PropsType = {
   group: GroupType
+  currentGroupId: string
 }
 
 const GroupSwtichModalItem = (props: PropsType) => {
-  const { group } = props
+  const { group, currentGroupId } = props
   const { id, imageUrl, groupName } = group
   const [urls, setUrls] = useState([])
   const [names, setNames] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   const requestFetchGetGroupUsers = async () => {
-    console.log(id)
     let nameArray: string[] = []
     let urlArray: string[] = []
     const { payload, error } = await requestGroupUsers(id)
@@ -47,18 +48,24 @@ const GroupSwtichModalItem = (props: PropsType) => {
   }
 
   const renderImage = imageUrl ?
-    <GroupImage url={imageUrl} width={40} height={40} /> :
-    <UnSettingGroupImage urls={urls} width={40} height={40} />
+    <GroupImage url={imageUrl} width={35} height={35} /> :
+    <UnSettingGroupImage urls={urls} width={35} height={35} />
 
   const renderGroupName =
     <GroupName>
       { groupName || names.join(', ') }
     </GroupName>
+  
+  const renderCurrentMark = currentGroupId === id &&
+    <Icon name="checkcircle" size={20} style={{ color: COLORS.SUCCESS_MESSAGE }} />
 
   return (
     <Wrapper activeOpacity={0.8}>
-      {renderImage}
-      {renderGroupName}   
+      <GroupWrapper>
+        {renderImage}
+        {renderGroupName}
+      </GroupWrapper>
+      {renderCurrentMark}
     </Wrapper>
   )
 }
@@ -68,14 +75,20 @@ export default GroupSwtichModalItem
 const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   border-bottom-width: 1px;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   padding: 7px 15px;
 `
 
+const GroupWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
 const GroupName = styled.Text`
-  padding-left: 15px;
+  padding-left: 10px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
 `

@@ -22,7 +22,8 @@ const GroupSwitchModal = (props: PropsType) => {
   const { 
     belongGroups, 
     requestFetchBelongGroups, 
-    requestCreateGroup, 
+    requestCreateGroup,
+    currentGroupId
   } = useGroupSelector()
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const GroupSwitchModal = (props: PropsType) => {
     <BottomModal isOpen={isOpen} onClose={handleOnClose}>
       <Container>
         <Title>所属グループ</Title>
-        <List groups={belongGroups} />
+        <List groups={belongGroups} currentGroupId={currentGroupId} />
         <AddNewGroupButton onPress={handleOnCreateGroup}>
           <Icon name="plus" size={20} style={{ color: COLORS.BASE_MUSCLEW, marginRight: 5 }}/>
           <AddNewGroupText>新しくグループを作成する</AddNewGroupText>

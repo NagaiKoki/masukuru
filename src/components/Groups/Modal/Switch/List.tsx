@@ -9,13 +9,14 @@ import { COLORS } from '../../../../constants/Styles'
 
 type PropsType = {
   groups: GroupType[]
+  currentGroupId: string
 }
 
 const GroupSwtichModalList = (props: PropsType) => {
-  const { groups } = props
+  const { groups, currentGroupId } = props
 
   const renderList = groups.map((item, i) => (
-    <Item key={i} group={item} />
+    <Item key={i} group={item} currentGroupId={currentGroupId} />
   ))
 
   return (
