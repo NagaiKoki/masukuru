@@ -57,6 +57,7 @@ function* runRequestCreateGroup() {
     yield put(setUserStatus('authorized'))
     yield put(setToastMessage({ message: 'グループを作成しました', type: 'success' }))
   } else if (error) {
+    yield put(setToastMessage({ message: error, type: 'error' }))
     yield put(failureCreateGroup(error))
   }
 }

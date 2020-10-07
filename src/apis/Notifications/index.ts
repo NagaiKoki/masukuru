@@ -1,7 +1,7 @@
 import { Timestamp } from '@firebase/firestore-types';
 import firebase, { db } from '../../config/firebase';
 // import apis
-import { requestCurrentGroupId } from '../../apis/Groups/transfer'
+import { requestFetchCurrentGroupId } from '../../apis/Groups/v1'
 // import types
 import { NotificationEventType, NotificationType } from '../../types/Notification'
 // import constants
@@ -98,14 +98,14 @@ export const requestPostCommentNotification = async (recordUserId: string, recor
   const  currentUserId = firebase.auth().currentUser.uid
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
   try {
-    const currentGroupId = await requestCurrentGroupId()
+    const { payload, error } = await requestFetchCurrentGroupId()
     const currentUserRef = db.collection('users').doc(recordUserId)
     await currentUserRef.collection('notification').add({
       type: notificationEventType,
       uid: recordUserId,
       from: currentUserId,
       recordId: recordId,
-      groupId: currentGroupId,
+      groupId: payload,
       read: false,
       createdAt: currentTime,
       updatedAt: currentTime

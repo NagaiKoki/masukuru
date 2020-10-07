@@ -7,12 +7,13 @@ import { COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 import { convertFirebaseTimeStamp } from '../../../utilities/timestamp'
 // import apis
-import { requestCurrentGroupId } from '../../Groups/transfer'
+import { requestFetchCurrentGroupId } from '../../Groups/v1'
 
 // 記録へのコメント送信
 export const requestPostRecordPost = async (recordId: string, text: string, notificationGroupId?: string) => {
   const currentUser = firebase.auth().currentUser
-  const currentGroupId = notificationGroupId || await requestCurrentGroupId()
+  const { payload } = await await requestFetchCurrentGroupId()
+  const currentGroupId = notificationGroupId || payload
   const currentFirestoreTime = firebase.firestore.FieldValue.serverTimestamp()
   const currentDateTime = new Date()
   const docId = factoryRandomCode(20)
@@ -64,10 +65,10 @@ export const requestGetRecordComments = async (recordId: string) => {
 
 // 記録のコメント数取得
 export const requestGetFetchRecordCommentsSize = async (recordId: string) => {
-  const currentGroupId = await requestCurrentGroupId()
+  const { payload } = await requestFetchCurrentGroupId()
   let size: number
   try {
-    const commentRef = db.collection('records').doc(recordId).collection('comments').where('groupId', '==', currentGroupId)
+    const commentRef = db.collection('records').doc(recordId).collection('comments').where('groupId', '==', payload)
     await commentRef.get().then(snap => {
       size = snap.size
     })
@@ -91,10 +92,10 @@ export const requestFetchDeleteRecordComment = async (recordId: string, commnetI
 export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex: number) => {
   const currentUser = firebase.auth().currentUser
   const recordRef = db.collection('records').doc(recordId)
-  const currentGroupId = await requestCurrentGroupId()
+  const { payload } = await requestFetchCurrentGroupId()
 
   const EmojiObj = {
-    groupId: currentGroupId,
+    groupId: payload,
     emojiIndex,
     uid: currentUser.uid,
     recordId,
@@ -103,7 +104,7 @@ export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex
   }
   const responseEmojiReaction: ResponseEmojiReactionType = {
     id: '',
-    groupId: currentGroupId,
+    groupId: payload,
     emojiIndex,
     uid: currentUser.uid,
     recordId,
@@ -121,10 +122,10 @@ export const requestFetchPostEmojiReaction = async (recordId: string, emojiIndex
 }
 
 export const requestFetchGetEmojiReaction = async (recordId: string) => {
-  const currentGroupId = await requestCurrentGroupId()
+  const { payload } = await requestFetchCurrentGroupId()
   const recordRef = db.collection('records').doc(recordId)
-  const emojiRef = recordRef.collection('emoji').where('groupId', '==', currentGroupId).get()
-  const payload: ResponseEmojiReactionType[] = []
+  const emojiRef = recordRef.collection('emoji').where('groupId', '==', payload).get()
+  const reaction: ResponseEmojiReactionType[] = []
 
   try {
     await emojiRef.then(snap => {
@@ -134,13 +135,13 @@ export const requestFetchGetEmojiReaction = async (recordId: string) => {
       snap.forEach(doc => {
         const data = doc.data() as ResponseEmojiReactionType
         data.id = doc.id
-        payload.push(data)
+        reaction.push(data)
       })
     })
 
     const emojiPayload: EmojiReactionType = {
       recordId,
-      emojiReactions: payload
+      emojiReactions: reaction
     }
 
     return { payload: emojiPayload }

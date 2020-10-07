@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 // import apis
-import { requestCurrentGroupId  } from '../../../../apis/Groups/transfer'
+import { requestFetchCurrentGroupId } from '../../../../apis/Groups/v1'
 // import types
 import { RecordCommentType, RequestDeleteComment } from '../../../../types/Record'
 // import components
@@ -23,8 +23,8 @@ const RecordCommentList = (props: RecordCommentListProps) => {
   const [currentGroupId, setCurrentGroupId] = useState('')
 
   const fetchCurrentGroupId = async () => {
-    const groupId = await requestCurrentGroupId()
-    setCurrentGroupId(groupId)
+    const { payload } = await requestFetchCurrentGroupId()
+    setCurrentGroupId(payload)
   }
 
   useEffect(() => {

@@ -17,6 +17,7 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   const temporaryGroupId = factoryRandomCode(28)
   const groupRef = db.collection('groups').doc(temporaryGroupId)
   const groupUserRef = db.collection('groups').doc(temporaryGroupId).collection('groupUsers').doc(currentUserId)
+  const collectionGroupUserRef = db.collectionGroup('groupUsers').where('uid', '==', firebase.auth().currentUser.uid)
   const { imageUrl, name } = currentUser
   let batch = db.batch()
 
@@ -40,6 +41,13 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   } 
 
   try {
+    // 現在所属しているグループが5つ以上の場合
+    await collectionGroupUserRef.get().then(snap => {
+      if (snap.size >= 5) {
+        throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
+      }
+    })
+
     batch.set(groupRef, groupObj)
     batch.set(groupUserRef, groupUserType)
     await requestPatchCurrentGroupId(temporaryGroupId, currentUser, batch)
@@ -47,7 +55,7 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
 
     return { payload: groupObj }
   } catch(error) {
-    return { error }
+    return { error: error.message }
   }
 }
 
