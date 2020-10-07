@@ -5,7 +5,15 @@ import { GroupState, GroupType, GroupUserType } from '../types/Group'
 const initialState: GroupState = {
   currentGroupId: '',
   currentGroupUsers: [],
-  currentGroup: null,
+  currentGroup: {
+    id: '',
+    inviteCode: '',
+    groupName: '',
+    imageUrl: '',
+    ownerId: '',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
   belongGroups: [],
   isLoading: false,
   error: ''

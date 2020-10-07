@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Item from './Item'
 import GroupSwitchModal from '../Groups/Modal/Switch'
 import GroupInviteModal from '../Groups/Modal/Invite'
+import SnsShareModal from '../Groups/Modal/Invite/SnsShare'
 // import types
 import { DrawerItemType } from './Item'
 // import selectors
@@ -68,6 +69,7 @@ const DrawerList = (props: PropsType) => {
       {renderList}
       <GroupSwitchModal isOpen={switchGroupModalOpen} navigation={navigation} handleOnClose={handleCloseSwitchModal} />
       <GroupInviteModal isOpen={inviteModalOpen} handleOnCloseInviteModal={handleCloseInviteModal} handleOpenSnsShareModal={handleOpenSnsModal} />
+      <SnsShareModal isOpen={snsModalOpen} handleCloseModal={handleCloseSnsModal} />
     </Wrapper>
   )
 }

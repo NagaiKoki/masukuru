@@ -17,13 +17,15 @@ interface InviteCodeModalProps {
 
 const InviteCodeModal = (props: InviteCodeModalProps) => {
   const { isOpen, handleOnCloseInviteModal, handleOpenSnsShareModal } = props
-  const { currentGroup, requestFetchCurrentGroup } = useGroupSelector()
+  const { currentGroupId, currentGroup, requestFetchCurrentGroup } = useGroupSelector()
 
   useEffect(() => {
-    requestFetchCurrentGroup()
+    if (currentGroupId) {
+      requestFetchCurrentGroup()
+    }
   }, [isOpen])
 
-  if (!currentGroup) {
+  if (!currentGroup.id) {
     return <></>
   }
 
