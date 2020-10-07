@@ -5,7 +5,8 @@ import {
   requestPostCreateGroup, 
   requestPatchJoinGroup,
   requestFetchCurrentGroupId,
-  requestFetchGetCurrentGroupUsers
+  requestFetchGetCurrentGroupUsers,
+  requestFetchGetBelongGroups
 } from '../apis/Groups/v1/'
 // import types
 import { GroupType, GroupUserType } from '../types/Group'
@@ -116,7 +117,15 @@ function* handleRequestFetchCurrentGroupUsers() {
 
 // 所属しているグループを取得
 function* runRequestFetchBelongGroups() {
-  
+  const { payload, error }: ResponseType<GroupType[]> = yield call(
+    requestFetchGetBelongGroups
+  )
+
+  if (payload && !error) {
+    yield put(successFetchBelongGroups(payload))
+  } else if (error) {
+    yield put(failureFetchBelongGroups(error))
+  }
 }
 
 function* handleRequestFetchBelongGroups() {
