@@ -7,14 +7,17 @@ import Form from '../../../common/Form'
 import { COLORS } from '../../../constants/Styles'
 // import types
 import { GroupType } from '../../../types/Group'
+// import selectors
+import { useGroupSelector } from '../../../selectors/group'
 
 type PropsType = {
   group: GroupType
-  handleOnSubmit: () => void
+  navigation: any
 }
 
 const GroupEdit = (props: PropsType) => {
-  const { group, handleOnSubmit } = props
+  const { group, navigation } = props
+  const { requestPatchGroupInfo } = useGroupSelector()
   const [url, setUrl] = useState('')
   const [progress, setProgress] = useState('')
   const [name, setName] = useState('')
@@ -22,6 +25,11 @@ const GroupEdit = (props: PropsType) => {
 
   const handleChangeName = (value: string) => {
     setName(value)
+  }
+
+  const handleOnSubmit = () => {
+    requestPatchGroupInfo({ imageUrl: url, groupName: name })
+    navigation.goBack()
   }
 
   return (

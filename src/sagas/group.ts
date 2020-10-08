@@ -146,11 +146,10 @@ function* handleRequestFetchBelongGroups() {
 
 // グループを切り替える
 function* runRequestSwitchGroup(action: PayloadAction<string>) {
-  const { currentGroupId }: ReturnType<typeof groupSelector> = yield select(groupSelector)
   const { currentUser }: ReturnType<typeof userSelector> = yield select(userSelector)
   const { payload, error }: ResponseType<string> = yield call(
     requestPatchCurrentGroupId,
-    currentGroupId,
+    action.payload,
     currentUser
   )
   if (payload && !error) {

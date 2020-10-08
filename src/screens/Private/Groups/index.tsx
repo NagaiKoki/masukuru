@@ -46,7 +46,7 @@ const GroupScreen = ({ navigation }) => {
       </ItemWrapper>
       <ItemWrapper>
         <Label>ホストユーザー</Label>
-        <ItemText>{hostUser.name}</ItemText>
+        <ItemText>{ hostUser ?  hostUser.name : '離脱済'}</ItemText>
       </ItemWrapper>
       <ButtonWrapper>
         <Button text="グループを編集する" bold={true} fontSize={16} padding="15px 0" handleOnClick={handleOnNavigate} />

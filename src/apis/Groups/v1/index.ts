@@ -292,15 +292,15 @@ export const requestPatchCurrentGroupId = async (currentGroupId: string, current
     await groupUserRef.get().then(snap => {
       if (snap.empty) {
         throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
-      } else [
-        snap.forEach(doc => {
+      } else {
+        snap.forEach(async doc => {
           if (batch) {
             batch.set(doc.ref, { ...currentUser, currentGroupId })
           } else {
-            doc.ref.update({ ...currentUser, currentGroupId })
+            await doc.ref.update({ currentGroupId: currentGroupId })
           }
         })
-      ]
+      }
     })
     return { payload: 'success' }
   } catch(error) {

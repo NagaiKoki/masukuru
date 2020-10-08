@@ -8,11 +8,12 @@ import {
   requestFetchCurrentGroupUsers,
   requestFetchBelongGroups,
   requestSwitchGroup,
-  requestFetchCurrentGroup
+  requestFetchCurrentGroup,
+  requestPatchGroupInfo
 } from '../slice/group'
 // import types
 import { RootState } from '../reducers'
-import { GroupState } from '../types/Group'
+import { GroupState, RequestPatchGroupType } from '../types/Group'
 
 export const useGroupSelector = () => {
   const dispatch = useDispatch()
@@ -32,6 +33,7 @@ export const useGroupSelector = () => {
   const _requestFetchBelongGroups = useCallback(() => dispatch(requestFetchBelongGroups()), [dispatch])
   const _requestSwitchGroup = useCallback((groupId: string) => dispatch(requestSwitchGroup(groupId)), [dispatch])
   const _requestFetchCurrentGroup = useCallback(() => dispatch(requestFetchCurrentGroup()), [dispatch])
+  const _requestPatchGroupInfo = useCallback((groupObj: RequestPatchGroupType) => dispatch(requestPatchGroupInfo(groupObj)), [dispatch])
 
   return {
     currentGroupId,
@@ -46,6 +48,7 @@ export const useGroupSelector = () => {
     requestFetchCurrentGroupUsers: _requestFetchCurrentGroupUsers,
     requestFetchBelongGroups: _requestFetchBelongGroups,
     requestSwitchGroup: _requestSwitchGroup,
-    requestFetchCurrentGroup: _requestFetchCurrentGroup
+    requestFetchCurrentGroup: _requestFetchCurrentGroup,
+    requestPatchGroupInfo: _requestPatchGroupInfo
   }
 }

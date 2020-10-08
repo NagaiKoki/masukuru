@@ -14,13 +14,9 @@ type RoutePropsType = {
 const GroupEditScreen = ({ navigation, route }: { navigation: any, route: RoutePropsType }) => {
   const currentGroup = route.params
 
-  const handleOnSubmit = () => {
-    navigation.goBack()
-  }
-
   return (
     <Container>
-      <GroupEdit group={currentGroup} handleOnSubmit={handleOnSubmit} />
+      <GroupEdit group={currentGroup} navigation={navigation} />
     </Container>
   )
 }
