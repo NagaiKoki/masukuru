@@ -5,7 +5,7 @@ import { COLORS } from '../../../constants/Styles'
 // import components
 import Loading from '../../../components/Loading'
 // import screen
-import GroupInfoScreen from '../../../screens/Private/Groups/GroupInfo'
+import GroupScreen from '../../../screens/Private/Groups'
 import GroupEditScreen from '../../../screens/Private/Groups/GroupEdit'
 import SettingScreen from '../../../screens/Private/Setting'
 import SettingPushScreen from '../../../screens/Private/Setting/Push'
@@ -54,7 +54,7 @@ const MainNavigator = () => {
 
       <MainStack.Screen
         name="groupInfo"
-        component={GroupInfoScreen}
+        component={GroupScreen}
         options={{
           headerBackTitleVisible: false,
           headerTitle: "グループ情報",
