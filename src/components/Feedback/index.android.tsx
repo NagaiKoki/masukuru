@@ -21,7 +21,7 @@ const FeedbackModal = (props: FeedbackProps) => {
   }
 
   return (
-    <BottomModal isOpen={isOpen} onClose={handleOnClose}>
+    <BottomModal isOpen={isOpen} height={300} onClose={handleOnClose}>
       <Container>
         <FeedbackWrapper>
           <FeedbackBtn onPress={handleInquiryLink}>

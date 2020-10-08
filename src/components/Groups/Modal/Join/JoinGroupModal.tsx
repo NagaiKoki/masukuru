@@ -34,7 +34,7 @@ const JoinGroupModal = (props: PropsType) => {
   }
 
   return (
-    <BottomModal isOpen={isOpen} onClose={handleCloseModal}>
+    <BottomModal isOpen={isOpen} height={350} onClose={handleCloseModal}>
       <Container>
         <Title>6桁の招待コードを入力しよう！</Title>
         <FormWrapper>

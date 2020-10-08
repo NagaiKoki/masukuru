@@ -52,7 +52,7 @@ const InviteCodeModal = (props: InviteCodeModalProps) => {
     </ShareWrapper>
 
   return (
-    <BottomModal isOpen={isOpen} onClose={handleOnCloseInviteModal} >
+    <BottomModal isOpen={isOpen} height={350} onClose={handleOnCloseInviteModal} >
       <Container>
         <InviteCodeWrapper onPress={() => copyInviteCode(inviteCode)}>
           <InviteCodeText>{inviteCode}</InviteCodeText>

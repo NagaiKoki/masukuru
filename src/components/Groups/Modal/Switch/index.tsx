@@ -59,7 +59,7 @@ const GroupSwitchModal = (props: PropsType) => {
   }
 
   return (
-    <BottomModal isOpen={isOpen} onClose={handleOnClose}>
+    <BottomModal isOpen={isOpen} height={450} onClose={handleOnClose}>
       <Container>
         <Title>所属グループ</Title>
         <List groups={belongGroups} handleOnNavigate={handleOnNavigate} handleOnClose={handleOnClose} />
