@@ -4,7 +4,11 @@ import { requestFetchUser } from '../../Users'
 // import utils
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 // import types
-import { GroupType, GroupUserType } from '../../../types/Group'
+import { 
+  GroupType, 
+  GroupUserType,
+  RequestPatchGroupType
+} from '../../../types/Group'
 import { UserType } from '../../../types/User'
 // import constants
 import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
@@ -73,6 +77,19 @@ const requestCheckInviteCode = async (code: string): Promise<string> => {
     return newCode || code
   } catch(error) {
     return code
+  }
+}
+
+// グループ情報を更新
+export const requestPatchGroupInfoData = async (groupObj: RequestPatchGroupType, groupId: string) => {
+  const { imageUrl, groupName } = groupObj
+  const groupRef = db.collection('groups').doc(groupId)
+
+  try {
+    await groupRef.update({ imageUrl, groupName })
+    return { payload: 'success' }
+  } catch(error) {
+    return { error: error.message }
   }
 }
 

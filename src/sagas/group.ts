@@ -8,10 +8,11 @@ import {
   requestFetchGetCurrentGroupUsers,
   requestFetchGetBelongGroups,
   requestPatchCurrentGroupId,
-  requestFetchCurrentGroup as requestFetchGetCurrentGroup
+  requestFetchCurrentGroup as requestFetchGetCurrentGroup,
+  requestPatchGroupInfoData
 } from '../apis/Groups/v1/'
 // import types
-import { GroupType, GroupUserType } from '../types/Group'
+import { GroupType, GroupUserType, RequestPatchGroupType } from '../types/Group'
 import { ResponseType } from '../types'
 import { RootState } from '../reducers'
 // import slices
@@ -36,7 +37,10 @@ import {
   failureSwitchGroup,
   requestFetchCurrentGroup,
   successFetchCurrentGroup,
-  failureFetchCurrentGroup
+  failureFetchCurrentGroup,
+  requestPatchGroupInfo,
+  successPatchGroupInfo,
+  failurePatchGroupInfo
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
@@ -180,6 +184,26 @@ function* handleRequestFetchCurrentUGroup() {
   yield takeEvery(requestFetchCurrentGroup.type, runRequestFetchCurrentGroup)
 }
 
+// グループ情報を更新する
+function* runRequestPatchGroupInfo(action: PayloadAction<RequestPatchGroupType>) {
+  const { currentGroupId }: ReturnType<typeof groupSelector> = yield select(groupSelector)
+  const { payload, error }: ResponseType<string> = yield call(
+    requestPatchGroupInfoData,
+    action.payload,
+    currentGroupId
+  )
+
+  if (payload && !error) {
+    yield put(successPatchGroupInfo(action.payload))
+  } else if (error) {
+    yield put(failurePatchGroupInfo(error))
+  }
+}
+
+function* handleRequestPatchGroupInfo() {
+  yield takeEvery(requestPatchGroupInfo.type, runRequestPatchGroupInfo)
+}
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
@@ -188,4 +212,5 @@ export default function* groupSaga() {
   yield fork(handleRequestFetchBelongGroups)
   yield fork(handleRequestSwitchGroup)
   yield fork(handleRequestFetchCurrentUGroup)
+  yield fork(handleRequestPatchGroupInfo)
 }
