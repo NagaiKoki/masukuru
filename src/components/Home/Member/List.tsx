@@ -36,6 +36,8 @@ export default MemberList
 const Wrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
+  border-bottom-width: 0.3px;
   height: 70px;
   padding: 10px 5px 5px 5px;
   background: ${COLORS.BASE_WHITE};

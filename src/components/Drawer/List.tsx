@@ -5,6 +5,7 @@ import Item from './Item'
 import GroupSwitchModal from '../Groups/Modal/Switch'
 import GroupInviteModal from '../Groups/Modal/Invite'
 import GroupJoinModal from '../Groups/Modal/Join/JoinGroupModal'
+import FeedbackModal from '../Feedback'
 import SnsShareModal from '../Groups/Modal/Invite/SnsShare'
 // import types
 import { DrawerItemType } from './Item'
@@ -21,6 +22,7 @@ const DrawerList = (props: PropsType) => {
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
   const [snsModalOpen, setSnsModalOpen] = useState(false)
   const [joinModalOpen, setJoinModalOpen] = useState(false)
+  const [feedBackModalOpen, setFeedbackModalOpen] = useState(false)
   const { requestFetchLogout } = useAuthSelectors()
 
   const handleNavigateMyPage = () => {
@@ -63,6 +65,14 @@ const DrawerList = (props: PropsType) => {
     setJoinModalOpen(false)
   }
 
+  const handleOpenFeedbackModal = () => {
+    setFeedbackModalOpen(true)
+  }
+
+  const handleCloseFeedbackModal = () => {
+    setFeedbackModalOpen(false)
+  }
+
   const handleRequestLogout = () => {
     requestFetchLogout()
   }
@@ -72,7 +82,7 @@ const DrawerList = (props: PropsType) => {
     { text: 'グループを切り替える', iconName: 'people', onClick: handleOpenSwitchModal },
     { text: 'グループに招待する', iconName: 'people', onClick: handleOpenInviteModal },
     { text: 'グループに参加する', iconName: 'envelope-open', onClick: handleOpenJoinModal },
-    { text: 'フィードバック', iconName: 'question', onClick: () => {} },
+    { text: 'フィードバック', iconName: 'question', onClick: handleOpenFeedbackModal },
     { text: '設定', iconName: 'settings', onClick: handleNavigateSetting },
     { text: 'ログアウト', iconName: 'logout', onClick: handleRequestLogout },
   ]
@@ -88,6 +98,7 @@ const DrawerList = (props: PropsType) => {
       <GroupInviteModal isOpen={inviteModalOpen} handleOnCloseInviteModal={handleCloseInviteModal} handleOpenSnsShareModal={handleOpenSnsModal} />
       <SnsShareModal isOpen={snsModalOpen} handleCloseModal={handleCloseSnsModal} />
       <GroupJoinModal isOpen={joinModalOpen} authorized={true} navigation={navigation} handleCloseModal={handleCloseJoinModal} />
+      <FeedbackModal isOpen={feedBackModalOpen} handleOnClose={handleCloseFeedbackModal} />
     </Wrapper>
   )
 }
