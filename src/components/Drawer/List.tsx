@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Alert } from 'react-native'
 import styled from 'styled-components'
 // import components
 import Item from './Item'
@@ -11,6 +12,8 @@ import SnsShareModal from '../Groups/Modal/Invite/SnsShare'
 import { DrawerItemType } from './Item'
 // import selectors
 import { useAuthSelectors } from '../../selectors/auth'
+// import utils
+import { handleAlert } from '../../utilities/Alert/'
 
 type PropsType = {
   navigation: any
@@ -73,9 +76,13 @@ const DrawerList = (props: PropsType) => {
     setFeedbackModalOpen(false)
   }
 
-  const handleRequestLogout = () => {
-    requestFetchLogout()
+  const handleLogout = () => {
+    const title = 'マスクル'
+    const subTitle = 'ログアウトしますか？'
+    const buttonText = 'ログアウトする'
+    handleAlert(title, subTitle, buttonText, requestFetchLogout)
   }
+    
 
   const listMapObj: DrawerItemType[] = [
     { text: 'マイページ', iconName: 'user', onClick: handleNavigateMyPage },
@@ -84,7 +91,7 @@ const DrawerList = (props: PropsType) => {
     { text: 'グループに参加する', iconName: 'envelope-open', onClick: handleOpenJoinModal },
     { text: 'フィードバック', iconName: 'question', onClick: handleOpenFeedbackModal },
     { text: '設定', iconName: 'settings', onClick: handleNavigateSetting },
-    { text: 'ログアウト', iconName: 'logout', onClick: handleRequestLogout },
+    { text: 'ログアウト', iconName: 'logout', onClick: handleLogout },
   ]
 
   const renderList = listMapObj.map((item, i) => (

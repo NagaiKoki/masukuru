@@ -8,6 +8,8 @@ import List from './List'
 // import selectors
 import { useGroupSelector } from '../../../../selectors/group'
 import { COLORS } from '../../../../constants/Styles'
+// import utils
+import { handleAlert } from '../../../../utilities/Alert'
 
 type PropsType = {
   isOpen: boolean
@@ -37,22 +39,12 @@ const GroupSwitchModal = (props: PropsType) => {
     requestCreateGroup()
   }
 
-  const handleAddGroup = () => 
-    Alert.alert(
-      "グループを作成しますか？",
-      "※ 所属できるグループは5つまでです。",
-      [
-        {
-          text: "キャンセル",
-          style: 'cancel'
-        },
-        {
-          text: '作成する',
-          onPress: () => handleOnCreateGroup()
-        }
-      ],
-      { cancelable: false }
-    )
+  const handleAddGroup = () => {
+    const title = 'グループを作成しますか？'
+    const subTitle = '※ 所属できるグループは5つまでです。'
+    const buttonText = '作成する'
+    handleAlert(title, subTitle, buttonText, handleOnCreateGroup)
+  }
 
   if (!belongGroups.length) {
     return <></>
