@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { GroupState, GroupType, GroupUserType } from '../types/Group'
+import { 
+  GroupState, 
+  GroupType, 
+  GroupUserType,
+  RequestPatchGroupType
+} from '../types/Group'
 
 const initialState: GroupState = {
   currentGroupId: '',
@@ -158,6 +163,24 @@ const groupSlice = createSlice({
         ...state,
         isJoinModalOpen: !state.isJoinModalOpen
       }
+    },
+    requestPatchGroupInfo: (state, action: PayloadAction<RequestPatchGroupType>) => {
+      return {
+        ...state
+      }
+    },
+    successPatchGroupInfo: (state, action: PayloadAction<RequestPatchGroupType>) => {
+      const currentGroup = { ...state.currentGroup, ...action.payload }
+      return {
+        ...state,
+        currentGroup
+      }
+    },
+    failurePatchGroupInfo: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
     }
   }
 })
@@ -186,5 +209,8 @@ export const {
   requestFetchCurrentGroup,
   successFetchCurrentGroup,
   failureFetchCurrentGroup,
-  toggleOpenJoinModal
+  toggleOpenJoinModal,
+  requestPatchGroupInfo,
+  successPatchGroupInfo,
+  failurePatchGroupInfo
 } = groupSlice.actions

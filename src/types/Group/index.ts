@@ -38,6 +38,11 @@ export type GroupUserType = {
   updatedAt: Date
 }
 
+export type RequestPatchGroupType = {
+  imageUrl: string
+  groupName: string
+}
+
 // 所属グループIDの設定
 export interface SetCurrentGroupId {
   type: typeof SET_CURRENT_GROUP_ID

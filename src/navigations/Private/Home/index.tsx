@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components'
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { COLORS } from '../../../constants/Styles'
 // import components
 import Loading from '../../../components/Loading'
 // import screen
 import GroupScreen from '../../../screens/Private/Groups'
-import GroupEditScreen from '../../../screens/Private/Groups/GroupEdit'
+import GroupEditScreen from '../../../screens/Private/Groups/Edit'
 import SettingScreen from '../../../screens/Private/Setting'
 import SettingPushScreen from '../../../screens/Private/Setting/Push'
 // import navigator

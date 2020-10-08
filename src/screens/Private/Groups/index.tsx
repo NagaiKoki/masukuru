@@ -18,7 +18,7 @@ const GroupScreen = ({ navigation }) => {
   }, [])
 
   const handleOnNavigate = () => {
-    navigation.navigate('groupEdit')
+    navigation.navigate('groupEdit', currentGroup)
   }
 
   if (!currentGroup.id || !currentGroupUsers.length) {
