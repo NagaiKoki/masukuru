@@ -15,7 +15,8 @@ import {
   RequestPostEmojiReaction,
   EmojiReactionType,
   ResponseEmojiReactionType,
-  TogglePostedUserEmojiModal
+  TogglePostedUserEmojiModal,
+  ResponseCreateRecordType
 } from '../types/Record'
 import { UserType } from '../types/User'
 // import constants
@@ -93,7 +94,9 @@ const recordSlice = createSlice({
       }
     },
     initializeRecords: (state) => {
-      return initialState
+      return {
+        ...initialState
+      }
     },
     initializeTemporaryRecord: (state) => {
       return {
@@ -125,16 +128,22 @@ const recordSlice = createSlice({
         isLoading: true
       }
     },
-    successSubmitRecords: (state, action: PayloadAction<number>) => {
-      const isOpenApplause = action.payload <= 31
+    successSubmitRecords: (state, action: PayloadAction<ResponseCreateRecordType>) => {
+      const { record, size } = action.payload
+      const isOpenApplause = size <= 31
+      const updatedRecordData = [
+        record,
+        ...state.recordData 
+      ]
       return {
         ...state,
         recordItems: [],
+        recordData: updatedRecordData,
         word: '',
         imageUrl: '',
         error: '',
         isLoading: false,
-        recordSize: action.payload,
+        recordSize: size,
         isOpenApplause
       }
     },

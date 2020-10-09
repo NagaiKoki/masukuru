@@ -12,7 +12,8 @@ import {
   RequestDeleteComment,
   RequestPostEmojiReaction,
   ResponseEmojiReactionType,
-  EmojiReactionType
+  EmojiReactionType,
+  ResponseCreateRecordType
 } from '../types/Record'
 import { ResponseType } from '../types'
 import { RequestPostCommentNotification } from '../types/Notification'
@@ -78,7 +79,7 @@ import {
   failureFetchPostedEmojiUsers,
   requestDeleteEmojiReaction,
   successDeleteEmojiReaction,
-  failureDeleteEmojiReaction
+  failureDeleteEmojiReaction,
 } from '../slice/record'
 import {
   requestPostCommentNotification,
@@ -89,13 +90,13 @@ import firebase from '../config/firebase'
 // import utils
 import * as RecordAnalytics from '../utilities/Analytics/record'
 
-const recordSelector = (state: RootState) => state.records
 
+const recordSelector = (state: RootState) => state.records
 // 記録の保存
 function* runRequestSubmitRecords(action: PayloadAction<RequestSubmitRecords>) {
   const { trainingDate } = yield select((state: RootState) => state.records)
   const { records, word, imageUrl } = action.payload
-  const { payload, error }: ResponseType<number> = yield call(
+  const { payload, error }: ResponseType<ResponseCreateRecordType> = yield call(
     requestPostRecords,
     records,
     word,

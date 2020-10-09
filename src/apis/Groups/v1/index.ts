@@ -1,6 +1,7 @@
 import firebase, { db } from '../../../config/firebase'
 // import apis
 import { requestFetchUser } from '../../Users'
+import { requestUpdateRecordGroupIds } from '../../Records'
 // import utils
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 // import types
@@ -47,13 +48,14 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   try {
     // 現在所属しているグループが5つ以上の場合
     await collectionGroupUserRef.get().then(snap => {
-      if (snap.size >= 5) {
+      if (snap.size >= 10) {
         throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
       }
     })
 
     batch.set(groupRef, groupObj)
     batch.set(groupUserRef, groupUserType)
+    await requestUpdateRecordGroupIds(temporaryGroupId, batch)
     await requestPatchCurrentGroupId(temporaryGroupId, currentUser, batch)
     await batch.commit()
 
@@ -99,6 +101,7 @@ export const requestPatchJoinGroup = async (code: string) => {
   const groupRef = db.collection('groups').where('inviteCode', '==', code)
   const { user }: { user?: UserType, error?: string } = await requestFetchUser(currentUserId)
   const { imageUrl, uid, name } = user
+  let batch = db.batch()
   let invitedGroup: GroupType
 
   try {
@@ -129,7 +132,8 @@ export const requestPatchJoinGroup = async (code: string) => {
         createdAt: new Date(),
         updatedAt: new Date()
       }
-      await invitedGroupUserRef.doc(uid).set(groupUserObj)
+      batch.set(invitedGroupUserRef.doc(uid), groupUserObj)
+      await requestUpdateRecordGroupIds(invitedGroup.id, batch)
     }
     return { payload: invitedGroup }
   } catch(error) {

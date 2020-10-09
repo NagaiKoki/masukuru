@@ -52,6 +52,12 @@ export type ResponseRecordType = {
   updatedAt: FirestoreTimestamp
 }
 
+export type ResponseCreateRecordType = {
+  record: ResponseRecordType
+  size: number
+}
+
+
 export type RecordCommentType = {
   id: string
   recordId: string

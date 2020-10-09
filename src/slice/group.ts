@@ -181,7 +181,7 @@ const groupSlice = createSlice({
         ...state,
         error: action.payload
       }
-    }
+    },
   }
 })
 
@@ -212,5 +212,5 @@ export const {
   toggleOpenJoinModal,
   requestPatchGroupInfo,
   successPatchGroupInfo,
-  failurePatchGroupInfo
+  failurePatchGroupInfo,
 } = groupSlice.actions

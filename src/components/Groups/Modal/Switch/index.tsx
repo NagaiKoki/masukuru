@@ -79,6 +79,7 @@ const Title = styled.Text`
 const AddNewGroupButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
+  margin-top: 5px;
   padding: 10px 15px;
 `
 
