@@ -60,8 +60,8 @@ const GroupSwtichModalItem = (props: PropsType) => {
   }
 
   const renderImage = imageUrl ?
-    <GroupImage url={imageUrl} width={35} height={35} /> :
-    <UnSettingGroupImage urls={urls} width={35} height={35} />
+    <GroupImage url={imageUrl} width={40} height={40} /> :
+    <UnSettingGroupImage urls={urls} width={40} height={40} />
 
   const renderGroupName =
     <GroupName>
@@ -89,7 +89,7 @@ const Wrapper = styled.TouchableOpacity`
   align-items: center;
   justify-content: space-between;
   border-bottom-width: 1px;
-  border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
+  border-bottom-color: ${COLORS.BORDER_COLOR_1};
   padding: 7px 15px;
 `
 
@@ -102,5 +102,5 @@ const GroupName = styled.Text`
   padding-left: 10px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
 `

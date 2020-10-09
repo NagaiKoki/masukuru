@@ -25,7 +25,7 @@ const MemberList = (props: PropsType) => {
   ))
 
   return (
-    <Wrapper>
+    <Wrapper horizontal={true}>
       {renderUserList}
     </Wrapper>
   )
@@ -33,12 +33,13 @@ const MemberList = (props: PropsType) => {
 
 export default MemberList
 
-const Wrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
+const Wrapper = styled.ScrollView`
+  position: absolute;
+  top: 0;
+  width: 100%;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 0.3px;
-  height: 70px;
+  height: 80px;
   padding: 10px 5px 5px 5px;
   background: ${COLORS.BASE_WHITE};
 `

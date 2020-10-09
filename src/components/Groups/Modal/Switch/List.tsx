@@ -30,7 +30,7 @@ const GroupSwtichModalList = (props: PropsType) => {
 export default GroupSwtichModalList
 
 const Wrapper = styled.ScrollView`
-  height: 300px;
+  max-height: 300px;
   border-top-width: 1px;
-  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  border-top-color: ${COLORS.BORDER_COLOR_1};
 `

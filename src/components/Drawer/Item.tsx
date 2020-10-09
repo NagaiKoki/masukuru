@@ -26,10 +26,10 @@ export default DrawerItem
 const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  padding: 10px 0;
+  padding: 15px 0;
 `
 
 const Label = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  font-size: 16px;
+  font-size: 18px;
 `

@@ -50,7 +50,6 @@ const HomeScreen = (props: HomeProps) => {
   const { currentGroupId, currentGroupUsers, isGroupLoading, requestFetchCurrentGroupUsers } = useGroupSelector()
   const lastRecord = recordData[recordData.length - 1]
   const [isRefresh, setIsRefresh] = useState(false)
-  const [isHomeLoading, setIsHomeLoading] = useState(false)
   const currentUserId = firebase.auth().currentUser.uid
 
   Notifications.setNotificationHandler({
@@ -63,11 +62,9 @@ const HomeScreen = (props: HomeProps) => {
 
   useEffect(() => {
     updateModule()
-    setIsHomeLoading(true)
     requestFetchRecords({ uid: null, groupId: currentGroupId})
     requestFetchCurrentGroupUsers()
     requestFetchCurrentUserData(currentUserId)
-    setIsHomeLoading(false)
     isSetExpoNotificationToken()
     Analytics.track('home')
   }, [currentGroupId])
@@ -93,10 +90,6 @@ const HomeScreen = (props: HomeProps) => {
     }
   }, [currentUser])
 
-  useEffect(() => {
-    toggleReflesh(false)
-  }, [onFreshLoading])
-
   useFocusEffect(
     useCallback(() => {
       getHeaderNav(currentGroupId, navigation)
@@ -104,9 +97,9 @@ const HomeScreen = (props: HomeProps) => {
   )
 
   const onRefresh = async () => {
+    setIsRefresh(true)
     hapticFeedBack('medium')
     toggleReflesh(true)
-    setIsRefresh(true)
     requestFetchRecords({ uid: null, groupId: currentGroupId})
     setIsRefresh(false)
   }
@@ -115,40 +108,35 @@ const HomeScreen = (props: HomeProps) => {
     hapticFeedBack('medium')
     navigation.navigate('recordModal')
   }
-
-  if (isHomeLoading) {
-    return (
-      <Loading size='small' />
-    )
-  }
-
+  
   return (
-    <Container refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />}>
+    <Container>
+      <Wrapper>
+        <ScrollView
+          onScroll={({ nativeEvent }) => {
+            if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
+              requestNextRecords({ lastRecord, uid: null, groupId: currentGroupId })
+            }
+          }}
+          scrollEventThrottle={500}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefresh}
+                onRefresh={onRefresh}
+              />
+            }
+          >
+            {
+              <RecordList
+                recordData={recordData}
+                isLoading={isLoading}
+                navigation={navigation}
+                requestDestroyRecord={requestDestroyRecord}
+              />
+            }
+        </ScrollView>
+      </Wrapper>
       <MemberList currentGroupUsers={currentGroupUsers} isLoading={isGroupLoading} navigation={navigation} />
-      <ScrollView
-        onScroll={({ nativeEvent }) => {
-          if (isCloseToBottom(nativeEvent) && recordData.length >= 5) {
-            requestNextRecords({ lastRecord, uid: null, groupId: currentGroupId })
-          }
-        }}
-        scrollEventThrottle={400}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefresh}
-              onRefresh={onRefresh}
-            />
-          }
-        >
-          { onFreshLoading ? 
-            <Loading size="small" /> :
-            <RecordList
-              recordData={recordData}
-              isLoading={isLoading}
-              navigation={navigation}
-              requestDestroyRecord={requestDestroyRecord}
-            />
-          }
-      </ScrollView>
       <RecordAddBtn onPress={handleOpenRecordModal}>
         <Icon name="pencil" size={30} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />
       </RecordAddBtn>
@@ -164,6 +152,10 @@ const HomeScreen = (props: HomeProps) => {
 const Container = styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND3};
+`
+
+const Wrapper = styled.View`
+  margin-top: 75px;
 `
 
 const RecordAddBtn = styled.TouchableOpacity`

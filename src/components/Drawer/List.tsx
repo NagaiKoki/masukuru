@@ -81,8 +81,7 @@ const DrawerList = (props: PropsType) => {
     const subTitle = 'ログアウトしますか？'
     const buttonText = 'ログアウトする'
     handleAlert(title, subTitle, buttonText, requestFetchLogout)
-  }
-    
+  }  
 
   const listMapObj: DrawerItemType[] = [
     { text: 'マイページ', iconName: 'user', onClick: handleNavigateMyPage },

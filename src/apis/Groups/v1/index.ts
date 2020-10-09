@@ -48,7 +48,7 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   try {
     // 現在所属しているグループが5つ以上の場合
     await collectionGroupUserRef.get().then(snap => {
-      if (snap.size >= 10) {
+      if (snap.size >= 5) {
         throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
       }
     })
@@ -86,9 +86,8 @@ const requestCheckInviteCode = async (code: string): Promise<string> => {
 export const requestPatchGroupInfoData = async (groupObj: RequestPatchGroupType, groupId: string) => {
   const { imageUrl, groupName } = groupObj
   const groupRef = db.collection('groups').doc(groupId)
-
   try {
-    await groupRef.update({ imageUrl, groupName })
+    await groupRef.update({ imageUrl: imageUrl || '', groupName: groupName || '' })
     return { payload: 'success' }
   } catch(error) {
     return { error: error.message }
@@ -134,6 +133,7 @@ export const requestPatchJoinGroup = async (code: string) => {
       }
       batch.set(invitedGroupUserRef.doc(uid), groupUserObj)
       await requestUpdateRecordGroupIds(invitedGroup.id, batch)
+      batch.commit()
     }
     return { payload: invitedGroup }
   } catch(error) {

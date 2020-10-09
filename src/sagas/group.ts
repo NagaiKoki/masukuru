@@ -191,7 +191,7 @@ function* runRequestPatchGroupInfo(action: PayloadAction<RequestPatchGroupType>)
     action.payload,
     currentGroupId
   )
-
+  
   if (payload && !error) {
     yield put(successPatchGroupInfo(action.payload))
   } else if (error) {

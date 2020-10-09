@@ -86,4 +86,5 @@ const AddNewGroupButton = styled.TouchableOpacity`
 const AddNewGroupText = styled.Text`
   color: ${COLORS.BASE_MUSCLEW};
   font-size: 16px;
+  font-weight: bold;
 `

@@ -24,7 +24,7 @@ const MemberItem = (props: PropsType) => {
 
   return (
     <Wrapper onPress={handleOnClick}>
-      <UserImage uri={imageUrl} width={45} height={45} borderRadius={60} />
+      <UserImage uri={imageUrl} width={50} height={50} borderRadius={60} />
       <NameText>{truncateText(name, 8)}</NameText>
     </Wrapper>
   )

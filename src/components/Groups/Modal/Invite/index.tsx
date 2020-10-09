@@ -40,7 +40,7 @@ const InviteCodeModal = (props: InviteCodeModalProps) => {
     handleOnCloseInviteModal()
     setTimeout(() => {
       handleOpenSnsShareModal()
-    }, 500)
+    }, 1000)
   }
 
   const ShareButtons =

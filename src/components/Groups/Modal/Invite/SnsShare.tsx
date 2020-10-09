@@ -19,7 +19,7 @@ const SnsInviteCodeShareModal = (props: SnsModalProps) => {
   const { isOpen, handleCloseModal } = props
   const { currentGroup } = useGroupSelector()
   const { inviteCode } = currentGroup
-
+  
   const renderSnsButtons =
     <SnsButtonsWrapper>
       <SnsButton onPress={ () => openIviteCodeShareLinkWithSNS(inviteCode, 'Twitter') }>

@@ -33,6 +33,6 @@ const Container = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
   height: 100%;
   width: 100%;
-  padding-top: 70px;
+  padding-top: 90px;
   padding-left: 30px;
 `

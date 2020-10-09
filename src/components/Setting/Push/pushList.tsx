@@ -13,6 +13,8 @@ import Item from '../../../common/List/item'
 import { COLORS } from '../../../constants/Styles';
 // import types
 import { ResponseSettingType, SettingPushNotificationType } from '../../../types/Setting'
+// import utils
+import { hapticFeedBack } from '../../../utilities/Haptic'
 
 const SettingPushList = () => {
   const [toggleComment, setToggleComment] = useState(true)
@@ -39,6 +41,7 @@ const SettingPushList = () => {
   }
 
   const handleOnToggle = async (type: SettingPushNotificationType, toggle: boolean) => {
+    hapticFeedBack('medium')
     switch(type) {
       case 'comment': {
         setToggleComment(!toggle)
@@ -55,7 +58,7 @@ const SettingPushList = () => {
     return (
       <Icon 
         name={ toggle ? "toggle-on" : "toggle-off" } 
-        size={30}
+        size={40}
         style={{ color: COLORS.TOGGLE_ON_COLOR }}
       /> 
     )

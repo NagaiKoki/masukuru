@@ -35,9 +35,11 @@ const GroupScreen = ({ navigation }) => {
     <GroupImage url={imageUrl} width={90} height={90} /> :
     <UnSettingGroupImage urls={groupUsersImages} width={90} height={90} />
   
-  const renderUserName = currentGroupUsers.map(user => (
-    <ItemText>{user.name}</ItemText>
-  ))
+  const renderUserName = currentGroupUsers.map(user => {
+    return (
+      <ItemText key={user.uid}>{user.name}</ItemText>
+    )
+  })
 
   return (
     <Container>
