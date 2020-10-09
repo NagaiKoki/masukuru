@@ -140,6 +140,8 @@ export const requestFetchRecordItem = async (recordId: string) => {
 export const requestUpdateRecordItem = async (recordId: string, records: RecordItemType[], word: string, trainingDate: Date, imageUrl: string) => {
   const recordRef = db.collection('records').doc(recordId)
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
+  let currentRecord: ResponseRecordType
+
   try {
     recordRef.update({
       records,
@@ -148,7 +150,24 @@ export const requestUpdateRecordItem = async (recordId: string, records: RecordI
       trainingDate,
       updatedAt: currentTime
     })
-    return { payload: 'success' }
+
+    await recordRef.get().then(snap => {
+      const data = snap.data() as ResponseRecordType
+      currentRecord = data
+    })
+
+    const updatedRecord: ResponseRecordType = {
+      id: recordId,
+      uid: currentRecord.uid,
+      records,
+      word,
+      imageUrl,
+      trainingDate: convertFirebaseTimeStamp(trainingDate),
+      updatedAt: convertFirebaseTimeStamp(new Date()), 
+      createdAt: currentRecord.createdAt
+    }
+
+    return { payload: updatedRecord }
   } catch(error) {
     return { error }
   }

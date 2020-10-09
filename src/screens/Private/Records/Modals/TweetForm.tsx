@@ -11,7 +11,7 @@ import Loading from '../../../../components/Loading'
 import { requestAppReview } from '../../../../utilities/requestReview'
 import { ImageUpload } from '../../../../utilities/cameraRoll';
 // import slices
-import { requestUpdateRecord, requestSubmitRecords, initializeRecords } from '../../../../slice/record'
+import { requestUpdateRecord, requestSubmitRecords } from '../../../../slice/record'
 // import selectors
 import recordSelector from '../../../../selectors/record' 
 
@@ -66,7 +66,6 @@ const AddRecordWordScreen = ({ navigation, route }) => {
     handleRequestSubmit()
     setTimeout(() => {
       navigation.navigate('mainContainer')
-      dispatch(initializeRecords())
     }, 2000)
     await requestAppReview()
   }

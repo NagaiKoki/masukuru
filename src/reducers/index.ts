@@ -1,5 +1,6 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
+import { composeWithDevTools } from 'redux-devtools-extension'
 // types
 import { RecordState } from '../types/Record'
 import { NoticationState } from '../types/Notification'

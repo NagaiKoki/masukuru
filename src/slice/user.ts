@@ -47,7 +47,6 @@ const userSlice = createSlice({
       }
     },
     successUpdateUser: (state, action: PayloadAction<UserType>) => {
-      console.log(action.payload)
       const currentUser = { 
         ...state.currentUser,
         ...action.payload

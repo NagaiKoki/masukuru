@@ -23,6 +23,7 @@ import { UserType } from '../types/User'
 import { record } from '../constants/sliceName'
 // import utils
 import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
+import RecordData from '../components/Records/Items/data'
 
 const initialState: RecordState = {
   recordItems: [],
@@ -312,10 +313,18 @@ const recordSlice = createSlice({
         isLoading: true
       }
     },
-    successUpdateRecord: (state) => {
+    successUpdateRecord: (state, action: PayloadAction<ResponseRecordType>) => {
+      const updatedRecords = state.recordData.map((record, i) => {
+        if (record.id === action.payload.id) {
+          return RecordData[i] = action.payload
+        }
+        return record
+      })
+      
       return {
         ...state,
         recordItems: [],
+        recordData: updatedRecords,
         word: '',
         imageUrl: '',
         error: '',

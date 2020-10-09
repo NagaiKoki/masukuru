@@ -207,10 +207,11 @@ function* handleRequestDestroyRecord() {
   yield takeEvery(requestDestroyRecord.type, runRequestDestroyRecord)
 }
 
+// 記録の更新
 function* runRequestUpdateRecord(action: PayloadAction<RequestSubmitRecords>) {
   const { word, imageUrl, records, id } = action.payload
   const { trainingDate }: ReturnType<typeof recordSelector> = yield select(recordSelector)
-  const { payload, error } : ResponseType<string> = yield call(
+  const { payload, error } : ResponseType<ResponseRecordType> = yield call(
     requestUpdateRecordItem,
     id,
     records,
@@ -228,7 +229,7 @@ function* runRequestUpdateRecord(action: PayloadAction<RequestSubmitRecords>) {
   if (payload && !error) {
     yield delay(2000)
     yield requestPostRecordNamesForSuggest()
-    yield put(successUpdateRecord())
+    yield put(successUpdateRecord(payload))
   } else if (error) {
     yield put(failureUpdateRecord(error))
   }
