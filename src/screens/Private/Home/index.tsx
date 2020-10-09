@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device'
 import { RefreshControl, ScrollView, Platform } from 'react-native';
@@ -66,7 +67,6 @@ const HomeScreen = (props: HomeProps) => {
     requestFetchRecords({ uid: null, groupId: currentGroupId})
     requestFetchCurrentGroupUsers()
     requestFetchCurrentUserData(currentUserId)
-    getHeaderNav(currentGroupId, navigation)
     setIsHomeLoading(false)
     isSetExpoNotificationToken()
     Analytics.track('home')
@@ -96,6 +96,12 @@ const HomeScreen = (props: HomeProps) => {
   useEffect(() => {
     toggleReflesh(false)
   }, [onFreshLoading])
+
+  useFocusEffect(
+    useCallback(() => {
+      getHeaderNav(currentGroupId, navigation)
+    }, [])
+  )
 
   const onRefresh = async () => {
     hapticFeedBack('medium')
