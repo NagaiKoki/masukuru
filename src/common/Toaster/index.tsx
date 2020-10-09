@@ -40,7 +40,7 @@ const Wrapper = styled.TouchableOpacity<{ type: ToastType }>`
   position: absolute;
   top: 0;
   width: 100%;
-  height: 50px;
+  height: 55px;
   padding: 0 15px;
   justify-content: center;
   align-items: center;

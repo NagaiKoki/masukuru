@@ -1,11 +1,18 @@
 import firebase, { db } from '../../../config/firebase'
+// import apis
+import { requestFetchUser } from '../../Users'
+import { requestUpdateRecordGroupIds } from '../../Records'
 // import utils
 import { factoryRandomCode } from '../../../utilities/randomTextFactory'
 // import types
-import { GroupType, GroupUserType } from '../../../types/Group'
+import { 
+  GroupType, 
+  GroupUserType,
+  RequestPatchGroupType
+} from '../../../types/Group'
 import { UserType } from '../../../types/User'
 // import constants
-import { INVITE_ERROR_MESSAGE } from '../../../constants/errorMessage'
+import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 
 // 1人のグループを作成
 export const requestPostCreateGroup = async (currentUser: UserType) => {
@@ -15,6 +22,7 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   const temporaryGroupId = factoryRandomCode(28)
   const groupRef = db.collection('groups').doc(temporaryGroupId)
   const groupUserRef = db.collection('groups').doc(temporaryGroupId).collection('groupUsers').doc(currentUserId)
+  const collectionGroupUserRef = db.collectionGroup('groupUsers').where('uid', '==', firebase.auth().currentUser.uid)
   const { imageUrl, name } = currentUser
   let batch = db.batch()
 
@@ -38,13 +46,22 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   } 
 
   try {
+    // 現在所属しているグループが5つ以上の場合
+    await collectionGroupUserRef.get().then(snap => {
+      if (snap.size >= 5) {
+        throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_5_GROUPS)
+      }
+    })
+
     batch.set(groupRef, groupObj)
     batch.set(groupUserRef, groupUserType)
+    await requestUpdateRecordGroupIds(temporaryGroupId, batch)
+    await requestPatchCurrentGroupId(temporaryGroupId, currentUser, batch)
     await batch.commit()
 
     return { payload: groupObj }
   } catch(error) {
-    return { error }
+    return { error: error.message }
   }
 }
 
@@ -65,10 +82,25 @@ const requestCheckInviteCode = async (code: string): Promise<string> => {
   }
 }
 
+// グループ情報を更新
+export const requestPatchGroupInfoData = async (groupObj: RequestPatchGroupType, groupId: string) => {
+  const { imageUrl, groupName } = groupObj
+  const groupRef = db.collection('groups').doc(groupId)
+  try {
+    await groupRef.update({ imageUrl: imageUrl || '', groupName: groupName || '' })
+    return { payload: 'success' }
+  } catch(error) {
+    return { error: error.message }
+  }
+}
+
 // グループに参加する
-export const requestPatchJoinGroup = async (code: string, currentUser: UserType) => {
+export const requestPatchJoinGroup = async (code: string) => {
+  const currentUserId = firebase.auth().currentUser.uid
   const groupRef = db.collection('groups').where('inviteCode', '==', code)
-  const { uid, imageUrl, name } = currentUser
+  const { user }: { user?: UserType, error?: string } = await requestFetchUser(currentUserId)
+  const { imageUrl, uid, name } = user
+  let batch = db.batch()
   let invitedGroup: GroupType
 
   try {
@@ -99,7 +131,9 @@ export const requestPatchJoinGroup = async (code: string, currentUser: UserType)
         createdAt: new Date(),
         updatedAt: new Date()
       }
-      await invitedGroupUserRef.doc(uid).set(groupUserObj)
+      batch.set(invitedGroupUserRef.doc(uid), groupUserObj)
+      await requestUpdateRecordGroupIds(invitedGroup.id, batch)
+      batch.commit()
     }
     return { payload: invitedGroup }
   } catch(error) {
@@ -115,7 +149,7 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
   try {
     // 招待先のグループが11人以上の場合
     await groupUserRef.get().then(snap => {
-      if (snap.size > 2) {
+      if (snap.size > 11) {
         throw new Error(INVITE_ERROR_MESSAGE.MORE_THAN_11_USERS)
       }
     })
@@ -139,6 +173,141 @@ const requestCheckEnableJoinGroup = async (groupId: string) => {
     })
     return { payload: 'success' }
   } catch (error) {
+    return { error: error.message }
+  }
+}
+
+// 現在所属しているグループIdをフェッチ
+export const requestFetchCurrentGroupId = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
+  let currentGroupId: string
+
+  try {
+    await groupUserRef.get().then(snap => {
+      if (snap.empty) {
+        throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+      } else {
+        snap.forEach(doc => {
+          const data = doc.data() as GroupUserType
+          currentGroupId = data.currentGroupId
+        })
+      }
+    })
+ 
+    return { payload: currentGroupId }
+  } catch(error) {
+    return { error: error.message }
+  }
+}
+
+// 現在所属しているグループデータを取得
+export const requestFetchCurrentGroup = async (groupId: string) => {
+  const groupRef = db.collection('groups').doc(groupId)
+  let group: GroupType
+
+  try {
+    await groupRef.get().then(snap => {
+      const data = snap.data() as GroupType
+      data.id = snap.id
+      group = data
+    })
+    return { payload: group }
+  } catch(error) {
+    return { error: error }
+  }
+}
+
+// 現在所属しているグループのユーザーを取得
+export const requestFetchGetCurrentGroupUsers = async (groupId: string) => {
+  const groupUserRef = db.collection('groups').doc(groupId).collection('groupUsers')
+  let groupUsers: GroupUserType[] = []
+
+  try {
+    await groupUserRef.get().then(snap => {
+      snap.forEach(doc => {
+        const data = doc.data() as GroupUserType
+        groupUsers.push(data)
+      })
+    })
+    return { payload: groupUsers }
+  } catch(error) {
+    return { error }
+  }
+}
+
+// 所属しているグループ一覧を取得
+export const requestFetchGetBelongGroups = async () => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
+  let groupIds: string[] = []
+  let groups: GroupType[] = []
+
+  try {
+    await groupUserRef.get().then(snap => {
+      snap.forEach(doc => {
+        groupIds.push(doc.ref.parent.parent.id)
+      })
+    })
+
+    await Promise.all(groupIds.map(async id => {
+      await db.collection('groups').doc(id).get().then(snap => {
+        const data = snap.data() as GroupType
+        data.id = id
+        groups.push(data)
+      })
+    }))
+
+    return { payload: groups }
+  } catch(error) {
+    return { error }
+  }
+}
+
+// もしグループ画像 or 名前がない場合に、叩く
+// local stateに格納する
+export const requestGroupUsers = async (groupId: string) => {
+  const groupRef = db.collection('groups').doc(groupId)
+  let groupUsers: GroupUserType[] = []
+
+  try {
+    await groupRef.collection('groupUsers').get().then(snap => {
+      if (snap.empty) {
+        throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+      } else {
+        snap.docs.forEach(user => {
+          const data = user.data() as GroupUserType
+          groupUsers.push(data)
+        })
+      }
+    })
+    return { payload: groupUsers }
+  } catch(error) {
+    return { error: error.message }
+  }
+}
+
+// グループ移動後に、groupUsersのCurrentGroupIdを上書きする
+export const requestPatchCurrentGroupId = async (currentGroupId: string, currentUser: UserType, batch?: firebase.firestore.WriteBatch) => {
+  const currentUserId = firebase.auth().currentUser.uid
+  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId)
+
+  try {
+    await groupUserRef.get().then(snap => {
+      if (snap.empty) {
+        throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
+      } else {
+        snap.forEach(async doc => {
+          if (batch) {
+            batch.set(doc.ref, { ...currentUser, currentGroupId })
+          } else {
+            await doc.ref.update({ currentGroupId: currentGroupId })
+          }
+        })
+      }
+    })
+    return { payload: 'success' }
+  } catch(error) {
     return { error: error.message }
   }
 }

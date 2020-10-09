@@ -24,7 +24,7 @@ const TutorialUserName = ({ navigation }) => {
     setUserName(value)
   }
 
-  const disabled = userName.length < 2 || userName.length > 10
+  const disabled = userName.length < 2 || userName.length > 15
 
   const handleOnSubmit = () => {
     if (disabled) return
@@ -41,7 +41,7 @@ const TutorialUserName = ({ navigation }) => {
         />
         <FormWrapper>
           <Form 
-            placeholder="筋肉 太郎（2文字以上10文字以下）"
+            placeholder="筋肉 太郎（2文字以上15文字以下）"
             maxLength={20}
             value={userName}
             onChange={handleNameChange}

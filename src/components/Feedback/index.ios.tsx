@@ -1,23 +1,21 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import styled from 'styled-components';
-import { COLORS } from '../../constants/Styles';
-import Modal from 'react-native-modal';
+import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Linking } from 'expo';
 import Constants from 'expo-constants'
+import styled from 'styled-components';
+// import constants
+import { COLORS } from '../../constants/Styles';
+// import components
+import BottomModal from '../../common/Modal/BottomModal';
 
 interface FeedbackProps {
-  showFeedbackModal: boolean
-  setShowFeedbackModal: Dispatch<SetStateAction<boolean>>
+  isOpen: boolean
+  handleOnClose: () => void
 }
 
 const FeedbackModal = (props: FeedbackProps) => {
-  const { showFeedbackModal, setShowFeedbackModal } = props;
+  const { isOpen, handleOnClose } = props;
  
-  const handleClose = () => {
-    setShowFeedbackModal(false)
-  }
-
   const handleInquiryLink = () => {
     Linking.openURL(Constants.manifest.extra.inquiryUrl)
   }
@@ -27,13 +25,8 @@ const FeedbackModal = (props: FeedbackProps) => {
   }
 
   return (
-    <Modal isVisible={showFeedbackModal} swipeDirection='down' onSwipeComplete={handleClose}>
+    <BottomModal isOpen={isOpen} height={300} onClose={handleOnClose}>
       <Container>
-        <FeedbackHeader>
-          <FeedbackClose onPress={handleClose}>
-            <FeedbackCloseText>キャンセル</FeedbackCloseText>
-          </FeedbackClose>
-        </FeedbackHeader>
         <FeedbackWrapper>
           <FeedbackBtn onPress={handleReview}>
             <Icon name='staro' size={25} />
@@ -45,34 +38,11 @@ const FeedbackModal = (props: FeedbackProps) => {
           </FeedbackBtn>
         </FeedbackWrapper>
       </Container>
-    </Modal>  
+    </BottomModal>  
   )
 }
 
 const Container = styled.View`
-  height: 95%;
-  background-color: ${COLORS.BASE_BACKGROUND};
-  width: 110%;
-  margin-bottom: -25%;
-  border-radius: 15px;
-  align-self: center;
-`
-
-const FeedbackHeader = styled.View`
-  height: 50px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  background-color: #f4f4f4;
-  justify-content: center;
-`
-
-const FeedbackClose = styled.TouchableOpacity`
- padding-left: 20px;
-`
-
-const FeedbackCloseText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  font-size: 16px;
 `
 
 const FeedbackWrapper = styled.View`

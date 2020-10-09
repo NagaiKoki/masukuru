@@ -3,7 +3,7 @@ import styled from 'styled-components'
 // import components
 import Button from '../../../common/Button'
 import StepTitle from '../../../components/Tutorial/StepTitle'
-import JoinGroupModal from '../../../components/Tutorial/JoinGroupModal'
+import JoinGroupModal from '../../../components/Groups/Modal/Join/JoinGroupModal'
 // import constants
 import { COLORS } from '../../../constants/Styles'
 // import selectors

@@ -4,6 +4,7 @@ import Constants from 'expo-constants'
 import styled from 'styled-components'
 // import components
 import EmailAuthForm from '../../../components/Auth/EmailAuthForm'
+import Button from '../../../common/Button'
 import Toaster from '../../../components/Toaster'
 // import selectors
 import { useAuthSelectors } from '../../../selectors/auth'
@@ -56,8 +57,15 @@ const SignupScreen = () => {
           onPasswordChange={handlePasswordChange}
         />
         {renderPrivacy}
-        <SubmitBtn onPress={handleSubmit} disabled={disabled}>
-          <SubmitText>登録する</SubmitText>
+        <SubmitBtn>
+          <Button 
+            text="登録する"
+            bold={true}
+            padding="15px 0"
+            fontSize={16}
+            disabled={disabled}
+            handleOnClick={handleSubmit} 
+          />
         </SubmitBtn>
       </Wrapper>
     </Container>
@@ -95,19 +103,6 @@ const PrivacyPolicyLink = styled.Text`
   color: ${COLORS.SUB_BLACK};
 `
 
-const SubmitBtn = styled.TouchableOpacity<{ disabled: boolean }>`
-  width: 100%;
-  align-self: center;
-  background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 15px 0;
-  border-radius: 60px;
+const SubmitBtn = styled.View`
   margin-top: 30px;
-  opacity: ${ props => ( props.disabled ? 0.5 : 1 ) };
-`
-
-const SubmitText = styled.Text`
-  color: ${COLORS.BASE_WHITE};
-  font-weight: bold;
-  text-align: center;
-  font-size: 16px;
 `

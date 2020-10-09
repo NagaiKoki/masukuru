@@ -6,17 +6,19 @@ import { COLORS } from '../../constants/Styles'
 interface FormProps {
   placeholder?: string
   maxLength?: number
+  defaulutValue?: string
   value?: string
   secureTextEntry?: boolean
   onChange: (text: string) => void
 }
 
 const Form = (props: FormProps) => {
-  const { placeholder, maxLength, secureTextEntry, value, onChange } = props
+  const { placeholder, maxLength, defaulutValue, secureTextEntry, value, onChange } = props
 
   return (
     <TextInput
       placeholder={placeholder}
+      defaultValue={defaulutValue || ''}
       autoCapitalize={'none'}
       autoCorrect={false}
       maxLength={maxLength}

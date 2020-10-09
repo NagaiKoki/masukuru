@@ -10,9 +10,13 @@ import {
 
 // state
 export interface GroupState {
-  currentGroupid: string
+  currentGroupId: string
+  currentGroup: GroupType
+  currentGroupUsers: GroupUserType[]
+  belongGroups: GroupType[]
   isLoading: boolean
   error: string
+  isJoinModalOpen: boolean
 }
 
 export type GroupType = {
@@ -34,31 +38,7 @@ export type GroupUserType = {
   updatedAt: Date
 }
 
-// 所属グループIDの設定
-export interface SetCurrentGroupId {
-  type: typeof SET_CURRENT_GROUP_ID
-  id: string
+export type RequestPatchGroupType = {
+  imageUrl: string
+  groupName: string
 }
-
-// グループユーザーの取得リクエスト
-export interface RequestFetchGroupUsers {
-  type: typeof REQUEST_FETCH_GROUP_USERS
-}
-
-// グループユーザーの取得リクエスト成功
-export interface SuccessFetchGroupUsers {
-  type: typeof SUCCESS_FETCH_GROUP_USERS
-  payload: GroupUserType[]
-}
-
-// グループユーザーの取得リクエスト失敗
-export interface FailureFetchGroupUsers {
-  type: typeof FAILURE_FETCH_GROUP_USERS
-  error: string
-}
-
-export type GroupActionTypes = 
-  | SetCurrentGroupId
-  | RequestFetchGroupUsers
-  | SuccessFetchGroupUsers
-  | FailureFetchGroupUsers

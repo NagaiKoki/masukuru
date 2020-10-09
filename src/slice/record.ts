@@ -15,13 +15,15 @@ import {
   RequestPostEmojiReaction,
   EmojiReactionType,
   ResponseEmojiReactionType,
-  TogglePostedUserEmojiModal
+  TogglePostedUserEmojiModal,
+  ResponseCreateRecordType
 } from '../types/Record'
 import { UserType } from '../types/User'
 // import constants
 import { record } from '../constants/sliceName'
 // import utils
 import { convertTimeStampToStringOnlyDate } from '../utilities/timestamp'
+import RecordData from '../components/Records/Items/data'
 
 const initialState: RecordState = {
   recordItems: [],
@@ -93,7 +95,9 @@ const recordSlice = createSlice({
       }
     },
     initializeRecords: (state) => {
-      return initialState
+      return {
+        ...initialState
+      }
     },
     initializeTemporaryRecord: (state) => {
       return {
@@ -125,16 +129,22 @@ const recordSlice = createSlice({
         isLoading: true
       }
     },
-    successSubmitRecords: (state, action: PayloadAction<number>) => {
-      const isOpenApplause = action.payload <= 31
+    successSubmitRecords: (state, action: PayloadAction<ResponseCreateRecordType>) => {
+      const { record, size } = action.payload
+      const isOpenApplause = size <= 31
+      const updatedRecordData = [
+        record,
+        ...state.recordData 
+      ]
       return {
         ...state,
         recordItems: [],
+        recordData: updatedRecordData,
         word: '',
         imageUrl: '',
         error: '',
         isLoading: false,
-        recordSize: action.payload,
+        recordSize: size,
         isOpenApplause
       }
     },
@@ -303,10 +313,18 @@ const recordSlice = createSlice({
         isLoading: true
       }
     },
-    successUpdateRecord: (state) => {
+    successUpdateRecord: (state, action: PayloadAction<ResponseRecordType>) => {
+      const updatedRecords = state.recordData.map((record, i) => {
+        if (record.id === action.payload.id) {
+          return RecordData[i] = action.payload
+        }
+        return record
+      })
+      
       return {
         ...state,
         recordItems: [],
+        recordData: updatedRecords,
         word: '',
         imageUrl: '',
         error: '',

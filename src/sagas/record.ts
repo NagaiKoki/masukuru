@@ -12,7 +12,8 @@ import {
   RequestDeleteComment,
   RequestPostEmojiReaction,
   ResponseEmojiReactionType,
-  EmojiReactionType
+  EmojiReactionType,
+  ResponseCreateRecordType
 } from '../types/Record'
 import { ResponseType } from '../types'
 import { RequestPostCommentNotification } from '../types/Notification'
@@ -78,7 +79,7 @@ import {
   failureFetchPostedEmojiUsers,
   requestDeleteEmojiReaction,
   successDeleteEmojiReaction,
-  failureDeleteEmojiReaction
+  failureDeleteEmojiReaction,
 } from '../slice/record'
 import {
   requestPostCommentNotification,
@@ -89,13 +90,13 @@ import firebase from '../config/firebase'
 // import utils
 import * as RecordAnalytics from '../utilities/Analytics/record'
 
-const recordSelector = (state: RootState) => state.records
 
+const recordSelector = (state: RootState) => state.records
 // 記録の保存
 function* runRequestSubmitRecords(action: PayloadAction<RequestSubmitRecords>) {
   const { trainingDate } = yield select((state: RootState) => state.records)
   const { records, word, imageUrl } = action.payload
-  const { payload, error }: ResponseType<number> = yield call(
+  const { payload, error }: ResponseType<ResponseCreateRecordType> = yield call(
     requestPostRecords,
     records,
     word,
@@ -206,10 +207,11 @@ function* handleRequestDestroyRecord() {
   yield takeEvery(requestDestroyRecord.type, runRequestDestroyRecord)
 }
 
+// 記録の更新
 function* runRequestUpdateRecord(action: PayloadAction<RequestSubmitRecords>) {
   const { word, imageUrl, records, id } = action.payload
   const { trainingDate }: ReturnType<typeof recordSelector> = yield select(recordSelector)
-  const { payload, error } : ResponseType<string> = yield call(
+  const { payload, error } : ResponseType<ResponseRecordType> = yield call(
     requestUpdateRecordItem,
     id,
     records,
@@ -227,7 +229,7 @@ function* runRequestUpdateRecord(action: PayloadAction<RequestSubmitRecords>) {
   if (payload && !error) {
     yield delay(2000)
     yield requestPostRecordNamesForSuggest()
-    yield put(successUpdateRecord())
+    yield put(successUpdateRecord(payload))
   } else if (error) {
     yield put(failureUpdateRecord(error))
   }

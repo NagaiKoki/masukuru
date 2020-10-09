@@ -8,12 +8,6 @@ import { Provider } from 'react-redux'
 import { YellowBox, Clipboard } from 'react-native'
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet'
 
-
-// シミュレーション上の Setting a timer エラーを非表示
-YellowBox.ignoreWarnings([
-  'Setting a timer'
-])
-
 if (__DEV__) {
   Clipboard.setString('')
 }
@@ -22,6 +16,8 @@ const App = () => {
 // atobがないとのエラーがfirebaseで出るので、代入する
 if (!window.btoa) {  window.btoa = encode }
 if (!window.atob) { window.atob = decode }
+
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'RNDeviceInfo', 'Warning: An update']);
 
   return (
     <Container>

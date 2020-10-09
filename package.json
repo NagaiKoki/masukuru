@@ -76,6 +76,7 @@
     "babel-preset-expo": "^8.2.3",
     "react-native-paper": "^3.6.0",
     "react-native-status-bar-height": "^2.4.0",
+    "redux-devtools-extension": "^2.13.8",
     "styled-components": "^5.0.1",
     "typescript": "~3.9.5"
   },

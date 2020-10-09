@@ -3,6 +3,7 @@ import styled from 'styled-components'
 // import components
 import EmailAuthForm from '../../../components/Auth/EmailAuthForm'
 import Toaster from '../../../components/Toaster'
+import Button from '../../../common/Button'
 // import selectors
 import { useAuthSelectors } from '../../../selectors/auth'
 // import constants
@@ -43,8 +44,16 @@ const LoginScreen = ({ navigation }) => {
         <PasswordResetBtn block onPress={ () => navigation.navigate('ResetPassword') }>
           <PasswordResetText>パスワードをお忘れですか？</PasswordResetText>
         </PasswordResetBtn>
-        <SubmitBtn onPress={handleSubmit} disabled={!email || !password}>
-          <SubmitText>ログインする</SubmitText>
+        
+        <SubmitBtn>
+          <Button 
+            text="ログインする"
+            bold={true}
+            padding="15px 0"
+            fontSize={16}
+            disabled={!email || !password}
+            handleOnClick={handleSubmit} 
+          />
         </SubmitBtn>
       </Wrapper>
     </Container>
@@ -68,14 +77,6 @@ const Wrapper = styled.View`
   background-color: ${COLORS.BASE_WHITE};
 `
 
-const FormLabel = styled.Text`
-  color: ${COLORS.BASE_BLACK};
-  width: 100%;
-  margin: 5px auto;
-  margin-top: 10px;
-  font-weight: bold;
-`
-
 const PasswordResetBtn = styled.TouchableOpacity``
 
 const PasswordResetText = styled.Text`
@@ -87,18 +88,5 @@ const PasswordResetText = styled.Text`
 `
 
 const SubmitBtn = styled.TouchableOpacity<{ disabled: boolean }>`
-  width: 100%;
-  align-self: center;
-  background-color: ${COLORS.BASE_MUSCLEW};
-  padding: 15px 0;
-  border-radius: 60px;
   margin-top: 40px;
-  opacity: ${ props => ( props.disabled ? 0.5 : 1 )};
-`
-
-const SubmitText = styled.Text`
-  color: ${COLORS.BASE_WHITE};
-  font-weight: bold;
-  text-align: center;
-  font-size: 16px;
 `

@@ -1,10 +1,12 @@
 import firebase, { db } from '../../config/firebase';
 // import types
-import { RecordItemType } from '../../types/Record'
+import { RecordItemType, ResponseRecordType } from '../../types/Record'
 // import lib
 import { factoryRandomCode } from '../../utilities/randomTextFactory'
 // import constants
 import { COMMON_ERROR_MESSSAGE } from '../../constants/errorMessage'
+// import utils
+import { convertFirebaseTimeStamp } from '../../utilities/timestamp'
 
 // 記録のポスト
 export const requestPostRecords = async (records: RecordItemType[], word: string, trainingDate: Date, imageUrl: string) => {
@@ -36,7 +38,18 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
       size = snap.size
     })
 
-    return { payload: size }
+    const recordObj: ResponseRecordType = {
+      id: docId,
+      records,
+      uid,
+      word,
+      trainingDate: convertFirebaseTimeStamp(trainingDate),
+      imageUrl,
+      createdAt: convertFirebaseTimeStamp(new Date()),
+      updatedAt: convertFirebaseTimeStamp(new Date()),
+    }
+
+    return { payload: { record: recordObj, size } }
   } catch (error) {
     return { error }
   }
@@ -82,15 +95,21 @@ export const requestFetchDestroyRecord = async (id: string) => {
 }
 
 // グループ切り替えの際に、最大20件の記録に遷移先のgroupIdを書き込む
-export const requestUpdateRecordGroupIds = async (groupId: string) => {
+export const requestUpdateRecordGroupIds = async (groupId: string, batch?: firebase.firestore.WriteBatch) => {
   const currentUser = firebase.auth().currentUser
   try {
     const recordRef = db.collection('records').where('uid', '==', currentUser.uid).orderBy('createdAt', 'desc').limit(20)
     await recordRef.get().then(snap => {
       snap.forEach(doc => {
-        doc.ref.update({
-          groupIds: firebase.firestore.FieldValue.arrayUnion(groupId)
-        })
+        if (batch) {
+          batch.update(doc.ref, {
+            groupIds: firebase.firestore.FieldValue.arrayUnion(groupId)
+          })
+        } else {
+          doc.ref.update({
+            groupIds: firebase.firestore.FieldValue.arrayUnion(groupId)
+          })
+        }
       })
     })
     return { payload: 'success' }
@@ -121,6 +140,8 @@ export const requestFetchRecordItem = async (recordId: string) => {
 export const requestUpdateRecordItem = async (recordId: string, records: RecordItemType[], word: string, trainingDate: Date, imageUrl: string) => {
   const recordRef = db.collection('records').doc(recordId)
   const currentTime = firebase.firestore.FieldValue.serverTimestamp()
+  let currentRecord: ResponseRecordType
+
   try {
     recordRef.update({
       records,
@@ -129,7 +150,24 @@ export const requestUpdateRecordItem = async (recordId: string, records: RecordI
       trainingDate,
       updatedAt: currentTime
     })
-    return { payload: 'success' }
+
+    await recordRef.get().then(snap => {
+      const data = snap.data() as ResponseRecordType
+      currentRecord = data
+    })
+
+    const updatedRecord: ResponseRecordType = {
+      id: recordId,
+      uid: currentRecord.uid,
+      records,
+      word,
+      imageUrl,
+      trainingDate: convertFirebaseTimeStamp(trainingDate),
+      updatedAt: convertFirebaseTimeStamp(new Date()), 
+      createdAt: currentRecord.createdAt
+    }
+
+    return { payload: updatedRecord }
   } catch(error) {
     return { error }
   }

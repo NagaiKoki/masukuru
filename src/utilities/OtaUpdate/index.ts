@@ -11,7 +11,7 @@ export const updateModule = async () => {
         return;
       }
     } catch (e) {
-      console.log(e)
+      return { error: e }
     }
   }
 }

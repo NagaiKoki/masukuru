@@ -141,6 +141,12 @@ export const UnSettingGroupImage = (props: UnsettingGroupImage) => {
         </Wrapper>
       </MeshWrapper>
     )
+  } else {
+    return (
+      <Image source={require('../../assets/profileDefaultImage.png')} 
+        style={{ width: width, height: height, resizeMode: 'cover', alignSelf: 'center', borderRadius: 60 }} 
+      />
+    )
   }
 }
 
