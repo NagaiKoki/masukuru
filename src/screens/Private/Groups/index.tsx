@@ -34,6 +34,10 @@ const GroupScreen = ({ navigation }) => {
   const renderImage = imageUrl ? 
     <GroupImage url={imageUrl} width={90} height={90} /> :
     <UnSettingGroupImage urls={groupUsersImages} width={90} height={90} />
+  
+  const renderUserName = currentGroupUsers.map(user => (
+    <ItemText>{user.name}</ItemText>
+  ))
 
   return (
     <Container>
@@ -48,6 +52,10 @@ const GroupScreen = ({ navigation }) => {
         <Label>ホストユーザー</Label>
         <ItemText>{ hostUser ?  hostUser.name : '離脱済'}</ItemText>
       </ItemWrapper>
+      <ItemWrapper>
+        <Label>メンバー</Label>
+        {renderUserName}
+      </ItemWrapper>
       <ButtonWrapper>
         <Button text="グループを編集する" bold={true} fontSize={16} padding="15px 0" handleOnClick={handleOnNavigate} />
       </ButtonWrapper>
@@ -57,7 +65,7 @@ const GroupScreen = ({ navigation }) => {
 
 export default GroupScreen
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
   padding: 15px;
   background: ${COLORS.BASE_WHITE};
