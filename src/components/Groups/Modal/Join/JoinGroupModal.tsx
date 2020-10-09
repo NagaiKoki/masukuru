@@ -19,7 +19,7 @@ type PropsType = {
 const JoinGroupModal = (props: PropsType) => {
   const { isOpen, authorized, navigation, handleCloseModal } = props
   const [code, setCode] = useState('')
-  const { error, requestJoinGroup } = useGroupSelector()
+  const { error, isJoining, requestJoinGroup } = useGroupSelector()
 
   const handleChangeCode = (value: string) => {
     setCode(value)
@@ -33,8 +33,10 @@ const JoinGroupModal = (props: PropsType) => {
     requestJoinGroup(code)
   }
 
+  console.log(isJoining)
+
   return (
-    <BottomModal isOpen={isOpen} height={350} onClose={handleCloseModal}>
+    <BottomModal isOpen={isOpen} height={400} onClose={handleCloseModal}>
       <Container>
         <Title>6桁の招待コードを入力しよう！</Title>
         <FormWrapper>
@@ -48,9 +50,10 @@ const JoinGroupModal = (props: PropsType) => {
         </FormWrapper>
         <ButtonWrapper>
           <Button 
-            text="参加する"
+            text={ isJoining ? '参加中...' : '参加する' }
             bold={true}
             padding='15px 0'
+            disabled={isJoining || !code || code.length !== 6}
             fontSize={16}
             handleOnClick={handleOnSubmit}
           />

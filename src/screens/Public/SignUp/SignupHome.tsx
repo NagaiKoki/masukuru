@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text } from 'react-native';
+import { Image } from 'react-native';
 import SignUpModal from './SignUpModal';
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
@@ -32,7 +32,7 @@ const SignupHomeScreen = ({ navigation, route }) => {
       </ImageWrapper>
 
       <SignUpTitle>
-        仲間と筋トレを共有しながら、
+        仲間とトレーニング
         {"\n"}{"\n"}
         仲間と理想のカラダへ
       </SignUpTitle>
@@ -90,10 +90,10 @@ const ImageTitleWrapper = styled.View`
 const SignUpTitle = styled.Text`
   width: 80%;
   margin: 0 auto;
-  padding: 100px 0 0px 0px;
+  padding: 80px 0 0px 0px;
   color: ${COLORS.BASE_BLACK};
   font-weight: bold;
-  font-size: 20px;
+  font-size: 25px;
 `
  
 const SignUpCard = styled.View`
@@ -112,7 +112,7 @@ const SignUpButtonWrapper = styled.View`
 const SignUpButton = styled.TouchableOpacity`
   background-color: ${COLORS.BASE_MUSCLEW};
   border-radius: 60px;
-  padding: 17px 0;
+  padding: 16px 0;
   width: 95%;
   align-self: center;
 `
@@ -121,7 +121,7 @@ const SignUpText = styled.Text`
   color: ${COLORS.BASE_WHITE};
   font-weight: bold;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
 `
 
 const LoginSupportWrapper = styled.View`
@@ -140,7 +140,7 @@ const LoginButtonWrapper = styled.View`
 const LoginButton = styled.TouchableOpacity`
   border: 2px solid ${COLORS.BASE_MUSCLEW};
   border-radius: 60px;
-  padding: 15px 0;
+  padding: 16px 0;
   width: 95%;
   align-self: center;
 `
@@ -149,7 +149,7 @@ const LoginText = styled.Text`
   color: ${COLORS.BASE_MUSCLEW};
   font-weight: bold;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
 `
 
 export default SignupHomeScreen;

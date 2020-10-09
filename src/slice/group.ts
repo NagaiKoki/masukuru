@@ -21,6 +21,7 @@ const initialState: GroupState = {
   },
   belongGroups: [],
   isLoading: false,
+  isJoining: false,
   error: '',
   isJoinModalOpen: false
 }
@@ -31,19 +32,22 @@ const groupSlice = createSlice({
   reducers: {
     requestJoinGroup: (state, action: PayloadAction<string>) => {
       return {
-        ...state
+        ...state,
+        isJoining: true
       }
     },
     successJoinGroup: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        currentGroupId: action.payload
+        currentGroupId: action.payload,
+        isJoining: false
       }
     },
     failureJoinGroup: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        error: action.payload      
+        error: action.payload,
+        isJoining: false
       }
     },
     requestCreateGroup: (state) => {

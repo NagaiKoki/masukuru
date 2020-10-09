@@ -42,10 +42,4 @@ const RecordListContainer = styled.View`
   padding: 10px 0;
 `
 
-const RecordEmptyState = styled.Text`
-  padding: 40px 0;
-  text-align: center;
-  font-size: 14px;
-`
-
 export default RecordList

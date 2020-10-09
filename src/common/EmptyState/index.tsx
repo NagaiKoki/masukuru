@@ -14,7 +14,7 @@ const EmptyState = (props: PropsType) => {
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image source={require('../../assets/emptyState.png')} resizeMode="cover" style={{ width: '100%', height: 80, resizeMode: 'cover', alignSelf: 'center' }} />
+        <Image source={require('../../assets/emptyState.png')} resizeMode="cover" style={{ width: '100%', height: 60, resizeMode: 'cover', alignSelf: 'center' }} />
       </ImageWrapper>
       <Text>{text}</Text>
     </Wrapper>
@@ -26,11 +26,11 @@ export default EmptyState
 const Wrapper = styled.View`
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 40px 20px;
 `
 
 const ImageWrapper = styled.View`
-  width: 80px;
+  width: 60px;
 `
 
 const Text = styled.Text`

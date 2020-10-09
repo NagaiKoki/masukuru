@@ -145,7 +145,7 @@ const RecordItem = (props: RecordItemProps) => {
 const styles = StyleSheet.create({
   image: {
       height: 200,
-      width: 200,
+      width: '100%',
       borderRadius: 15,
       backgroundColor: '#d1d1cf'
   }
@@ -223,8 +223,7 @@ const UnitDataWrapper = styled.View`
 `
 
 const RecordImageWrapper = styled.View`
-  margin-left: 50px;
-  margin-bottom: 15px;
+  margin: 10px 0 15px 50px;
 `
 
 export default RecordItem
