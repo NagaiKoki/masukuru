@@ -18,7 +18,7 @@ const GroupScreen = ({ navigation }) => {
   }, [])
 
   const handleOnNavigate = () => {
-    navigation.navigate('groupEdit', currentGroup)
+    navigation.navigate('groupEdit', { currentGroup, groupUsersImages })
   }
 
   if (!currentGroup.id || !currentGroupUsers.length) {

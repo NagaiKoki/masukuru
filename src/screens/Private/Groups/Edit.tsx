@@ -8,15 +8,18 @@ import { COLORS } from '../../../constants/Styles'
 import { GroupType } from '../../../types/Group'
 
 type RoutePropsType = {
-  params: GroupType
+  params: {
+    currentGroup: GroupType
+    groupUsersImages: string[]
+  }
 }
 
 const GroupEditScreen = ({ navigation, route }: { navigation: any, route: RoutePropsType }) => {
-  const currentGroup = route.params
-
+  const { currentGroup, groupUsersImages } = route.params
+  
   return (
     <Container>
-      <GroupEdit group={currentGroup} navigation={navigation} />
+      <GroupEdit group={currentGroup} groupUsersImages={groupUsersImages} navigation={navigation} />
     </Container>
   )
 }
