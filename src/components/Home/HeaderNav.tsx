@@ -4,6 +4,8 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { COLORS } from '../../constants/Styles';
 // import config
 import { db } from '../../config/firebase'
+// import utils
+import truncateText from '../../utilities/truncateText'
 
 export const getHeaderNav= async (currentGroupId: string, navigation: any) => {
   let groupName;
@@ -22,6 +24,6 @@ navigation.setOptions({
                style={{ paddingRight: 20, color: COLORS.BASE_WHITE }}
     />
   ),
-  headerTitle: groupName ? groupName : 'ホーム'
+  headerTitle: groupName ? truncateText(groupName, 15) : 'ホーム'
 });
 }

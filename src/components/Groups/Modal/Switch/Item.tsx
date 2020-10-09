@@ -13,6 +13,7 @@ import { COLORS } from '../../../../constants/Styles'
 import { useGroupSelector } from '../../../../selectors/group'
 // import utils
 import { lazyFunction } from '../../../../utilities/Function/lazyFunction'
+import truncateText from '../../.././../utilities/truncateText'
 
 type PropsType = {
   group: GroupType
@@ -63,10 +64,12 @@ const GroupSwtichModalItem = (props: PropsType) => {
     <GroupImage url={imageUrl} width={40} height={40} /> :
     <UnSettingGroupImage urls={urls} width={40} height={40} />
 
-  const renderGroupName =
-    <GroupName>
-      { groupName || names.join(', ') }
-    </GroupName>
+  const renderGroupName = () => {
+    const name = groupName || names.join(', ')
+    return (
+      <GroupName>{truncateText(name, 15)}</GroupName>
+    )
+  }
   
   const renderCurrentMark = currentGroupId === id &&
     <Icon name="checkcircle" size={20} style={{ color: COLORS.SUCCESS_MESSAGE }} />
@@ -75,7 +78,7 @@ const GroupSwtichModalItem = (props: PropsType) => {
     <Wrapper activeOpacity={0.8} onPress={handleSwitchGroup}>
       <GroupWrapper>
         {renderImage}
-        {renderGroupName}
+        {renderGroupName()}
       </GroupWrapper>
       {renderCurrentMark}
     </Wrapper>
