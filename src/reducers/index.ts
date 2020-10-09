@@ -37,6 +37,7 @@ export interface RootState {
 
 const sagaMiddleware = createSagaMiddleware()
 const middleware = applyMiddleware(sagaMiddleware)
+// const middleware = composeWithDevTools(applyMiddleware(sagaMiddleware))
 
 const store = createStore(
   combineReducers({
@@ -49,7 +50,7 @@ const store = createStore(
     auth: authSlice.reducer,
     ui: uiSlice.reducer
   }),
-  composeWithDevTools(middleware)
+  middleware
 )
 
 sagaMiddleware.run(rootSaga)
