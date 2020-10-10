@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Alert } from 'react-native'
 import styled from 'styled-components'
 // import components
 import Item from './Item'
