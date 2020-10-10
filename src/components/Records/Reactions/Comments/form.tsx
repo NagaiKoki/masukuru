@@ -14,6 +14,8 @@ import { UserType } from '../../../../types/User'
 // import utils
 import { requestAppReview } from '../../../../utilities/requestReview'
 import { hapticFeedBack } from '../../../../utilities/Haptic'
+// import config
+import Analytics from '../../../../config/amplitude'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -46,6 +48,7 @@ const RecordComment = (props: RecordCommentProps) => {
     dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text }))
     hapticFeedBack('medium')
     Keyboard.dismiss()
+    Analytics.track('commented', { text: text })
     if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
       dispatch(requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text))
     }
