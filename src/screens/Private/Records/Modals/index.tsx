@@ -33,7 +33,7 @@ const RecordModalScreen = ({ navigation }) => {
         headerRight: () => {
           return (
             <HeaderNextBtn onPress={handleNavigationWord}>
-              <HeaderNextTitle>{ !recordItems.length ? 'skip' : '次へ' }</HeaderNextTitle>
+              <HeaderNextTitle>次へ</HeaderNextTitle>
             </HeaderNextBtn>
           )
         }

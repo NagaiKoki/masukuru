@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from 'react-native';
@@ -22,6 +22,7 @@ const AddRecordWordScreen = ({ navigation, route }) => {
   const [text, setText] = useState('')
   const [progress, setProgress] = useState<string>('');
   const [temporaryUrl, setTemporaryUrl] = useState('');
+  const inputRef = useRef(null)
   const record = 'record';
 
   const SUBMIT_BTN_TEXT = isEdit ? '更新する' : '送信する'
@@ -51,6 +52,9 @@ const AddRecordWordScreen = ({ navigation, route }) => {
       setText(word)
       setTemporaryUrl(imageUrl)
     }
+    setTimeout(() => {
+      inputRef.current.focus()
+    }, 250)
   }, [])
 
   const handleRequestSubmit = () => {
@@ -93,7 +97,7 @@ const AddRecordWordScreen = ({ navigation, route }) => {
 
   const renderImageForm =
     <RecordImageUpload onPress={handleUpload}>
-      <Icon name="image" size={15} style={{ marginRight: 7, marginLeft: 7, color: '#484848' }}/>
+      <Icon name="image" size={15} style={{ marginRight: 7, marginLeft: 7, color: COLORS.BASE_MUSCLEW }}/>
       <RecordImageUploadText>
         { !!temporaryUrl ? '画像を変更する' : '画像を追加する' }
       </RecordImageUploadText>
@@ -111,7 +115,8 @@ const AddRecordWordScreen = ({ navigation, route }) => {
             numberOfLines = {4}
             maxLength={300}
             defaultValue={text}
-            autoCorrect={ false }
+            autoCorrect={false}
+            ref={inputRef}
             onChangeText={ (text: string) => setText(text) }
           />
           {renderImage}
@@ -186,14 +191,16 @@ const ImageCloseBtn = styled.TouchableOpacity`
 `
 
 const RecordImageUploadText = styled.Text`
-  color: ${COLORS.BASE_BLACK};
+  color: ${COLORS.BASE_MUSCLEW};
   font-size: 14px;
+  font-weight: bold;
 `
 
 const WordLengthText = styled.Text`
   text-align: right;
   margin: 10px 10px 0 0;
-  color: ${COLORS.BASE_BLACK};
+  color: ${COLORS.BASE_MUSCLEW};
+  font-weight: bold;
   font-size: 14px;
 `
 
