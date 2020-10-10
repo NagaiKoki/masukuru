@@ -16,6 +16,8 @@ import { requestAppReview } from '../../../../utilities/requestReview'
 import { hapticFeedBack } from '../../../../utilities/Haptic'
 // import config
 import Analytics from '../../../../config/amplitude'
+// import lib
+import { MentionEditor } from '../../../../lib/Mention/Editor'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -65,7 +67,11 @@ const RecordComment = (props: RecordCommentProps) => {
     <CommentWrapper>
       <CommentFormWrapper>
         {renderUserImage}
-        <CommentForm 
+        <MentionEditor 
+          text={text}
+          onChangeText={handleOnChangeText}
+        />
+        {/* <CommentForm 
           placeholder="コメントを入力..."
           autoCapitalize={'none'}
           maxLength={300}
@@ -73,7 +79,7 @@ const RecordComment = (props: RecordCommentProps) => {
           value={text}
           autoCorrect={false}
           onChangeText={ value => handleOnChangeText(value) }
-        />
+        /> */}
         <SubmitBtnWrapper 
           onPress={() => handleRequestPostComment()}
           commentPresent={!!text}
