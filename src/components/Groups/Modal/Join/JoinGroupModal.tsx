@@ -33,8 +33,6 @@ const JoinGroupModal = (props: PropsType) => {
     requestJoinGroup(code)
   }
 
-  console.log(isJoining)
-
   return (
     <BottomModal isOpen={isOpen} height={400} onClose={handleCloseModal}>
       <Container>

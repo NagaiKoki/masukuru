@@ -4,6 +4,7 @@ import { UiState, ToastMessageType, ToggleImageModalType } from '../types/ui'
 
 const initialState: UiState = {
   toastMessage: null,
+  selectedImage: '',
   imageModalOpen: false
 }
 
@@ -29,9 +30,11 @@ const uiSlice = createSlice({
       }
     },
     toggleImageModal: (state, action: PayloadAction<ToggleImageModalType>) => {
+      const { isOpen, imageUrl } = action.payload
       return {
         ...state,
-        imageModalOpen: !action.payload.isOpen
+        imageModalOpen: isOpen,
+        selectedImage: imageUrl || ''
       }
     }
   }

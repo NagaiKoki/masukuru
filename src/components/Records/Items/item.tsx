@@ -18,11 +18,12 @@ import RecordUser from './user'
 import RecordData from './data'
 import TrainingDate from './trainingDate'
 import SettingModal from '../SettingModal/list'
-import ImageModal from '../../../common/Image/ZoomImageModal'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import constants
 import { COLORS } from '../../../constants/Styles';
+// import selectors
+import { useUiSelector } from '../../../selectors/ui'
 
 interface RecordItemProps {
   record: ResponseRecordType
@@ -33,6 +34,7 @@ interface RecordItemProps {
 const RecordItem = (props: RecordItemProps) => {
   const { record, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
+  const { imageModalOpen, toggleImageModal } = useUiSelector()
   const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
@@ -41,7 +43,6 @@ const RecordItem = (props: RecordItemProps) => {
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [isCommentLoading, setIsCommentLoading] = useState(true)
   const [visibleModal, setVisibleModal] = useState(false)
-  const [imageModalOpen, setImageModalOpen] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
@@ -70,8 +71,8 @@ const RecordItem = (props: RecordItemProps) => {
     setIsCommentLoading(false)
   }
 
-  const handleToggleImageModal = () => {
-    setImageModalOpen(!imageModalOpen)
+  const handleOpenImageModal = () => {
+    toggleImageModal({ isOpen: true, imageUrl })
   }
 
   const handleOnNavigate = () => {
@@ -127,7 +128,7 @@ const RecordItem = (props: RecordItemProps) => {
           </RecordRightUpper>
         </RecordItemUpper>
         { !!word ? renderTweet : null }
-        <RecordImageWrapper onPress={handleToggleImageModal}>
+        <RecordImageWrapper onPress={handleOpenImageModal}>
           { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
         </RecordImageWrapper>
         <TrainingDate 
@@ -138,7 +139,6 @@ const RecordItem = (props: RecordItemProps) => {
         {renderRecordData}
       </RecordItenClickable>
       <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
-      <ImageModal isOpen={imageModalOpen} imageUrl={imageUrl} handleOnClose={handleToggleImageModal}  />
       <SettingModal 
         recordId={record.id}
         visibleModal={visibleModal}

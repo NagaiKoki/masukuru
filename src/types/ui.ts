@@ -1,6 +1,7 @@
 export interface UiState {
   toastMessage: ToastMessageType
   imageModalOpen: boolean
+  selectedImage: string
 }
 
 export type ToastMessageType = {

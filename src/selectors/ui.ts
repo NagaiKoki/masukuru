@@ -8,7 +8,7 @@ import { UiState, ToastMessageType, ToggleImageModalType } from '../types/ui'
 
 export const useUiSelector = () => {
   const dispatch = useDispatch()
-  const { toastMessage, imageModalOpen } = useSelector<RootState, UiState>(state => state.ui)
+  const { toastMessage, imageModalOpen, selectedImage } = useSelector<RootState, UiState>(state => state.ui)
 
   const _setToastMessage = useCallback((type: ToastMessageType) => dispatch(setToastMessage(type)), [dispatch])
   const _removeToastMessage = useCallback(() => dispatch(removeToastMessage()), [dispatch])
@@ -17,6 +17,7 @@ export const useUiSelector = () => {
   return {
     toastMessage,
     imageModalOpen,
+    selectedImage,
     setToastMessage: _setToastMessage,
     removeToastMessage: _removeToastMessage,
     toggleImageModal: _toggleImageModal
