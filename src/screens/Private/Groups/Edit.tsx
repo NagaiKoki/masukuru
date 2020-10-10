@@ -28,6 +28,6 @@ export default GroupEditScreen
 
 const Container = styled.View`
   flex: 1;
-  padding: 0 20px;
+  padding: 0 20px 40px 20px;
   background: ${COLORS.BASE_WHITE};
 `

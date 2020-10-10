@@ -95,5 +95,5 @@ const ItemText = styled.Text`
 `
 
 const ButtonWrapper = styled.View`
-  padding: 20px 0;
+  padding: 20px 0 40px 0;
 `
