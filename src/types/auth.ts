@@ -10,5 +10,11 @@ export type EmailSignInType = {
   method: AuthMethodType
 }
 
+export type ThirdPartySignInType = {
+  method: AuthMethodType
+  type: ThirdPartyAuth
+}
+
+export type ThirdPartyAuth = 'apple' | 'google'
 export type UserStatusType = 'unauthorized' | 'authorized' | 'tutorial' | ''
 export type AuthMethodType = 'signup' | 'signin'

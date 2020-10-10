@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
         
         <SubmitBtn>
           <Button 
-            text={isLoading ? 'ログイン...' : 'ログインする'}
+            text={isLoading ? 'ログイン中...' : 'ログインする'}
             bold={true}
             padding="15px 0"
             fontSize={16}

@@ -3,7 +3,10 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'styled-components';
 import Modal from 'react-native-modal';
 import { COLORS } from '../../../constants/Styles';
-import { AppleLogin, GoogleLogin } from '../../../apis/auth'
+// import types
+import { ThirdPartyAuth, AuthMethodType } from '../../../types/auth'
+// import selectors
+import { useAuthSelectors } from '../../../selectors/auth'
 
 interface SignUpModalProps {
   isSignUp: boolean
@@ -15,6 +18,7 @@ interface SignUpModalProps {
 
 const SignUpModal = (props: SignUpModalProps) => {
   const { isSignUp, route, navigation, isVisible, setIsVisible } = props
+  const { requestThirdPartyAuth } = useAuthSelectors()
 
   const displayText = isSignUp ? '登録' : 'ログイン';
   const NavigationDirection = isSignUp ? 'Signup' : 'Login'
@@ -24,11 +28,16 @@ const SignUpModal = (props: SignUpModalProps) => {
     navigation.navigate(NavigationDirection)
   }
 
+  const handleRequestAuth = (type: ThirdPartyAuth) => {
+    const method: AuthMethodType = isSignUp ? 'signup' : 'signin'
+    requestThirdPartyAuth({ method: method, type })
+  }
+
   return (
     <Modal isVisible={isVisible} swipeDirection='down' onSwipeComplete={() => setIsVisible(false)}>
       <Container>
         <CloseBar />
-        <SignUpAppleBtn block onPress={() => AppleLogin(route)}>
+        <SignUpAppleBtn block onPress={() => handleRequestAuth('apple')}>
           <ButtonWrapper>
             <Icon name='apple1' size={20} style={{ color: '#fff' }}/>
             {
@@ -37,7 +46,7 @@ const SignUpModal = (props: SignUpModalProps) => {
           </ButtonWrapper>
         </SignUpAppleBtn>
 
-        <SignUpGoogleBtn block onPress={() => GoogleLogin(route)}>
+        <SignUpGoogleBtn block onPress={() => handleRequestAuth('google')}>
           <ButtonWrapper>
             <Icon name='google' size={20} style={{ color: '#fff' }}/>
             <SignUpText>Googleで{displayText}する</SignUpText>

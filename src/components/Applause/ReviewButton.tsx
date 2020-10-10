@@ -10,6 +10,8 @@ import { closeApplauseModal } from '../../slice/record'
 // import constants
 import { APP_STORE_ID } from '../../constants/appStore'
 import { COLORS } from '../../constants/Styles'
+// import config
+import Analytics from '../../config/amplitude'
 
 const ReviewButton = () => {
   const dispatch = useDispatch()
@@ -17,11 +19,13 @@ const ReviewButton = () => {
 
   const handleOnClose = async () => {
     await requestPatchApplausedReviewed()
+    Analytics.track('not reviewed in applause')
     dispatch(closeApplauseModal())
   }
 
   const handleOnReviewRequest = async () => {
     Linking.openURL(appStoreUrl)
+    Analytics.track('opend reviewed page in applause')
     await requestPatchApplausedReviewed()
     handleOnClose()
   }

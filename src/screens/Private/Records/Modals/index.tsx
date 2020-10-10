@@ -33,7 +33,7 @@ const RecordModalScreen = ({ navigation }) => {
         headerRight: () => {
           return (
             <HeaderNextBtn onPress={handleNavigationWord}>
-              <HeaderNextTitle>次へ</HeaderNextTitle>
+              <HeaderNextTitle>{ !recordItems.length ? 'skip' : '次へ' }</HeaderNextTitle>
             </HeaderNextBtn>
           )
         }
@@ -43,11 +43,7 @@ const RecordModalScreen = ({ navigation }) => {
 
   // 一言画面へ遷移
   const handleNavigationWord = () => {
-    if (!recordItems.length) {
-      Alert.alert('トレーニングを追加してください。')
-    } else {
-      navigation.navigate('tweetRecordModal', { isEdit: false })
-    }
+    navigation.navigate('tweetRecordModal', { isEdit: false })
   }
 
   // 記録フォームへ遷移
