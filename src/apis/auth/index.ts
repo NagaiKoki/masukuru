@@ -1,4 +1,3 @@
-import { Alert } from 'react-native'
 import * as Google from 'expo-google-app-auth';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import Constants from 'expo-constants'
@@ -13,6 +12,8 @@ import {
 } from '../../constants/errorMessage';
 // import types
 import { EmailSignInType } from '../../types/auth'
+// import utils
+import { factoryNonceGen } from '../../utilities/factoryNonceGen'
 
 // メール認証ログイン or signup
 export const requestEmailSingIn = async (args: EmailSignInType) => {
@@ -119,7 +120,7 @@ export const googleLogin = async () => {
       await firebase.auth().signInWithCredential(credential).then(async () => {
         const currentUser = firebase.auth().currentUser
         Analytics.getUserId(currentUser.uid);
-        Analytics.track('login')
+        Analytics.track('apple auth')
         await db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
           if (snapshot.empty) {
             // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
@@ -142,44 +143,35 @@ export const googleLogin = async () => {
 
 // apple認証
 export const appleLogin = async () => {
-  const nonceGen = (length) => {
-    let result = ''
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    let charactersLength = characters.length
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength))
-    }
-    return result
-  }
-  const nonceString = nonceGen(32)
+  const nonceString = factoryNonceGen(32)
   try {
-    await AppleAuthentication.signInAsync({
+    const result = await AppleAuthentication.signInAsync({
       requestedScopes: [
         AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
         AppleAuthentication.AppleAuthenticationScope.EMAIL
       ],
       state: nonceString
-    }).then(result => {
-      let provider = new firebase.auth.OAuthProvider("apple.com");
-      let credential = provider.credential({
-        idToken: result.identityToken,
-        rawNonce: nonceString
-      });
-      firebase.auth().signInWithCredential(credential).then( async () => {
-        const currentUser = firebase.auth().currentUser
-        Analytics.getUserId(currentUser.uid);
-        Analytics.track('login')
-        // ユーザーがfirestore上に存在していれば、そのままホームへ遷移させる
-        db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
-          if (snapshot.empty) {
-            // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
-            await currentUser.updateProfile({ displayName: null })
-            await db.collection('users').doc(currentUser.uid).set({
-              uid: currentUser.uid,
-              email: currentUser.email
-            })
-          }
-        })
+    })
+
+    let provider = new firebase.auth.OAuthProvider("apple.com");
+    let credential = provider.credential({
+      idToken: result.identityToken,
+      rawNonce: nonceString
+    });
+
+    await firebase.auth().signInWithCredential(credential).then(async () => {
+      const currentUser = firebase.auth().currentUser
+      Analytics.getUserId(currentUser.uid);
+      Analytics.track('google auth')
+      await db.collection('users').where('uid', '==', currentUser.uid).get().then(async snap => {
+        if (snap.empty) {
+          // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
+          await currentUser.updateProfile({ displayName: null })
+          await db.collection('users').doc(currentUser.uid).set({
+            uid: currentUser.uid,
+            email: currentUser.email
+          })
+        }
       })
     })
     return { payload: 'success' }
