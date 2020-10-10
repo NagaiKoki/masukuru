@@ -26,7 +26,7 @@ export default EmptyState
 const Wrapper = styled.View`
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
+  padding: 40px 20px 200px 20px;
 `
 
 const ImageWrapper = styled.View`
