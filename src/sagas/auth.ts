@@ -7,13 +7,16 @@ import {
   failureFetchEmailSignIn,
   requestFetchLogout,
   successFetchLogout,
-  failureFetchLogout
+  failureFetchLogout,
+  requestThirdPartyAuth,
+  successThirdPartyAuth,
+  failureThirdPartyAuth,
 } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
 // import apis
-import { requestEmailSingIn, requestLogout } from '../apis/auth/index'
+import { requestEmailSingIn, requestLogout, appleLogin, googleLogin } from '../apis/auth'
 // import types
-import { EmailSignInType } from '../types/auth'
+import { EmailSignInType, ThirdPartySignInType } from '../types/auth'
 import { ResponseType } from '../types'
 
 // サインアップ or サインイン
@@ -37,6 +40,25 @@ function* handleRequestFetchEmailSignIn() {
   yield takeEvery(requestFetchEmailSignIn.type, runRequestFetchEmailSignIn)
 }
 
+// 外部認証リクエスト
+function* runRequestThirdPartyAuth(action: PayloadAction<ThirdPartySignInType>) {
+  console.log(action.payload)
+  const { method, type } = action.payload
+  const requestThirdPartyAuthApi = type === 'apple' ? appleLogin : googleLogin
+  const { payload, error }: ResponseType<string> = yield call(
+    requestThirdPartyAuthApi
+  )
+  if (payload && !error) {
+    yield put(successThirdPartyAuth(method))
+  } else if (error) {
+    yield put(failureThirdPartyAuth(error))
+  }
+}
+
+function* handleRequestThirdPartyAuth() {
+  yield takeEvery(requestThirdPartyAuth.type, runRequestThirdPartyAuth)
+}
+
 // ログアウト
 function* runRequestFetchLogout() {
   const { payload, error }: ResponseType<string> = yield call(
@@ -57,4 +79,5 @@ function* handleRequestFetchLogout() {
 export default function* authSaga() {
   yield fork(handleRequestFetchEmailSignIn)
   yield fork(handleRequestFetchLogout)
+  yield fork(handleRequestThirdPartyAuth)
 }

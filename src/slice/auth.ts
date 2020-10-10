@@ -4,7 +4,8 @@ import {
   AuthState, 
   EmailSignInType,
   AuthMethodType,
-  UserStatusType
+  UserStatusType,
+  ThirdPartySignInType,
 } from '../types/auth'
 
 const initialState: AuthState = {
@@ -57,6 +58,23 @@ const authSlice = createSlice({
         error: action.payload
       }
     },
+    requestThirdPartyAuth: (state, action: PayloadAction<ThirdPartySignInType>) => {
+      return {
+        ...state
+      }
+    },
+    successThirdPartyAuth: (state, action: PayloadAction<AuthMethodType>) => {
+      return {
+        ...state,
+        userStatus: action.payload === 'signin' ? 'authorized' : 'tutorial'
+      }
+    },
+    failureThirdPartyAuth: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: action.payload
+      }
+    },
     setUserStatus: (state, action: PayloadAction<UserStatusType>) => {
       return {
         ...state,
@@ -81,6 +99,9 @@ export const {
   requestFetchLogout,
   successFetchLogout,
   failureFetchLogout,
+  requestThirdPartyAuth,
+  successThirdPartyAuth,
+  failureThirdPartyAuth,
   setUserStatus,
   clearError
 } = authSlice.actions
