@@ -21,7 +21,7 @@ const config = {
 };
 
 if (!firebase.apps.length) {
-  __DEV__ ? firebase.initializeApp(config.production) : firebase.initializeApp(config.production)
+  __DEV__ ? firebase.initializeApp(config.staging) : firebase.initializeApp(config.production)
 }
 
 export const db = firebase.firestore();
