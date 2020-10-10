@@ -22,6 +22,8 @@ import SettingModal from '../SettingModal/list'
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import constants
 import { COLORS } from '../../../constants/Styles';
+// import selectors
+import { useUiSelector } from '../../../selectors/ui'
 
 interface RecordItemProps {
   record: ResponseRecordType
@@ -32,6 +34,7 @@ interface RecordItemProps {
 const RecordItem = (props: RecordItemProps) => {
   const { record, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
+  const { imageModalOpen, toggleImageModal } = useUiSelector()
   const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
@@ -66,6 +69,10 @@ const RecordItem = (props: RecordItemProps) => {
       setError(error)
     }
     setIsCommentLoading(false)
+  }
+
+  const handleOpenImageModal = () => {
+    toggleImageModal({ isOpen: true, imageUrl })
   }
 
   const handleOnNavigate = () => {
@@ -121,7 +128,7 @@ const RecordItem = (props: RecordItemProps) => {
           </RecordRightUpper>
         </RecordItemUpper>
         { !!word ? renderTweet : null }
-        <RecordImageWrapper>
+        <RecordImageWrapper onPress={handleOpenImageModal}>
           { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
         </RecordImageWrapper>
         <TrainingDate 
@@ -145,7 +152,7 @@ const RecordItem = (props: RecordItemProps) => {
 const styles = StyleSheet.create({
   image: {
       height: 200,
-      width: 200,
+      width: '100%',
       borderRadius: 15,
       backgroundColor: '#d1d1cf'
   }
@@ -222,9 +229,8 @@ const UnitDataWrapper = styled.View`
   padding: 5px 0 5px 0;
 `
 
-const RecordImageWrapper = styled.View`
-  margin-left: 50px;
-  margin-bottom: 15px;
+const RecordImageWrapper = styled.TouchableOpacity`
+  margin: 10px 0 15px 50px;
 `
 
 export default RecordItem

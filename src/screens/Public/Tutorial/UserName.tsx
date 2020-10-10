@@ -13,8 +13,7 @@ import firebase from '../../../config/firebase'
 
 const TutorialUserName = ({ navigation }) => {
   const { requestFetchCurrentUserData, requestUpdateUser, currentUser } = useUserSelectors()
-  const { name } = currentUser
-  const [userName, setUserName] = useState(name)
+  const [userName, setUserName] = useState('')
   
   useEffect(() => {
     requestFetchCurrentUserData(firebase.auth().currentUser.uid)
@@ -68,9 +67,9 @@ const Container = styled.View`
 `
 
 const Wrapper = styled.View`
-  padding: 30px 15px;
+  padding: 30px 20px;
 `
 
 const FormWrapper = styled.View`
-  padding: 20px 10px 20px 10px;
+  padding: 40px 0px 20px 0px;
 `

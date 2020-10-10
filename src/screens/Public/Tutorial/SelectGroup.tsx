@@ -11,7 +11,7 @@ import { useGroupSelector } from '../../../selectors/group'
 
 const TutorialSelectGroup = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { requestCreateGroup } = useGroupSelector()
+  const { isGroupLoading, requestCreateGroup } = useGroupSelector()
 
   const handleCreateGroup = () => {
     requestCreateGroup()
@@ -30,7 +30,7 @@ const TutorialSelectGroup = () => {
         />
         <ButtonWrapper>
           <Button 
-            text="自分がホストのグループを作成する"
+            text={isGroupLoading ? '作成中...' : '自分がホストのグループを作成する'}
             bold={true}
             padding='15px 0'
             fontSize={16}
@@ -46,6 +46,7 @@ const TutorialSelectGroup = () => {
             fontSize={16}
             handleOnClick={handleToggleModal}
           />
+          <SubText>※ 招待されたグループの招待コードが必要です。</SubText>
         </ButtonWrapper>
       </Wrapper>
       <JoinGroupModal 
@@ -64,7 +65,7 @@ const Container = styled.View`
 `
 
 const Wrapper = styled.View`
-  padding: 30px 15px;
+  padding: 30px 20px;
 `
 
 const ButtonWrapper = styled.View`
@@ -72,7 +73,7 @@ const ButtonWrapper = styled.View`
 `
 
 const SubText = styled.Text`
-  padding: 5px 0 0 5px;
+  padding: 10px 0 0 5px;
   color: ${COLORS.SUB_BLACK};
   font-size: 14px;
 `

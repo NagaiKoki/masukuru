@@ -12,12 +12,17 @@ import Loading from '../../../components/Loading'
 import { UserProps } from '../../../containers/Private/users/userPage'
 // import lib
 import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
+// import selectors
+import { useUiSelector } from '../../../selectors/ui'
+// import constants
+import { IMAGE_URL } from '../../../constants/imageUrl'
 
 const UserPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props
   const { userRecords, isLoading } = records
   const lastRecord = userRecords[userRecords.length - 1]
   const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
+  const { toggleImageModal } = useUiSelector()
   const { user } = route.params
 
   const [isRefresh, setIsRefresh] = useState(false)
@@ -35,6 +40,10 @@ const UserPageScreen = (props: UserProps) => {
     requestFetchRecords({ uid: user.uid, groupId: undefined })
     setIsRefresh(false)
   }
+
+  const handleOpenImageModal = () => {
+    toggleImageModal({ isOpen: true, imageUrl: user.imageUrl || IMAGE_URL.DEFAULT_PROFILE_IMAGE })
+  }
   
   if (isPageLoading) {
     return (
@@ -45,7 +54,7 @@ const UserPageScreen = (props: UserProps) => {
   return (
     <MypageContainer>
       <MypageUserWrapper>
-        <MypageUserImage>
+        <MypageUserImage onPress={handleOpenImageModal}>
           <UserImage uri={user.imageUrl} width={100} height={100} borderRadius={60} />
         </MypageUserImage>
         <MyPpageUserName>{user.name}</MyPpageUserName>
@@ -80,7 +89,7 @@ const MypageContainer = styled.View`
   background-color: ${COLORS.BASE_BACKGROUND};
   padding-top: 40px;
 `
-// user info
+
 const MypageUserWrapper = styled.View`
   flex-direction: row;
   align-items: center;
@@ -88,7 +97,7 @@ const MypageUserWrapper = styled.View`
   padding-bottom: 30px;
 `
 
-const MypageUserImage = styled.View`
+const MypageUserImage = styled.TouchableOpacity`
 `
 
 const MyPpageUserName = styled.Text`
@@ -96,22 +105,6 @@ const MyPpageUserName = styled.Text`
   font-weight: bold;
   font-size: 25px;
   padding-left: 30px;
-`
-
-const ProfileChangeBtn = styled.TouchableOpacity`
-  padding: 30px;
-`
-
-const ProfileChangeText = styled.Text`
-  color: ${COLORS.BASE_MUSCLEW};
-  border-radius: 5px;
-  text-align: center;
-  padding: 7px 0;
-  font-size: 16px;
-  border: 1px solid ${COLORS.BASE_MUSCLEW};
-  align-items: center;
-  align-self: center;
-  width: 80%;
 `
 
 export default UserPageScreen;

@@ -24,6 +24,8 @@ export const COLORS = {
 
   CARD_SHADOW1: 'rgba(0, 0, 0, 0.1)',
 
+  OVERLAY_BACKGROUND: 'rgba(0,0,0,0.8)',
+
   FORM_BACKGROUND: "#e6e6e6",
 
   LINE_COLOR: "#00B900",

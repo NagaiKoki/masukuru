@@ -35,6 +35,7 @@ export default MemberList
 
 const Wrapper = styled.ScrollView`
   position: absolute;
+  z-index: 1;
   top: 0;
   width: 100%;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};

@@ -12,7 +12,7 @@ import { useAuthSelectors } from '../../../selectors/auth'
 import { COLORS } from '../../../constants/Styles'
 
 const SignupScreen = () => {
-  const { error, requestFetchEmailSignIn, clearError } = useAuthSelectors()
+  const { error, isLoading, requestFetchEmailSignIn, clearError } = useAuthSelectors()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -59,11 +59,11 @@ const SignupScreen = () => {
         {renderPrivacy}
         <SubmitBtn>
           <Button 
-            text="登録する"
+            text={isLoading ? '登録中...' : '登録する'}
             bold={true}
             padding="15px 0"
             fontSize={16}
-            disabled={disabled}
+            disabled={disabled || isLoading}
             handleOnClick={handleSubmit} 
           />
         </SubmitBtn>

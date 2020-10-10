@@ -12,12 +12,17 @@ import Loading from '../../../components/Loading'
 import { UserProps } from '../../../containers/Private/users/myPage'
 // import lib
 import { isCloseToBottom } from '../../../utilities/scrollBottomEvent'
+// import selectors
+import { useUiSelector } from '../../../selectors/ui'
+// import constants
+import { IMAGE_URL } from '../../../constants/imageUrl'
 
 const MyPageScreen = (props: UserProps) => {
   const { navigation, route, records, actions } = props
   const { userRecords, isLoading } = records
   const lastRecord = userRecords[userRecords.length - 1]
   const { requestFetchRecords, requestNextRecords, requestDestroyRecord } = actions
+  const { toggleImageModal } = useUiSelector()
   const user = firebase.auth().currentUser
 
   const [isRefresh, setIsRefresh] = useState(false)
@@ -36,6 +41,10 @@ const MyPageScreen = (props: UserProps) => {
     setIsRefresh(false)
   }
 
+  const handleOpenImageModal = () => {
+    toggleImageModal({ isOpen: true, imageUrl: user.photoURL || IMAGE_URL.DEFAULT_PROFILE_IMAGE })
+  }
+
   if (isPageLoading) {
     return (
       <Loading size="small" />
@@ -45,7 +54,7 @@ const MyPageScreen = (props: UserProps) => {
   return (
     <MypageContainer>
       <MypageUserWrapper>
-        <MypageUserImage>
+        <MypageUserImage onPress={handleOpenImageModal}>
           <UserImage user={user} width={100} height={100} borderRadius={60} />
         </MypageUserImage>
         <MyPpageUserName>{user.displayName}</MyPpageUserName>
@@ -91,7 +100,7 @@ const MypageUserWrapper = styled.View`
   padding-left: 10%;
 `
 
-const MypageUserImage = styled.View`
+const MypageUserImage = styled.TouchableOpacity`
 `
 
 const MyPpageUserName = styled.Text`

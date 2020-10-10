@@ -44,17 +44,18 @@ const TutorialUserImage = ({ navigation }) => {
         <ImageContainer>
           {renderImage}
           <ImageTextBtn onPress={handleUpload}>
-            <ImageText>{PROFILE_TEXT}</ImageText>
+            <ImageText>{ progress || PROFILE_TEXT}</ImageText>
           </ImageTextBtn>
-          { progress ? <ImageText>{progress}</ImageText> : null }
         </ImageContainer>
-        <Button 
-          text='次へ'
-          fontSize={16}
-          bold={true}
-          padding='15px 0'
-          handleOnClick={handleOnSubmit}
-        />
+        <ButtonWrapper>
+          <Button 
+            text='次へ'
+            fontSize={16}
+            bold={true}
+            padding='15px 0'
+            handleOnClick={handleOnSubmit}
+          />
+        </ButtonWrapper>
       </Wrapper>
     </Container>
   )
@@ -89,4 +90,8 @@ const ImageText = styled.Text`
   font-size: 14px;
   font-weight: bold;
   text-align: center;
+`
+
+const ButtonWrapper = styled.View`
+  padding-top: 40px;
 `

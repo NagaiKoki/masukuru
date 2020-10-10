@@ -10,7 +10,7 @@ import { useAuthSelectors } from '../../../selectors/auth'
 import { COLORS } from '../../../constants/Styles'
 
 const LoginScreen = ({ navigation }) => {
-  const { error, requestFetchEmailSignIn, clearError } = useAuthSelectors()
+  const { error, isLoading, requestFetchEmailSignIn, clearError } = useAuthSelectors()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -47,11 +47,11 @@ const LoginScreen = ({ navigation }) => {
         
         <SubmitBtn>
           <Button 
-            text="ログインする"
+            text={isLoading ? 'ログイン...' : 'ログインする'}
             bold={true}
             padding="15px 0"
             fontSize={16}
-            disabled={!email || !password}
+            disabled={!email || !password || isLoading}
             handleOnClick={handleSubmit} 
           />
         </SubmitBtn>
