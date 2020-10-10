@@ -104,6 +104,7 @@ export const requestLogout = async () => {
 
 // google 認証
 export const googleLogin = async () => {
+  let hasAccount: boolean
   try {
     const result = await Google.logInAsync({
       behavior: 'web',
@@ -115,7 +116,7 @@ export const googleLogin = async () => {
     })
 
     if (result.type === 'success') {
-      const { idToken, accessToken, user } = result;
+      const { idToken, accessToken } = result;
       const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
       await firebase.auth().signInWithCredential(credential).then(async () => {
         const currentUser = firebase.auth().currentUser
@@ -123,19 +124,22 @@ export const googleLogin = async () => {
         Analytics.track('apple auth')
         await db.collection('users').where('uid', '==', currentUser.uid).get().then(async snapshot => {
           if (snapshot.empty) {
+            hasAccount = false
             // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
             await currentUser.updateProfile({ displayName: null })
             await db.collection('users').doc(currentUser.uid).set({
               uid: currentUser.uid,
               email: currentUser.email
             })
+          } else {
+            hasAccount = true
           }
         })
       })
     } else {
       throw new Error(COMMON_ERROR_MESSSAGE.TRY_AGAIN)
     }
-    return { payload: 'success' }
+    return { payload: hasAccount }
   } catch (error) {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
@@ -144,6 +148,7 @@ export const googleLogin = async () => {
 // apple認証
 export const appleLogin = async () => {
   const nonceString = factoryNonceGen(32)
+  let hasAccount: boolean
   try {
     const result = await AppleAuthentication.signInAsync({
       requestedScopes: [
@@ -165,16 +170,19 @@ export const appleLogin = async () => {
       Analytics.track('google auth')
       await db.collection('users').where('uid', '==', currentUser.uid).get().then(async snap => {
         if (snap.empty) {
+          hasAccount = false
           // チュートリアルの表示判定は名前の存在有無で行っているので、チュートリアルを通すために名前をnullにする
           await currentUser.updateProfile({ displayName: null })
           await db.collection('users').doc(currentUser.uid).set({
             uid: currentUser.uid,
             email: currentUser.email
           })
+        } else {
+          hasAccount = true
         }
       })
     })
-    return { payload: 'success' }
+    return { payload: hasAccount }
   } catch {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }

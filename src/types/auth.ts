@@ -15,6 +15,11 @@ export type ThirdPartySignInType = {
   type: ThirdPartyAuth
 }
 
+export type SuccessThirdPartySignInType = {
+  method: AuthMethodType
+  hasAccount: boolean
+}
+
 export type ThirdPartyAuth = 'apple' | 'google'
 export type UserStatusType = 'unauthorized' | 'authorized' | 'tutorial' | ''
 export type AuthMethodType = 'signup' | 'signin'

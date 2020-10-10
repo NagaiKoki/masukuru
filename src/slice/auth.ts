@@ -6,6 +6,7 @@ import {
   AuthMethodType,
   UserStatusType,
   ThirdPartySignInType,
+  SuccessThirdPartySignInType
 } from '../types/auth'
 
 const initialState: AuthState = {
@@ -63,10 +64,18 @@ const authSlice = createSlice({
         ...state
       }
     },
-    successThirdPartyAuth: (state, action: PayloadAction<AuthMethodType>) => {
-      return {
-        ...state,
-        userStatus: action.payload === 'signin' ? 'authorized' : 'tutorial'
+    successThirdPartyAuth: (state, action: PayloadAction<SuccessThirdPartySignInType>) => {
+      const { method, hasAccount } = action.payload
+      if (hasAccount) {
+        return {
+          ...state,
+          userStatus: 'authorized'
+        }
+      } else {
+        return {
+          ...state,
+          userStatus: method === 'signin' ? 'authorized' : 'tutorial'
+        }
       }
     },
     failureThirdPartyAuth: (state, action: PayloadAction<string>) => {

@@ -44,11 +44,11 @@ function* handleRequestFetchEmailSignIn() {
 function* runRequestThirdPartyAuth(action: PayloadAction<ThirdPartySignInType>) {
   const { method, type } = action.payload
   const requestThirdPartyAuthApi = type === 'apple' ? appleLogin : googleLogin
-  const { payload, error }: ResponseType<string> = yield call(
+  const { payload, error }: ResponseType<boolean> = yield call(
     requestThirdPartyAuthApi
   )
   if (payload && !error) {
-    yield put(successThirdPartyAuth(method))
+    yield put(successThirdPartyAuth({ method, hasAccount: payload }))
   } else if (error) {
     yield put(failureThirdPartyAuth(error))
   }

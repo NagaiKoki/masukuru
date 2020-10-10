@@ -17,7 +17,7 @@ interface SignUpModalProps {
 }
 
 const SignUpModal = (props: SignUpModalProps) => {
-  const { isSignUp, route, navigation, isVisible, setIsVisible } = props
+  const { isSignUp, navigation, isVisible, setIsVisible } = props
   const { requestThirdPartyAuth } = useAuthSelectors()
 
   const displayText = isSignUp ? '登録' : 'ログイン';
@@ -30,7 +30,7 @@ const SignUpModal = (props: SignUpModalProps) => {
 
   const handleRequestAuth = (type: ThirdPartyAuth) => {
     const method: AuthMethodType = isSignUp ? 'signup' : 'signin'
-    requestThirdPartyAuth({ method: method, type })
+    requestThirdPartyAuth({ method, type })
   }
 
   return (
