@@ -42,7 +42,6 @@ function* handleRequestFetchEmailSignIn() {
 
 // 外部認証リクエスト
 function* runRequestThirdPartyAuth(action: PayloadAction<ThirdPartySignInType>) {
-  console.log(action.payload)
   const { method, type } = action.payload
   const requestThirdPartyAuthApi = type === 'apple' ? appleLogin : googleLogin
   const { payload, error }: ResponseType<string> = yield call(
