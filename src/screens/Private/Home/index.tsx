@@ -10,7 +10,7 @@ import { COLORS } from '../../../constants/Styles';
 // import components
 import MemberList from '../../../components/Home/Member/List'
 import RecordList from '../../../components/Records/recordList'
-import Loading from '../../../components/Loading';
+import ImageModal from '../../../common/Image/ZoomImageModal'
 import { getHeaderNav } from '../../../components/Home/HeaderNav'
 import ApplauseModal from '../../../components/Applause'
 import Toaster from '../../../common/Toaster'
@@ -44,9 +44,9 @@ const HomeScreen = (props: HomeProps) => {
     toggleReflesh
   } = actions
   
-  const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen, onFreshLoading } = records
+  const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen } = records
   const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
-  const { toastMessage } = useUiSelector()
+  const { toastMessage, imageModalOpen, toggleImageModal } = useUiSelector()
   const { currentGroupId, currentGroupUsers, isGroupLoading, requestFetchCurrentGroupUsers } = useGroupSelector()
   const lastRecord = recordData[recordData.length - 1]
   const [isRefresh, setIsRefresh] = useState(false)
@@ -136,6 +136,7 @@ const HomeScreen = (props: HomeProps) => {
             }
         </ScrollView>
       </Wrapper>
+      <ImageModal isOpen={imageModalOpen} handleOnClose={toggleImageModal} />
       <MemberList currentGroupUsers={currentGroupUsers} isLoading={isGroupLoading} navigation={navigation} />
       <RecordAddBtn onPress={handleOpenRecordModal}>
         <Icon name="pencil" size={30} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />

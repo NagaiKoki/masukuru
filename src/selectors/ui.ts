@@ -1,21 +1,24 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useCallback } from 'react'
 // import slices
-import { setToastMessage, removeToastMessage } from '../slice/ui'
+import { setToastMessage, removeToastMessage, toggleImageModal } from '../slice/ui'
 // import types
 import { RootState } from '../reducers'
-import { UiState, ToastMessageType } from '../types/ui'
+import { UiState, ToastMessageType, ToggleImageModalType } from '../types/ui'
 
 export const useUiSelector = () => {
   const dispatch = useDispatch()
-  const { toastMessage } = useSelector<RootState, UiState>(state => state.ui)
+  const { toastMessage, imageModalOpen } = useSelector<RootState, UiState>(state => state.ui)
 
   const _setToastMessage = useCallback((type: ToastMessageType) => dispatch(setToastMessage(type)), [dispatch])
   const _removeToastMessage = useCallback(() => dispatch(removeToastMessage()), [dispatch])
+  const _toggleImageModal = useCallback((arg: ToggleImageModalType) => dispatch(toggleImageModal(arg)), [dispatch])
 
   return {
     toastMessage,
+    imageModalOpen,
     setToastMessage: _setToastMessage,
-    removeToastMessage: _removeToastMessage
+    removeToastMessage: _removeToastMessage,
+    toggleImageModal: _toggleImageModal
   }
 }

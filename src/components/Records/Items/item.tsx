@@ -18,6 +18,7 @@ import RecordUser from './user'
 import RecordData from './data'
 import TrainingDate from './trainingDate'
 import SettingModal from '../SettingModal/list'
+import ImageModal from '../../../common/Image/ZoomImageModal'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import constants
@@ -40,6 +41,7 @@ const RecordItem = (props: RecordItemProps) => {
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [isCommentLoading, setIsCommentLoading] = useState(true)
   const [visibleModal, setVisibleModal] = useState(false)
+  const [imageModalOpen, setImageModalOpen] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
@@ -66,6 +68,10 @@ const RecordItem = (props: RecordItemProps) => {
       setError(error)
     }
     setIsCommentLoading(false)
+  }
+
+  const handleToggleImageModal = () => {
+    setImageModalOpen(!imageModalOpen)
   }
 
   const handleOnNavigate = () => {
@@ -121,7 +127,7 @@ const RecordItem = (props: RecordItemProps) => {
           </RecordRightUpper>
         </RecordItemUpper>
         { !!word ? renderTweet : null }
-        <RecordImageWrapper>
+        <RecordImageWrapper onPress={handleToggleImageModal}>
           { imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode={'cover'} /> : null }  
         </RecordImageWrapper>
         <TrainingDate 
@@ -132,6 +138,7 @@ const RecordItem = (props: RecordItemProps) => {
         {renderRecordData}
       </RecordItenClickable>
       <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
+      <ImageModal isOpen={imageModalOpen} imageUrl={imageUrl} handleOnClose={handleToggleImageModal}  />
       <SettingModal 
         recordId={record.id}
         visibleModal={visibleModal}
@@ -222,7 +229,7 @@ const UnitDataWrapper = styled.View`
   padding: 5px 0 5px 0;
 `
 
-const RecordImageWrapper = styled.View`
+const RecordImageWrapper = styled.TouchableOpacity`
   margin: 10px 0 15px 50px;
 `
 

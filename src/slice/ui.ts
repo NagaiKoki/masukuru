@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import types
-import { UiState, ToastMessageType } from '../types/ui'
+import { UiState, ToastMessageType, ToggleImageModalType } from '../types/ui'
 
 const initialState: UiState = {
-  toastMessage: null
+  toastMessage: null,
+  imageModalOpen: false
 }
 
 const uiSlice = createSlice({
@@ -26,6 +27,12 @@ const uiSlice = createSlice({
         ...state,
         toastMessage: null
       }
+    },
+    toggleImageModal: (state, action: PayloadAction<ToggleImageModalType>) => {
+      return {
+        ...state,
+        imageModalOpen: !action.payload.isOpen
+      }
     }
   }
 })
@@ -34,5 +41,6 @@ export default uiSlice
 
 export const {
   setToastMessage,
-  removeToastMessage
+  removeToastMessage,
+  toggleImageModal
 } = uiSlice.actions
