@@ -3,12 +3,20 @@ import styled from 'styled-components'
 
 type PropsType = {
   mentionItem: string
+  addMentionInText: (mention: string) => void
+  onClose: () => void
 }
 
 export const MentionItem = (props: PropsType) => {
-  const { mentionItem } = props
+  const { mentionItem, addMentionInText, onClose } = props
+
+  const handleOnPress = () => {
+    addMentionInText(mentionItem)
+    onClose()
+  }
+
   return (
-    <Wrapper>
+    <Wrapper onPress={handleOnPress}>
       <Item>{mentionItem}</Item>
     </Wrapper>
   )

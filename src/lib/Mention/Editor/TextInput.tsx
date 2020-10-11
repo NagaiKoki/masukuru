@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { TextInput, ViewStyle } from 'react-native'
 // import components
 import { MentionList } from '../MentionList/List'
@@ -25,8 +24,18 @@ export const MentionTextInput = (props: PropsType) => {
     onChangeText(text)
   }
 
+  const handleCloseMention = () => {
+    setShowList(false)
+  }
+
+  const addMentionInText = (mention: string) => {
+    console.log(keyword)
+    const concatText = keyword + mention + ' '
+    return onChangeText(concatText)
+  }
+
   const renderMentionList = showList &&
-    <MentionList mentionItems={mentionItems} />
+    <MentionList mentionItems={mentionItems} addMentionInText={addMentionInText} handleCloseMention={handleCloseMention} />
   
   return (
     <>
