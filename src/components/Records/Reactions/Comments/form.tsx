@@ -76,6 +76,7 @@ const RecordComment = (props: RecordCommentProps) => {
 
   const groupUserNames = currentGroupUsers.map(user => {
     return {
+      id: user.uid,
       name: user.name,
       imageUrl: user.imageUrl || IMAGE_URL.DEFAULT_PROFILE_IMAGE
     }
