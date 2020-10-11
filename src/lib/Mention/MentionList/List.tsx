@@ -3,9 +3,11 @@ import { Dimensions } from 'react-native'
 import styled from 'styled-components'
 // import components
 import { MentionItem } from './Item'
+// import types
+import { MentionItemType } from '../types'
 
 type PropsType = {
-  mentionItems: string[]
+  mentionItems: MentionItemType[]
   addMentionInText: (mention: string) => void
   handleCloseMention: () => void
 }

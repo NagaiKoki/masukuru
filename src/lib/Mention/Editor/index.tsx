@@ -2,10 +2,12 @@ import React from 'react'
 import { ViewStyle } from 'react-native'
 // import components
 import { MentionTextInput } from './TextInput'
+// import types
+import { MentionItemType } from '../types'
 
 type MentionPropsType = {
   keyword: string
-  mentionItems: string[]
+  mentionItems: MentionItemType[]
   placeholder?: string
   textInputStyles?: ViewStyle
   multiline?: boolean

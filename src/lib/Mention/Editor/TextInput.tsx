@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { TextInput, ViewStyle } from 'react-native'
 // import components
 import { MentionList } from '../MentionList/List'
+// import types
+import { MentionItemType } from '../types'
 // import utils
 import { checkAtSign } from './EditorUtils'
 
 type PropsType = {
   keyword: string
-  mentionItems: string[]
+  mentionItems: MentionItemType[]
   placeholder?: string
   styles?: ViewStyle
   multiline?: boolean
@@ -29,7 +31,6 @@ export const MentionTextInput = (props: PropsType) => {
   }
 
   const addMentionInText = (mention: string) => {
-    console.log(keyword)
     const concatText = keyword + mention + ' '
     return onChangeText(concatText)
   }

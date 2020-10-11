@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import * as Device from 'expo-device'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
-import { COLORS } from '../../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import componets
 import UserImage from '../../../Image/userImage'
@@ -22,6 +21,9 @@ import { TextInputStyles } from './FormStyles'
 import { MentionEditor } from '../../../../lib/Mention/Editor'
 // import selectors
 import { useGroupSelector } from '../../../../selectors/group'
+// import constants
+import { COLORS } from '../../../../constants/Styles'
+import { IMAGE_URL } from '../../../../constants/imageUrl'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -72,7 +74,12 @@ const RecordComment = (props: RecordCommentProps) => {
     await requestAppReview()
   }
 
-  const groupUserNames = currentGroupUsers.map(user => user.name)
+  const groupUserNames = currentGroupUsers.map(user => {
+    return {
+      name: user.name,
+      imageUrl: user.imageUrl || IMAGE_URL.DEFAULT_PROFILE_IMAGE
+    }
+  })
 
   const renderUserImage = (
     <UserImageWrapper>
