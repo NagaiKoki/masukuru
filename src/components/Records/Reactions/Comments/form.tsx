@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Device from 'expo-device'
 import styled from 'styled-components'
@@ -20,6 +20,8 @@ import Analytics from '../../../../config/amplitude'
 import { TextInputStyles } from './FormStyles'
 // import lib
 import { MentionEditor } from '../../../../lib/Mention/Editor'
+// import selectors
+import { useGroupSelector } from '../../../../selectors/group'
 
 interface RecordCommentProps {
   record: ResponseRecordType
@@ -40,7 +42,18 @@ const RecordComment = (props: RecordCommentProps) => {
 
   const { id, uid } = record
   const [text, setText] = useState('')
+  const { currentGroupUsers, requestFetchCurrentGroupUsers } = useGroupSelector()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (currentGroupUsers.length) {
+      requestFetchCurrentGroupUsers()
+    }
+  }, [])
+
+  if (!currentGroupUsers.length) {
+    return <></>
+  }
 
   const handleOnChangeText = (value: string) => {
     setText(value)
@@ -59,6 +72,8 @@ const RecordComment = (props: RecordCommentProps) => {
     await requestAppReview()
   }
 
+  const groupUserNames = currentGroupUsers.map(user => user.name)
+
   const renderUserImage = (
     <UserImageWrapper>
       <UserImage uri={currentUser.imageUrl} width={30} height={30} borderRadius={60}/>
@@ -71,6 +86,7 @@ const RecordComment = (props: RecordCommentProps) => {
         {renderUserImage}
         <MentionEditor 
           keyword={text}
+          mentionItems={groupUserNames}
           placeholder="コメントを入力する..."
           textInputStyles={TextInputStyles}
           onChangeText={handleOnChangeText}

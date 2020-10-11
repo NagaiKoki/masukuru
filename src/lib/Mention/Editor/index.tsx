@@ -17,6 +17,7 @@ export const MentionEditor = (props: MentionPropsType) => {
   return (
     <MentionTextInput
       keyword={keyword}
+      mentionItems={mentionItems}
       placeholder={placeholder}
       multiline={multiline}
       styles={textInputStyles}

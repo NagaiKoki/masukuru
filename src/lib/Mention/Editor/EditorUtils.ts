@@ -1,7 +1,8 @@
 export const checkAtSign = (text: string) => {
-  if (text.length >= 2) {
+  const trimedText = text.trim()
+  if (trimedText.length >= 2) {
     return false
   }
-  const headText = text.slice(0, 2)
+  const headText = trimedText.slice(0, 2)
   return headText === '@'
 }

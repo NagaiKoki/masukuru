@@ -14,6 +14,10 @@ export const MentionItem = (props: PropsType) => {
   )
 }
 
-const Wrapper = styled.TouchableOpacity``
+const Wrapper = styled.TouchableOpacity`
+  padding: 7px 10px;
+  border-top-width: 0.5px;
+  border-top-color: #a1a6ab;
+`
 
 const Item = styled.Text``
