@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { ResponseRecordType } from '../../../../types/Record'
 // import components
 import RecordItem from '../../../../components/Records/Items/item'
-import RecordCommentForm from '../../../../components/Records/Reactions/Comments/form'
+import RecordCommentForm from '../../../../components/Records/Reactions/Comments/Form'
 import RecordCommentList from '../../../../components/Records/Reactions/Comments/commentList'
 import Loading from '../../../../components/Loading'
 import { COLORS } from '../../../../constants/Styles'

@@ -1,19 +1,29 @@
 import React from 'react'
-import styled from 'styled-components'
+import { ViewStyle } from 'react-native'
 // import components
 import { MentionTextInput } from './TextInput'
 
 type MentionPropsType = {
-  text: string
+  keyword: string
+  placeholder?: string
+  textInputStyles?: ViewStyle
+  multiline?: boolean
   onChangeText: (value: string) => void
 }
 
 export const MentionEditor = (props: MentionPropsType) => {
-  const { text, onChangeText } = props
+  const { keyword, placeholder, multiline, textInputStyles, onChangeText } = props 
   return (
     <MentionTextInput
-      text={text}
+      keyword={keyword}
+      placeholder={placeholder}
+      multiline={multiline}
+      styles={textInputStyles}
       onChangeText={onChangeText}
     />
   )
 }
+
+MentionEditor.defaultProps = {
+  multiline: true
+} as MentionPropsType

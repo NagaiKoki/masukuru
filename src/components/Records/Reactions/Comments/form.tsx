@@ -16,6 +16,8 @@ import { requestAppReview } from '../../../../utilities/requestReview'
 import { hapticFeedBack } from '../../../../utilities/Haptic'
 // import config
 import Analytics from '../../../../config/amplitude'
+// import css
+import { TextInputStyles } from './FormStyles'
 // import lib
 import { MentionEditor } from '../../../../lib/Mention/Editor'
 
@@ -68,7 +70,9 @@ const RecordComment = (props: RecordCommentProps) => {
       <CommentFormWrapper>
         {renderUserImage}
         <MentionEditor 
-          text={text}
+          keyword={text}
+          placeholder="コメントを入力する..."
+          textInputStyles={TextInputStyles}
           onChangeText={handleOnChangeText}
         />
         {/* <CommentForm 
