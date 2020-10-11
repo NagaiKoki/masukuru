@@ -1,6 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
 import { TextInput, ViewStyle } from 'react-native'
+// import utils
+import { checkAtSign } from './EditorUtils'
 
 type PropsType = {
   keyword: string
@@ -12,6 +13,11 @@ type PropsType = {
 
 export const MentionTextInput = (props: PropsType) => {
   const { keyword, placeholder, multiline, styles, onChangeText } = props
+
+  const onChange = (text: string) => {
+    const isAtSign = checkAtSign(text)
+    onChangeText(text)
+  }
   
   return (
      <TextInput 
@@ -19,7 +25,7 @@ export const MentionTextInput = (props: PropsType) => {
       placeholder={placeholder}
       multiline={multiline}
       style={styles}
-      onChangeText={onChangeText}
+      onChangeText={onChange}
     />
   )
 }

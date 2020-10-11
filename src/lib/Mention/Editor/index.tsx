@@ -5,6 +5,7 @@ import { MentionTextInput } from './TextInput'
 
 type MentionPropsType = {
   keyword: string
+  mentionItems: string[]
   placeholder?: string
   textInputStyles?: ViewStyle
   multiline?: boolean
@@ -12,7 +13,7 @@ type MentionPropsType = {
 }
 
 export const MentionEditor = (props: MentionPropsType) => {
-  const { keyword, placeholder, multiline, textInputStyles, onChangeText } = props 
+  const { keyword, mentionItems, placeholder, multiline, textInputStyles, onChangeText } = props 
   return (
     <MentionTextInput
       keyword={keyword}
