@@ -6,3 +6,7 @@ export const checkAtSign = (text: string) => {
   const headText = trimedText.slice(0, 2)
   return headText === '@'
 }
+
+export const removeMentionTarget = (mention: string, keyword: string, removeHandler: () => void) => {
+  
+}

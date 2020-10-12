@@ -37,7 +37,12 @@ export const MentionTextInput = (props: PropsType) => {
   }
 
   const renderMentionList = showList &&
-    <MentionList mentionItems={mentionItems} addMentionInText={addMentionInText} handleCloseMention={handleCloseMention} />
+    <MentionList 
+      mentionItems={mentionItems} 
+      addMentionInText={addMentionInText} 
+      handleCloseMention={handleCloseMention} 
+      handleMentionTarget={handleMentionTarget} 
+    />
   
   return (
     <>
