@@ -119,15 +119,6 @@ const RecordComment = (props: RecordCommentProps) => {
           addMentionTarget={handleAddMentionTargetIds}
           removeMentionTarget={handleRemoveMentionTargetIds}
         />
-        {/* <CommentForm 
-          placeholder="コメントを入力..."
-          autoCapitalize={'none'}
-          maxLength={300}
-          multiline={true}
-          value={text}
-          autoCorrect={false}
-          onChangeText={ value => handleOnChangeText(value) }
-        /> */}
         <SubmitBtnWrapper 
           onPress={() => handleRequestPostComment()}
           commentPresent={!!text}
