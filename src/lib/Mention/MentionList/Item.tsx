@@ -8,7 +8,7 @@ type PropsType = {
   mentionItem: MentionItemType
   addMentionInText: (mention: string) => void
   onClose: () => void
-  addMentionTarget: (id: string) => void
+  addMentionTarget: (target: { id: string, target: string }) => void
 }
 
 export const MentionItem = (props: PropsType) => {
@@ -16,7 +16,7 @@ export const MentionItem = (props: PropsType) => {
   const { id, name, imageUrl } = mentionItem
 
   const handleOnPress = () => {
-    addMentionTarget(id)
+    addMentionTarget({ id, target: name })
     addMentionInText(name)
     onClose()
   }

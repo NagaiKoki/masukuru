@@ -5,24 +5,27 @@ import { MentionList } from '../MentionList/List'
 // import types
 import { MentionItemType } from '../types'
 // import utils
-import { checkAtSign } from './EditorUtils'
+import { checkAtSign, removeMentionTargetHandler } from './EditorUtils'
 
 type PropsType = {
   keyword: string
+  targets?: { id: string, target: string }[]
   mentionItems: MentionItemType[]
   placeholder?: string
   styles?: ViewStyle
   multiline?: boolean
   onChangeText: (value: string) => void
-  addMentionTarget: (id: string) => void
+  addMentionTarget: (target: { id: string, target: string }) => void
+  removeMentionTarget: (id: string) => void
 }
 
 export const MentionTextInput = (props: PropsType) => {
-  const { keyword, mentionItems, placeholder, multiline, styles, onChangeText, addMentionTarget } = props
+  const { keyword, targets, mentionItems, placeholder, multiline, styles, onChangeText, addMentionTarget, removeMentionTarget } = props
   const [showList, setShowList] = useState(false)
 
   const onChange = (text: string) => {
     const isAtSign = checkAtSign(text)
+    removeMentionTargetHandler(targets, text, removeMentionTarget)
     isAtSign ? setShowList(true) : setShowList(false)
     onChangeText(text)
   }

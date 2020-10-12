@@ -7,6 +7,12 @@ export const checkAtSign = (text: string) => {
   return headText === '@'
 }
 
-export const removeMentionTarget = (mention: string, keyword: string, removeHandler: () => void) => {
-  
+export const removeMentionTargetHandler = (targets: { id: string, target: string }[], text: string, removeHandler: (id: string) => void) => {
+  targets.forEach(target => {
+    const reg = new RegExp(target.target)
+    const isMatched = text.match(reg)
+    if (!isMatched) {
+      return removeHandler(target.id)
+    }
+  })
 }

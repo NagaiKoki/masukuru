@@ -33,6 +33,11 @@ interface RecordCommentProps {
   requestPostPushNotification?: (eventType: NotificationEventType, uid: string, title: string, content: string) => void
 }
 
+type MentionTarget = {
+  id: string
+  target: string
+}
+
 const RecordComment = (props: RecordCommentProps) => {
   const {
     record,
@@ -44,7 +49,7 @@ const RecordComment = (props: RecordCommentProps) => {
 
   const { id, uid } = record
   const [text, setText] = useState('')
-  const [mentionTargetIds, setMentionTargetIds] = useState([''])
+  const [mentionTargets, setMentionTargets] = useState<MentionTarget[]>([{ id: '', target: '' }])
   const { currentGroupUsers, requestFetchCurrentGroupUsers } = useGroupSelector()
   const dispatch = useDispatch()
 
@@ -75,15 +80,15 @@ const RecordComment = (props: RecordCommentProps) => {
     await requestAppReview()
   }
 
-  const handleAddMentionTargetIds = (id: string) => {
-    const updatedTargets = Array.from(new Set([...mentionTargetIds, id]))
-    const removedEmptyIds = updatedTargets.filter(Boolean)
-    setMentionTargetIds(removedEmptyIds)
+  const handleAddMentionTargetIds = (target: MentionTarget) => {
+    const updatedTargets = Array.from(new Set([...mentionTargets, target]))
+    const removedEmptyIds = updatedTargets.filter(target => !!target.id)
+    setMentionTargets(removedEmptyIds)
   }
 
   const handleRemoveMentionTargetIds = (id: string) => {
-    const updatedTargets = mentionTargetIds.filter(targetId => targetId !== id)
-    setMentionTargetIds(updatedTargets)
+    const updatedTargets = mentionTargets.filter(target => target.id !== id)
+    setMentionTargets(updatedTargets)
   }
 
   const groupUserNames = currentGroupUsers.map(user => {
@@ -100,14 +105,13 @@ const RecordComment = (props: RecordCommentProps) => {
     </UserImageWrapper>
   )
 
-  console.log(mentionTargetIds)
-
   return (
     <CommentWrapper>
       <CommentFormWrapper>
         {renderUserImage}
         <MentionEditor 
           keyword={text}
+          targets={mentionTargets}
           mentionItems={groupUserNames}
           placeholder="コメントを入力する..."
           textInputStyles={TextInputStyles}

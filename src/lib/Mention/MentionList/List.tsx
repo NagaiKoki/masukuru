@@ -10,7 +10,7 @@ type PropsType = {
   mentionItems: MentionItemType[]
   addMentionInText: (mention: string) => void
   handleCloseMention: () => void
-  addMentionTarget: (id: string) => void
+  addMentionTarget: (target: { id: string, target: string }) => void
 }
 
 export const MentionList = (props: PropsType) => {
