@@ -38,9 +38,7 @@ export const requestSendPushNotification = async (uid: string, title: string, bo
   if (!user || (user && !user.expoNotificationToken) || firebase.auth().currentUser.uid === uid || (typeof user.isCommentPush === 'boolean'  && !user.isCommentPush)) {
     return new Error('no data')
   }
-
-  console.log(title)
-
+  
   const message = {
     to: user.expoNotificationToken,
     sound: 'default',
