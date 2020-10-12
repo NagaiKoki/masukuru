@@ -44,6 +44,7 @@ const RecordComment = (props: RecordCommentProps) => {
 
   const { id, uid } = record
   const [text, setText] = useState('')
+  const [mentionTargetIds, setMentionTargetIds] = useState([''])
   const { currentGroupUsers, requestFetchCurrentGroupUsers } = useGroupSelector()
   const dispatch = useDispatch()
 
@@ -74,6 +75,17 @@ const RecordComment = (props: RecordCommentProps) => {
     await requestAppReview()
   }
 
+  const handleAddMentionTargetIds = (id: string) => {
+    const updatedTargets = Array.from(new Set([...mentionTargetIds, id]))
+    const removedEmptyIds = updatedTargets.filter(Boolean)
+    setMentionTargetIds(removedEmptyIds)
+  }
+
+  const handleRemoveMentionTargetIds = (id: string) => {
+    const updatedTargets = mentionTargetIds.filter(targetId => targetId !== id)
+    setMentionTargetIds(updatedTargets)
+  }
+
   const groupUserNames = currentGroupUsers.map(user => {
     return {
       id: user.uid,
@@ -88,6 +100,8 @@ const RecordComment = (props: RecordCommentProps) => {
     </UserImageWrapper>
   )
 
+  console.log(mentionTargetIds)
+
   return (
     <CommentWrapper>
       <CommentFormWrapper>
@@ -98,6 +112,8 @@ const RecordComment = (props: RecordCommentProps) => {
           placeholder="コメントを入力する..."
           textInputStyles={TextInputStyles}
           onChangeText={handleOnChangeText}
+          addMentionTarget={handleAddMentionTargetIds}
+          removeMentionTarget={handleRemoveMentionTargetIds}
         />
         {/* <CommentForm 
           placeholder="コメントを入力..."

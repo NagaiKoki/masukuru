@@ -10,15 +10,15 @@ type PropsType = {
   mentionItems: MentionItemType[]
   addMentionInText: (mention: string) => void
   handleCloseMention: () => void
-  handleMentionTarget: (id: string) => void
+  addMentionTarget: (id: string) => void
 }
 
 export const MentionList = (props: PropsType) => {
-  const { mentionItems, addMentionInText, handleCloseMention, handleMentionTarget } = props
+  const { mentionItems, addMentionInText, handleCloseMention, addMentionTarget } = props
   let mentionWidth = Dimensions.get("window").width
 
   const list = mentionItems.map((item, i) => (
-    <MentionItem key={i} mentionItem={item} addMentionInText={addMentionInText} onClose={handleCloseMention} handleMentionTarget={handleMentionTarget} />
+    <MentionItem key={i} mentionItem={item} addMentionInText={addMentionInText} onClose={handleCloseMention} addMentionTarget={addMentionTarget} />
   ))
 
   return (

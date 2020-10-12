@@ -14,11 +14,11 @@ type PropsType = {
   styles?: ViewStyle
   multiline?: boolean
   onChangeText: (value: string) => void
-  handleMentionTarget: (id: string) => void
+  addMentionTarget: (id: string) => void
 }
 
 export const MentionTextInput = (props: PropsType) => {
-  const { keyword, mentionItems, placeholder, multiline, styles, onChangeText, handleMentionTarget } = props
+  const { keyword, mentionItems, placeholder, multiline, styles, onChangeText, addMentionTarget } = props
   const [showList, setShowList] = useState(false)
 
   const onChange = (text: string) => {
@@ -41,7 +41,7 @@ export const MentionTextInput = (props: PropsType) => {
       mentionItems={mentionItems} 
       addMentionInText={addMentionInText} 
       handleCloseMention={handleCloseMention} 
-      handleMentionTarget={handleMentionTarget} 
+      addMentionTarget={addMentionTarget} 
     />
   
   return (

@@ -12,11 +12,12 @@ type MentionPropsType = {
   textInputStyles?: ViewStyle
   multiline?: boolean
   onChangeText: (value: string) => void
-  handleMentionTarget?: (id: string) => void
+  addMentionTarget?: (id: string) => void
+  removeMentionTarget?: (id: string) => void
 }
 
 export const MentionEditor = (props: MentionPropsType) => {
-  const { keyword, mentionItems, placeholder, multiline, textInputStyles, onChangeText, handleMentionTarget } = props 
+  const { keyword, mentionItems, placeholder, multiline, textInputStyles, onChangeText, addMentionTarget, removeMentionTarget } = props 
   return (
     <MentionTextInput
       keyword={keyword}
@@ -25,7 +26,7 @@ export const MentionEditor = (props: MentionPropsType) => {
       multiline={multiline}
       styles={textInputStyles}
       onChangeText={onChangeText}
-      handleMentionTarget={handleMentionTarget}
+      addMentionTarget={addMentionTarget}
     />
   )
 }

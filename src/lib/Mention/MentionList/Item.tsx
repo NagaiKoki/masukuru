@@ -8,15 +8,15 @@ type PropsType = {
   mentionItem: MentionItemType
   addMentionInText: (mention: string) => void
   onClose: () => void
-  handleMentionTarget: (id: string) => void
+  addMentionTarget: (id: string) => void
 }
 
 export const MentionItem = (props: PropsType) => {
-  const { mentionItem, addMentionInText, onClose, handleMentionTarget } = props
+  const { mentionItem, addMentionInText, onClose, addMentionTarget } = props
   const { id, name, imageUrl } = mentionItem
 
   const handleOnPress = () => {
-    handleMentionTarget(id)
+    addMentionTarget(id)
     addMentionInText(name)
     onClose()
   }
