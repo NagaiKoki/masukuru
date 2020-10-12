@@ -4,6 +4,8 @@ import * as Device from 'expo-device'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+// import apis
+import { requestSendPushNotification } from '../../../../apis/Push'
 // import componets
 import UserImage from '../../../Image/userImage'
 // import types
@@ -74,8 +76,16 @@ const RecordComment = (props: RecordCommentProps) => {
     hapticFeedBack('medium')
     Keyboard.dismiss()
     Analytics.track('commented', { text: text })
-    if (Platform.OS === 'ios' && Device.isDevice && requestPostPushNotification && currentUser.isCommentPush) {
-      dispatch(requestPostPushNotification('comment', uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, text))
+    const content = `${currentUser.name}さん: ${text}`
+    if (Platform.OS === 'ios' && requestPostPushNotification) {
+      if (!mentionTargets.length) {
+        await requestSendPushNotification(uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, content)
+      } else {
+        mentionTargets.forEach(async target => {
+          const title = `⭐ ${currentUser.name}さんがあなた宛にコメントしました！`
+          await requestSendPushNotification(target.id, title, content)
+        })
+      }
     }
     await requestAppReview()
   }
