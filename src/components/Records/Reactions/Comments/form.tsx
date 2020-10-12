@@ -87,6 +87,7 @@ const RecordComment = (props: RecordCommentProps) => {
         })
       }
     }
+    setText('')
     await requestAppReview()
   }
 
