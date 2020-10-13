@@ -1,10 +1,10 @@
 export const checkAtSign = (text: string) => {
   const trimedText = text.trim()
-  if (trimedText.length >= 2) {
+  const lastWord = trimedText.slice(trimedText.length - 1)
+  if (!trimedText || lastWord !== '@') {
     return false
   }
-  const headText = trimedText.slice(0, 2)
-  return headText === '@'
+  return true
 }
 
 export const removeMentionTargetHandler = (targets: { id: string, target: string }[], text: string, removeHandler: (id: string) => void) => {

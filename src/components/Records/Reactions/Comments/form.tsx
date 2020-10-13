@@ -72,11 +72,11 @@ const RecordComment = (props: RecordCommentProps) => {
   const handleRequestPostComment = async () => {
     if (!text) return
     setText('')
-    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text }))
     hapticFeedBack('medium')
     Keyboard.dismiss()
     Analytics.track('commented', { text: text })
     const content = `${currentUser.name}さん: ${text}`
+    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text }))
     if (Platform.OS === 'ios' && requestPostPushNotification) {
       if (!mentionTargets.length) {
         await requestSendPushNotification(uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, content)
@@ -92,8 +92,10 @@ const RecordComment = (props: RecordCommentProps) => {
   }
 
   const handleAddMentionTargetIds = (target: MentionTarget) => {
-    const updatedTargets = Array.from(new Set([...mentionTargets, target]))
-    const removedEmptyIds = updatedTargets.filter(target => !!target.id)
+    const updatedTargets = [...mentionTargets, target]
+    const newMap = new Map(updatedTargets.map(target => [target.id, target]))
+    const newArray = Array.from(newMap.values())
+    const removedEmptyIds = newArray.filter(target => !!target.id)
     setMentionTargets(removedEmptyIds)
   }
 
