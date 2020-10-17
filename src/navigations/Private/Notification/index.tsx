@@ -3,8 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import NotificationContainer from '../../../containers/Private/notifications'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../../../constants/Styles'
-// import container
+// import screens
 import NotificationContentScreen from '../../../screens/Private/Notifications/NotificationContent'
+import NotificationRecordShowScreen from '../../../screens/Private/Records/Show'
 
 
 const NotificationNavigator = ({ navigation }) => {
@@ -35,9 +36,22 @@ const NotificationNavigator = ({ navigation }) => {
       <NotificationStack.Screen
         name="NotificationContent"
         component={NotificationContentScreen}
-        options={({route}) => ({
+        options={() => ({
           headerBackTitleVisible: false,
           headerTitle: 'おしらせ',
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
+        })}
+      />
+
+      <NotificationStack.Screen
+        name="notificationRecordShow"
+        component={NotificationRecordShowScreen}
+        options={() => ({
+          headerBackTitleVisible: false,
+          headerTitle: 'きろく',
           headerStyle: {
             backgroundColor: COLORS.BASE_MUSCLEW
           },

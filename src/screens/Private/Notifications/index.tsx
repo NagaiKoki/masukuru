@@ -3,17 +3,19 @@ import { RefreshControl, ScrollView } from 'react-native'
 import styled from 'styled-components';
 import { COLORS } from '../../../constants/Styles';
 import { useFocusEffect } from '@react-navigation/native';
-// import types
-import { NotificationProps } from '../../../containers/Private/notifications'
+// import selectors
+import { 
+  notificationActions, 
+  _notificationItems,
+  _isLoading
+} from '../../../selectors/notification'
 // import components
-import Loading from '../../../components/Loading'
-import NotificationItem from './notificationItem'
+import NotificationList from '../../../components/Notification/List'
 
-const NotificationScreen = (props: NotificationProps) => {
-  const { navigation, notifications, actions } = props
-  const { isLoading, notificationItems, error } = notifications
-  const { requestFetchNotifications, requestReadNotification, requestFetchNotReadNotificationNumber } = actions
+const NotificationScreen = ({ navigation }) => {
+  const { requestFetchNotifications, requestFetchNotReadNotificationNumber } = notificationActions()
   const [isRefresh, setIsRefresh] = useState(false)
+  const notificationItems = _notificationItems()
 
   useFocusEffect(
     useCallback(() => {
@@ -30,15 +32,6 @@ const NotificationScreen = (props: NotificationProps) => {
     setIsRefresh(false)
   }
 
-  const renderItem = notificationItems.map((item, index) => (
-    <NotificationItem 
-      item={item} 
-      key={index} 
-      navigation={navigation}
-      requestReadNotification={requestReadNotification}
-    />
-  ))
-
   return (
     <NotificationConitainer>
       <ScrollView
@@ -49,15 +42,7 @@ const NotificationScreen = (props: NotificationProps) => {
           />
         }
       >
-        { isLoading ? <Loading size="small"/>  : null }
-        { error ? 
-        <ErrorMessage>{error}</ErrorMessage>
-         : null
-        }
-        { !isLoading && !!notificationItems.length ? 
-        <NotificationListWrapper>
-          {renderItem}
-        </NotificationListWrapper> : null}
+       <NotificationList notifications={notificationItems} navigation={navigation} />
       </ScrollView>
     </NotificationConitainer>
   )
@@ -68,14 +53,5 @@ export default NotificationScreen
 const NotificationConitainer =  styled.View`
   flex: 1;
   background-color: ${COLORS.BASE_BACKGROUND};
-`
-
-const ErrorMessage = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  color: ${COLORS.BASE_BLACK};
-`
-
-const NotificationListWrapper = styled.View`
 `
 

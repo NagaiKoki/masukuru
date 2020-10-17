@@ -39,6 +39,7 @@ import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
 import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
 import { requestSendRecordPostNotification } from '../apis/Push'
 import { requestFetchUsers } from '../apis/Users'
+import { requestSendPushNotification } from '../apis/Push'
 // import actions
 import {
   requestFetchRecords,
@@ -81,6 +82,7 @@ import {
   successDeleteEmojiReaction,
   failureDeleteEmojiReaction,
 } from '../slice/record'
+import { requestPostEmojiNotification } from '../slice/notification'
 import {
   requestPostCommentNotification,
   addNotificationRetryCount,
@@ -357,6 +359,39 @@ function* handleRequestPostEmojiReaction() {
   yield takeEvery(requestPostEmojiReaction.type, runRequestPostEmojiReaction)
 }
 
+// 絵文字リアクション通知リクエスト
+function* runRequestPostEmojiNotification() {
+  const { selectedEmojiRecordId }: ReturnType<typeof recordSelector> = yield select(recordSelector)
+  const { payload }: ResponseType<ResponseRecordType> = yield call(requestFetchRecordItem, selectedEmojiRecordId)
+  const responseObj: ResponseType<EmojiReactionType> = yield call(requestFetchGetEmojiReaction, selectedEmojiRecordId)
+  const reactionedEmojies = responseObj.payload
+  const { uid, displayName } = firebase.auth().currentUser
+  // すでに同じ記録に絵文字リアクションしていれば、送らない
+  if (payload.uid === uid || reactionedEmojies && !!reactionedEmojies.emojiReactions.filter(reaction => reaction.uid === uid)[1]) {
+    return
+  } else {
+    const { success }: { success?: string } = yield call(
+      requestPostCommentNotf,
+      payload.uid,
+      selectedEmojiRecordId,
+      'emoji'
+    )
+
+    if (success) {
+      yield call(
+        requestSendPushNotification,
+        payload.uid,
+        ``,
+        `⭐ ${displayName}さんがあなたの記録にリアクションしました！`
+      )
+    }
+  }
+}
+
+function* handleRequestPostEmojiNotification() {
+  yield takeEvery(requestPostEmojiNotification.type, runRequestPostEmojiNotification)
+}
+
 // 絵文字フェッチ処理
 function* runRequestFetchEmojiReaction(action: PayloadAction<string>) {
   const { payload, error }: ResponseType<EmojiReactionType> = yield call(
@@ -424,6 +459,7 @@ export default function* recordSaga() {
   yield fork(handleRequestDeleteRecordComment)
   yield fork(handleRequestPostCommentNotification)
   yield fork(handleRequestPostEmojiReaction)
+  yield fork(handleRequestPostEmojiNotification)
   yield fork(handleRequestFetchEmojiReaction)
   yield fork(handleRequestFetchPostedEmojiUsers)
   yield fork(handleRequestDeleteEmojiReaction)

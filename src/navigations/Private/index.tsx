@@ -13,7 +13,7 @@ import ChartNavigator from './Chart'
 import NotificationNavigator from './Notification';
 import MyPageNavigator from './MyPage';
 // import actions
-import { requestFetchNotReadNotificationNumber } from '../../actions/notifications'
+import { requestFetchNotReadNotificationNumber } from '../../slice/notification'
 
 const Tab = createBottomTabNavigator();
 const MainTabNavigator = () => {

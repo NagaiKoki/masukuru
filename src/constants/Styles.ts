@@ -6,6 +6,7 @@ export const COLORS = {
   COMMENT_BACKGROUND: '#F2F3F5',
   BASE_MUSCLEW: '#FFA000',
   MUSCLEW_COLOR: '#ffe2c6',
+  MUSCLEW_COLOR2: '#fff2e5',
 
   BASE_BORDER_COLOR: '#a1a6ab',
   BORDER_COLOR_1: '#c7c7c7',
@@ -19,7 +20,7 @@ export const COLORS = {
 
   TOGGLE_ON_COLOR: '#33cc00',
 
-  BATCH_COLOR: '#ff5b5b',
+  BATCH_COLOR: '#F93E34',
   DANGER_COLOR: '#dc3545',
 
   CARD_SHADOW1: 'rgba(0, 0, 0, 0.1)',
@@ -27,6 +28,7 @@ export const COLORS = {
   OVERLAY_BACKGROUND: 'rgba(0,0,0,0.8)',
 
   FORM_BACKGROUND: "#e6e6e6",
+  FORM_BACKGROUND2: '#dfdfdf',
 
   LINE_COLOR: "#00B900",
   TWITTER_COLOR: "#1DA1F2",

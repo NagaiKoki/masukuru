@@ -3,17 +3,17 @@ import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from 'react-native';
 import styled from 'styled-components'
-import { COLORS } from '../../../../constants/Styles'
+import { COLORS } from '../../../../../constants/Styles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import components
-import Loading from '../../../../components/Loading'
+import Loading from '../../../../../components/Loading'
 // import lib
-import { requestAppReview } from '../../../../utilities/requestReview'
-import { ImageUpload } from '../../../../utilities/cameraRoll';
+import { requestAppReview } from '../../../../../utilities/requestReview'
+import { ImageUpload } from '../../../../../utilities/cameraRoll';
 // import slices
-import { requestUpdateRecord, requestSubmitRecords } from '../../../../slice/record'
+import { requestUpdateRecord, requestSubmitRecords } from '../../../../../slice/record'
 // import selectors
-import recordSelector from '../../../../selectors/record' 
+import recordSelector from '../../../../../selectors/record' 
 
 const AddRecordWordScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()

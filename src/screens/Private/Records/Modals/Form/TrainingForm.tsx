@@ -3,20 +3,20 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { StyleSheet } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native';
-import { COLORS } from '../../../../constants/Styles'
+import { COLORS } from '../../../../../constants/Styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import components
-import AeroForm from '../../../../components/Records/AddForm/areroForm'
-import MuscleForm from '../../../../components/Records/AddForm/Musclew/musclewForm'
-import Toast from '../../../../components/Toaster'
+import AeroForm from '../../../../../components/Records/AddForm/areroForm'
+import MuscleForm from '../../../../../components/Records/AddForm/Musclew/musclewForm'
+import Toast from '../../../../../components/Toaster'
 // import types
-import { RecordItemType } from '../../../../types/Record'
-import { RecordNavigationType } from '.'
+import { RecordItemType } from '../../../../../types/Record'
+import { RecordNavigationType } from '..'
 // import constants
-import { RECORD_ERROR_MESSAGE } from '../../../../constants/errorMessage'
+import { RECORD_ERROR_MESSAGE } from '../../../../../constants/errorMessage'
 // import slice
-import { addRecord, updateRecord } from '../../../../slice/record'
-import recordSelector from '../../../../selectors/record'
+import { addRecord, updateRecord } from '../../../../../slice/record'
+import recordSelector from '../../../../../selectors/record'
 
 const AddRecordScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()

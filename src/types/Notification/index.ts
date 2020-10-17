@@ -38,9 +38,21 @@ export type NotificationType = {
   createdAt?: Timestamp
 }
 
+export type RequestPostCommnetNotificationType = {
+  recordUserId: string
+  recordId: string
+  notificationType: NotificationEventType
+}
+
+// 既読リクエスト
+export interface RequestReadNotification {
+  id: string
+  type: NotificationEventType
+}
+
 // type officialNotificationType = type: NotificationEventType, from: string, title: string, contents: string, readUserIds: string[], createdAt: TimeStamp
 
-export type NotificationEventType =  'official' | 'comment' | 'reply'
+export type NotificationEventType =  'official' | 'comment' | 'reply' | 'emoji'
 
 // お知らせの取得
 export interface RequestFetchNotifications {
@@ -72,12 +84,6 @@ export interface SuccessFetchNotReadNotificationNumber {
 export interface FailureFetchNotReadNotificationNumber {
   type: typeof FAILURE_FETCH_NOT_READ_NOTIFICATION_NUMBER
   error: string
-}
-
-// 既読リクエスト
-export interface RequestReadNotification {
-  type: typeof REQUEST_READ_NOTIFICATION
-  id: string
 }
 
 // 既読リクエスト成功
@@ -125,7 +131,6 @@ export type NotificationActionTypes =
   | RequestFetchNotReadNotificationNumber
   | SuccessFetchNotReadNotificationNumber
   | FailureFetchNotReadNotificationNumber
-  | RequestReadNotification
   | SuccessReadNotification
   | AlreadReadNotification
   | FailureReadNotification

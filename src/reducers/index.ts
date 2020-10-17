@@ -1,7 +1,5 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { composeWithDevTools } from 'redux-devtools-extension';
-
 // types
 import { RecordState } from '../types/Record'
 import { NoticationState } from '../types/Notification'
@@ -21,6 +19,7 @@ import userSlice from '../slice/user'
 import authSlice from '../slice/auth'
 import groupSlice from '../slice/group'
 import uiSlice from '../slice/ui'
+import noticationSlice from '../slice/notification'
 // import saga
 import rootSaga from '../sagas/'
 
@@ -42,7 +41,7 @@ const middleware = applyMiddleware(sagaMiddleware)
 const store = createStore(
   combineReducers({
     records: recordSlice.reducer,
-    notifications: notificationReducer,
+    notifications: noticationSlice.reducer,
     groups: groupSlice.reducer,
     users: userSlice.reducer,
     suggestRecords: suggestRecordReducer,

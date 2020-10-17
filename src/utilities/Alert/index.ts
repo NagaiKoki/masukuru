@@ -1,6 +1,6 @@
 import { Alert } from 'react-native'
 
-export const handleAlert = (title: string, subTitle: string, buttonText: string, func: () => void) => {
+export const handleAlert = (title: string, subTitle: string, buttonText: string, func: Function) => (arg?: any) => {
   Alert.alert(
     title,
     subTitle,
@@ -11,7 +11,7 @@ export const handleAlert = (title: string, subTitle: string, buttonText: string,
       },
       {
         text: buttonText,
-        onPress: () => func()
+        onPress: () => func(arg)
       }
     ],
     { cancelable: false }

@@ -7,6 +7,7 @@ import {
   requestPostEmojiReaction,
   toggleEmojiModalOpen
 } from '../../../../../slice/record'
+import { requestPostEmojiNotification } from '../../../../../slice/notification'
 // import utils
 import { hapticFeedBack } from '../../../../../utilities/Haptic'
 import recordSelector, { selectEmojiReactions } from '../../../../../selectors/record'
@@ -33,6 +34,7 @@ const EmojiItem = (props: PropsType) => {
     hapticFeedBack('medium')
     Analytics.track('emojiReaction', { emojiIndex: id })
     dispatch(requestPostEmojiReaction({ emojiIndex: id }))
+    dispatch(requestPostEmojiNotification())
     dispatch(toggleEmojiModalOpen({ isOpen: false }))
   }
 

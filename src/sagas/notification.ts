@@ -1,3 +1,4 @@
+import { PayloadAction } from '@reduxjs/toolkit'
 import { fork, takeEvery, put, call, takeLatest } from 'redux-saga/effects'
 // import action types
 import {
@@ -10,18 +11,25 @@ import {
   requestNotifications,
   requestUnReadNotificationSize,
   requestReadOfficialNotification,
+  requestReadCommentNotification
 } from '../apis/Notifications'
 import { requestSendPushNotification } from '../apis/Push'
 // import actions
 import {
-  successFetchNotReadNotificationNumber,
   failureFetchNotReadNotificationNumber, 
-  successReadNotification,
-  alreadyReadNotification,
   failureReadNotification,
-  successFetchNotifications,
-  failureFetchNotifications
 } from '../actions/notifications'
+// import slices
+import {
+  requestReadNotification,
+  successReadCommentNotification,
+  successReadOfficialNotification,
+  requestFetchNotReadNotificationNumber,
+  successFetchNotReadNotificationNumber,
+  requestFetchNotifications,
+  successFetchNotifications, 
+  failureFetchNotifications 
+} from '../slice/notification'
 // import config
 import firebase from '../config/firebase'
 
@@ -40,7 +48,7 @@ function* runRequestFetchNotifications() {
 
 // お知らせの取得ハンドラー
 function* handleRequestFetchNotifications() {
-  yield takeEvery(REQUEST_FETCH_NOTIFICATIONS, runRequestFetchNotifications)
+  yield takeEvery(requestFetchNotifications.type, runRequestFetchNotifications)
 }
 
 // 未読数の取得
@@ -60,29 +68,32 @@ function* runRequestUnReadNotificationSize() {
 
 // 未読数の取得ハンドラー
 function* handleRequestFetchNotReadNotificationNumber() {
-  yield takeLatest(REQUEST_FETCH_NOT_READ_NOTIFICATION_NUMBER, runRequestUnReadNotificationSize)
+  yield takeLatest(requestFetchNotReadNotificationNumber.type, runRequestUnReadNotificationSize)
 }
 
 // 既読リクエスト
-function* runRequestReadNotification(action: RequestReadNotification) {
-  const { id } = action
-  const { payload, readNotification, error }: { payload?: string, readNotification?: string,  error?: string } = yield call(
-    requestReadOfficialNotification,
+function* runRequestReadNotification(action: PayloadAction<RequestReadNotification>) {
+  const { id, type } = action.payload
+  const requestRead = type === 'official' ? requestReadOfficialNotification : requestReadCommentNotification
+  const { payload, error }: { payload?: string,  error?: string } = yield call(
+    requestRead,
     id
   )
 
-  if (payload && !error && !readNotification) {
-    yield put(successReadNotification())
-  } else if (!payload && readNotification && !error) {
-    yield put(alreadyReadNotification())
-  } else {
+  if (payload && !error) {
+    if (type === 'official') {
+      yield put(successReadOfficialNotification(id))
+    } else {
+      yield put(successReadCommentNotification(id))
+    }
+  } else if (error) {
     yield put(failureReadNotification())
   }
 }
 
 // 既読リクエストハンドラー
 function* handleRequestReadNotification() {
-  yield takeEvery(REQUEST_READ_NOTIFICATION, runRequestReadNotification)
+  yield takeEvery(requestReadNotification.type, runRequestReadNotification)
 }
 
 //////////////// プッシュ通知
