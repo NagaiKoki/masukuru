@@ -79,7 +79,7 @@ const DrawerList = (props: PropsType) => {
     const title = 'マスクル'
     const subTitle = 'ログアウトしますか？'
     const buttonText = 'ログアウトする'
-    handleAlert(title, subTitle, buttonText, requestFetchLogout)
+    handleAlert(title, subTitle, buttonText, requestFetchLogout)()
   }  
 
   const listMapObj: DrawerItemType[] = [

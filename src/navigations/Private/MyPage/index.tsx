@@ -18,9 +18,10 @@ const MyPageNavigator = ({ navigation }) => {
         component={UserContainer}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
+            backgroundColor: COLORS.BASE_MUSCLEW,
           },
           headerTintColor: COLORS.BASE_WHITE,
+          headerTitle: 'マイページ',
           headerLeft: () => (
             <Icon name="bars" 
                   size={24} 

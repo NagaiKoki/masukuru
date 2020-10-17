@@ -27,6 +27,7 @@ export const COLORS = {
   OVERLAY_BACKGROUND: 'rgba(0,0,0,0.8)',
 
   FORM_BACKGROUND: "#e6e6e6",
+  FORM_BACKGROUND2: '#dfdfdf',
 
   LINE_COLOR: "#00B900",
   TWITTER_COLOR: "#1DA1F2",

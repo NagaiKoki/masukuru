@@ -30,14 +30,14 @@ const DatePicker = (props: DatePickerProps) => {
       showIcon={false}
       onDateChange={(dateStr: string, date: Date) => handleOnChangeDate(date)}
       customStyles={{
-        dateIcon: {
-          position: "absolute",
-          left: -100,
-        },
         dateInput: {
           borderColor: "transparent",
           borderBottomColor: border ? "transparent" : COLORS.BASE_BORDER_COLOR,
           padding: 0,
+        },
+        dateText: {
+          textAlign: 'left',
+          marginLeft: -25
         }
       }}
     />

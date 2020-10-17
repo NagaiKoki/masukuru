@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/native'
 import { COLORS } from '../../../../../constants/Styles'
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // import screens
-import RecordFormScreen from '../../../../../screens/Private/Records/Modals/TrainingForm'
-import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/TweetForm'
+import RecordFormScreen from '../../../../../screens/Private/Records/Modals/Form/TrainingForm'
+import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/Form/TweetForm'
 import RecordEditScreen from '../../../../../screens/Private/Records/Modals/edit'
 // import slice
 import { initializeTemporaryRecord } from '../../../../../slice/record'

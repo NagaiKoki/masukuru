@@ -43,7 +43,7 @@ const GroupSwitchModal = (props: PropsType) => {
     const title = 'グループを作成しますか？'
     const subTitle = '※ 所属できるグループは5つまでです。'
     const buttonText = '作成する'
-    handleAlert(title, subTitle, buttonText, handleOnCreateGroup)
+    handleAlert(title, subTitle, buttonText, handleOnCreateGroup)()
   }
 
   if (!belongGroups.length) {

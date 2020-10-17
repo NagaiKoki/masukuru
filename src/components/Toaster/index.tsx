@@ -29,7 +29,7 @@ const Toast = (props: ToastProps) => {
 const Container = styled.View`
   width: 100%;
   position: absolute;
-  top: 7%;
+  top: 9%;
   z-index: 1000;
 `
 
