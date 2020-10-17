@@ -265,7 +265,7 @@ function* handleRequestPostCommentNotification() {
 
 // 記録へのコメント送信リクエスト
 function* runRequestPostRecordComment(action: PayloadAction<RequestPostRecordComment>) {  
-  const { recordId, recordUserId, notificationGroupId, text } = action.payload
+  const { recordId, recordUserId, notificationGroupId, text, mentionIds, type } = action.payload
   const { payload, error }: ResponseType<RecordCommentType> = yield call(
     requestPostRecordPost,
     recordId,
@@ -275,8 +275,13 @@ function* runRequestPostRecordComment(action: PayloadAction<RequestPostRecordCom
 
   if (payload && !error) {
     yield put(successPostRecordComment(payload))
+    if (mentionIds.length) {
+     for (let id of mentionIds) {
+      yield put(requestPostCommentNotification(id, recordId, type))
+     }
+    }
     if (recordUserId !== firebase.auth().currentUser.uid) {
-      yield put(requestPostCommentNotification(recordUserId, recordId, 'comment'))
+      yield put(requestPostCommentNotification(recordUserId, recordId, type))
     }
   } else if (error) {
     yield put(failurePostRecordComment(error))

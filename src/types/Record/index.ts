@@ -114,7 +114,8 @@ export type RequestPostRecordComment = {
   recordUserId: string
   notificationGroupId?: string
   text: string
-  mentionId?: string
+  mentionIds?: string[]
+  type: 'comment' | 'reply'
 }
 
 export type RequestDeleteComment = {

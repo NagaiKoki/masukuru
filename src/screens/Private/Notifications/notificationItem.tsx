@@ -42,7 +42,7 @@ const NotificationItem = (props: ItemProps) => {
   
   useEffect(() => {
     const fetchUser = async () => {
-      if (type === 'comment') {
+      if (type === 'comment' || 'reply') {
         const { user, error }: { user?: UserType, error?: string } = await requestFetchUser(from)
         if (user && !error) {
           setUser(user)
@@ -75,6 +75,7 @@ const NotificationItem = (props: ItemProps) => {
 
   const renderCommentContent = () => {
     if (!isFetching && user) {
+      const message = type === 'comment' ? `${user.name}からあなたの投稿にコメントがありました。` : `${user.name}からあなた宛にコメントがありました。`
       return (
         <React.Fragment>
           <UserWrapper>
@@ -82,7 +83,7 @@ const NotificationItem = (props: ItemProps) => {
           </UserWrapper>
           <ItemWrapper>
             <ItemTime>{time}</ItemTime>
-            <ItemTitle>{user.name}からあなたの投稿にコメントがありました。</ItemTitle>
+            <ItemTitle>{message}</ItemTitle>
           </ItemWrapper>
         </React.Fragment>
       )

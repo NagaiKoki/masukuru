@@ -21,7 +21,7 @@ export const requestNotifications = async () => {
       })
     })
   
-    await db.collection('users').doc(currentUserId).collection('notification').limit(20).get().then(snap => {
+    await db.collection('users').doc(currentUserId).collection('notification').orderBy('createdAt', 'desc').limit(20).get().then(snap => {
       snap.forEach(doc => {
         const data = doc.data()
         data.id = doc.ref.id

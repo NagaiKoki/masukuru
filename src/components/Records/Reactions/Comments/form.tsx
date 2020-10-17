@@ -76,9 +76,11 @@ const RecordComment = (props: RecordCommentProps) => {
     Keyboard.dismiss()
     Analytics.track('commented', { text: text })
     const content = `${currentUser.name}さん: ${text}`
-    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text }))
+    const targetIds = mentionTargets.map(target => target.id)
+    const commentType = !mentionTargets.filter(t => t.id).length ? 'reply' : 'comment'
+    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text, mentionIds: targetIds, type: commentType }))
     if (Platform.OS === 'ios' && requestPostPushNotification) {
-      if (!mentionTargets.length) {
+      if (!mentionTargets.filter(t => t.id).length) {
         await requestSendPushNotification(uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, content)
       } else {
         mentionTargets.forEach(async target => {
