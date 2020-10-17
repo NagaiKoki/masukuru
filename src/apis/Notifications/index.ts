@@ -21,7 +21,7 @@ export const requestNotifications = async () => {
       })
     })
   
-    await db.collection('users').doc(currentUserId).collection('notification').orderBy('createdAt', 'desc').limit(20).get().then(snap => {
+    await db.collection('users').doc(currentUserId).collection('notification').orderBy('createdAt', 'desc').limit(30).get().then(snap => {
       snap.forEach(doc => {
         const data = doc.data()
         data.id = doc.ref.id
@@ -72,24 +72,18 @@ export const requestUnReadNotificationSize = async (uid: string) => {
 // オフィシャル通知の既読リクエスト
 export const requestReadOfficialNotification = async (id: string) => {
   const currentUser = firebase.auth().currentUser
-  let readNotification: boolean
-  let payload: string
+  
   try {
     const refNotification = db.collection('notifications').doc(id)
     await refNotification.get().then( async snap => {
       if (!snap.exists) throw new Error('error')
-      if (snap.data().readUserIds.some(id => id === currentUser.uid)) {
-        readNotification = true
-      } else {
-        await db.collection('notifications').doc(id).update({
-          readUserIds: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
-        })
-        payload = 'success'
-      }
+      await db.collection('notifications').doc(id).update({
+        readUserIds: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+      })
     })
-    return { payload: payload, readNotification: readNotification }
+    return { payload: 'success' }
   } catch (error) {
-    return { error: error }
+    return { error }
   }
 }
 

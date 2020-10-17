@@ -118,7 +118,7 @@ const Wrapper = styled.View`
 const TitleLabel = styled.Text`
   color: ${COLORS.BASE_BLACK};
   padding: 0 20px 10px 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
 `
 

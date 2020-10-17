@@ -6,6 +6,7 @@ export const COLORS = {
   COMMENT_BACKGROUND: '#F2F3F5',
   BASE_MUSCLEW: '#FFA000',
   MUSCLEW_COLOR: '#ffe2c6',
+  MUSCLEW_COLOR2: '#fff2e5',
 
   BASE_BORDER_COLOR: '#a1a6ab',
   BORDER_COLOR_1: '#c7c7c7',

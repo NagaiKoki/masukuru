@@ -2,21 +2,13 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { COLORS } from '../../../constants/Styles';
 import styled from 'styled-components'
-// import types
-import { NotificationContenTypes } from './notificationItem'
 // import lib
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import components
 import Image from '../../../components/Image/userImage'
 
-interface NotificationContentProps {
-  route: {
-    params: NotificationContenTypes
-  }
-}
 
-const NotificationContentScreen = (props: NotificationContentProps) => {
-  const { route } = props
+const NotificationContentScreen = ({ route }) => {
   const { item } = route.params
   const { title, createdAt, contents, imageUrl } = item
   const time = convertTimestampToString(createdAt, undefined)
