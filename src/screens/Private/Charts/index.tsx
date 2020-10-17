@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react'
-import { Platform } from 'react-native'
 import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
