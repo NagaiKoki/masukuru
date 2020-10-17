@@ -16,7 +16,8 @@ import {
   EmojiReactionType,
   ResponseEmojiReactionType,
   TogglePostedUserEmojiModal,
-  ResponseCreateRecordType
+  ResponseCreateRecordType,
+  SetMentionTargetType
 } from '../types/Record'
 import { UserType } from '../types/User'
 // import constants
@@ -48,7 +49,9 @@ const initialState: RecordState = {
   selectedEmojiIndex: 0,
   selectedEmojiId: '',
   emojiReactions: [],
-  postedEmojiUsers: []
+  postedEmojiUsers: [],
+  commentKeyword: '',
+  mentionTargets: []
 }
 
 const recordSlice = createSlice({
@@ -461,6 +464,20 @@ const recordSlice = createSlice({
       return {
         ...state
       }
+    },
+    changeCommnetKeyword: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        commentKeyword: action.payload
+      }
+    },
+    setMentionTargets: (state, action: PayloadAction<SetMentionTargetType>) => {
+      const { mentionTargets, type } = action.payload
+      return {
+        ...state,
+        mentionTargets: mentionTargets,
+        commentKeyword: type === 'reply' ? '@' + mentionTargets[0].target + ' ' : state.commentKeyword
+      }
     }
   }
 })
@@ -515,6 +532,8 @@ export const {
   requestDeleteEmojiReaction,
   successDeleteEmojiReaction,
   failureDeleteEmojiReaction,
+  changeCommnetKeyword,
+  setMentionTargets
 } = recordSlice.actions
 
 export default recordSlice

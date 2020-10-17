@@ -21,8 +21,8 @@ const ChartHeader = (props: ChartHeaderProps) => {
 
   return (
     <Container>
-      <Item active={isActive(1)} onPress={() => handleOnSwitch(1)}>
-        <ItemText active={isActive(1)}>体重</ItemText>
+      <Item active={isActive(0)} onPress={() => handleOnSwitch(0)}>
+        <ItemText active={isActive(0)}>体重</ItemText>
       </Item>
     </Container>
   )

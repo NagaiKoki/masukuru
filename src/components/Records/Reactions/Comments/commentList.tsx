@@ -19,7 +19,6 @@ interface RecordCommentListProps {
 
 const RecordCommentList = (props: RecordCommentListProps) => {
   const { comments, notificationGroupId,requestDeleteRecordComment } = props
-
   const [currentGroupId, setCurrentGroupId] = useState('')
 
   const fetchCurrentGroupId = async () => {

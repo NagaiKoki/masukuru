@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Alert } from 'react-native'
 import styled from 'styled-components'
 import moment from '../../../../config/moment'
+// import slice
+import { setMentionTargets } from '../../../../slice/record'
 // import types
 import { RecordCommentType, RequestDeleteComment } from '../../../../types/Record'
 // import apis
@@ -59,6 +61,10 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
     )
   }
 
+  const handleReplyComment = () => {
+    dispatch(setMentionTargets({ mentionTargets: [{ id: uid, target: user.name }], type: 'reply' }))
+  }
+
   const dateTime = () => {
     // コメントを送った直後のcreatedAtの型はfirestore.timeStamp型にならないため
     // Date型として扱う
@@ -78,6 +84,16 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
       <UserImage uri={user.imageUrl} width={30} height={30} borderRadius={60} />
     </RecordUserWrapper>
   )
+
+  const renderDeleteButton =
+    <Button onPress={handleDeleteComment}>
+      <ButtonText>削除</ButtonText>
+    </Button>
+
+  const renderReplyButton = 
+    <Button onPress={handleReplyComment}>
+      <ButtonText>返信</ButtonText>
+    </Button>
  
   return (
     <CommentItemContainer>
@@ -91,10 +107,8 @@ const RecordCommentItem = (props: RecordCommentListProps) => {
       <CommentUnderWrapper>
         <CommentTimeStampText>{dateTime()}</CommentTimeStampText>
         { uid !== currentUser.uid ?
-          null :
-          <CommentDeleteBtn onPress={handleDeleteComment}>
-            <CommentDeleteText>削除</CommentDeleteText>
-          </CommentDeleteBtn>
+          renderReplyButton :
+          renderDeleteButton
         }
       </CommentUnderWrapper>
     </CommentItemContainer>
@@ -145,11 +159,11 @@ const CommentTimeStampText = styled.Text`
   font-size: 12px;
 `
 
-const CommentDeleteBtn = styled.TouchableOpacity`
+const Button = styled.TouchableOpacity`
   margin-left: 12px;
 `
 
-const CommentDeleteText = styled.Text`
+const ButtonText = styled.Text`
   color: ${COLORS.SUB_BLACK};
   font-size: 12px;
 `
