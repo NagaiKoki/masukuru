@@ -28,6 +28,7 @@ export interface RecordState {
   emojiReactions: EmojiReactionType[]
   postedEmojiUsers: UserType[]
   commentKeyword: string
+  mentionTargets: MentionTargetType[]
 }
 
 export type RecordItemType = {
@@ -67,6 +68,11 @@ export type RecordCommentType = {
   groupId: string
   createdAt: FirestoreTimestamp | Date
   updatedAt: FirestoreTimestamp | Date
+}
+
+export type MentionTargetType = {
+  id: string
+  target: string
 }
 
 export type ResponseEmojiReactionType = {

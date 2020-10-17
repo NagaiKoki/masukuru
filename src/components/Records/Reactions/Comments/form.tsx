@@ -8,12 +8,12 @@ import { requestSendPushNotification } from '../../../../apis/Push'
 // import componets
 import UserImage from '../../../Image/userImage'
 // import types
-import { ResponseRecordType, RequestPostRecordComment } from '../../../../types/Record'
+import { ResponseRecordType, RequestPostRecordComment, MentionTargetType } from '../../../../types/Record'
 import { NotificationEventType } from '../../../../types/Notification'
 import { UserType } from '../../../../types/User'
 import { RootState } from '../../../../reducers'
 // import slices
-import { changeCommnetKeyword } from '../../../../slice/record'
+import { changeCommnetKeyword, setMentionTargets } from '../../../../slice/record'
 // import utils
 import { requestAppReview } from '../../../../utilities/requestReview'
 import { hapticFeedBack } from '../../../../utilities/Haptic'
@@ -53,9 +53,9 @@ const RecordComment = (props: RecordCommentProps) => {
   } = props
 
   const { id, uid } = record
-  const [mentionTargets, setMentionTargets] = useState<MentionTarget[]>([{ id: '', target: '' }])
   const { currentGroupUsers, requestFetchCurrentGroupUsers } = useGroupSelector()
   const commentKeyword = useSelector<RootState, string>(state => state.records.commentKeyword)
+  const mentionTargets = useSelector<RootState, MentionTargetType[]>(state => state.records.mentionTargets)
   const [text, setText] = useState(commentKeyword)
   const dispatch = useDispatch()
 
@@ -107,12 +107,12 @@ const RecordComment = (props: RecordCommentProps) => {
     const newMap = new Map(updatedTargets.map(target => [target.id, target]))
     const newArray = Array.from(newMap.values())
     const removedEmptyIds = newArray.filter(target => !!target.id)
-    setMentionTargets(removedEmptyIds)
+    dispatch(setMentionTargets(removedEmptyIds))
   }
 
   const handleRemoveMentionTargetIds = (id: string) => {
     const updatedTargets = mentionTargets.filter(target => target.id !== id)
-    setMentionTargets(updatedTargets)
+    dispatch(setMentionTargets(updatedTargets))
   }
 
   const groupUserNames = currentGroupUsers.map(user => {
