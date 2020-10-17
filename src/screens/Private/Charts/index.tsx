@@ -12,7 +12,7 @@ import AddButton from '../../../components/Charts/AddButton'
 import { COLORS } from '../../../constants/Styles'
 
 const ChartScreen = ({ navigation }) => {
-  const [index, setIndex] = Platform.OS === 'ios' ? useState(0) : useState(1)
+  const [index, setIndex] = useState(1)
 
   useFocusEffect(
     useCallback(() => {
@@ -34,12 +34,12 @@ const ChartScreen = ({ navigation }) => {
     switch(index) {
       case 0: {
         return (
-          <PedometerChart />
+          <WeightChart />
         )
       }
       case 1: {
         return (
-          <WeightChart />
+          <PedometerChart />
         )
       }
     }
@@ -54,7 +54,7 @@ const ChartScreen = ({ navigation }) => {
       <Wrapper>
         {renderChart()}
       </Wrapper>
-      { index === 1 ? <AddButton navigation={navigation} /> : null }
+      { index === 0 ? <AddButton navigation={navigation} /> : null }
     </Container>
   )  
 }
