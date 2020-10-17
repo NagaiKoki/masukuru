@@ -40,7 +40,7 @@ export type NotificationType = {
 
 // type officialNotificationType = type: NotificationEventType, from: string, title: string, contents: string, readUserIds: string[], createdAt: TimeStamp
 
-export type NotificationEventType =  'official' | 'comment'
+export type NotificationEventType =  'official' | 'comment' | 'reply'
 
 // お知らせの取得
 export interface RequestFetchNotifications {
