@@ -41,7 +41,7 @@ export type NotificationType = {
 export type RequestPostCommnetNotificationType = {
   recordUserId: string
   recordId: string
-  notificationType: NotificationType
+  notificationType: NotificationEventType
 }
 
 // 既読リクエスト
@@ -52,7 +52,7 @@ export interface RequestReadNotification {
 
 // type officialNotificationType = type: NotificationEventType, from: string, title: string, contents: string, readUserIds: string[], createdAt: TimeStamp
 
-export type NotificationEventType =  'official' | 'comment' | 'reply'
+export type NotificationEventType =  'official' | 'comment' | 'reply' | 'emoji'
 
 // お知らせの取得
 export interface RequestFetchNotifications {

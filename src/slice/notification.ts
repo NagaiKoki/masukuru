@@ -88,7 +88,7 @@ const notificationSlice = createSlice({
         notificationItems: updateNotificationItems
       }
     },
-    requestPostCommentNotification: (state, action: PayloadAction<RequestPostCommnetNotificationType>) => {
+    requestPostEmojiNotification: (state) => {
       return state
     },
   }
@@ -102,7 +102,7 @@ export const {
   failureFetchNotifications,
   requestFetchNotReadNotificationNumber,
   successFetchNotReadNotificationNumber,
-  requestPostCommentNotification,
+  requestPostEmojiNotification,
   requestReadNotification,
   successReadOfficialNotification,
   successReadCommentNotification

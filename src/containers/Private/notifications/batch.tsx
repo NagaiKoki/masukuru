@@ -20,7 +20,7 @@ const NotificationBatchIcon = (props: NotificationProps) => {
 
   return (
     <BatchCointainer>
-      <BatchText>{unReadSize}</BatchText>
+      <BatchText />
     </BatchCointainer> 
   )
 }
@@ -28,10 +28,10 @@ const NotificationBatchIcon = (props: NotificationProps) => {
 const BatchCointainer = styled.View`
   position: absolute;
   z-index: 1000;
-  top: 3%;
-  right: 30px;
-  min-width: 20px;
-  height: 20px;
+  top: 13%;
+  right: 38px;
+  min-width: 10px;
+  height: 10px;
   border-radius: 60px;
   align-items: center;
   justify-content: center;

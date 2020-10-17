@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { COLORS } from '../../../constants/Styles'
 // import apis
 import { requestFetchRecordItem } from '../../../apis/Records'
-import { requestReadCommentNotification } from '../../../apis/Notifications'
 // import types
 import { NotificationType } from '../../../types/Notification'
 import { UserType } from '../../../types/User'
@@ -38,6 +37,9 @@ const RecordNotificationItem = (props: Props) => {
       case 'reply': {
         return 'さんからあなた宛にコメントが届きました！'
       }
+      case 'emoji': {
+        return 'さんがあなたの記録にリアクションしました！'
+      }
       default: {
         ''
       }
@@ -65,7 +67,7 @@ const Wrapper = styled.TouchableOpacity<{ isRead: boolean }>`
   align-items: center;
   border-bottom-color: ${COLORS.BASE_BORDER_COLOR};
   border-bottom-width: 0.5px;
-  padding: 15px;
+  padding: 18px;
   background: ${props => props.isRead ? COLORS.BASE_WHITE : COLORS.MUSCLEW_COLOR2};
 `
 
