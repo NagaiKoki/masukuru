@@ -27,6 +27,7 @@ export interface RecordState {
   selectedEmojiId: string
   emojiReactions: EmojiReactionType[]
   postedEmojiUsers: UserType[]
+  commentKeyword: string
 }
 
 export type RecordItemType = {

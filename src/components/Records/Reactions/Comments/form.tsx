@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import * as Device from 'expo-device'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { Keyboard, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -12,9 +11,13 @@ import UserImage from '../../../Image/userImage'
 import { ResponseRecordType, RequestPostRecordComment } from '../../../../types/Record'
 import { NotificationEventType } from '../../../../types/Notification'
 import { UserType } from '../../../../types/User'
+import { RootState } from '../../../../reducers'
+// import slices
+import { changeCommnetKeyword } from '../../../../slice/record'
 // import utils
 import { requestAppReview } from '../../../../utilities/requestReview'
 import { hapticFeedBack } from '../../../../utilities/Haptic'
+import { lazyFunction } from '../../../../utilities/Function/lazyFunction'
 // import config
 import Analytics from '../../../../config/amplitude'
 // import css
@@ -50,9 +53,10 @@ const RecordComment = (props: RecordCommentProps) => {
   } = props
 
   const { id, uid } = record
-  const [text, setText] = useState('')
   const [mentionTargets, setMentionTargets] = useState<MentionTarget[]>([{ id: '', target: '' }])
   const { currentGroupUsers, requestFetchCurrentGroupUsers } = useGroupSelector()
+  const commentKeyword = useSelector<RootState, string>(state => state.records.commentKeyword)
+  const [text, setText] = useState(commentKeyword)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -65,8 +69,13 @@ const RecordComment = (props: RecordCommentProps) => {
     return <></>
   }
 
+  const handleDispatchCommentKeyword = (value: string) => {
+    dispatch(changeCommnetKeyword(value))
+  }
+
   const handleOnChangeText = (value: string) => {
     setText(value)
+    lazyFunction(handleDispatchCommentKeyword, 500)(value)
   }
 
   const handleRequestPostComment = async () => {

@@ -48,7 +48,8 @@ const initialState: RecordState = {
   selectedEmojiIndex: 0,
   selectedEmojiId: '',
   emojiReactions: [],
-  postedEmojiUsers: []
+  postedEmojiUsers: [],
+  commentKeyword: ''
 }
 
 const recordSlice = createSlice({
@@ -461,7 +462,13 @@ const recordSlice = createSlice({
       return {
         ...state
       }
-    }
+    },
+    changeCommnetKeyword: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        commentKeyword: action.payload
+      }
+    },
   }
 })
 
@@ -515,6 +522,7 @@ export const {
   requestDeleteEmojiReaction,
   successDeleteEmojiReaction,
   failureDeleteEmojiReaction,
+  changeCommnetKeyword,
 } = recordSlice.actions
 
 export default recordSlice
