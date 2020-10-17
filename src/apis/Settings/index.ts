@@ -12,7 +12,7 @@ export const requestFetchSettings = async () => {
   try {
     await userRef.then(snap => {
       const data = snap.data() as UserType
-      userSettingObj = { isCommentPush: data.isCommentPush, isRecordPostPush: data.isRecordPostPush }
+      userSettingObj = { isCommentPush: data.isCommentPush, isRecordPostPush: data.isRecordPostPush, isEmojiReactionPush: data.isEmojiReactionPush }
     })
     // firestoreの初期値は値がない場合undefiendになるので、マウント時にundefiendはtrueに変換する
     if (userSettingObj.isCommentPush === undefined) {
@@ -23,6 +23,10 @@ export const requestFetchSettings = async () => {
       await requestPutPushNotificationSetting('recordPost')
       userSettingObj = { ...userSettingObj, isRecordPostPush: true }
     }
+    if (userSettingObj.isEmojiReactionPush === undefined) {
+      await requestPutPushNotificationSetting('emoji')
+      userSettingObj = { ...userSettingObj, isEmojiReactionPush: true }
+    }
     return { payload: userSettingObj }
   } catch (error) {
     return { error: "error" }
@@ -32,8 +36,7 @@ export const requestFetchSettings = async () => {
 export const requestPutPushNotificationSetting = async (type: SettingPushNotificationType) => {
   const currentUserId = firebase.auth().currentUser.uid
   const userRef = db.collection('users').doc(currentUserId).get()
-  const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', currentUserId).get()
-
+  
   try {
     await userRef.then(snap => {
       const data = snap.data() as UserType
@@ -43,6 +46,9 @@ export const requestPutPushNotificationSetting = async (type: SettingPushNotific
         }
         case 'recordPost': {
           snap.ref.update({ isRecordPostPush: !data.isRecordPostPush })
+        }
+        case 'emoji': {
+          snap.ref.update({ isEmojiReactionPush: !data.isEmojiReactionPush })
         }
       }
     })

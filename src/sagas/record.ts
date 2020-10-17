@@ -38,7 +38,7 @@ import {
 import { requestPutSuggestRecord } from '../apis/Search/Records/suggest'
 import { requestPostCommentNotification as requestPostCommentNotf } from '../apis/Notifications'
 import { requestSendRecordPostNotification } from '../apis/Push'
-import { requestFetchUsers } from '../apis/Users'
+import { requestFetchUser, requestFetchUsers } from '../apis/Users'
 import { requestSendPushNotification } from '../apis/Push'
 // import actions
 import {
@@ -364,10 +364,12 @@ function* runRequestPostEmojiNotification() {
   const { selectedEmojiRecordId }: ReturnType<typeof recordSelector> = yield select(recordSelector)
   const { payload }: ResponseType<ResponseRecordType> = yield call(requestFetchRecordItem, selectedEmojiRecordId)
   const responseObj: ResponseType<EmojiReactionType> = yield call(requestFetchGetEmojiReaction, selectedEmojiRecordId)
-  const reactionedEmojies = responseObj.payload
   const { uid, displayName } = firebase.auth().currentUser
-  // すでに同じ記録に絵文字リアクションしていれば、送らない
-  if (payload.uid === uid || reactionedEmojies && !!reactionedEmojies.emojiReactions.filter(reaction => reaction.uid === uid)[1]) {
+  const { user }: { user?: UserType } = yield call(requestFetchUser, payload.uid)
+  const { isEmojiReactionPush } = user
+  const reactionedEmojies = responseObj.payload
+  // すでに同じ記録に絵文字リアクションしていれば、送らない || 通知を切っている場合 || 自分自身の場合
+  if ((typeof isEmojiReactionPush === 'boolean' && !isEmojiReactionPush) || payload.uid === uid || reactionedEmojies && !!reactionedEmojies.emojiReactions.filter(reaction => reaction.uid === uid)[1]) {
     return
   } else {
     const { success }: { success?: string } = yield call(

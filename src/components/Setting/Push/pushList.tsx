@@ -19,6 +19,7 @@ import { hapticFeedBack } from '../../../utilities/Haptic'
 const SettingPushList = () => {
   const [toggleComment, setToggleComment] = useState(true)
   const [toggleRecordPost, setToggleRecordPost] = useState(true)
+  const [toggleEmojiReaction, setToggleEmojiReaction] = useState(true)
   const [isMounted, setIsMounted] = useState(false)
 
   useFocusEffect(
@@ -29,6 +30,7 @@ const SettingPushList = () => {
         if (payload && !error) {
           setToggleComment(!!payload.isCommentPush)
           setToggleRecordPost(!!payload.isRecordPostPush)
+          setToggleEmojiReaction(!!payload.isEmojiReactionPush)
         }
       }
       fetchPushSetting()
@@ -49,6 +51,10 @@ const SettingPushList = () => {
       }
       case 'recordPost': {
         setToggleRecordPost(!toggle)
+        return await requestPutPushNotificationSetting(type)
+      }
+      case 'emoji' : {
+        setToggleEmojiReaction(!toggle)
         return await requestPutPushNotificationSetting(type)
       }
     }
@@ -76,6 +82,12 @@ const SettingPushList = () => {
         title="グループメンバーの投稿通知"
         icon={renderToggleIcon(toggleRecordPost)}
         handleOnClick={ () => handleOnToggle('recordPost', toggleRecordPost) }
+      />
+
+      <Item
+        title="絵文字リアクションの通知"
+        icon={renderToggleIcon(toggleEmojiReaction)}
+        handleOnClick={ () => handleOnToggle('emoji', toggleEmojiReaction) }
       />
     </PushListContainer>
   )
