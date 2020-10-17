@@ -15,7 +15,6 @@ import { RootState } from '../../../../reducers'
 // import slices
 import { changeCommnetKeyword, setMentionTargets } from '../../../../slice/record'
 // import utils
-import { requestAppReview } from '../../../../utilities/requestReview'
 import { hapticFeedBack } from '../../../../utilities/Haptic'
 import { lazyFunction } from '../../../../utilities/Function/lazyFunction'
 // import config
@@ -56,7 +55,6 @@ const RecordComment = (props: RecordCommentProps) => {
   const { currentGroupUsers, requestFetchCurrentGroupUsers } = useGroupSelector()
   const commentKeyword = useSelector<RootState, string>(state => state.records.commentKeyword)
   const mentionTargets = useSelector<RootState, MentionTargetType[]>(state => state.records.mentionTargets)
-  const [text, setText] = useState(commentKeyword)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -74,20 +72,18 @@ const RecordComment = (props: RecordCommentProps) => {
   }
 
   const handleOnChangeText = (value: string) => {
-    setText(value)
-    lazyFunction(handleDispatchCommentKeyword, 500)(value)
+    handleDispatchCommentKeyword(value)
   }
 
   const handleRequestPostComment = async () => {
-    if (!text) return
-    setText('')
+    if (!commentKeyword) return
     hapticFeedBack('medium')
     Keyboard.dismiss()
-    Analytics.track('commented', { text: text })
-    const content = `${currentUser.name}さん: ${text}`
+    Analytics.track('commented', { text: commentKeyword })
+    const content = `${currentUser.name}さん: ${commentKeyword}`
     const targetIds = mentionTargets.map(target => target.id)
     const commentType = !mentionTargets.filter(t => t.id).length ? 'reply' : 'comment'
-    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text, mentionIds: targetIds, type: commentType }))
+    dispatch(requestPostRecordComment({ recordId: id, recordUserId: uid, notificationGroupId, text: commentKeyword, mentionIds: targetIds, type: commentType }))
     if (Platform.OS === 'ios' && requestPostPushNotification) {
       if (!mentionTargets.filter(t => t.id).length) {
         await requestSendPushNotification(uid, `⭐ ${currentUser.name}さんがあなたの記録にコメントしました！`, content)
@@ -98,8 +94,7 @@ const RecordComment = (props: RecordCommentProps) => {
         })
       }
     }
-    setText('')
-    await requestAppReview()
+    dispatch(changeCommnetKeyword(''))
   }
 
   const handleAddMentionTargetIds = (target: MentionTarget) => {
@@ -107,12 +102,12 @@ const RecordComment = (props: RecordCommentProps) => {
     const newMap = new Map(updatedTargets.map(target => [target.id, target]))
     const newArray = Array.from(newMap.values())
     const removedEmptyIds = newArray.filter(target => !!target.id)
-    dispatch(setMentionTargets(removedEmptyIds))
+    dispatch(setMentionTargets({ mentionTargets: removedEmptyIds, type: 'comment' }))
   }
 
   const handleRemoveMentionTargetIds = (id: string) => {
     const updatedTargets = mentionTargets.filter(target => target.id !== id)
-    dispatch(setMentionTargets(updatedTargets))
+    dispatch(setMentionTargets({ mentionTargets: updatedTargets, type: 'comment' }))
   }
 
   const groupUserNames = currentGroupUsers.map(user => {
@@ -134,7 +129,7 @@ const RecordComment = (props: RecordCommentProps) => {
       <CommentFormWrapper>
         {renderUserImage}
         <MentionEditor 
-          keyword={text}
+          keyword={commentKeyword}
           targets={mentionTargets}
           mentionItems={groupUserNames}
           placeholder="コメントを入力する..."
@@ -145,8 +140,8 @@ const RecordComment = (props: RecordCommentProps) => {
         />
         <SubmitBtnWrapper 
           onPress={() => handleRequestPostComment()}
-          commentPresent={!!text}
-          disabled={!text}
+          commentPresent={!!commentKeyword}
+          disabled={!commentKeyword}
         >
           <Icon name="paper-plane" size={25} style={{ color: COLORS.BASE_MUSCLEW }} />
         </SubmitBtnWrapper>
@@ -170,19 +165,6 @@ const CommentFormWrapper = styled.View`
 const UserImageWrapper = styled.View`
   width: 10%;
   margin-left: 10px;
-`
-
-const CommentForm = styled.TextInput`
-  background-color: ${COLORS.FORM_BACKGROUND};
-  width: 75%;
-  min-height: 40px;
-  max-height: 150px;
-  align-self: center;
-  font-size: 17px;
-  border-radius: 30px;
-  padding: 10px 15px;
-  margin: 10px 5px;
-  color: ${COLORS.BASE_BLACK};
 `
 
 const SubmitBtnWrapper = styled.TouchableOpacity<{ commentPresent: boolean }>`

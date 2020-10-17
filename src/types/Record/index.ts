@@ -75,6 +75,11 @@ export type MentionTargetType = {
   target: string
 }
 
+export type SetMentionTargetType = {
+  mentionTargets: MentionTargetType[]
+  type: 'reply' | 'comment'
+}
+
 export type ResponseEmojiReactionType = {
   id: string
   recordId: string

@@ -17,7 +17,7 @@ import {
   ResponseEmojiReactionType,
   TogglePostedUserEmojiModal,
   ResponseCreateRecordType,
-  MentionTargetType
+  SetMentionTargetType
 } from '../types/Record'
 import { UserType } from '../types/User'
 // import constants
@@ -471,10 +471,12 @@ const recordSlice = createSlice({
         commentKeyword: action.payload
       }
     },
-    setMentionTargets: (state, action: PayloadAction<MentionTargetType[]>) => {
+    setMentionTargets: (state, action: PayloadAction<SetMentionTargetType>) => {
+      const { mentionTargets, type } = action.payload
       return {
         ...state,
-        mentionTargets: action.payload
+        mentionTargets: mentionTargets,
+        commentKeyword: type === 'reply' ? '@' + mentionTargets[0].target + ' ' : state.commentKeyword
       }
     }
   }
