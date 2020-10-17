@@ -13,7 +13,7 @@ const DefaultAddButton = (props: Props) => {
 
   return (
     <Button onPress={onPress}>
-      <Icon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW, marginRight: 10 }} />
+      <Icon name="plus" size={25} style={{ color: COLORS.BASE_MUSCLEW, marginRight: 6 }} />
       <ButtonText>トレーニングを追加する</ButtonText>
     </Button>
   )
@@ -29,7 +29,7 @@ const Button = styled.TouchableOpacity`
 
 const ButtonText = styled.Text`
   color: ${COLORS.BASE_MUSCLEW};
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
 `
 

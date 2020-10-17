@@ -75,14 +75,20 @@ const RecordModalScreen = ({ navigation }) => {
   return (
     <RecordModalContainer >
       <Wrapper>
-        <TitleLabel>日付</TitleLabel>
+        <TitleWrapper>
+          <TitleSquare />
+          <TitleLabel>日付</TitleLabel>
+        </TitleWrapper>
         <DatePicker 
           date={trainingDate}
           handleOnChangeDate={handleOnChangeDate}
         />
       </Wrapper>
       <Wrapper>
-      <TitleLabel>トレーニング</TitleLabel>
+        <TitleWrapper>
+          <TitleSquare />
+          <TitleLabel>トレーニング</TitleLabel>
+        </TitleWrapper>
         <AddedList 
           recordItems={recordItems}
           onNavigate={handleUpdateRecordItme}
@@ -112,13 +118,26 @@ const HeaderNextTitle = styled.Text`
 `
 
 const Wrapper = styled.View`
-  padding: 15px 0;
+  padding: 20px 0;
+`
+
+const TitleWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px 10px 0;
+`
+
+const TitleSquare = styled.View`
+  border-radius: 3px;
+  margin-right: 7px;
+  width: 15px;
+  height: 15px;
+  background: ${COLORS.BASE_MUSCLEW};
 `
 
 const TitleLabel = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  padding: 0 20px 10px 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 `
 
