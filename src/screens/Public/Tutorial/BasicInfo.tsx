@@ -25,7 +25,7 @@ const TutorialBasicInfo = ({ navigation }) => {
     setUserAge(value)
   }
 
-  const disabled = !gender || !userAge
+  const disabled = !gender
 
   const handleOnSubmit = () => {
     requestUpdateUser({ ...currentUser, sex: gender, age: String(userAge) })
@@ -41,14 +41,19 @@ const TutorialBasicInfo = ({ navigation }) => {
             stepCount={2}
           />
           <GenderWrapper>
-            <FormLabel>性別</FormLabel>
+            <LabelWrapper>
+              <FormLabel>性別</FormLabel>
+            </LabelWrapper>
             <SelectGenderBtns
               selectItem={gender}
               onClick={handleOnSelectGender}
             />
           </GenderWrapper>
           <AgeWrapper>
-            <FormLabel>年齢</FormLabel>
+            <LabelWrapper>
+              <FormLabel>年齢</FormLabel>
+              <SubLabel>(任意)</SubLabel>
+            </LabelWrapper>
             <FormWrapper>
               <NumberForm 
                 placeholder="20"
@@ -101,11 +106,22 @@ const FormWrapper = styled.View`
   width: 70px;
 `
 
-const FormLabel = styled.Text`
+const LabelWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
   margin-bottom: 5px;
+`
+
+const FormLabel = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 14px;
   font-weight: bold;
+`
+
+const SubLabel = styled.Text`
+  padding-left: 10px;
+  color: ${COLORS.SUB_BLACK};
+  font-size: 12px;
 `
 
 const UnitLabel = styled.Text`
