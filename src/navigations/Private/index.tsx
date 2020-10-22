@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 // import constants
 import { COLORS } from '../../constants/Styles';
 // import containers
@@ -14,6 +14,8 @@ import NotificationNavigator from './Notification';
 import MyPageNavigator from './MyPage';
 // import actions
 import { requestFetchNotReadNotificationNumber } from '../../slice/notification'
+// import utils
+import { lessThanIphoneEightHeight } from '../../utilities/Device'
 
 const Tab = createBottomTabNavigator();
 const MainTabNavigator = () => {
@@ -32,33 +34,34 @@ const MainTabNavigator = () => {
         tabBarIcon: ({focused, color}) => {
           let iconName: string;
           if (route.name === 'ホーム') {
-            iconName = 'people'
+            iconName = 'home'
           } else if (route.name === 'MyPage') {
-            iconName = 'user'
+            iconName = 'person'
           } else if (route.name === 'きろく') {
-            iconName = 'chart'
+            iconName = 'equalizer'
           }
           focused
           ? color = `${COLORS.BASE_MUSCLEW}`
           : color = `${COLORS.SUB_BLACK}`
-          return <Icon name={iconName} size={25} color={color} />;
-        }
+          return <Icon name={iconName} size={27} color={color} />;
+        },
+        lazy: true
       })}
       tabBarOptions={{
         activeTintColor: `${COLORS.BASE_MUSCLEW}`,
         inactiveTintColor: `${COLORS.SUB_BLACK}`,
         style: {
-          height: "8%",
-          paddingTop: 6,
-          paddingBottom: -2
-        }
+          height: lessThanIphoneEightHeight() ? 65 : 77,
+          paddingTop: 10,
+          paddingBottom: lessThanIphoneEightHeight() ? 10 : 22,
+        },
       }}
     >
       <Tab.Screen 
         name='ホーム' 
         component={HomeNavigator}
         options={{
-          tabBarLabel: '' 
+          tabBarLabel: 'ホーム' 
         }}
       />
 
@@ -66,7 +69,7 @@ const MainTabNavigator = () => {
         name='きろく' 
         component={ChartNavigator}
         options={{
-          tabBarLabel: '' 
+          tabBarLabel: 'きろく' 
         }}
       />
 
@@ -74,13 +77,13 @@ const MainTabNavigator = () => {
         name='おしらせ' 
         component={NotificationNavigator}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'お知らせ',
           tabBarIcon: ({ focused }) => {
             const color = focused ?  COLORS.BASE_MUSCLEW : COLORS.SUB_BLACK
             return (
               <React.Fragment>
                 <NotificationBatchIcon />
-                <Icon name='bell' size={23} color={color} />
+                <Icon name='notifications' size={23} color={color} />
               </React.Fragment>
               )
             }
@@ -91,7 +94,7 @@ const MainTabNavigator = () => {
         name='MyPage' 
         component={MyPageNavigator} 
         options={{
-          tabBarLabel: '' 
+          tabBarLabel: 'マイページ' 
         }}
       />
     </Tab.Navigator>
