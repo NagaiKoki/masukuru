@@ -68,6 +68,10 @@ const RecordModalScreen = ({ navigation }) => {
     navigation.navigate('trainingRecordModal', routeProps)
   }
 
+  const handleHistoryNavigate = () => {
+    navigation.navigate('recordHistory')
+  }
+
   const handleOnChangeDate = (date: Date) => {
     dispatch(onChangeRecordDate(date))
   }
@@ -96,6 +100,11 @@ const RecordModalScreen = ({ navigation }) => {
         />
         <DefaultAddButton onPress={handleNavigateAddForm} />
       </Wrapper>
+      <HistoryWrapper>
+        <HistoryButton onPress={handleHistoryNavigate}>
+          <HistoryText>過去の履歴から追加する</HistoryText>
+        </HistoryButton>
+      </HistoryWrapper>
     </RecordModalContainer>
   )
 }
@@ -140,4 +149,17 @@ const TitleLabel = styled.Text`
   font-size: 20px;
   font-weight: bold;
 `
+
+const HistoryWrapper = styled.View`
+  border-top-width: 1;
+  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  margin-top: 20px;
+  padding-top: 10px;
+`
+
+const HistoryButton = styled.TouchableOpacity`
+  
+`
+
+const HistoryText = styled.Text``
 
