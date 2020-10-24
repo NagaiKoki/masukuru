@@ -11,7 +11,7 @@ const RecordHistoryScreen = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
-        headerTitle: '履歴から追加する',
+        headerTitle: 'トレーニング履歴',
         headerStyle: {
           backgroundColor: COLORS.BASE_MUSCLEW
         },
@@ -27,7 +27,7 @@ const RecordHistoryScreen = ({ navigation }) => {
 
   return (
     <Container>
-
+      
     </Container>
   )
 }
