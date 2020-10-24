@@ -27,14 +27,15 @@ import { useUiSelector } from '../../../selectors/ui'
 
 interface RecordItemProps {
   record: ResponseRecordType
+  index: number
   navigation?: any
   isShowPage?: boolean
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record, isShowPage, navigation } = props
+  const { record, index, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
-  const { imageModalOpen, toggleImageModal } = useUiSelector()
+  const { toggleImageModal } = useUiSelector()
   const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)

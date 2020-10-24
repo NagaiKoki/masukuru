@@ -192,17 +192,20 @@ const recordSlice = createSlice({
     },
     successFetchRecords: (state, action: PayloadAction<SuccessFetchRecordType>) => {
       const { payload, uid, groupId } = action.payload
+      const newPayload = [].concat(payload)
+      newPayload.splice(1, 0, 'admob')
+
 
       if (uid) {
         return {
           ...state,
-          userRecords: payload,
+          userRecords: newPayload,
           isLoading: false
         }
       } else if (groupId) {
         return {
           ...state,
-          recordData: payload,
+          recordData: newPayload,
           isLoading: false
         }
       } else {
