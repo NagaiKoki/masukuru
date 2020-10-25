@@ -107,7 +107,7 @@ const RecordItem = (props: RecordItemProps) => {
 
   return (
       <RecordItemContainer>
-        <RecordItenClickable
+        <RecordItemClickable
           onPress={() => isShowPage ? {} : handleOnNavigate() }
           activeOpacity={ isShowPage ? 1 : 0.8 }
         >
@@ -137,7 +137,7 @@ const RecordItem = (props: RecordItemProps) => {
           hasWord={!!word}
         />
         {renderRecordData}
-      </RecordItenClickable>
+      </RecordItemClickable>
       <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
       <SettingModal 
         recordId={record.id}
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const RecordItenClickable = styled.TouchableOpacity``
+const RecordItemClickable = styled.TouchableOpacity``
 
 const RecordItemContainer = styled.View`
   align-self: center;
