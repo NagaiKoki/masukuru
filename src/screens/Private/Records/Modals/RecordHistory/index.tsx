@@ -18,7 +18,6 @@ const RecordHistoryScreen = ({ navigation }) => {
   const { addRecordItemsFromHistory } = useSelectRecordActions()
 
   const handleSubmit = () => {
-    hapticFeedBack('medium')
     addRecordItemsFromHistory(selectedRecords)
     navigation.goBack()
   }
@@ -41,6 +40,7 @@ const RecordHistoryScreen = ({ navigation }) => {
   ))
 
   const handleSelectedRecords = (record: RecordItemType) => {
+    hapticFeedBack('medium')
     const { id } = record
     if (selectedRecords.some(record => record.id === id)) {
       const records = selectedRecords.filter(record => record.id !== id)
