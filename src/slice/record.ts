@@ -195,7 +195,6 @@ const recordSlice = createSlice({
       const newPayload = [].concat(payload)
       newPayload.splice(1, 0, 'admob')
 
-
       if (uid) {
         return {
           ...state,
@@ -481,6 +480,13 @@ const recordSlice = createSlice({
         mentionTargets: mentionTargets,
         commentKeyword: type === 'reply' ? '@' + mentionTargets[0].target + ' ' : state.commentKeyword
       }
+    },
+    addRecordItemsFromHistory: (state, action: PayloadAction<RecordItemType[]>) => {
+      const recordItems = action.payload
+      return {
+        ...state,
+        recordItems
+      }
     }
   }
 })
@@ -536,7 +542,8 @@ export const {
   successDeleteEmojiReaction,
   failureDeleteEmojiReaction,
   changeCommnetKeyword,
-  setMentionTargets
+  setMentionTargets,
+  addRecordItemsFromHistory
 } = recordSlice.actions
 
 export default recordSlice

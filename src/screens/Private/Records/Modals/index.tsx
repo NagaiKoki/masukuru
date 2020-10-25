@@ -22,7 +22,7 @@ export type RecordNavigationType = {
 const RecordModalScreen = ({ navigation }) => {
   const dispatch = useDispatch()
   const { recordItems, trainingDate } = recordSelector()
-
+  
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({

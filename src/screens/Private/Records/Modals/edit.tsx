@@ -43,7 +43,7 @@ const RecordModalScreen = ({ navigation, route }) => {
   }, [])
 
   if (isLoading) {
-    return <React.Fragment />
+    return <></>
   }
 
   // 一言画面へ遷移
@@ -89,7 +89,7 @@ const RecordModalScreen = ({ navigation, route }) => {
   }
 
   return (
-    <RecordModalContainer >
+    <RecordModalContainer>
       <Wrapper>
         <TitleWrapper>
           <TitleSquare />
