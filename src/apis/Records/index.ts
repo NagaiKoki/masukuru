@@ -56,19 +56,19 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
 }
 
 // 記録取得
-export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: string) => {
+export const requestFetchRecord = async (uid?: string, startAt?: any, groupId?: string, size: number = 5) => {
   const records = []
   let ref;
 
   try {
     if (uid && startAt) {
-      ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
+      ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(size)
     } else if (uid && !startAt) {
-      ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").limit(5)
+      ref = db.collection('records').where('uid', '==', uid).orderBy("createdAt", "desc").limit(size)
     } else if (groupId && startAt) {
-      ref = db.collection('records').where('groupIds', 'array-contains', groupId).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(5)
+      ref = db.collection('records').where('groupIds', 'array-contains', groupId).orderBy("createdAt", "desc").startAfter(startAt.createdAt).limit(size)
     } else if (groupId && !startAt) {
-      ref = db.collection('records').where('groupIds', 'array-contains', groupId).orderBy("createdAt", "desc").limit(5)
+      ref = db.collection('records').where('groupIds', 'array-contains', groupId).orderBy("createdAt", "desc").limit(size)
     }
     await ref.get().then(snap => {
       snap.forEach(doc => {

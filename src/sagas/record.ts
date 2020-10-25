@@ -130,13 +130,14 @@ function* handleRequestSubmitRecords() {
 
 // 記録の取得
 function* runRequestFetchRecords(action: PayloadAction<RequestFetchRecordType>) {
-  const { uid, groupId } = action.payload
+  const { uid, groupId, size } = action.payload
   const startAt = null
   const { payload, error } : ResponseType<ResponseRecordType[]> = yield call(
     requestFetchRecord,
     uid,
     startAt,
-    groupId
+    groupId,
+    size
   )
 
   if (payload && !error) {

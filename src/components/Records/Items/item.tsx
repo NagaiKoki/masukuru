@@ -82,24 +82,30 @@ const RecordItem = (props: RecordItemProps) => {
 
   if (isUserLoading || isCommentLoading) {
     return (
-      <React.Fragment/>
+      <></>
     )
   }
 
   // 記録
-  const renderRecordData = records.map((record: RecordItemType, i: number) => {
-    return (
-      <RecordDataWrapper key={i}>
-        <RecordNameWrapper>
-          <RecordIconBlcok />
-          <RecordDataName>{record.name}</RecordDataName>
-        </RecordNameWrapper>
-        <UnitDataWrapper>
-          <RecordData record={record} />
-        </UnitDataWrapper>
-      </RecordDataWrapper>
-    )
-  })
+  const renderRecordData = () => {
+    if (!records) {
+      return <></>
+    } else {
+      const recordData = records.map((record: RecordItemType, i: number) => (
+          <RecordDataWrapper key={i}>
+            <RecordNameWrapper>
+              <RecordIconBlcok />
+              <RecordDataName>{record.name}</RecordDataName>
+            </RecordNameWrapper>
+            <UnitDataWrapper>
+              <RecordData record={record} />
+            </UnitDataWrapper>
+          </RecordDataWrapper>
+        )
+      )
+      return recordData
+    }
+  }
 
   const renderTweet =
     <Hyperlink linkDefault={true} linkStyle={{ color: COLORS.LINK_COLOR, fontSize: 16 }}>
@@ -137,7 +143,7 @@ const RecordItem = (props: RecordItemProps) => {
           createdAt={record.createdAt}
           hasWord={!!word}
         />
-        {renderRecordData}
+        {renderRecordData()}
       </RecordItenClickable>
       <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
       <SettingModal 
