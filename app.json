@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.4.8",
+    "version": "1.4.9",
     "orientation": "portrait",
     "icon": "./src/assets/logo.png",
     "splash": {
