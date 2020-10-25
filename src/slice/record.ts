@@ -192,17 +192,19 @@ const recordSlice = createSlice({
     },
     successFetchRecords: (state, action: PayloadAction<SuccessFetchRecordType>) => {
       const { payload, uid, groupId } = action.payload
+      const newPayload = [].concat(payload)
+      newPayload.splice(1, 0, 'admob')
 
       if (uid) {
         return {
           ...state,
-          userRecords: payload,
+          userRecords: newPayload,
           isLoading: false
         }
       } else if (groupId) {
         return {
           ...state,
-          recordData: payload,
+          recordData: newPayload,
           isLoading: false
         }
       } else {
@@ -478,6 +480,23 @@ const recordSlice = createSlice({
         mentionTargets: mentionTargets,
         commentKeyword: type === 'reply' ? '@' + mentionTargets[0].target + ' ' : state.commentKeyword
       }
+    },
+    addRecordItemsFromHistory: (state, action: PayloadAction<RecordItemType[]>) => {
+      const recordItems = action.payload
+      const items: RecordItemType[] = [].concat(recordItems)      
+      const updateRecordItem = items.map((item, i) => {
+        const obj: RecordItemType = {
+          ...item,
+          id: parseInt(`${new Date().getTime()}${i}, 10`)
+        }
+        return obj
+      })
+
+      const records = [...state.recordItems, ...updateRecordItem]
+      return {
+        ...state,
+        recordItems: records
+      }
     }
   }
 })
@@ -533,7 +552,8 @@ export const {
   successDeleteEmojiReaction,
   failureDeleteEmojiReaction,
   changeCommnetKeyword,
-  setMentionTargets
+  setMentionTargets,
+  addRecordItemsFromHistory
 } = recordSlice.actions
 
 export default recordSlice

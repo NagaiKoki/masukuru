@@ -185,7 +185,7 @@ const groupSlice = createSlice({
         ...state,
         error: action.payload
       }
-    },
+    }
   }
 })
 

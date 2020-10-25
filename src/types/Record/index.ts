@@ -113,6 +113,7 @@ export type RequestSubmitRecords = {
 export type RequestFetchRecordType = {
   uid: string
   groupId: string
+  size?: number
 }
 
 export type RequestNextRecords = {
