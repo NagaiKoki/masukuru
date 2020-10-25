@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useFocusEffect } from '@react-navigation/native';
 // import components
 import HeaderButton from '../../../../../common/Button/HeaderButton'
+import RecordHistoryList from '../../../../../components/Records/Histories/List'
 // import constants
 import { COLORS } from '../../../../../constants/Styles'
 
@@ -27,7 +28,7 @@ const RecordHistoryScreen = ({ navigation }) => {
 
   return (
     <Container>
-      
+      <RecordHistoryList />
     </Container>
   )
 }

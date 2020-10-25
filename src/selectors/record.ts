@@ -1,7 +1,10 @@
-import { useSelector, shallowEqual } from 'react-redux'
+import { useCallback } from 'react'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 // import types
-import { RecordState } from '../types/Record'
+import { RecordState, ResponseRecordType, RequestFetchRecordType } from '../types/Record'
 import { RootState } from '../reducers'
+// import slice
+import { requestFetchRecords } from '../slice/record'
 
 const recordSelector = (): RecordState => {
   return useSelector((state: RootState) => state.records, shallowEqual)
@@ -11,6 +14,22 @@ export const selectEmojiReactions = (recordId: string) => {
   const { emojiReactions } = recordSelector()
   const reactions = emojiReactions.filter(reaction => reaction.recordId === recordId)
   return reactions[0]
+}
+
+export const useSelectRecordActions = () => {
+  const dispatch = useDispatch()
+  const _requestFetchRecords = useCallback((arg: RequestFetchRecordType) => dispatch(requestFetchRecords(arg)), [dispatch])
+  return {
+    requestFetchRecords: _requestFetchRecords
+  }
+}
+
+export const useUserRecords = () => {
+  return useSelector<RootState, ResponseRecordType[]>(state => state.records.userRecords)
+}
+
+export const useRecordIsLoading = () => {
+  return useSelector<RootState, boolean>(state => state.records.isLoading)
 }
 
 export default recordSelector
