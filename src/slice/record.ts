@@ -483,9 +483,17 @@ const recordSlice = createSlice({
     },
     addRecordItemsFromHistory: (state, action: PayloadAction<RecordItemType[]>) => {
       const recordItems = action.payload
+      const items: RecordItemType[] = [].concat(recordItems)      
+      const updateRecordItem = items.map((item, i) => {
+        const obj: RecordItemType = {
+          ...item,
+          id: parseInt(`${new Date().getTime()}${i}, 10`)
+        }
+        return obj
+      })
       return {
         ...state,
-        recordItems
+        recordItems: updateRecordItem
       }
     }
   }
