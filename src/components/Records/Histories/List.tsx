@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { ScrollView } from 'react-native';
 // import types
-import { RecordItemType, ResponseRecordType } from '../../../types/Record'
+import { RecordItemType } from '../../../types/Record'
 // import selectors
 import { useUserRecords, useRecordIsLoading, useSelectRecordActions } from '../../../selectors/record'
 // import components

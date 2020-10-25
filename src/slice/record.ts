@@ -491,9 +491,11 @@ const recordSlice = createSlice({
         }
         return obj
       })
+
+      const records = [...state.recordItems, ...updateRecordItem]
       return {
         ...state,
-        recordItems: updateRecordItem
+        recordItems: records
       }
     }
   }

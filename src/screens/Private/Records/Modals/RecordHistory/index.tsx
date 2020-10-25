@@ -10,12 +10,15 @@ import RecordHistoryList from '../../../../../components/Records/Histories/List'
 import { COLORS } from '../../../../../constants/Styles'
 // import selectors
 import { useSelectRecordActions } from '../../../../../selectors/record'
+// import utils
+import { hapticFeedBack } from '../../../../../utilities/Haptic'
 
 const RecordHistoryScreen = ({ navigation }) => {
   const [selectedRecords, setSelectedRecords] = useState<RecordItemType[]>([])
   const { addRecordItemsFromHistory } = useSelectRecordActions()
 
   const handleSubmit = () => {
+    hapticFeedBack('medium')
     addRecordItemsFromHistory(selectedRecords)
     navigation.goBack()
   }
