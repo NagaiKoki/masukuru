@@ -81,6 +81,9 @@
       },
       "googleAds": {
         "nativeAds": "ca-app-pub-5276826909376331/5167589321"
+      },
+      "bugsnag": {
+        "apiKey": "35668f7fe64022b2e73434d49d0d0ff3"
       }
     },
     "description": "",
