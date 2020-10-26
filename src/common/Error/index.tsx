@@ -15,7 +15,7 @@ export default ErrorBoundary
 
 const Container = styled.View`
   flex: 1;
-  padding: 50px 20px;
+  padding: 100px 20px;
   background: ${COLORS.BASE_WHITE};
 `
 
