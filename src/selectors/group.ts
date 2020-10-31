@@ -26,6 +26,7 @@ export const useGroupSelector = () => {
     belongGroups,
     isLoading,
     isJoining,
+    isSettingGroup,
     error
   } = useSelector<RootState, GroupState>(state => state.groups)
 
@@ -46,6 +47,7 @@ export const useGroupSelector = () => {
     belongGroups,
     isGroupLoading: isLoading,
     isJoining,
+    isSettingGroup,
     error,
     requestCreateGroup: _requestCreateGroup,
     requestJoinGroup: _requestJoinGroup,

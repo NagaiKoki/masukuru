@@ -103,6 +103,8 @@ function* runRequestFetchCurrentGroupId() {
 
   if (payload && !error) {
     yield put(successSetCurrentGroupId(payload))
+  } else if (payload === '' || error) {
+    yield put(requestFixNoCurrentGroup())
   } else if (error) {
     yield put(failureSetCurrentGroupId(error))
   }

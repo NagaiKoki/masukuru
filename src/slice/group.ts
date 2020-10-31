@@ -22,6 +22,7 @@ const initialState: GroupState = {
   belongGroups: [],
   isLoading: false,
   isJoining: false,
+  isSettingGroup: false,
   error: '',
   isJoinModalOpen: false
 }
@@ -74,20 +75,20 @@ const groupSlice = createSlice({
     setCurrentGroupId: (state) => {
       return {
         ...state,
-        isLoading: true
+        isSettingGroup: true
       }
     },
     successSetCurrentGroupId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        isLoading: false,
+        isSettingGroup: false,
         currentGroupId: action.payload
       }
     },
     failureSetCurrentGroupId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        isLoading: false,
+        isSettingGroup: false,
         error: action.payload
       }
     },

@@ -20,7 +20,7 @@ import { useGroupSelector } from '../../../selectors/group'
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
   const { currentGroupId, setCurrentGroupId } = useGroupSelector()
-
+  
   useEffect(() => {
     setCurrentGroupId()
   }, [])
@@ -28,7 +28,7 @@ const MainNavigator = () => {
   if (!currentGroupId) {
     return <Loading size="small" />
   }
-
+  
   const getHeaderUserTitle = (route) => {
     return route.params.user.name
   }
