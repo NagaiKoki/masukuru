@@ -41,7 +41,7 @@ const RecordList = (props: RecordListProps) => {
 
   return (
     <RecordListContainer>
-      { !isLoading && !recordData.length ? (
+      { !isLoading && (!recordData.length || (recordData.length === 1)) ? (
         <EmptyState text={EMPTY_TEXT} />
       ) : renderRecordList
       }
