@@ -48,7 +48,7 @@ const SettingModal = (props: SettingModalProps) => {
   }
 
   return (
-    <Modal isVisible={visibleModal} swipeDirection='down' onSwipeComplete={ () => setVisibleModal(false) }>
+    <Modal useNativeDriver={true} isVisible={visibleModal} swipeDirection='down' onSwipeComplete={ () => setVisibleModal(false) }>
       <Container>
         <CloseBar />
         <List>

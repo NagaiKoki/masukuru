@@ -186,7 +186,7 @@ const groupSlice = createSlice({
         error: action.payload
       }
     },
-    fixNoCurrentGroup: (state) => {
+    requestFixNoCurrentGroup: (state) => {
       return {
         ...state,
       }
@@ -233,4 +233,7 @@ export const {
   requestPatchGroupInfo,
   successPatchGroupInfo,
   failurePatchGroupInfo,
+  requestFixNoCurrentGroup,
+  successFixNoCurrentGroup,
+  failureFixNoCurrentGroup
 } = groupSlice.actions

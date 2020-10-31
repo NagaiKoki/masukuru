@@ -47,7 +47,7 @@ const HomeScreen = (props: HomeProps) => {
   const { recordData, isLoading, isEmojiModalOpen, isPostedEmojiUsersModalOpen } = records
   const { currentUser } = userSelectors() // まずはuserだけselectorsにして、後で他のも置き換える
   const { toastMessage, imageModalOpen, toggleImageModal } = useUiSelector()
-  const { currentGroupId, currentGroupUsers, isGroupLoading, requestFetchCurrentGroupUsers } = useGroupSelector()
+  const { currentGroupId, currentGroupUsers, isGroupLoading, requestFetchCurrentGroupUsers, requestFixNoCurrentGroup } = useGroupSelector()
   const lastRecord = recordData[recordData.length - 1]
   const [isRefresh, setIsRefresh] = useState(false)
   const currentUserId = firebase.auth().currentUser.uid
@@ -87,6 +87,10 @@ const HomeScreen = (props: HomeProps) => {
         weight: currentUser.weight
       }
       Analytics.identify(currentUserId, currentUserProperty)
+      console.log('there is there isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere isthere is')
+    } else {
+      console.log('no no no no no no no no no nono no no no nono no no no nono no no no nono no no no no')
+      requestFixNoCurrentGroup()
     }
   }, [currentUser])
 

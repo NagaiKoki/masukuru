@@ -11,6 +11,7 @@ import {
   RequestPatchGroupType
 } from '../../../types/Group'
 import { UserType } from '../../../types/User'
+import { ResponseType } from '../../../types'
 // import constants
 import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 
@@ -309,5 +310,24 @@ export const requestPatchCurrentGroupId = async (currentGroupId: string, current
     return { payload: 'success' }
   } catch(error) {
     return { error: error.message }
+  }
+}
+
+// ログインしている場合でどこにも所属していない場合
+// 自分のグループがあればそこに、なければ作成して所属させる
+export const requestPostFixNoCurrentGroup = async () => {
+  const currentUid = firebase.auth().currentUser.uid
+  
+  try {
+    const { payload, error }: ResponseType<string> = await requestFetchCurrentGroupId()
+    if (!payload || error) {
+      const { user, error } = await requestFetchUser(currentUid)
+      if (user && !error) {
+        const { payload, error }: ResponseType<GroupType> = await requestPostCreateGroup(user)
+        return { payload: payload.id }
+      }
+    }
+  } catch(error) {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }

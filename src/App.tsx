@@ -15,6 +15,9 @@ import Navigator from './navigations';
 // import store
 import store from './reducers'
 import {decode, encode} from 'base-64'
+// import utils
+import { dispapperWarning } from './utilities/disappearWarning'
+
 
 Bugsnag.start({
   apiKey: Constants.manifest.extra.bugsnag.apiKey,
@@ -32,8 +35,7 @@ const App = () => {
 // atobがないとのエラーがfirebaseで出るので、代入する
 if (!window.btoa) {  window.btoa = encode }
 if (!window.atob) { window.atob = decode }
-
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'RNDeviceInfo', 'Warning: An update']);
+  dispapperWarning()
 
   return (
     <ErrorBoundary FallbackComponent={ErrorComponent}>
