@@ -50,6 +50,7 @@ export type ResponseRecordType = {
   trainingDate: FirestoreTimestamp | null
   uid: string
   imageUrl: string
+  type: 'record' | 'weight' | 'pedometer'
   createdAt: FirestoreTimestamp
   updatedAt: FirestoreTimestamp
 }
