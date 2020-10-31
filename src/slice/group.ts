@@ -185,6 +185,22 @@ const groupSlice = createSlice({
         ...state,
         error: action.payload
       }
+    },
+    fixNoCurrentGroup: (state) => {
+      return {
+        ...state,
+      }
+    },
+    successFixNoCurrentGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        currentGroupId: action.payload
+      }
+    },
+    failureFixNoCurrentGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+      }
     }
   }
 })
