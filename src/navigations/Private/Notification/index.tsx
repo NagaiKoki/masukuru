@@ -6,6 +6,7 @@ import { COLORS } from '../../../constants/Styles'
 // import screens
 import NotificationContentScreen from '../../../screens/Private/Notifications/NotificationContent'
 import NotificationRecordShowScreen from '../../../screens/Private/Records/Show'
+import OfficialNotificationFormScreen from '../../../screens/Private/Notifications/OfficialForm'
 
 
 const NotificationNavigator = ({ navigation }) => {
@@ -52,6 +53,19 @@ const NotificationNavigator = ({ navigation }) => {
         options={() => ({
           headerBackTitleVisible: false,
           headerTitle: 'きろく',
+          headerStyle: {
+            backgroundColor: COLORS.BASE_MUSCLEW
+          },
+          headerTintColor: COLORS.BASE_WHITE,
+        })}
+      />
+
+      <NotificationStack.Screen
+        name="officalNotificationForm"
+        component={OfficialNotificationFormScreen}
+        options={() => ({
+          headerBackTitleVisible: false,
+          headerTitle: '公式通知フォーム',
           headerStyle: {
             backgroundColor: COLORS.BASE_MUSCLEW
           },
