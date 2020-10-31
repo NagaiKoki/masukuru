@@ -9,7 +9,8 @@ import {
   requestFetchGetBelongGroups,
   requestPatchCurrentGroupId,
   requestFetchCurrentGroup as requestFetchGetCurrentGroup,
-  requestPatchGroupInfoData
+  requestPatchGroupInfoData,
+  requestPostFixNoCurrentGroup
 } from '../apis/Groups/v1/'
 // import types
 import { GroupType, GroupUserType, RequestPatchGroupType } from '../types/Group'
@@ -40,7 +41,10 @@ import {
   failureFetchCurrentGroup,
   requestPatchGroupInfo,
   successPatchGroupInfo,
-  failurePatchGroupInfo
+  failurePatchGroupInfo,
+  requestFixNoCurrentGroup,
+  successFixNoCurrentGroup,
+  failureFixNoCurrentGroup
 } from '../slice/group'
 import { setUserStatus } from '../slice/auth'
 import { setToastMessage } from '../slice/ui'
@@ -99,6 +103,8 @@ function* runRequestFetchCurrentGroupId() {
 
   if (payload && !error) {
     yield put(successSetCurrentGroupId(payload))
+  } else if (payload === '' || error) {
+    yield put(requestFixNoCurrentGroup())
   } else if (error) {
     yield put(failureSetCurrentGroupId(error))
   }
@@ -203,6 +209,24 @@ function* handleRequestPatchGroupInfo() {
   yield takeEvery(requestPatchGroupInfo.type, runRequestPatchGroupInfo)
 }
 
+// ログインしていて、どこにもグループに所属していない場合
+// 自分のグループを作成して、そこを現在所属のグループにする
+function* runRequestFixNoCurrentGroup() {
+  const { payload, error }: ResponseType<string> = yield call(
+    requestPostFixNoCurrentGroup
+  )
+  if (payload && !error) {
+    yield put(successFixNoCurrentGroup(payload))
+  } else if (error) {
+    yield put(failureFixNoCurrentGroup(error))
+  }
+}
+
+function* handleRequestFixNoCurrentGroup() {
+  yield takeEvery(requestFixNoCurrentGroup.type, runRequestFixNoCurrentGroup)
+}
+
+
 export default function* groupSaga() {
   yield fork(handleRequestCreateGroup)
   yield fork(handleRequestJoinGroup)
@@ -212,4 +236,5 @@ export default function* groupSaga() {
   yield fork(handleRequestSwitchGroup)
   yield fork(handleRequestFetchCurrentUGroup)
   yield fork(handleRequestPatchGroupInfo)
+  yield fork(handleRequestFixNoCurrentGroup)
 }

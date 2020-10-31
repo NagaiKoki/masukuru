@@ -8,6 +8,7 @@ export interface GroupState {
   belongGroups: GroupType[]
   isLoading: boolean
   isJoining: boolean
+  isSettingGroup: boolean
   error: string
   isJoinModalOpen: boolean
 }

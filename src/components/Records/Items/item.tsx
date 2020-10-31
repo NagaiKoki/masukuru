@@ -33,7 +33,7 @@ interface RecordItemProps {
 }
 
 const RecordItem = (props: RecordItemProps) => {
-  const { record, index, isShowPage, navigation } = props
+  const { record, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
   const { toggleImageModal } = useUiSelector()
   const currentUser = firebase.auth().currentUser

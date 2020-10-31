@@ -22,6 +22,7 @@ const initialState: GroupState = {
   belongGroups: [],
   isLoading: false,
   isJoining: false,
+  isSettingGroup: false,
   error: '',
   isJoinModalOpen: false
 }
@@ -74,20 +75,20 @@ const groupSlice = createSlice({
     setCurrentGroupId: (state) => {
       return {
         ...state,
-        isLoading: true
+        isSettingGroup: true
       }
     },
     successSetCurrentGroupId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        isLoading: false,
+        isSettingGroup: false,
         currentGroupId: action.payload
       }
     },
     failureSetCurrentGroupId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        isLoading: false,
+        isSettingGroup: false,
         error: action.payload
       }
     },
@@ -185,6 +186,22 @@ const groupSlice = createSlice({
         ...state,
         error: action.payload
       }
+    },
+    requestFixNoCurrentGroup: (state) => {
+      return {
+        ...state,
+      }
+    },
+    successFixNoCurrentGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        currentGroupId: action.payload
+      }
+    },
+    failureFixNoCurrentGroup: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+      }
     }
   }
 })
@@ -217,4 +234,7 @@ export const {
   requestPatchGroupInfo,
   successPatchGroupInfo,
   failurePatchGroupInfo,
+  requestFixNoCurrentGroup,
+  successFixNoCurrentGroup,
+  failureFixNoCurrentGroup
 } = groupSlice.actions
