@@ -202,7 +202,7 @@ const RecordItem = (props: RecordItemProps) => {
           createdAt={record.createdAt}
           hasWord={!!word}
         />
-        {renderRecordData()}
+        {renderRecordData}
       </RecordItemClickable>
       <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
     </RecordItemContainer>
