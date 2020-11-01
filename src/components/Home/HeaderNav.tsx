@@ -1,5 +1,5 @@
 import React from 'react'
-import AntDesignIcons from 'react-native-vector-icons/AntDesign';
+import MaterialIconsIcons from 'react-native-vector-icons/MaterialIcons';
 // import constants
 import { COLORS } from '../../constants/Styles';
 // import config
@@ -18,8 +18,8 @@ export const getHeaderNav= async (currentGroupId: string, navigation: any) => {
 // グループ編集遷移
 navigation.setOptions({
   headerRight: () => (
-    <AntDesignIcons name="team" 
-                    size={26} 
+    <MaterialIconsIcons name="group" 
+                    size={23} 
                     onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} 
                     style={{ paddingRight: 20, color: COLORS.BASE_WHITE }}
     />
