@@ -11,8 +11,11 @@ import SettingPushScreen from '../../../screens/Private/Setting/Push'
 import GoalSettingScreen from '../../../screens/Private/Charts/Setting'
 // import components
 import StackNavigator from '../../../common/Navigator/StackNavigator'
+import HeaderIconButton from '../../../common/Button/HeaderIconButton'
 // import constants
 import { COLORS } from '../../../constants/Styles'
+// import utils
+import { navigatorOptions } from '../../../utilities/navigatorOptions'
 
 const MyPageNavigator = ({ navigation }) => { 
   const MyPageStack = createStackNavigator()
@@ -23,92 +26,45 @@ const MyPageNavigator = ({ navigation }) => {
        <MyPageStack.Screen
         name="MyPage"
         component={MyPageScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW,
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-          headerTitle: 'マイページ',
+        options={navigatorOptions('マイページ', {
           headerLeft: () => (
-            <Icon name="bars" 
-                  size={24} 
-                  onPress={() => { navigation.openDrawer() }} 
-                  style={{ paddingLeft: 20, color: COLORS.BASE_WHITE }}
-            />
+            <HeaderIconButton iconName="navicon" type='left' onPress={() => navigation.openDrawer()} />
           ),
           headerRight: () => (
-            <EvilIcons name="gear" 
-                  size={24} 
-                  onPress={() => { navigation.navigate('myPageSetting') }} 
-                  style={{ paddingRight: 15, color: COLORS.BASE_WHITE }}
-            />
+            <HeaderIconButton iconName="gear" type="right" onPress={() => navigation.navigate('myPageSetting')} />
           ),
           gestureEnabled: false,
-        }}
+         })}
       />
       
       <MyPageStack.Screen
         name="プロフィール編集"
         component={ProfileChangeScreen}
-        options={{
-          headerBackTitleVisible: false,
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-        }}
+        options={navigatorOptions('プロフィール編集')}
       />
 
       <MyPageStack.Screen 
         name="recordShow"
         component={RecordShowScreen}
-        options={{
-          headerBackTitleVisible: false,
-          headerTitle: "きろく",
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-        }}
+        options={navigatorOptions("きろく")}
       />
 
       <MyPageStack.Screen 
         name="myPageSetting"
         component={MyPageSettingScreen}
-        options={{
-          headerBackTitleVisible: false,
-          headerTitle: '設定',
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-        }}
+        options={navigatorOptions('設定')}
       />
 
       <MyPageStack.Screen 
-        name="myPageSetting"
-        component={MyPageSettingScreen}
-        options={{
-          headerBackTitleVisible: false,
-          headerTitle: '設定',
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-        }}
+        name="myPagePrivacySetting"
+        component={GoalSettingScreen}
+        options={navigatorOptions('プライバシー設定')}
       />
 
       <MyPageStack.Screen 
         name="myPagePushSetting"
         component={SettingPushScreen}
-        options={{
-          headerBackTitleVisible: false,
-          headerTitle: 'プッシュ通知',
-          headerStyle: {
-            backgroundColor: COLORS.BASE_MUSCLEW
-          },
-          headerTintColor: COLORS.BASE_WHITE,
-        }}
+        options={navigatorOptions('プッシュ通知')}
       />
       </>
     </StackNavigator>
