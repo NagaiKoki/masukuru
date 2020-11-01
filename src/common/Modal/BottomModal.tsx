@@ -20,6 +20,7 @@ const BottomModal = (props: PropsType) => {
       onClosed={onClose}
       position='bottom'
       coverScreen
+      useNativeDriver={true}
       style={{ height: height || 500 }}
     >
       <CloseBar />

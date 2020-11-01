@@ -37,7 +37,7 @@ const Applause = () => {
     </CloseButtonWrapper>
 
   return (
-    <Modal isVisible={isOpenApplause}>
+    <Modal isVisible={isOpenApplause} useNativeDriver={true}>
       <ApplauseWrapper hasSubMessage={hasSubMessage}>
         <Title>運営からのお知らせ</Title>
         <ApplauseImage  size={recordSize} />

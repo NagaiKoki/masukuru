@@ -123,3 +123,22 @@ export const requestReadCommentNotification = async (id: string) => {
     return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
   }
 }
+
+// 公式用通知送信リクエスト
+export const requestOfficialNotification = async (title: string, content: string) => {
+  const notificationRef = db.collection('notifications')
+
+  try {
+    await notificationRef.add({ 
+      title,
+      contents: content,
+      from: 'masukuru',
+      type: 'official',
+      createdAt: new Date,
+      readUserIds: [''],
+     })
+     return { payload: 'success' }
+  } catch(error) {
+    return { error }
+  }
+}

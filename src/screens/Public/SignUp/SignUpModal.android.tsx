@@ -25,7 +25,7 @@ const SignUpModal = (props: SignUpModalProps) => {
   }
 
   return (
-    <Modal isVisible={isVisible} swipeDirection='down' onSwipeComplete={() => setIsVisible(false)}>
+    <Modal isVisible={isVisible} useNativeDriver={true} swipeDirection='down' onSwipeComplete={() => setIsVisible(false)}>
       <Container>
         <CloseBar />
         <SignUpGoogleBtn block onPress={() => GoogleLogin(route)}>

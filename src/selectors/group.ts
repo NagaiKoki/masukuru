@@ -9,7 +9,9 @@ import {
   requestFetchBelongGroups,
   requestSwitchGroup,
   requestFetchCurrentGroup,
-  requestPatchGroupInfo
+  requestPatchGroupInfo,
+  requestFixNoCurrentGroup
+  
 } from '../slice/group'
 // import types
 import { RootState } from '../reducers'
@@ -24,6 +26,7 @@ export const useGroupSelector = () => {
     belongGroups,
     isLoading,
     isJoining,
+    isSettingGroup,
     error
   } = useSelector<RootState, GroupState>(state => state.groups)
 
@@ -35,6 +38,7 @@ export const useGroupSelector = () => {
   const _requestSwitchGroup = useCallback((groupId: string) => dispatch(requestSwitchGroup(groupId)), [dispatch])
   const _requestFetchCurrentGroup = useCallback(() => dispatch(requestFetchCurrentGroup()), [dispatch])
   const _requestPatchGroupInfo = useCallback((groupObj: RequestPatchGroupType) => dispatch(requestPatchGroupInfo(groupObj)), [dispatch])
+  const _requestFixNoCurrentGroup = useCallback(() => dispatch(requestFixNoCurrentGroup()), [dispatch])
 
   return {
     currentGroupId,
@@ -43,6 +47,7 @@ export const useGroupSelector = () => {
     belongGroups,
     isGroupLoading: isLoading,
     isJoining,
+    isSettingGroup,
     error,
     requestCreateGroup: _requestCreateGroup,
     requestJoinGroup: _requestJoinGroup,
@@ -51,6 +56,7 @@ export const useGroupSelector = () => {
     requestFetchBelongGroups: _requestFetchBelongGroups,
     requestSwitchGroup: _requestSwitchGroup,
     requestFetchCurrentGroup: _requestFetchCurrentGroup,
-    requestPatchGroupInfo: _requestPatchGroupInfo
+    requestPatchGroupInfo: _requestPatchGroupInfo,
+    requestFixNoCurrentGroup: _requestFixNoCurrentGroup
   }
 }

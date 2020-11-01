@@ -27,6 +27,7 @@ import { useUiSelector } from '../../../selectors/ui'
 
 interface RecordItemProps {
   record: ResponseRecordType
+  index: number
   navigation?: any
   isShowPage?: boolean
 }
@@ -34,7 +35,7 @@ interface RecordItemProps {
 const RecordItem = (props: RecordItemProps) => {
   const { record, isShowPage, navigation } = props
   const { id, uid, records, word, imageUrl, createdAt } = record
-  const { imageModalOpen, toggleImageModal } = useUiSelector()
+  const { toggleImageModal } = useUiSelector()
   const currentUser = firebase.auth().currentUser
 
   const [user, setUser] = useState(null)
@@ -81,24 +82,30 @@ const RecordItem = (props: RecordItemProps) => {
 
   if (isUserLoading || isCommentLoading) {
     return (
-      <React.Fragment/>
+      <></>
     )
   }
 
   // 記録
-  const renderRecordData = records.map((record: RecordItemType, i: number) => {
-    return (
-      <RecordDataWrapper key={i}>
-        <RecordNameWrapper>
-          <RecordIconBlcok />
-          <RecordDataName>{record.name}</RecordDataName>
-        </RecordNameWrapper>
-        <UnitDataWrapper>
-          <RecordData record={record} />
-        </UnitDataWrapper>
-      </RecordDataWrapper>
-    )
-  })
+  const renderRecordData = () => {
+    if (!records) {
+      return <></>
+    } else {
+      const recordData = records.map((record: RecordItemType, i: number) => (
+          <RecordDataWrapper key={i}>
+            <RecordNameWrapper>
+              <RecordIconBlcok />
+              <RecordDataName>{record.name}</RecordDataName>
+            </RecordNameWrapper>
+            <UnitDataWrapper>
+              <RecordData record={record} />
+            </UnitDataWrapper>
+          </RecordDataWrapper>
+        )
+      )
+      return recordData
+    }
+  }
 
   const renderTweet =
     <Hyperlink linkDefault={true} linkStyle={{ color: COLORS.LINK_COLOR, fontSize: 16 }}>

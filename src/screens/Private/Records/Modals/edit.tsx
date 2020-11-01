@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components'
 import { COLORS } from '../../../../constants/Styles';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 // import types
 import { RecordItemType } from '../../../../types/Record'
 // import components
@@ -43,7 +44,7 @@ const RecordModalScreen = ({ navigation, route }) => {
   }, [])
 
   if (isLoading) {
-    return <React.Fragment />
+    return <></>
   }
 
   // 一言画面へ遷移
@@ -57,6 +58,10 @@ const RecordModalScreen = ({ navigation, route }) => {
       isUpdate: false
     }
     navigation.navigate('trainingRecordModal', routeProps)
+  }
+
+  const handleHistoryNavigate = () => {
+    navigation.navigate('recordHistory')
   }
 
   const handleDispatchDeleteTraining = (record: RecordItemType) => {
@@ -89,7 +94,7 @@ const RecordModalScreen = ({ navigation, route }) => {
   }
 
   return (
-    <RecordModalContainer >
+    <RecordModalContainer>
       <Wrapper>
         <TitleWrapper>
           <TitleSquare />
@@ -112,6 +117,12 @@ const RecordModalScreen = ({ navigation, route }) => {
         />
         <DefaultAddButton onPress={handleNavigateAddForm} />
       </Wrapper>
+      <HistoryWrapper>
+        <HistoryButton onPress={handleHistoryNavigate}>
+          <Icon  name="history" size={20} style={{ color: COLORS.SUB_BLACK, marginRight: 10 }} />
+          <HistoryText>過去のトレーニングから追加する</HistoryText>
+        </HistoryButton>
+      </HistoryWrapper>
     </RecordModalContainer>
   )
 }
@@ -155,4 +166,22 @@ const TitleLabel = styled.Text`
   color: ${COLORS.BASE_BLACK};
   font-size: 20px;
   font-weight: bold;
+`
+
+const HistoryWrapper = styled.View`
+  border-top-width: 0.5px;
+  border-top-color: ${COLORS.BASE_BORDER_COLOR};
+  margin-top: 20px;
+  padding-top: 15px;
+`
+
+const HistoryButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 50px;
+`
+
+const HistoryText = styled.Text`
+  color: ${COLORS.BASE_BLACK};
+  font-size: 16px;
 `
