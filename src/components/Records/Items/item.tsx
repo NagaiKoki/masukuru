@@ -7,7 +7,6 @@ import { Image, StyleSheet } from 'react-native'
 import moment from '../../../config/moment'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/AntDesign'
-import { useActionSheet } from '@expo/react-native-action-sheet'
 // db
 import firebase from '../../../config/firebase'
 // import types
@@ -22,6 +21,7 @@ import RecordData from './data'
 import TrainingDate from './trainingDate'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
+import { actionSheet } from '../../../utilities/actionSheet'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import selectors
@@ -49,7 +49,6 @@ const RecordItem = (props: RecordItemProps) => {
   const [isCommentLoading, setIsCommentLoading] = useState(true)
   const [visibleModal, setVisibleModal] = useState(false)
 
-  const { showActionSheetWithOptions } = useActionSheet()
   const dispatch = useDispatch()
 
   useFocusEffect(
@@ -91,11 +90,11 @@ const RecordItem = (props: RecordItemProps) => {
     return navigation.navigate('recordEditModal', { recordId: id } )
   }
 
-  const handleOnDelete = (id: string) => {
+  const handleDeleteItem = (id: string) => {
     dispatch(requestDestroyRecord(id))
   }
 
-  const deleteRecordWithAlert = (id: string) => {
+  const handleDeleteItemWithAlert = (id: string) => {
     Alert.alert(
       'この記録を削除します。',
       "本当によろしいですか？", 
@@ -106,37 +105,16 @@ const RecordItem = (props: RecordItemProps) => {
         },
         {
           text: 'OK',
-          onPress: () => { handleOnDelete(id) }
+          onPress: () => { handleDeleteItem(id) }
         }
       ],
       { cancelable: false }
     )
   }
 
-  const handleDeleteItem = (id: string) => {
-    deleteRecordWithAlert(id)
-  }
-
   const onOpenActionSheet = (id: string) => {
     const options = ['編集する', '削除する', 'キャンセル']
-    const destructiveButtonIndex = 1
-    const cancelButtonIndex = 2
-
-    showActionSheetWithOptions( 
-      {
-        options,
-        destructiveButtonIndex,
-        cancelButtonIndex,
-      },
-      buttonIndex => {
-        console.log(buttonIndex)
-        if (buttonIndex === 0) {
-          return handleEditItem(id)
-        } else if (buttonIndex === 1) {
-          return handleDeleteItem(id)
-        }
-      },
-    )
+    actionSheet(options, handleEditItem(id), handleDeleteItemWithAlert(id))
   }
 
   if (isUserLoading || isCommentLoading) {
