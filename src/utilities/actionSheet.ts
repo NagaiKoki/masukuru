@@ -1,22 +1,22 @@
-import { useActionSheet } from '@expo/react-native-action-sheet'
-
 export const actionSheet = (
-    options: string[], 
-    handleOnClick1: () => void, 
-    handleOnClick2?: () => void
+    options: string[],
+    showActionSheetWithOptions: any,
+    handleOnSomethingAction: () => void, 
+    handleOnDeleteAction: () => void
 ) => {
-  const { showActionSheetWithOptions } = useActionSheet();
-  const cancelButtonIndex = options.length;
+  const destructiveButtonIndex = 1;
+  const cancelButtonIndex = 2;
   showActionSheetWithOptions(
     {
       options,
+      destructiveButtonIndex,
       cancelButtonIndex,
     },
     buttonIndex => {
       if (buttonIndex === 0) {
-        return handleOnClick1()
+        return handleOnSomethingAction()
       } else if (buttonIndex === 1) {
-        return handleOnClick2()
+        return handleOnDeleteAction()
       }
     }
   )
