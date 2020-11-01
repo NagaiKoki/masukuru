@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { Alert } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import Hyperlink from 'react-native-hyperlink'
@@ -22,6 +21,7 @@ import TrainingDate from './trainingDate'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
 import { actionSheet } from '../../../utilities/actionSheet'
+import { handleAlert } from '../../../utilities/Alert/'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import selectors
@@ -95,26 +95,21 @@ const RecordItem = (props: RecordItemProps) => {
   }
 
   const handleDeleteItemWithAlert = (id: string) => {
-    Alert.alert(
+    handleAlert(
       'この記録を削除します。',
-      "本当によろしいですか？", 
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        },
-        {
-          text: 'OK',
-          onPress: () => { handleDeleteItem(id) }
-        }
-      ],
-      { cancelable: false }
-    )
+      '本当によろしいですか？',
+      'OK', 
+      handleDeleteItem,
+    )(id)
   }
 
   const onOpenActionSheet = (id: string) => {
     const options = ['編集する', '削除する', 'キャンセル']
-    actionSheet(options, handleEditItem(id), handleDeleteItemWithAlert(id))
+    actionSheet(
+      options, 
+      handleEditItem(id), 
+      handleDeleteItemWithAlert(id)
+    )
   }
 
   if (isUserLoading || isCommentLoading) {
