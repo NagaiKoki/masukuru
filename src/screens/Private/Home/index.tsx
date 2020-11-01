@@ -139,7 +139,7 @@ const HomeScreen = (props: HomeProps) => {
       <ImageModal isOpen={imageModalOpen} handleOnClose={toggleImageModal} />
       <MemberList currentGroupUsers={currentGroupUsers} isLoading={isGroupLoading} navigation={navigation} />
       <RecordAddBtn onPress={handleOpenRecordModal}>
-        <Icon name="pencil" size={30} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />
+        <Icon name="pencil" size={25} style={{ color: COLORS.BASE_WHITE, marginTop: 4 }} />
       </RecordAddBtn>
       <ApplauseModal />
       <EmojiModal isOpen={isEmojiModalOpen} />
@@ -167,7 +167,7 @@ const RecordAddBtn = styled.TouchableOpacity`
   height: 60px;
   width: 60px;
   position: absolute;
-  bottom: 10%;
+  bottom: 7%;
   right: 5%;
   box-shadow: 10px 5px 5px ${COLORS.FORM_BACKGROUND};
 `
