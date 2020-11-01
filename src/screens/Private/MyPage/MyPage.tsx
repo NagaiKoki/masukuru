@@ -36,7 +36,7 @@ const MyPageScreen = ({ navigation }) => {
 
   useEffect(() => {
     requestFetchGetUser()
-    requestFetchChartSetting()
+    requestFetchChartSetting(firebaseUser.uid)
     requestFetchWeights({ date: new Date, type: 'year' })
     requestFetchRecords({ uid: firebaseUser.uid, groupId: undefined })
   }, [])
@@ -70,7 +70,7 @@ const MyPageScreen = ({ navigation }) => {
           />
         }
       >
-      <Profile user={user} navigation={navigation} />
+      <Profile user={user} navigation={navigation} type="myPage" />
       <RecordList 
         recordData={userRecords} 
         isLoading={isLoading} 

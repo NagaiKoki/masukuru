@@ -12,7 +12,7 @@ const chartSelector = (): ChartState => {
 
 export const useChartDispatchers = () => {
   const dispatch = useDispatch()
-  const _requestFetchChartSetting = useCallback(() => dispatch(requestFetchChartSetting()), [dispatch])
+  const _requestFetchChartSetting = useCallback((uid: string) => dispatch(requestFetchChartSetting(uid)), [dispatch])
   const _requestFetchWeights = useCallback((arg: RequestFetchChartType) => dispatch(requestFetchWeights(arg)), [dispatch])
 
   return {

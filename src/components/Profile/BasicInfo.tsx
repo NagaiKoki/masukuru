@@ -8,26 +8,29 @@ import { UserType } from '../../types/User'
 
 type Props = {
   user: UserType
+  type: 'myPage' | 'userPage'
 }
 
 const ProfileBasicInfo = (props: Props) => {
-  const { user } = props
+  const { user, type } = props
   const { visibleWeight } = user
   const weightGoal = useSelectWeightGoal()
   const weights = useSelectWeights()
   const weight = weights[0]
-
+  
   return (
     <Wrapper>
       <LabelWrapper>
         <Label>目標体重</Label>
         <Text>{weightGoal ? `${weightGoal}kg` : '未設定'}</Text>
       </LabelWrapper>
-      <LabelWrapper>
-        <Label>直近の体重</Label>
-        <Text>{weight ? `${weight.weight}kg` : '未入力'}</Text>
-        { !visibleWeight ? <Batch>非公開</Batch> : null }
-      </LabelWrapper>
+      { type === 'myPage' || (type === 'userPage' && visibleWeight) ?
+        <LabelWrapper>
+          <Label>直近の体重</Label>
+          <Text>{weight ? `${weight.weight}kg` : '未入力'}</Text>
+          { !visibleWeight ? <Batch>非公開</Batch> : null }
+        </LabelWrapper>
+      : null }
     </Wrapper>
   )
 }

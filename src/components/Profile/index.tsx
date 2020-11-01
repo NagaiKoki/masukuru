@@ -10,10 +10,11 @@ import BasicInfo from './BasicInfo'
 type Props = {
   navigation: any
   user: UserType
+  type: 'myPage' | 'userPage'
 }
 
 const Profile = (props: Props) => {
-  const { navigation, user } = props
+  const { navigation, user, type } = props
   const { name, imageUrl } = user
 
   return (
@@ -23,12 +24,13 @@ const Profile = (props: Props) => {
           <UserImage imageUrl={imageUrl} />
           <UserName>{name}</UserName>
         </ImageWrpper>
+        { type === 'myPage' ?
         <ChangeButton>
           <ChangeText>編集</ChangeText>
-        </ChangeButton>
+        </ChangeButton> : null }
       </Upper>
       <Lower>
-        <BasicInfo user={user} />
+        <BasicInfo type={type} user={user} />
       </Lower>
     </Container>
   )
