@@ -40,7 +40,7 @@ const SnsInviteCodeShareModal = (props: SnsModalProps) => {
     </CancelButtonWrapper>
 
   return (
-    <Modal isVisible={show} swipeDirection="down" onSwipeComplete={handleCloseModal}>
+    <Modal isVisible={show} swipeDirection="down" onSwipeComplete={handleCloseModal} useNativeDriver={true}>
       <SnsWrapper>
         {renderSnsButtons}
         {renderCancelButton}

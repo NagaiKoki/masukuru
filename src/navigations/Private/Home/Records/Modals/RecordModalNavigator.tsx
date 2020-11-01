@@ -7,7 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import RecordModalScreen from '../../../../../screens/Private/Records/Modals'
 import RecordFormScreen from '../../../../../screens/Private/Records/Modals/Form/TrainingForm'
 import RecordTweetScreen from '../../../../../screens/Private/Records/Modals/Form/TweetForm'
-import RecordEditScreen from '../../../../../screens/Private/Records/Modals/edit'
+import RecordHistoryScreen from '../../../../../screens/Private/Records/Modals/RecordHistory'
 
 const RecordModalNavigator = () => {
   const RecordModalStack = createStackNavigator()
@@ -48,6 +48,11 @@ const RecordModalNavigator = () => {
       <RecordModalStack.Screen 
         name="tweetRecordModal"
         component={RecordTweetScreen}
+      />
+
+      <RecordModalStack.Screen 
+        name="recordHistory"
+        component={RecordHistoryScreen}
       />
     </RecordModalStack.Navigator>
   )

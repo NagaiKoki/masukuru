@@ -6,6 +6,7 @@ import { ResponseRecordType } from '../../types/Record'
 import RecordItem from './Items/item'
 import Loading from '../Loading'
 import EmptyState from '../../common/EmptyState'
+import AdmobBanner from '../../common/Admob/Banner'
 
 interface RecordListProps {
   recordData: ResponseRecordType[]
@@ -20,16 +21,27 @@ const RecordList = (props: RecordListProps) => {
   const EMPTY_TEXT = 'まだ記録がありません。\n\右下のボタンから、トレーニングの記録を付けてみよう！'
 
   const renderRecordList = recordData.map((record: ResponseRecordType, i: number) => {
-    return <RecordItem 
-              key={i} 
-              record={record} 
-              navigation={navigation} 
-            />
+    if (i === 1) {
+      return (
+        <AdmobWrapper>
+          <AdmobBanner size="smartBannerPortrait" />
+        </AdmobWrapper>
+      )
+    } else {
+      return (
+        <RecordItem 
+          key={i} 
+          index={i}
+          record={record} 
+          navigation={navigation} 
+        />
+      )
+    }
   })
 
   return (
     <RecordListContainer>
-      { !isLoading && !recordData.length ? (
+      { !isLoading && (!recordData.length || (recordData.length === 1)) ? (
         <EmptyState text={EMPTY_TEXT} />
       ) : renderRecordList
       }
@@ -40,6 +52,10 @@ const RecordList = (props: RecordListProps) => {
 
 const RecordListContainer = styled.View`
   padding: 10px 0;
+`
+
+const AdmobWrapper = styled.View`
+  margin-bottom: 10px;
 `
 
 export default RecordList

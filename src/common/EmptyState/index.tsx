@@ -35,7 +35,7 @@ const ImageWrapper = styled.View`
 
 const Text = styled.Text`
   padding-top: 30px;
-  line-height: 23;
+  line-height: 23px;
   color: ${COLORS.BASE_BLACK};
   font-size: 16px;
   text-align: center;

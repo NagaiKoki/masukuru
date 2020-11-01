@@ -11,6 +11,7 @@ import {
   RequestPatchGroupType
 } from '../../../types/Group'
 import { UserType } from '../../../types/User'
+import { ResponseType } from '../../../types'
 // import constants
 import { INVITE_ERROR_MESSAGE, COMMON_ERROR_MESSSAGE } from '../../../constants/errorMessage'
 
@@ -37,8 +38,8 @@ export const requestPostCreateGroup = async (currentUser: UserType) => {
   }
 
   const groupUserType: GroupUserType = {
-    imageUrl,
-    name,
+    imageUrl: imageUrl || '',
+    name: name || '未設定',
     currentGroupId: temporaryGroupId,
     uid: currentUserId,
     createdAt: new Date(),
@@ -309,5 +310,54 @@ export const requestPatchCurrentGroupId = async (currentGroupId: string, current
     return { payload: 'success' }
   } catch(error) {
     return { error: error.message }
+  }
+}
+
+// ログインしている場合でどこにも所属していない場合
+// 自分のグループがあればそこに、なければ作成して所属させる
+export const requestPostFixNoCurrentGroup = async () => {
+  const currentUid = firebase.auth().currentUser.uid
+  
+  try {
+    const { payload }: ResponseType<string> = await requestFetchCurrentGroupId()
+    // 現在所属所属しているグループが存在しない場合
+    if (!payload) {
+      const { payload } = await requestFetchCurrentUserHostGroup(currentUid)
+      // 自分のホストグループを持っている場合、そのグループIDを返す
+      if (payload) {
+        return { payload: payload.id }
+      } else {
+        const { user } = await requestFetchUser(currentUid)
+        // 自分がホストのグループを持っていない場合、自分がホストのグループを作成して、そのIDを返す
+        if (user) {
+          const { payload }: ResponseType<GroupType> = await requestPostCreateGroup(user)
+          return { payload: payload.id }
+        }
+      }
+    } else {
+      return { payload: payload }
+    }
+  } catch(error) {
+    return { error: COMMON_ERROR_MESSSAGE.TRY_AGAIN }
+  }
+}
+
+export const requestFetchCurrentUserHostGroup = async (currentUid: string) => {
+  const groupRef = db.collection('groups').where('ownerId', '==', currentUid)
+  let hostGroup: GroupType
+  try {
+    await groupRef.get().then(snap => {
+      if (snap) {
+        snap.forEach(doc => {
+          hostGroup = doc.data() as GroupType
+          hostGroup.id = doc.data().id
+        })
+      } else {
+        return { payload: null }
+      }
+    })
+    return { payload: hostGroup }
+  } catch (error) {
+    return { error }
   }
 }

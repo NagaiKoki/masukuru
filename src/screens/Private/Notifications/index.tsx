@@ -11,17 +11,30 @@ import {
 } from '../../../selectors/notification'
 // import components
 import NotificationList from '../../../components/Notification/List'
+import HeaderButton from '../../../common/Button/HeaderButton'
+import firebase from '../../../config/firebase'
+// import utils
+import { isDeveloper } from '../../../utilities/checkDeveloper'
 
 const NotificationScreen = ({ navigation }) => {
   const { requestFetchNotifications, requestFetchNotReadNotificationNumber } = notificationActions()
   const [isRefresh, setIsRefresh] = useState(false)
   const notificationItems = _notificationItems()
+  const currentUid = firebase.auth().currentUser.uid
 
   useFocusEffect(
     useCallback(() => {
       requestFetchNotReadNotificationNumber()
       if (!notificationItems.length) {
         requestFetchNotifications()
+      }
+
+      if (isDeveloper(currentUid) || __DEV__) {
+        navigation.setOptions({
+          headerRight: () => {
+            return <HeaderButton text="公式フォーム" onPress={() => navigation.navigate('officalNotificationForm')} />
+          }
+        })
       }
     }, [])
   )
