@@ -1,10 +1,13 @@
 import React, { useState, useCallback } from 'react';
+import { Alert } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native';
 import Hyperlink from 'react-native-hyperlink'
 import { Image, StyleSheet } from 'react-native'
 import moment from '../../../config/moment'
 import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/AntDesign'
+import { useActionSheet } from '@expo/react-native-action-sheet'
 // db
 import firebase from '../../../config/firebase'
 // import types
@@ -17,13 +20,14 @@ import RecordReaction from '../Reactions'
 import RecordUser from './user'
 import RecordData from './data'
 import TrainingDate from './trainingDate'
-import SettingModal from '../SettingModal/list'
 // import utils
 import { convertTimestampToString } from '../../../utilities/timestamp'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import selectors
 import { useUiSelector } from '../../../selectors/ui'
+// import slices
+import { requestDestroyRecord } from '../../../slice/record'
 
 interface RecordItemProps {
   record: ResponseRecordType
@@ -44,8 +48,11 @@ const RecordItem = (props: RecordItemProps) => {
   const [isCommentLoading, setIsCommentLoading] = useState(true)
   const [visibleModal, setVisibleModal] = useState(false)
 
+  const { showActionSheetWithOptions } = useActionSheet()
+  const dispatch = useDispatch()
+
   useFocusEffect(
-    useCallback(() => {
+    useCallback(() => { 
       fetchUser()
       fetchCommentSize()
     }, [id, isShowPage])
@@ -77,6 +84,58 @@ const RecordItem = (props: RecordItemProps) => {
 
   const handleOnNavigate = () => {
     return navigation.navigate('recordShow', { record })
+  }
+
+  const handleEditItem = (id: string) => {
+    return navigation.navigate('recordEditModal', { recordId: id } )
+  }
+
+  const handleOnDelete = (id: string) => {
+    dispatch(requestDestroyRecord(id))
+  }
+
+  const deleteRecordWithAlert = (id: string) => {
+    Alert.alert(
+      'この記録を削除します。',
+      "本当によろしいですか？", 
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => { handleOnDelete(id) }
+        }
+      ],
+      { cancelable: false }
+    )
+  }
+
+  const handleDeleteItem = (id: string) => {
+    deleteRecordWithAlert(id)
+  }
+
+  const onOpenActionSheet = (id: string) => {
+    const options = ['編集する', '削除する', 'キャンセル']
+    const destructiveButtonIndex = 1
+    const cancelButtonIndex = 2
+
+    showActionSheetWithOptions( 
+      {
+        options,
+        destructiveButtonIndex,
+        cancelButtonIndex,
+      },
+      buttonIndex => {
+        console.log(buttonIndex)
+        if (buttonIndex === 0) {
+          return handleEditItem(id)
+        } else if (buttonIndex === 1) {
+          return handleDeleteItem(id)
+        }
+      },
+    )
   }
 
   if (isUserLoading || isCommentLoading) {
@@ -120,7 +179,7 @@ const RecordItem = (props: RecordItemProps) => {
           />
           <RecordRightUpper>
           { currentUser.uid === uid && !isShowPage ? 
-              <IconWrapper onPress={ () => setVisibleModal(true) }>
+              <IconWrapper onPress={() => onOpenActionSheet(id)}>
                 <Icon name='ellipsis1' size={25} style={{ color: COLORS.BASE_BLACK, fontWeight: 'bold', marginTop: -10, marginRight: 5 }}/>
               </IconWrapper> : null
             }
@@ -139,12 +198,6 @@ const RecordItem = (props: RecordItemProps) => {
         {renderRecordData}
       </RecordItemClickable>
       <RecordReaction size={commentSize} id={record.id} isShowPage={isShowPage} handleOnNavigate={handleOnNavigate} />
-      <SettingModal 
-        recordId={record.id}
-        visibleModal={visibleModal}
-        navigation={navigation}
-        setVisibleModal={setVisibleModal}
-      />
     </RecordItemContainer>
   )
 }
