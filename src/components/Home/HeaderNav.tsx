@@ -1,5 +1,5 @@
 import React from 'react'
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIconsIcons from 'react-native-vector-icons/MaterialIcons';
 // import constants
 import { COLORS } from '../../constants/Styles';
 // import config
@@ -18,10 +18,10 @@ export const getHeaderNav= async (currentGroupId: string, navigation: any) => {
 // グループ編集遷移
 navigation.setOptions({
   headerRight: () => (
-    <EvilIcons name="gear" 
-               size={26} 
-               onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} 
-               style={{ paddingRight: 20, color: COLORS.BASE_WHITE }}
+    <MaterialIconsIcons name="group" 
+                    size={23} 
+                    onPress={() => { navigation.navigate('groupInfo', { currentGroupId: currentGroupId }) }} 
+                    style={{ paddingRight: 20, color: COLORS.BASE_WHITE }}
     />
   ),
   headerTitle: groupName ? truncateText(groupName, 15) : 'ホーム'
