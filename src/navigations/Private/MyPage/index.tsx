@@ -8,7 +8,7 @@ import ProfileChangeScreen from '../../../screens/Private/MyPage/ProfileChange';
 import RecordShowScreen from '../../../screens/Private/Records/Show'
 import MyPageSettingScreen from '../../../screens/Private/MyPage/Setting'
 import SettingPushScreen from '../../../screens/Private/Setting/Push'
-import GoalSettingScreen from '../../../screens/Private/Charts/Setting'
+import ProfileSettingPrivacyScreen from '../../../screens/Private/MyPage/Setting/Privacy'
 // import components
 import StackNavigator from '../../../common/Navigator/StackNavigator'
 import HeaderIconButton from '../../../common/Button/HeaderIconButton'
@@ -57,7 +57,7 @@ const MyPageNavigator = ({ navigation }) => {
 
       <MyPageStack.Screen 
         name="myPagePrivacySetting"
-        component={GoalSettingScreen}
+        component={ProfileSettingPrivacyScreen}
         options={navigatorOptions('プライバシー設定')}
       />
 

@@ -43,6 +43,7 @@ const MyPageScreen = ({ navigation }) => {
 
   const onRefresh = () => {
     setIsRefresh(true)
+    requestFetchGetUser()
     requestFetchRecords({ uid: firebaseUser.uid, groupId: undefined })
     setIsRefresh(false)
   }

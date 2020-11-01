@@ -31,6 +31,7 @@ export type UserType = {
   isRecordPostPush: boolean | undefined
   isEmojiReactionPush: boolean | undefined
   isApplausedReviewed: boolean | undefined
+  visibleWeight: boolean | undefined
 }
 
 export interface RequestFetchUserData {

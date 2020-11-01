@@ -3,13 +3,16 @@ import styled from 'styled-components'
 import { COLORS } from '../../constants/Styles'
 // import selectors
 import { useSelectWeightGoal, useSelectWeights } from '../../selectors/chart'
+// import types
+import { UserType } from '../../types/User'
 
 type Props = {
-
+  user: UserType
 }
 
 const ProfileBasicInfo = (props: Props) => {
-  const {  } = props
+  const { user } = props
+  const { visibleWeight } = user
   const weightGoal = useSelectWeightGoal()
   const weights = useSelectWeights()
   const weight = weights[0]
@@ -19,12 +22,11 @@ const ProfileBasicInfo = (props: Props) => {
       <LabelWrapper>
         <Label>目標体重</Label>
         <Text>{weightGoal ? `${weightGoal}kg` : '未設定'}</Text>
-        <Batch>非公開</Batch>
       </LabelWrapper>
       <LabelWrapper>
         <Label>直近の体重</Label>
         <Text>{weight ? `${weight.weight}kg` : '未入力'}</Text>
-        <Batch>非公開</Batch>
+        { !visibleWeight ? <Batch>非公開</Batch> : null }
       </LabelWrapper>
     </Wrapper>
   )

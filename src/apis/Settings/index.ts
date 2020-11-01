@@ -2,7 +2,7 @@
 import firebase, { db } from '../../config/firebase'
 // import types
 import { UserType } from '../../types/User'
-import { SettingPushNotificationType, ResponseSettingType } from '../../types/Setting'
+import { SettingType, ResponseSettingType } from '../../types/Setting'
 
 export const requestFetchSettings = async () => {
   const currentUserId = firebase.auth().currentUser.uid
@@ -12,19 +12,24 @@ export const requestFetchSettings = async () => {
   try {
     await userRef.then(snap => {
       const data = snap.data() as UserType
-      userSettingObj = { isCommentPush: data.isCommentPush, isRecordPostPush: data.isRecordPostPush, isEmojiReactionPush: data.isEmojiReactionPush }
+      userSettingObj = { 
+        isCommentPush: data.isCommentPush, 
+        isRecordPostPush: data.isRecordPostPush, 
+        isEmojiReactionPush: data.isEmojiReactionPush,
+        visibleWeight: !!data.visibleWeight
+      }
     })
     // firestoreの初期値は値がない場合undefiendになるので、マウント時にundefiendはtrueに変換する
     if (userSettingObj.isCommentPush === undefined) {
-      await requestPutPushNotificationSetting('comment')
+      await requestPutSetting('comment')
       userSettingObj = { ...userSettingObj, isCommentPush: true }
     }
     if (userSettingObj.isRecordPostPush === undefined) {
-      await requestPutPushNotificationSetting('recordPost')
+      await requestPutSetting('recordPost')
       userSettingObj = { ...userSettingObj, isRecordPostPush: true }
     }
     if (userSettingObj.isEmojiReactionPush === undefined) {
-      await requestPutPushNotificationSetting('emoji')
+      await requestPutSetting('emoji')
       userSettingObj = { ...userSettingObj, isEmojiReactionPush: true }
     }
     return { payload: userSettingObj }
@@ -33,7 +38,7 @@ export const requestFetchSettings = async () => {
   }
 }
 
-export const requestPutPushNotificationSetting = async (type: SettingPushNotificationType) => {
+export const requestPutSetting = async (type: SettingType) => {
   const currentUserId = firebase.auth().currentUser.uid
   const userRef = db.collection('users').doc(currentUserId).get()
   
@@ -49,6 +54,9 @@ export const requestPutPushNotificationSetting = async (type: SettingPushNotific
         }
         case 'emoji': {
           snap.ref.update({ isEmojiReactionPush: !data.isEmojiReactionPush })
+        }
+        case 'visibleWeight': {
+          snap.ref.update({ visibleWeight: !data.visibleWeight })
         }
       }
     })

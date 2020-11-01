@@ -28,7 +28,7 @@ const Profile = (props: Props) => {
         </ChangeButton>
       </Upper>
       <Lower>
-        <BasicInfo />
+        <BasicInfo user={user} />
       </Lower>
     </Container>
   )
