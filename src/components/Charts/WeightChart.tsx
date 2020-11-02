@@ -22,6 +22,8 @@ import { getMidnightTime } from '../../utilities/timestamp'
 import { hapticFeedBack } from '../../utilities/Haptic'
 // import constants
 import { COLORS } from '../../constants/Styles'
+// import confing
+import firebase from '../../config/firebase'
 
 const WeightChart = () => {
   const dispatch = useDispatch()

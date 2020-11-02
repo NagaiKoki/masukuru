@@ -25,7 +25,7 @@ const Profile = (props: Props) => {
           <UserName>{name}</UserName>
         </ImageWrpper>
         { type === 'myPage' ?
-        <ChangeButton>
+        <ChangeButton onPress={() => navigation.navigate('profileChange', { user: user })}>
           <ChangeText>編集</ChangeText>
         </ChangeButton> : null }
       </Upper>

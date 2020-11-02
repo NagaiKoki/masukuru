@@ -12,8 +12,6 @@ import ProfileSettingPrivacyScreen from '../../../screens/Private/MyPage/Setting
 // import components
 import StackNavigator from '../../../common/Navigator/StackNavigator'
 import HeaderIconButton from '../../../common/Button/HeaderIconButton'
-// import constants
-import { COLORS } from '../../../constants/Styles'
 // import utils
 import { navigatorOptions } from '../../../utilities/navigatorOptions'
 
@@ -38,7 +36,7 @@ const MyPageNavigator = ({ navigation }) => {
       />
       
       <MyPageStack.Screen
-        name="プロフィール編集"
+        name="profileChange"
         component={ProfileChangeScreen}
         options={navigatorOptions('プロフィール編集')}
       />

@@ -7,56 +7,49 @@ import UserImage from '../../../components/Image/userImage';
 import Form from '../../../common/Form'
 // import utils
 import { ImageUpload } from '../../../utilities/cameraRoll';
-// import configs
-import { db } from '../../../config/firebase';
 // import constants
 import { COLORS } from '../../../constants/Styles';
+// import types
+import { UserType } from '../../../types/User';
+// import config
+import firebase from '../../../config/firebase'
 
 const ProfileChangeScreen = ({ route, navigation }) => {
-  const { user } = route.params;
+  const { user }: { user: UserType } = route.params;
+  const userImageUrl = user ? user.imageUrl : ''
+  const name = user ? user.name : ''
   const [progress, setProgress] = useState<string>('');
-  const [uri, setUri] = useState<string>(user.photoURL);
-  const [userName, setUserName] = useState<string>(user.displayName)
+  const [uri, setUri] = useState<string>(userImageUrl);
+  const [userName, setUserName] = useState<string>(name)
+  const firebaseUser = firebase.auth().currentUser
 
-    // 写真追加の文字    
-    const ChangeImageText = () => {
-      let btnText = ''
-      uri || user.photoURL ? btnText = '写真を変更する' : btnText = '写真を追加する'
-      
-      return (
-        <ChangeImageBtn block onPress={ () => ImageUpload(setProgress, setUri, user) } >
-            <ChangeImageWord>{btnText}</ChangeImageWord>
-        </ChangeImageBtn>   
-        )
-    }
-
-    const renderUserNameForm = (  
-        <UserNameForm 
-          placeholder='名前を入力する（3文字以上 8字以下）'
-          value={userName}
-          maxLength={8}
-          autoCapitalize={'none'}
-          autoCorrect={ false }
-          onChangeText={ text => setUserName(text) }
-        />
+  // 写真追加の文字    
+  const ChangeImageText = () => {
+    let btnText = ''
+    uri || user.imageUrl ? btnText = '写真を変更する' : btnText = '写真を追加する'
+    
+    return (
+      <ChangeImageBtn block onPress={ () => ImageUpload(setProgress, setUri, user) } >
+          <ChangeImageWord>{btnText}</ChangeImageWord>
+      </ChangeImageBtn>   
       )
-      
-    // ユーザーの更新処理
-    const updateUserProfile = async () => {
-      await requestUpdateUser(userName, uri, user)
-      navigation.goBack('MyPage', { user: user })
-    };
+  }
+    
+  // ユーザーの更新処理
+  const updateUserProfile = async () => {
+    await requestUpdateUser(userName, uri)
+    navigation.goBack('MyPage')
+  };
 
   return (
     <ProfileChangeContainer>
       <ProfileImageWrapper>
-        <ImageUploadWrapper onPress={ () => ImageUpload(setProgress, setUri, user)}>
-          <UserImage uri={uri} user={user} width={120} height={120} borderRadius={60} forProfile={true} />
+        <ImageUploadWrapper onPress={() => ImageUpload(setProgress, setUri, user)}>
+          <UserImage uri={uri} user={firebaseUser} width={100} height={100} borderRadius={60} forProfile={true} />
         </ImageUploadWrapper>        
         <ImageProgressText>{progress}</ImageProgressText>
         {ChangeImageText()}
       </ProfileImageWrapper>
-
       <UserNameFormWrapper>
         <Form
           placeholder='名前を入力する（3文字以上 8字以下）'
@@ -65,8 +58,7 @@ const ProfileChangeScreen = ({ route, navigation }) => {
           onChange={setUserName}
         />
       </UserNameFormWrapper>
-
-      <ProfileChangeSubmitBtn block onPress={ () => updateUserProfile() }>
+      <ProfileChangeSubmitBtn onPress={updateUserProfile}>
         <ProfileChangeSubmitText>変更する</ProfileChangeSubmitText>
       </ProfileChangeSubmitBtn>
     </ProfileChangeContainer>
@@ -96,9 +88,9 @@ const ProfileImageWrapper = styled.View`
 `
 
 const ImageUploadWrapper = styled.TouchableOpacity`
-  width: 125px;
+  width: 110px;
+  height: 110px;
   align-self: center;
-  border-radius: 60px;
 `
 
 const ImageProgressText = styled.Text`
@@ -111,7 +103,7 @@ const ImageProgressText = styled.Text`
 const UserNameFormWrapper = styled.View`
   align-self: center;
   margin-top: 30px;
-  width: 80%;
+  width: 90%;
 `
 
 const UserNameForm = styled.TextInput`

@@ -70,7 +70,7 @@ function* handleRequestPostWeight() {
   yield takeEvery(requestPostWeight.type, runRequestPostWeight)
 }
 
-function* runRequestFetchChartSetting(action: PayloadAction<string>) {
+function* runRequestFetchChartSetting(action: PayloadAction<string | undefined>) {
   const { payload, error }: ResponseType<ResponseChartSettingType> = yield call(
     requestFetchGetChartSetting,
     action.payload

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
-import firebase from 'firebase'
+// import config
+import firebase from '../../config/firebase'
 
 interface UserImageProps {
   uri?: string,

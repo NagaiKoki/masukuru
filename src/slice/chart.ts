@@ -57,7 +57,7 @@ const chartSlice = createSlice({
         error: action.payload
       }
     },
-    requestFetchChartSetting: (state, action: PayloadAction<string>) => {
+    requestFetchChartSetting: (state, action: PayloadAction<string | undefined>) => {
       return {
         ...state,
       }
