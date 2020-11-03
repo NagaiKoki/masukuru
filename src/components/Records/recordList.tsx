@@ -24,7 +24,7 @@ const RecordList = (props: RecordListProps) => {
     if (i === 1) {
       return (
         <AdmobWrapper key={i}>
-          <AdmobBanner size="smartBannerPortrait" />
+          <AdmobBanner size='largeBanner' />
         </AdmobWrapper>
       )
     } else {
@@ -55,6 +55,8 @@ const RecordListContainer = styled.View`
 `
 
 const AdmobWrapper = styled.View`
+  flex-direction: row;
+  justify-content: center;
   margin-bottom: 10px;
 `
 

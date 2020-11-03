@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { AdMobBanner } from 'expo-ads-admob'
 // import utils
 import { adMobUnitId } from '../../utilities/admob'
 // import firebase
-import firebase, { db } from '../../config/firebase'
+import { db } from '../../config/firebase'
 
 
 type Props = {
