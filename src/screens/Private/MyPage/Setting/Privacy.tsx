@@ -13,7 +13,7 @@ import { COLORS } from '../../../../constants/Styles';
 import { hapticFeedBack } from '../../../../utilities/Haptic';
 
 const ProfileSettingPrivacyScreen = () => {
-  const [toggleWeight, setToggleWeight] = useState(true)
+  const [hideWeight, setHideWeight] = useState(true)
   const [isMounted, setIsMonted] = useState(false)
 
   useFocusEffect(
@@ -21,7 +21,7 @@ const ProfileSettingPrivacyScreen = () => {
       const fetchPushSetting = async () => {
         const { payload, error }: { payload?: ResponseSettingType, error?: string } = await requestFetchSettings()
         if (payload && !error) {
-          setToggleWeight(payload.visibleWeight)
+          setHideWeight(!payload.visibleWeight)
         }
       }
       fetchPushSetting()
@@ -37,7 +37,7 @@ const ProfileSettingPrivacyScreen = () => {
     hapticFeedBack('medium')
     switch(type) {
       case 'visibleWeight': {
-        setToggleWeight(!toggle)
+        setHideWeight(!toggle)
         return await requestPutSetting(type)
       }
     }
@@ -46,7 +46,7 @@ const ProfileSettingPrivacyScreen = () => {
   const renderToggleIcon = (toggle: boolean) => {
     return (
       <Icon 
-        name={ !toggle ? "toggle-on" : "toggle-off" } 
+        name={ toggle ? "toggle-on" : "toggle-off" } 
         size={30}
         style={{ color: COLORS.TOGGLE_ON_COLOR }}
       /> 
@@ -58,8 +58,8 @@ const ProfileSettingPrivacyScreen = () => {
       <Wrapper>
         <Item
           title="マイページの体重を非公開にする"
-          icon={renderToggleIcon(toggleWeight)}
-          handleOnClick={() => handleOnToggle('visibleWeight', toggleWeight)}
+          icon={renderToggleIcon(hideWeight)}
+          handleOnClick={() => handleOnToggle('visibleWeight', hideWeight)}
         />
       </Wrapper>
     </Container>

@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import constants
 import { COLORS } from '../../constants/Styles';
@@ -8,14 +7,14 @@ import { COLORS } from '../../constants/Styles';
 import Item from '../../common/List/item'
 
 interface SettingListProps {
-  navigation: StackNavigationProp<{'settingPush'}>
+  navigation: any
 }
 
 const SettingList = (props: SettingListProps) => {
   const { navigation } = props
 
-  const handleOnNavigate = () => {
-    navigation.navigate('settingPush')
+  const handleOnNavigate = (navigationName: string) => {
+    navigation.navigate(navigationName)
   }
 
   const renderIcon =
@@ -28,9 +27,14 @@ const SettingList = (props: SettingListProps) => {
   return (
     <SettingListContainer>
       <Item 
-        title="通知"
+        title="プッシュ通知"
         icon={renderIcon}
-        handleOnClick={handleOnNavigate}
+        handleOnClick={() => handleOnNavigate('settingPush')}
+      />
+      <Item 
+        title="プライバシー設定"
+        icon={renderIcon}
+        handleOnClick={() => handleOnNavigate('settingPrivacy')}
       />
     </SettingListContainer>
   )

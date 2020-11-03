@@ -17,7 +17,7 @@ const ProfileBasicInfo = (props: Props) => {
   const weightGoal = useSelectWeightGoal()
   const weights = useSelectWeights()
   const weight = weights[0]
-  
+
   return (
     <Wrapper>
       <LabelWrapper>
