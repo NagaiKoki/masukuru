@@ -48,8 +48,7 @@ const RecordItem = (props: RecordItemProps) => {
   const [commentSize, setCommentSize] = useState(0)
   const [isUserLoading, setIsUserLoading] = useState(true)
   const [isCommentLoading, setIsCommentLoading] = useState(true)
-  const [visibleModal, setVisibleModal] = useState(false)
-
+  
   const dispatch = useDispatch()
   const { showActionSheetWithOptions } = useActionSheet()
 
