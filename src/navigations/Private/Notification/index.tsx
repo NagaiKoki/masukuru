@@ -30,7 +30,7 @@ const NotificationNavigator = ({ navigation }) => {
                   onPress={() => { navigation.openDrawer() }} 
                   style={{ paddingLeft: 20, color: COLORS.BASE_WHITE }}
             />
-          ),
+          )
         }}
       />
 

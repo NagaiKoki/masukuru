@@ -57,7 +57,7 @@ const chartSlice = createSlice({
         error: action.payload
       }
     },
-    requestFetchChartSetting: (state) => {
+    requestFetchChartSetting: (state, action: PayloadAction<string | undefined>) => {
       return {
         ...state,
       }
@@ -73,6 +73,8 @@ const chartSlice = createSlice({
     failureFetchChartSetting: (state, action: PayloadAction<string>) => {
       return {
         ...state,
+        weightGoal: 0,
+        walkingGoal: 0,
         error: action.payload
       }
     },

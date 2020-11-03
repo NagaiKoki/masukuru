@@ -27,12 +27,12 @@ const ItemWrapper = styled.TouchableOpacity`
   border-bottom-color: ${COLORS.BORDER_COLOR_1};
   border-bottom-width: 1px;
   padding: 10px 20px;
-  background: ${COLORS.BASE_WHITE}
+  background: ${COLORS.BASE_WHITE};
 `
 
 const ItemText = styled.Text`
   color: ${COLORS.BASE_BLACK};
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 `
 

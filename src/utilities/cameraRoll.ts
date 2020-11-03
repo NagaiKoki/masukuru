@@ -1,5 +1,5 @@
 
-import React, { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Alert } from 'react-native'
 import firebase from 'firebase';
 import Constants from 'expo-constants';
@@ -7,8 +7,10 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 // import lib
 import { factoryRandomCode } from './randomTextFactory'
+// import types
+import { UserType } from '../types/User'
 
-export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User, groupId?: string, record?: string) => {
+export const ImageUpload = async (setProgress: Dispatch<SetStateAction<string>>, setUri: Dispatch<SetStateAction<string>>, user?: firebase.User | UserType, groupId?: string, record?: string) => {
     let ImageName: string;
     if (!!user) {
       ImageName = `profile_image_${factoryRandomCode(20)}`;

@@ -36,14 +36,15 @@ export const requestFetchUsers = async (userIds: string[]) => {
 }
 
 // 今後使わない
-export const requestUpdateUser = async (name: string, imageUrl: string, user: firebase.User) => {
-  const uid = user.uid
+export const requestUpdateUser = async (name: string, imageUrl: string) => {
+  const firebaseUser = firebase.auth().currentUser
+  const uid = firebaseUser.uid
   const userRef = db.collection('users').doc(uid)
   const groupUserRef = db.collectionGroup('groupUsers').where('uid', '==', uid)
   let batch = db.batch()
   try {
-    await user.updateProfile({ displayName: name, photoURL: imageUrl })
-    await batch.update(userRef, { imageUrl, name })
+    await firebaseUser.updateProfile({ displayName: name, photoURL: imageUrl })
+    batch.update(userRef, { imageUrl, name })
     await groupUserRef.get().then(snap => {
       snap.forEach(doc => {
         batch.update(doc.ref, {
@@ -56,6 +57,7 @@ export const requestUpdateUser = async (name: string, imageUrl: string, user: fi
 
     return { payload: 'success' }
   } catch(error) {
+    console.log(error)
     return { error }
   }
 }

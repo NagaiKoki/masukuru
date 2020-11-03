@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // import apis
 import { 
-  requestPutPushNotificationSetting,
+  requestPutSetting,
   requestFetchSettings
 } from '../../../apis/Settings'
 // import components
@@ -12,7 +12,7 @@ import Item from '../../../common/List/item'
 // import constants
 import { COLORS } from '../../../constants/Styles';
 // import types
-import { ResponseSettingType, SettingPushNotificationType } from '../../../types/Setting'
+import { ResponseSettingType, SettingType } from '../../../types/Setting'
 // import utils
 import { hapticFeedBack } from '../../../utilities/Haptic'
 
@@ -42,20 +42,20 @@ const SettingPushList = () => {
     return null
   }
 
-  const handleOnToggle = async (type: SettingPushNotificationType, toggle: boolean) => {
+  const handleOnToggle = async (type: SettingType, toggle: boolean) => {
     hapticFeedBack('medium')
     switch(type) {
       case 'comment': {
         setToggleComment(!toggle)
-        return await requestPutPushNotificationSetting(type)
+        return await requestPutSetting(type)
       }
       case 'recordPost': {
         setToggleRecordPost(!toggle)
-        return await requestPutPushNotificationSetting(type)
+        return await requestPutSetting(type)
       }
       case 'emoji' : {
         setToggleEmojiReaction(!toggle)
-        return await requestPutPushNotificationSetting(type)
+        return await requestPutSetting(type)
       }
     }
   }
@@ -64,7 +64,7 @@ const SettingPushList = () => {
     return (
       <Icon 
         name={ toggle ? "toggle-on" : "toggle-off" } 
-        size={40}
+        size={30}
         style={{ color: COLORS.TOGGLE_ON_COLOR }}
       /> 
     )

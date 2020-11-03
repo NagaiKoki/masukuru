@@ -43,6 +43,7 @@ export const requestPostRecords = async (records: RecordItemType[], word: string
       records,
       uid,
       word,
+      type: 'record',
       trainingDate: convertFirebaseTimeStamp(trainingDate),
       imageUrl,
       createdAt: convertFirebaseTimeStamp(new Date()),
@@ -162,6 +163,7 @@ export const requestUpdateRecordItem = async (recordId: string, records: RecordI
       records,
       word,
       imageUrl,
+      type: 'record',
       trainingDate: convertFirebaseTimeStamp(trainingDate),
       updatedAt: convertFirebaseTimeStamp(new Date()), 
       createdAt: currentRecord.createdAt

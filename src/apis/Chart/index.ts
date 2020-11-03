@@ -84,9 +84,9 @@ export const requestPostWeight = async (weight: number, date: Date) => {
   }
 }
 
-export const requestFetchGetChartSetting = async () => {
-  const currentUserId = firebase.auth().currentUser.uid
-  const settingRef = db.collection('users').doc(currentUserId).collection('settings').get()
+export const requestFetchGetChartSetting = async (uid?: string) => {
+  const userId = uid || firebase.auth().currentUser.uid
+  const settingRef = db.collection('users').doc(userId).collection('settings').get()
   let settingArry: ResponseChartSettingType[] = []
   try {
     await settingRef.then(snap => {

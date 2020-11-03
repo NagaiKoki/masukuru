@@ -8,6 +8,7 @@ import GroupScreen from '../../../screens/Private/Groups'
 import GroupEditScreen from '../../../screens/Private/Groups/Edit'
 import SettingScreen from '../../../screens/Private/Setting'
 import SettingPushScreen from '../../../screens/Private/Setting/Push'
+import SettingPrivacyScreen from '../../../screens/Private/MyPage/Setting/Privacy'
 // import navigator
 import RecordModalNavigator from './Records/Modals/RecordModalNavigator'
 import HomeNavigator from './Timeline'
@@ -16,6 +17,8 @@ import UserPageContainer from '../../../containers/Private/users/userPage'
 import RecordShowScreen from '../../../screens/Private/Records/Show'
 // import selectors
 import { useGroupSelector } from '../../../selectors/group'
+// import utils
+import { navigatorOptions } from '../../../utilities/navigatorOptions'
 
 const MainNavigator = () => { 
   const MainStack = createStackNavigator()
@@ -121,12 +124,18 @@ const MainNavigator = () => {
         component={SettingPushScreen}
         options={() => ({
           headerBackTitleVisible: false,
-          headerTitle: '通知',
+          headerTitle: 'プッシュ通知設定',
           headerStyle: {
             backgroundColor: COLORS.BASE_MUSCLEW
           },
           headerTintColor: COLORS.BASE_WHITE,
         })}
+      />
+
+      <MainStack.Screen 
+        name="settingPrivacy"
+        component={SettingPrivacyScreen}
+        options={navigatorOptions('プライバシー設定')}
       />
    </MainStack.Navigator>
   );

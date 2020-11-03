@@ -23,14 +23,14 @@ const RecordList = (props: RecordListProps) => {
   const renderRecordList = recordData.map((record: ResponseRecordType, i: number) => {
     if (i === 1) {
       return (
-        <AdmobWrapper>
-          <AdmobBanner size="smartBannerPortrait" />
+        <AdmobWrapper key={i}>
+          <AdmobBanner size='largeBanner' />
         </AdmobWrapper>
       )
     } else {
       return (
         <RecordItem 
-          key={i} 
+          key={record.id} 
           index={i}
           record={record} 
           navigation={navigation} 
@@ -55,6 +55,8 @@ const RecordListContainer = styled.View`
 `
 
 const AdmobWrapper = styled.View`
+  flex-direction: row;
+  justify-content: center;
   margin-bottom: 10px;
 `
 
